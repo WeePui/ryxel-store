@@ -1,0 +1,470 @@
+[
+  {
+    "_id": "637c7e9b14b63b001c7e9d1b",
+    "name": "Gaming Mouse X1000",
+    "description": "A high precision gaming mouse with customizable RGB lighting and ergonomic design.",
+    "brand": "HyperGear",
+    "category": "Mouse",
+    "imageCover": "mouse_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7ea014b63b001c7e9d1c",
+        "name": "Black - Wired",
+        "sku": "GMX1000-BLK-WIRED",
+        "specifications": {
+          "dpi": "16000",
+          "connection": "USB",
+          "weight": "80g",
+          "rgb": "Yes"
+        },
+        "price": 49.99,
+        "stock": 50,
+        "sold": 20,
+        "images": [
+          "mouse_black_1.jpg",
+          "mouse_black_2.jpg",
+          "mouse_black_3.jpg",
+          "mouse_black_4.jpg"
+        ]
+      },
+      {
+        "_id": "637c7ea714b63b001c7e9d1d",
+        "name": "White - Wireless",
+        "sku": "GMX1000-WHT-WIRELESS",
+        "specifications": {
+          "dpi": "16000",
+          "connection": "Bluetooth",
+          "weight": "75g",
+          "rgb": "Yes"
+        },
+        "price": 69.99,
+        "stock": 30,
+        "sold": 15,
+        "images": [
+          "mouse_white_1.jpg",
+          "mouse_white_2.jpg",
+          "mouse_white_3.jpg",
+          "mouse_white_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7eb214b63b001c7e9d1e",
+    "name": "Mechanical Keyboard K200",
+    "description": "A durable mechanical keyboard with RGB lighting and customizable keycaps.",
+    "brand": "KeyForce",
+    "category": "Keyboard",
+    "imageCover": "keyboard_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7eb814b63b001c7e9d1f",
+        "name": "Black - Red Switch",
+        "sku": "KFK200-BLK-RED",
+        "specifications": {
+          "switchType": "Red",
+          "keycap": "PBT",
+          "rgb": "Yes",
+          "connection": "USB"
+        },
+        "price": 89.99,
+        "stock": 40,
+        "sold": 10,
+        "images": [
+          "keyboard_black_1.jpg",
+          "keyboard_black_2.jpg",
+          "keyboard_black_3.jpg",
+          "keyboard_black_4.jpg"
+        ]
+      },
+      {
+        "_id": "637c7ebe14b63b001c7e9d20",
+        "name": "White - Blue Switch",
+        "sku": "KFK200-WHT-BLUE",
+        "specifications": {
+          "switchType": "Blue",
+          "keycap": "ABS",
+          "rgb": "Yes",
+          "connection": "USB"
+        },
+        "price": 94.99,
+        "stock": 25,
+        "sold": 8,
+        "images": [
+          "keyboard_white_1.jpg",
+          "keyboard_white_2.jpg",
+          "keyboard_white_3.jpg",
+          "keyboard_white_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7ec414b63b001c7e9d21",
+    "name": "Gaming Headset H500",
+    "description": "Surround sound gaming headset with noise-canceling microphone.",
+    "brand": "SoundWave",
+    "category": "Headset",
+    "imageCover": "headset_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7ecb14b63b001c7e9d22",
+        "name": "Black",
+        "sku": "SWH500-BLK",
+        "specifications": {
+          "sound": "7.1 Surround",
+          "microphone": "Noise-canceling",
+          "connection": "USB",
+          "rgb": "Yes"
+        },
+        "price": 59.99,
+        "stock": 60,
+        "sold": 25,
+        "images": [
+          "headset_black_1.jpg",
+          "headset_black_2.jpg",
+          "headset_black_3.jpg",
+          "headset_black_4.jpg"
+        ]
+      },
+      {
+        "_id": "637c7ed114b63b001c7e9d23",
+        "name": "Red",
+        "sku": "SWH500-RED",
+        "specifications": {
+          "sound": "7.1 Surround",
+          "microphone": "Noise-canceling",
+          "connection": "USB",
+          "rgb": "No"
+        },
+        "price": 54.99,
+        "stock": 45,
+        "sold": 18,
+        "images": [
+          "headset_red_1.jpg",
+          "headset_red_2.jpg",
+          "headset_red_3.jpg",
+          "headset_red_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7f8a14b63b001c7e9d24",
+    "name": "Wireless Gaming Mouse Z500",
+    "description": "High-performance wireless gaming mouse with RGB and long battery life.",
+    "brand": "ProGamer",
+    "category": "Mouse",
+    "imageCover": "mouse_z500_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7f9014b63b001c7e9d25",
+        "name": "Black",
+        "sku": "PGZ500-BLK",
+        "specifications": {
+          "dpi": "20000",
+          "connection": "Wireless",
+          "rgb": "Yes",
+          "weight": "85g"
+        },
+        "price": 79.99,
+        "stock": 45,
+        "sold": 10,
+        "images": [
+          "mouse_z500_black_1.jpg",
+          "mouse_z500_black_2.jpg",
+          "mouse_z500_black_3.jpg",
+          "mouse_z500_black_4.jpg"
+        ]
+      },
+      {
+        "_id": "637c7f9614b63b001c7e9d26",
+        "name": "White",
+        "sku": "PGZ500-WHT",
+        "specifications": {
+          "dpi": "20000",
+          "connection": "Wireless",
+          "rgb": "Yes",
+          "weight": "82g"
+        },
+        "price": 79.99,
+        "stock": 30,
+        "sold": 8,
+        "images": [
+          "mouse_z500_white_1.jpg",
+          "mouse_z500_white_2.jpg",
+          "mouse_z500_white_3.jpg",
+          "mouse_z500_white_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7fa314b63b001c7e9d27",
+    "name": "UltraLight Mouse U700",
+    "description": "Super lightweight mouse for eSports with custom sensor and RGB lighting.",
+    "brand": "LightSpeed",
+    "category": "Mouse",
+    "imageCover": "mouse_ultralight_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7faa14b63b001c7e9d28",
+        "name": "Gray",
+        "sku": "LSU700-GRY",
+        "specifications": {
+          "dpi": "16000",
+          "connection": "USB",
+          "rgb": "Yes",
+          "weight": "60g"
+        },
+        "price": 59.99,
+        "stock": 50,
+        "sold": 15,
+        "images": [
+          "mouse_ultralight_gray_1.jpg",
+          "mouse_ultralight_gray_2.jpg",
+          "mouse_ultralight_gray_3.jpg",
+          "mouse_ultralight_gray_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7fb414b63b001c7e9d29",
+    "name": "Compact Mechanical Keyboard K90",
+    "description": "Compact 60% mechanical keyboard with RGB lighting, perfect for gaming.",
+    "brand": "CompactKeys",
+    "category": "Keyboard",
+    "imageCover": "keyboard_k90_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7fb914b63b001c7e9d2a",
+        "name": "Red Switch",
+        "sku": "CKK90-RED",
+        "specifications": {
+          "switchType": "Red",
+          "rgb": "Yes",
+          "keycap": "PBT",
+          "connection": "USB"
+        },
+        "price": 69.99,
+        "stock": 40,
+        "sold": 12,
+        "images": [
+          "keyboard_k90_red_1.jpg",
+          "keyboard_k90_red_2.jpg",
+          "keyboard_k90_red_3.jpg",
+          "keyboard_k90_red_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7fc214b63b001c7e9d2b",
+    "name": "Gaming Headset Pro H300",
+    "description": "Pro surround sound gaming headset with detachable microphone.",
+    "brand": "SoundBlast",
+    "category": "Headset",
+    "imageCover": "headset_h300_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7fc814b63b001c7e9d2c",
+        "name": "Black",
+        "sku": "SBH300-BLK",
+        "specifications": {
+          "sound": "7.1 Surround",
+          "microphone": "Detachable",
+          "connection": "USB",
+          "rgb": "Yes"
+        },
+        "price": 79.99,
+        "stock": 55,
+        "sold": 22,
+        "images": [
+          "headset_h300_black_1.jpg",
+          "headset_h300_black_2.jpg",
+          "headset_h300_black_3.jpg",
+          "headset_h300_black_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7fd414b63b001c7e9d2d",
+    "name": "Gaming Keyboard TitanX",
+    "description": "Full-size gaming keyboard with fast switches and RGB lighting.",
+    "brand": "TitanTech",
+    "category": "Keyboard",
+    "imageCover": "keyboard_titanx_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7fda14b63b001c7e9d2e",
+        "name": "Blue Switch",
+        "sku": "TTX-BLUE",
+        "specifications": {
+          "switchType": "Blue",
+          "rgb": "Yes",
+          "keycap": "ABS",
+          "connection": "USB"
+        },
+        "price": 99.99,
+        "stock": 35,
+        "sold": 18,
+        "images": [
+          "keyboard_titanx_blue_1.jpg",
+          "keyboard_titanx_blue_2.jpg",
+          "keyboard_titanx_blue_3.jpg",
+          "keyboard_titanx_blue_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7fe514b63b001c7e9d2f",
+    "name": "Gaming Chair Ultima C500",
+    "description": "Ergonomic gaming chair with adjustable backrest and memory foam padding.",
+    "brand": "ChairMax",
+    "category": "Chair",
+    "imageCover": "chair_c500_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7fea14b63b001c7e9d30",
+        "name": "Black/Red",
+        "sku": "CMAX-C500-RD",
+        "specifications": {
+          "material": "Memory Foam",
+          "adjustability": "High",
+          "weightCapacity": "150kg"
+        },
+        "price": 149.99,
+        "stock": 25,
+        "sold": 10,
+        "images": [
+          "chair_c500_red_1.jpg",
+          "chair_c500_red_2.jpg",
+          "chair_c500_red_3.jpg",
+          "chair_c500_red_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7ff014b63b001c7e9d31",
+    "name": "Gaming Desk TitanDesk XL",
+    "description": "Spacious gaming desk with cable management and RGB lighting.",
+    "brand": "DeskPower",
+    "category": "Desk",
+    "imageCover": "desk_titanxl_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c7ff514b63b001c7e9d32",
+        "name": "Black",
+        "sku": "DPTX-BLK",
+        "specifications": {
+          "size": "140x60cm",
+          "rgb": "Yes",
+          "material": "Steel & MDF",
+          "maxLoad": "100kg"
+        },
+        "price": 199.99,
+        "stock": 20,
+        "sold": 5,
+        "images": [
+          "desk_titanxl_black_1.jpg",
+          "desk_titanxl_black_2.jpg",
+          "desk_titanxl_black_3.jpg",
+          "desk_titanxl_black_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c7fff14b63b001c7e9d33",
+    "name": "Gaming Headset Wave Z700",
+    "description": "Wireless gaming headset with immersive sound and long battery life.",
+    "brand": "WaveTech",
+    "category": "Headset",
+    "imageCover": "headset_z700_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c800514b63b001c7e9d34",
+        "name": "Blue",
+        "sku": "WTZ700-BLUE",
+        "specifications": {
+          "sound": "Stereo",
+          "microphone": "Omnidirectional",
+          "connection": "Wireless",
+          "rgb": "No"
+        },
+        "price": 69.99,
+        "stock": 60,
+        "sold": 25,
+        "images": [
+          "headset_z700_blue_1.jpg",
+          "headset_z700_blue_2.jpg",
+          "headset_z700_blue_3.jpg",
+          "headset_z700_blue_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c800e14b63b001c7e9d35",
+    "name": "Mechanical Keyboard Pro RGB",
+    "description": "Pro-level mechanical keyboard with RGB backlighting and macro keys.",
+    "brand": "ProKey",
+    "category": "Keyboard",
+    "imageCover": "keyboard_pro_rgb_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c801414b63b001c7e9d36",
+        "name": "Green Switch",
+        "sku": "PKRGB-GREEN",
+        "specifications": {
+          "switchType": "Green",
+          "rgb": "Yes",
+          "keycap": "Double-shot ABS",
+          "connection": "USB"
+        },
+        "price": 109.99,
+        "stock": 30,
+        "sold": 14,
+        "images": [
+          "keyboard_pro_rgb_green_1.jpg",
+          "keyboard_pro_rgb_green_2.jpg",
+          "keyboard_pro_rgb_green_3.jpg",
+          "keyboard_pro_rgb_green_4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "637c801e14b63b001c7e9d37",
+    "name": "Ultra Comfort Gaming Chair XC300",
+    "description": "Comfort-focused gaming chair with adjustable lumbar support and cooling gel memory foam.",
+    "brand": "CoolSeat",
+    "category": "Chair",
+    "imageCover": "chair_xc300_cover.jpg",
+    "variants": [
+      {
+        "_id": "637c802414b63b001c7e9d38",
+        "name": "Gray/Blue",
+        "sku": "CSXC300-GRYBLU",
+        "specifications": {
+          "material": "Cooling Gel Foam",
+          "adjustability": "High",
+          "weightCapacity": "140kg"
+        },
+        "price": 179.99,
+        "stock": 15,
+        "sold": 7,
+        "images": [
+          "chair_xc300_grayblue_1.jpg",
+          "chair_xc300_grayblue_2.jpg",
+          "chair_xc300_grayblue_3.jpg",
+          "chair_xc300_grayblue_4.jpg"
+        ]
+      }
+    ]
+  }
+]
