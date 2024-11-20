@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .loading-container {
+    display: flex;
+    gap: 0.2rem;
+    font-size: 4rem;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .loading-letter {
+    display: inline-block;
+    animation: jump 2s ease-in-out infinite;
+    transform-origin: bottom;
+    animation-fill-mode: both;
+  }
+
+  .header-link:hover .absolute {
+    scale-x: 1;
+  }
+
+  @keyframes jump {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
