@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Category = require('./categoryModel');
 
 const variantsSchema = new mongoose.Schema(
   {
@@ -61,7 +62,8 @@ const productSchema = new mongoose.Schema(
       trim: true,
     },
     category: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
       required: [true, 'Product category is required'],
     },
     sold: {
@@ -114,6 +116,11 @@ productSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'product',
   localField: '_id',
+});
+
+productSchema.pre(/^find/, function (next) {
+  this.populate({ path: 'category', select: 'name' });
+  next();
 });
 
 const Product = mongoose.model('Product', productSchema);

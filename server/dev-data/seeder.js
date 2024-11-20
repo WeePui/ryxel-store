@@ -6,6 +6,7 @@ const Product = require('../models/productModel');
 const User = require('../models/userModel');
 const ShippingAddress = require('../models/shippingAddressModel');
 const Review = require('../models/reviewModel');
+const Category = require('../models/categoryModel');
 
 dotenv.config({ path: './config.env' });
 
@@ -18,6 +19,9 @@ const shippingAddresses = JSON.parse(
 );
 const reviews = JSON.parse(
   fs.readFileSync(`${__dirname}/reviews.json`, 'utf-8')
+);
+const categories = JSON.parse(
+  fs.readFileSync(`${__dirname}/categories.json`, 'utf-8')
 );
 
 const connectionString = process.env.DB_CONNECTION.replace(
@@ -39,6 +43,7 @@ async function importData() {
       User.create(users),
       ShippingAddress.create(shippingAddresses),
       Review.create(reviews),
+      Category.create(categories),
     ]);
 
     console.log('Data imported successfully');
@@ -51,15 +56,12 @@ async function importData() {
 
 async function deleteData() {
   try {
-    // await Product.deleteMany();
-    // await User.deleteMany();
-    // await ShippingAddress.deleteMany();
-    // await Review.deleteMany();
     await Promise.all([
       Product.deleteMany(),
       User.deleteMany(),
       ShippingAddress.deleteMany(),
       Review.deleteMany(),
+      Category.deleteMany(),
     ]);
 
     console.log('Data deleted successfully');
