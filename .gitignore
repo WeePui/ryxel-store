@@ -1,2 +1,3 @@
 node_modules
 webapp/.next/
+server/config.env
