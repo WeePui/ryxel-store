@@ -23,8 +23,8 @@ module.exports = {
         },
         secondary: {
           default: '#6B7280',
-          50: '#F9FAFB',
-          100: '#F3F4F6',
+          50: '#FAFBFC',
+          100: '#F9FAFB',
           200: '#E5E7EB',
           300: '#D1D5DB',
           400: '#9CA3AF',
@@ -48,6 +48,7 @@ module.exports = {
           900: '#070402',
         },
         grey: {
+          50: '#EDEEEF',
           100: '#DBDDDF',
           200: '#B2B6BA',
           300: '#8C9093',
