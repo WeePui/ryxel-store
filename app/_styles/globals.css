@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  @keyframes gentle-bounce {
+    0% {
+      transform: translateY(0) scale(1);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    100% {
+      transform: translateY(0) scale(1.05);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
 @layer components {
   .loading-container {
     display: flex;
@@ -20,7 +42,7 @@
   }
 
   .header-link:hover .absolute {
-    scale-x: 1;
+    --tw-scale-x: 1;
   }
 
   @keyframes jump {
@@ -31,5 +53,49 @@
     50% {
       transform: translateY(-10px);
     }
+  }
+
+  @keyframes jitter {
+    0% {
+      transform: scale(1);
+    }
+    10% {
+      transform: scale(1.02);
+    }
+    20% {
+      transform: scale(1.03);
+    }
+    30% {
+      transform: scale(1.04);
+    }
+    40% {
+      transform: scale(1.05);
+    }
+    50% {
+      transform: scale(1.04);
+    }
+    60% {
+      transform: scale(1.03);
+    }
+    70% {
+      transform: scale(1.02);
+    }
+    80% {
+      transform: scale(1.03);
+    }
+    90% {
+      transform: scale(1.04);
+    }
+    100% {
+      transform: scale(1.05);
+    }
+  }
+
+  .hover\\:animate-jitter:hover {
+    animation: jitter 0.4s ease-in-out;
+  }
+
+  .hover\:gentle-bounce {
+    animation: gentle-bounce 0.4s ease-in-out;
   }
 }

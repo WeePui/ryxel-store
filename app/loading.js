@@ -1,23 +1,7 @@
-function Loading() {
-  const letters = ['R', 'Y', 'X', 'E', 'L', '.', '.', '.'];
+import Loader from '@components/Loader';
 
-  return (
-    <div className="flex flex-col items-center text-primary-600 text-md">
-      <div className="loading-container text-primary-300">
-        {letters.map((letter, index) => (
-          <span
-            key={index}
-            className="loading-letter"
-            style={{ animationDelay: `${index * 0.3}s` }}
-          >
-            {letter}
-          </span>
-        ))}
-      </div>
-      <p>Your content is delivering. Stay calm our dear customer.</p>
-      <p>Thank you for your patience.</p>
-    </div>
-  );
+function Loading() {
+  return <Loader />;
 }
 
 export default Loading;

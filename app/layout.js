@@ -22,17 +22,19 @@ export const metadata = {
     default: 'Welcome | Ryxel Store',
   },
   description:
-    'High-end gaming gears like gaming mouses, gaming keyboards, chairs, ... for the best gaming experience in Vietnam. Free shipping for orders over 1,000,000 VND. Shop n ow!',
+    'High-end gaming gears like gaming mouses, gaming keyboards, chairs, ... for the best gaming experience in Vietnam. Free shipping for orders over 1,000,000 VND. Shop now!',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="vi" className={`${manrope.variable} ${kanit.variable}`}>
       <body
-        className={'bg-secondary-100 flex flex-col antialiased min-h-screen'}
+        className={
+          'flex min-h-screen flex-col bg-secondary-100 text-primary-default antialiased'
+        }
       >
         <Header />
-        <div className="flex-1 flex flex-col">{children}</div>
+        {children}
         <footer>Copyright by Ryxel Store</footer>
       </body>
     </html>

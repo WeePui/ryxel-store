@@ -1,56 +1,48 @@
-'use client';
-
-import { useRef, useState } from 'react';
 import NavLink from './NavLink';
+import LoggedUser from '@components/LoggedUser';
+import { checkToken, getProfile } from '@libs/apiServices';
+import { cookies } from 'next/headers';
 import { FaCircleUser } from 'react-icons/fa6';
 
-function HeaderUser() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+async function HeaderUser() {
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('jwt');
 
-  const timeoutRef = useRef(null);
-
-  const handleMouseEnter = () => {
-    clearTimeout(timeoutRef.current);
-    setIsModalVisible(true);
-  };
-
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setIsModalVisible(false);
-    }, 200);
-  };
-
-  return (
-    <div
-      className="relative"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <NavLink hoverUnderline={false} href="/account/login">
-        <div className="flex gap-2 items-center">
+  if (!token)
+    return (
+      <NavLink hoverUnderline={false} href="/login">
+        <div className="flex items-center gap-2">
           <FaCircleUser className="text-xl" />
           <span>Login</span>
         </div>
       </NavLink>
-      {isModalVisible && (
-        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
-          <ul className="py-4 px-6">
-            <li>
-              <NavLink href="/profile">Profile</NavLink>
-            </li>
-            <li>
-              <NavLink href="/orders">Orders</NavLink>
-            </li>
-            <li>
-              <NavLink type="danger" href="/signout">
-                Sign out
-              </NavLink>
-            </li>
-          </ul>
+    );
+
+  const { valid } = await checkToken(token);
+  if (!valid) {
+    return (
+      <NavLink hoverUnderline={false} href="/login">
+        <div className="flex items-center gap-2">
+          <FaCircleUser className="text-xl" />
+          <span>Login</span>
         </div>
-      )}
-    </div>
-  );
+      </NavLink>
+    );
+  }
+
+  try {
+    const { user } = await getProfile(token);
+    return <>{user && <LoggedUser user={user} />}</>;
+  } catch (error) {
+    return (
+      <NavLink hoverUnderline={false} href="/login">
+        <div className="flex items-center gap-2">
+          <FaCircleUser className="text-xl" />
+          <span>Login</span>
+        </div>
+      </NavLink>
+    );
+  }
 }
 
 export default HeaderUser;

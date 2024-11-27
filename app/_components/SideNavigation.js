@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import {
   FaAddressCard,
@@ -9,59 +11,77 @@ import {
   FaDoorOpen,
 } from 'react-icons/fa6';
 import NavLink from './NavLink';
+import { usePathname } from 'next/navigation';
+import { logoutAction } from '@libs/actions';
+import { useActionState } from 'react';
+import Loader from '@components/Loader';
 
 function SideNavigation() {
+  const pathName = usePathname();
+  const [, action, isPending] = useActionState(logoutAction, undefined);
+
+  if (isPending) return <Loader />;
+
   return (
-    <div className="p-10">
+    <div className="py-10 pl-2">
       <div className="flex items-center gap-6">
-        <div className="relative aspect-square w-1/4 ring-2 ring-primary-default rounded-full">
+        <div className="relative aspect-square w-1/4 rounded-full ring-2 ring-primary-default">
           <Image src="/default-profile.png" alt="Profile's avatar" fill />
         </div>
         <span className="text-lg font-bold text-grey-300">Wee Pùi</span>
       </div>
 
-      <ul className="text-lg text-primary-500 flex flex-col gap-4 mt-10">
-        <li className="flex gap-8 items-center">
-          <FaAddressCard className="text" />
-          <NavLink type="sideNav" href="/">
+      <ul className="mt-10 flex flex-col gap-4 text-lg text-primary-500">
+        <li>
+          <NavLink type="sideNav" href="/" active={pathName === '/profile'}>
+            <FaAddressCard className="text" />
             Profile
           </NavLink>
         </li>
-        <li className="flex gap-8 items-center">
-          <FaBagShopping />
-          <NavLink type="sideNav" href="/">
+        <li>
+          <NavLink type="sideNav" href="/" active={pathName === '/orders'}>
+            <FaBagShopping />
             Orders
           </NavLink>
         </li>
-        <li className="mt-8 flex gap-8 items-center">
-          <FaTruckFast />
-          <NavLink type="sideNav" href="/">
+        <li className="">
+          <NavLink type="sideNav" href="/" active={pathName === '/addresses'}>
+            <FaTruckFast />
             Shipping Address
           </NavLink>
         </li>
-        <li className="flex gap-8 items-center">
-          <FaLock />
-          <NavLink type="sideNav" href="/">
+        <li>
+          <NavLink
+            type="sideNav"
+            href="/"
+            active={pathName === '/updatePassword'}
+          >
+            <FaLock />
             Change Password
           </NavLink>
         </li>
-        <li className="flex gap-8 items-center">
-          <FaCreditCard />
-          <NavLink type="sideNav" href="/">
+        <li>
+          <NavLink type="sideNav" href="/" active={pathName === '/payment'}>
+            <FaCreditCard />
             Payment Methods
           </NavLink>
         </li>
-        <li className="mt-8 flex gap-8 items-center">
-          <FaTicket />
-          <NavLink type="sideNav" href="/">
+        <li className="---mt-8">
+          <NavLink type="sideNav" href="/" active={pathName === '/vouchers'}>
+            <FaTicket />
             Vouchers
           </NavLink>
         </li>
-        <li className="mt-8 flex gap-8 items-center text-red-600">
-          <FaDoorOpen />
-          <NavLink type="danger" href="/">
-            Sign Out
-          </NavLink>
+        <li className="---mt-8">
+          <form action={action}>
+            <button
+              className="group flex items-center gap-8 px-4 py-2 font-normal text-red-500 transition-colors duration-300 hover:text-red-600"
+              type="submit"
+            >
+              <FaDoorOpen />
+              Sign Out
+            </button>
+          </form>
         </li>
       </ul>
     </div>

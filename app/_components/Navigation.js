@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import NavLink from "./NavLink";
+import NavLink from '@components/NavLink';
 
 function Navigation() {
   return (
-    <nav className="text-lg z-10">
-      <ul className="text-primary-500 flex gap-8">
+    <nav className="z-10 text-lg">
+      <ul className="flex gap-8 text-primary-500">
         <li>
           <NavLink href="/products">Store</NavLink>
         </li>

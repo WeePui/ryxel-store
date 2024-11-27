@@ -1,12 +1,12 @@
-import Image from "next/image";
-import Link from "next/link";
-import logo from "@public/logo.png";
+import Image from 'next/image';
+import Link from 'next/link';
+import logo from '@public/logo.png';
 
 function Logo() {
   return (
     <Link
       href="/"
-      className="inline-flex justify-center items-center gap-4 z-10 bg-primary-500 w-44 pr-3 overflow-hidden h-16"
+      className="z-10 inline-flex h-16 w-44 items-center justify-center gap-4 overflow-hidden bg-primary-500 pr-3"
     >
       <Image
         src={logo}
