@@ -6,6 +6,7 @@ const base =
 const variant = {
   mainNav: `${base} text-primary-default hover:text-grey-300`,
   sideNav: `${base} text-grey-300 hover:text-primary-default gap-8 px-4 py-2`,
+  footerNav: `${base} text-grey-300 hover:text-primary-default gap-8 border-gray-300`,
   danger: `${base} text-red-500 hover:text-red-600 gap-8 px-4 py-2`,
   filterNav: `${base} text-primary-default font-extrabold`,
 };
@@ -24,7 +25,7 @@ function NavLink({
   return (
     <Link
       href={href}
-      className={`${variant[type]} ${active && currentlyActive[type]}`}
+      className={`${variant[type]} ${active && currentlyActive[type]} `}
     >
       {children}
       {type === 'mainNav' && hoverUnderline && (

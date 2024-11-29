@@ -1,11 +1,10 @@
 'use client';
 
-import { FaCircleUser } from 'react-icons/fa6';
 import NavLink from '@components/NavLink';
 import { useRef, useState, useActionState } from 'react';
 import { logoutAction } from '@libs/actions';
-import Loader from '@components/Loader';
 import Image from 'next/image';
+import Spinner from './Spinner';
 
 function LoggedUser({ user }) {
   const [, action, isPending] = useActionState(logoutAction, undefined);
@@ -25,7 +24,7 @@ function LoggedUser({ user }) {
     }, 200);
   };
 
-  if (isPending) return <Loader />;
+  if (isPending) return <Spinner />;
 
   return (
     <>

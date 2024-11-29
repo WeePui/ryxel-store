@@ -9,10 +9,7 @@ export async function middleware(req) {
   }
 
   try {
-    console.log(token);
-
     const tokenValidation = await checkToken(token);
-    console.log(tokenValidation);
 
     if (!tokenValidation.valid || tokenValidation.expired)
       throw new Error('Invalid token');

@@ -23,7 +23,10 @@ async function ProductDetails({ params }) {
           </div>
           <div className="flex items-center gap-4">
             {product.variants[0].images.map((image, index) => (
-              <div className="relative h-16 w-28 overflow-hidden rounded-2xl border-2 border-grey-100">
+              <div
+                className="relative h-16 w-28 overflow-hidden rounded-2xl border-2 border-grey-100"
+                key={image}
+              >
                 <Image
                   src={image}
                   alt={`${product.variants[0].name} image ${index}`}

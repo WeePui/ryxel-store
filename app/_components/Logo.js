@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import logo from '@public/logo.png';
 
-function Logo() {
+function Logo({ width = 100, height = 100 }) {
   return (
     <Link
       href="/"
@@ -10,8 +10,8 @@ function Logo() {
     >
       <Image
         src={logo}
-        height="100"
-        width="100"
+        height={height}
+        width={width}
         alt="Ryxel Store logo"
         className="object-contain"
       />

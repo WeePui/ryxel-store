@@ -3,8 +3,8 @@ import Navigation from '@components/Navigation';
 import { FaCartShopping } from 'react-icons/fa6';
 import NavLink from '@components/NavLink';
 import SearchBar from '@components/SearchBar';
-import HeaderUser from './HeaderUser';
-import Spinner from './Spinner';
+import HeaderUser from '@components/HeaderUser';
+import Spinner from '@components/Spinner';
 import { Suspense } from 'react';
 
 async function Header() {

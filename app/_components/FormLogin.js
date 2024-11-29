@@ -4,6 +4,7 @@ import Button from '@components/Button';
 import Input from '@components/Input';
 import { useActionState } from 'react';
 import { loginAction } from '@libs/actions';
+import { FaCircleExclamation } from 'react-icons/fa6';
 
 function FormLogin() {
   const [state, action, isPending] = useActionState(loginAction, undefined);
@@ -14,19 +15,36 @@ function FormLogin() {
         Sign in with password
       </h3>
       <form className="flex w-full flex-col items-center gap-6" action={action}>
-        {state?.errors?.email && (
-          <p className="text-sm text-red-500">{state?.errors?.email}</p>
-        )}
-        {state?.errors?.message && (
-          <p className="text-sm text-red-500">{state?.errors?.message}</p>
-        )}
-        <Input name="email" id="name" label="E-mail address" type="email" />
-        {state?.errors?.password && (
-          <p className="self-start text-sm text-red-500">
-            {state?.errors?.password}
-          </p>
-        )}
-        <Input id="password" type="password" name="password" label="Password" />
+        <div className="w-full">
+          {state?.errors?.email && (
+            <p className="flex items-center gap-2 p-2 text-xs text-red-500">
+              <FaCircleExclamation />
+              {state?.errors?.email}
+            </p>
+          )}
+          <Input
+            id="email"
+            type="email"
+            name="email"
+            label="E-mail address"
+            error={state?.errors?.email}
+          />
+        </div>
+        <div className="w-full">
+          {state?.errors?.password && (
+            <p className="flex items-center gap-2 p-2 text-xs text-red-500">
+              <FaCircleExclamation />
+              {state?.errors?.password}
+            </p>
+          )}
+          <Input
+            id="password"
+            type="password"
+            name="password"
+            label="Password"
+            error={state?.errors?.password}
+          />
+        </div>
         <Button type="primary" disable={isPending} role="submit">
           Sign in
         </Button>
