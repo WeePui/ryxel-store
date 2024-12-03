@@ -1,6 +1,12 @@
 'use server';
 
-import { validateLoginForm, validateSignupForm } from '@helpers/validator';
+import {
+  validateAddAddressForm,
+  validateLoginForm,
+  validateSignupForm,
+  validateUpdatePasswordForm,
+  validateUpdateProfileForm,
+} from '@helpers/validator';
 import {
   login,
   signup,
@@ -9,7 +15,14 @@ import {
   verifyOTP,
   forgotPassword,
   resetPassword,
+  updateProfile,
+  updatePassword,
+  addAddress,
+  deleteAddress,
+  updateAddress,
+  setDefaultAddress,
 } from '@libs/apiServices';
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -194,6 +207,167 @@ export async function resetPasswordAction(_, formData) {
   } catch (error) {
     return {
       fail: true,
+    };
+  }
+}
+
+export async function updateProfileAction(_, formData) {
+  const data = Object.fromEntries(formData);
+
+  const validation = validateUpdateProfileForm(data);
+
+  if (!validation.success) {
+    return {
+      errors: validation.errors,
+    };
+  }
+
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('jwt');
+
+  const response = await updateProfile(data, token);
+  if (response.status === 'success') {
+    revalidatePath('/account');
+
+    return {
+      success: true,
+    };
+  } else
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+}
+
+export async function updatePasswordAction(_, formData) {
+  const data = Object.fromEntries(formData);
+  const validation = validateUpdatePasswordForm(data);
+
+  if (!validation.success) {
+    return {
+      errors: validation.errors,
+    };
+  }
+
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('jwt');
+
+  const response = await updatePassword(data, token);
+  if (response.status === 'success') {
+    const cookiesStore = await cookies();
+    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    cookiesStore.set('jwt', response.token, {
+      httpOnly: true,
+      secure: true,
+      expires: expiresAt,
+    });
+
+    revalidatePath('/account');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+}
+
+export async function addAddressAction(_, formData) {
+  const data = Object.fromEntries(formData);
+  const validation = validateAddAddressForm(data);
+
+  if (!validation.success) {
+    return {
+      errors: validation.errors,
+    };
+  }
+
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('jwt');
+
+  const response = await addAddress(data, token);
+  if (response.status === 'success') {
+    revalidatePath('/account/addresses');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+}
+
+export async function deleteAddressAction(addressId) {
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('jwt');
+
+  try {
+    await deleteAddress(addressId, token);
+    revalidatePath('/account/addresses');
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      errors: {
+        message: error.message,
+      },
+    };
+  }
+}
+
+export async function updateAddressAction(addressId, _, formData) {
+  console.log(formData);
+
+  const data = Object.fromEntries(formData);
+  const validation = validateAddAddressForm(data);
+
+  if (!validation.success) {
+    return {
+      errors: validation.errors,
+    };
+  }
+
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('jwt');
+
+  const response = await updateAddress(addressId, data, token);
+  if (response.status === 'success') {
+    revalidatePath('/account/addresses');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+}
+
+export async function setDefaultAddressAction(addressId) {
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('jwt');
+
+  const response = await setDefaultAddress(addressId, token);
+  if (response.status === 'success') {
+    revalidatePath('/account/addresses');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
     };
   }
 }

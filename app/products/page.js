@@ -1,10 +1,10 @@
-import CategoryFilter from '@components/CategoryFilter';
-import SideFilter from '@components/SideFilter';
+import CategoryFilter from '@components/Products/CategoryFilter';
+import SideFilter from '@components/Products/SideFilter';
 import { getProducts } from '@libs/apiServices';
-import ProductList from '@components/ProductList';
-import NumResults from '@components/NumResults';
+import ProductList from '@components/Products/ProductList';
+import NumResults from '@components/Products/NumResults';
 import { generatePriceRanges } from '@helpers/generatePriceRanges';
-import SortSelector from '@components/SortSelector';
+import SortSelector from '@components/Products/SortSelector';
 
 export const revalidate = 1800;
 

@@ -1,4 +1,4 @@
-import SideNavigation from '@components/SideNavigation';
+import SideNavigation from '@/app/_components/Account/SideNav';
 
 export const metadata = {
   title: 'Manage Account',
@@ -7,9 +7,9 @@ export const metadata = {
 
 function Layout({ children }) {
   return (
-    <div className="mx-auto grid h-full w-full max-w-7xl grid-cols-[25fr_75fr] gap-2">
+    <div className="mx-auto grid w-full max-w-7xl grid-cols-[25fr_75fr] gap-2">
       <SideNavigation />
-      <div className="py-8">{children}</div>
+      <div className="h-auto py-8">{children}</div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import FormResetPassword from '@components/FormResetPassword';
+import FormResetPassword from '@/app/_components/ResetPassword/FormResetPassword';
 
 export const metadata = {
   title: 'Reset Password',

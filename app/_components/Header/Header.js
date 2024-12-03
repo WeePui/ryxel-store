@@ -1,10 +1,10 @@
-import Logo from '@components/Logo';
-import Navigation from '@components/Navigation';
+import Logo from '@components/UI/Logo';
+import Navigation from '@components/Header/HeaderNav';
 import { FaCartShopping } from 'react-icons/fa6';
-import NavLink from '@components/NavLink';
-import SearchBar from '@components/SearchBar';
-import HeaderUser from '@components/HeaderUser';
-import Spinner from '@components/Spinner';
+import NavLink from '@components/UI/NavLink';
+import SearchBar from '@components/Header/SearchBar';
+import HeaderUser from '@components/Header/HeaderUser';
+import Spinner from '@components/UI/Spinner';
 import { Suspense } from 'react';
 
 async function Header() {

@@ -1,4 +1,4 @@
-import NavLink from './NavLink';
+import NavLink from '../UI/NavLink';
 import { FaFacebook, FaYoutube, FaInstagram, FaDiscord } from 'react-icons/fa6';
 
 function SocialNavigation() {

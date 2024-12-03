@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import Logo from './Logo';
-import NavLink from './NavLink';
+import Logo from '../UI/Logo';
+import NavLink from '../UI/NavLink';
 
 import SocialNavigation from './SocialNavigation';
 import { FaCcMastercard, FaCcVisa, FaStripe } from 'react-icons/fa6';
@@ -91,6 +91,7 @@ function FooterPaymentMethods() {
           alt="stripe payment method"
           className="object-fit"
           fill
+          sizes="100%"
         />
       </div>
       <div className="relative aspect-video overflow-hidden rounded-md">
@@ -99,6 +100,7 @@ function FooterPaymentMethods() {
           alt="visa payment method"
           className="object-fit"
           fill
+          sizes="100%"
         />
       </div>
       <div className="relative aspect-video overflow-hidden rounded-md">
@@ -107,6 +109,7 @@ function FooterPaymentMethods() {
           alt="mastercard payment method"
           className="object-fit"
           fill
+          sizes="100%"
         />
       </div>
       <div className="relative aspect-video overflow-hidden rounded-md">
@@ -115,6 +118,7 @@ function FooterPaymentMethods() {
           alt="zalopay payment method"
           className="object-fit"
           fill
+          sizes="100%"
         />
       </div>
       <div className="relative aspect-video overflow-hidden rounded-md">
@@ -123,6 +127,7 @@ function FooterPaymentMethods() {
           alt="cod payment method"
           className="object-fit"
           fill
+          sizes="100%"
         />
       </div>
     </>

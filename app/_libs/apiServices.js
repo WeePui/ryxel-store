@@ -92,7 +92,7 @@ export async function getProfile(token) {
 
   if (!response.ok) throw new Error('Failed to fetch user');
 
-  const { data } = await response.json();
+  const data = await response.json();
 
   return data;
 }
@@ -164,6 +164,115 @@ export async function resetPassword(formData, resetToken) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(formData),
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function updateProfile(formData, token) {
+  const form = new FormData();
+  for (const key in formData) {
+    form.append(key, formData[key]);
+  }
+
+  const response = await fetch(`${API_URL}/users/updateProfile`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    body: form,
+    credentials: 'include',
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function updatePassword(formData, token) {
+  const response = await fetch(`${API_URL}/users/updatePassword`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+    credentials: 'include',
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function getAddresses(token) {
+  const response = await fetch(`${API_URL}/addresses`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    credentials: 'include',
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function addAddress(formData, token) {
+  const response = await fetch(`${API_URL}/addresses`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+    credentials: 'include',
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function deleteAddress(id, token) {
+  const response = await fetch(`${API_URL}/addresses/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete address');
+  }
+}
+
+export async function updateAddress(id, formData, token) {
+  const response = await fetch(`${API_URL}/addresses/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+    credentials: 'include',
+  });
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function setDefaultAddress(id, token) {
+  const response = await fetch(`${API_URL}/addresses/${id}/default`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    credentials: 'include',
   });
 
   const data = await response.json();

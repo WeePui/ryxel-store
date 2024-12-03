@@ -2,8 +2,8 @@
 
 import { useActionState } from 'react';
 import { signupAction } from '@libs/actions';
-import Input from '@components/Input';
-import Button from '@components/Button';
+import Input from '@/app/_components/UI/Input';
+import Button from '@/app/_components/UI/Button';
 import { FaCircleInfo, FaCircleExclamation } from 'react-icons/fa6';
 import Link from 'next/link';
 

@@ -1,15 +1,11 @@
 'use client';
 
 import { useActionState } from 'react';
-import Spinner from '@components/Spinner';
+import Spinner from '@/app/_components/UI/Spinner';
 import { forgotPasswordAction } from '@libs/actions';
-import {
-  FaCircleExclamation,
-  FaCircleQuestion,
-  FaRegCircleXmark,
-} from 'react-icons/fa6';
-import Input from '@components/Input';
-import Button from '@components/Button';
+import { FaCircleExclamation, FaCircleQuestion } from 'react-icons/fa6';
+import Input from '@/app/_components/UI/Input';
+import Button from '@/app/_components/UI/Button';
 
 function FormForgotPassword() {
   const [state, action, isPending] = useActionState(forgotPasswordAction, {

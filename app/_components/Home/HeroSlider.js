@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 import { FaChevronRight, FaChevronLeft } from 'react-icons/fa6';
-import Button from '@components/Button';
+import Button from '@components/UI/Button';
 
 const HeroContext = createContext();
 

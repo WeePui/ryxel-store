@@ -12,6 +12,7 @@ function ProductCard({ product }) {
             alt={product.name}
             className="object-contain"
             fill
+            sizes="100%"
           />
         </div>
         <div className="flex flex-col gap-2 overflow-hidden px-6 py-4 text-grey-400">

@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef, useState, useActionState } from 'react';
-import Loader from '@components/Loader';
-import Button from '@components/Button';
+import Loader from '@/app/_components/UI/Loader';
+import Button from '@/app/_components/UI/Button';
 import { verifyOTPAction } from '@libs/actions';
 
 function OTPInput() {

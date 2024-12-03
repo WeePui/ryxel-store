@@ -1,4 +1,4 @@
-import Spinner from '@components/Spinner';
+import Spinner from '@/app/_components/UI/Spinner';
 import { getProductById } from '@libs/apiServices';
 import { Suspense } from 'react';
 

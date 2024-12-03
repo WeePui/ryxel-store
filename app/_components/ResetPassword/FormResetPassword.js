@@ -1,12 +1,12 @@
 'use client';
 
 import { useActionState } from 'react';
-import Spinner from '@components/Spinner';
+import Spinner from '@/app/_components/UI/Spinner';
 import { resetPasswordAction } from '@libs/actions';
 import { FaCircleExclamation, FaRegCircleXmark } from 'react-icons/fa6';
-import Input from './Input';
-import Button from './Button';
-import NavLink from './NavLink';
+import Input from '../UI/Input';
+import Button from '../UI/Button';
+import NavLink from '../UI/NavLink';
 
 function FormResetPassword({ resetToken }) {
   const [state, action, isPending] = useActionState(resetPasswordAction, {

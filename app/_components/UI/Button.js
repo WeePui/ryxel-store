@@ -12,6 +12,7 @@ const variant = {
   secondary: `${base} rounded-lg text-primary-400 bg-secondary-200 hover:bg-grey-20- hover:text-primary-300`,
   secondaryOnTheDark: `${base} rounded-lg text-primary-400 bg-secondary-200 hover:bg-transparent hover:text-secondary-100`,
   filter: `${base} rounded-3xl text-primary-default font-normal shadow-none bg-secondary-50 py-2 px-4 border-2 border-primary-default hover:bg-grey-50 transition-colors duration-300`,
+  tertiary: `${base} shadow-none rounded-lg text-primary-400 bg-transparent border-[1px] hover:outline-none border-primary-default hover:text-primary-300 !px-3 !py-1 disabled:cursor-not-allowed disabled:text-grey-300 disabled:border-grey-300`,
 };
 
 const currentlyActive = {

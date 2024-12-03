@@ -1,10 +1,11 @@
 'use client';
 
-import Button from '@components/Button';
-import Input from '@components/Input';
+import Button from '@/app/_components/UI/Button';
+import Input from '@/app/_components/UI/Input';
 import { useActionState } from 'react';
 import { loginAction } from '@libs/actions';
 import { FaCircleExclamation } from 'react-icons/fa6';
+import Spinner from '../UI/Spinner';
 
 function FormLogin() {
   const [state, action, isPending] = useActionState(loginAction, undefined);
@@ -46,7 +47,7 @@ function FormLogin() {
           />
         </div>
         <Button type="primary" disable={isPending} role="submit">
-          Sign in
+          {isPending ? <Spinner /> : 'Sign in'}
         </Button>
       </form>
     </div>

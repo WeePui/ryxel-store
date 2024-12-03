@@ -1,5 +1,5 @@
-import ResendOTP from '@/app/_components/ResendOTP';
-import OTPInput from '@components/OTPInput';
+import ResendOTP from '@/app/_components/ResetPassword/ResendOTP';
+import OTPInput from '@/app/_components/ResetPassword/OTPInput';
 import { FaCircleInfo } from 'react-icons/fa6';
 
 async function page() {

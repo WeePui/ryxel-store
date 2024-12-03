@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import Spinner from '@components/Spinner';
+import Spinner from '@/app/_components/UI/Spinner';
 
 export const metadata = {
   title: 'Products Page',

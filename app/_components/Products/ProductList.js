@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Button from './Button';
-import ProductCard from './ProductCard';
+import Button from '@components/UI/Button';
+import ProductCard from '@components/Products/ProductCard';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 function ProductList({ products, totalResults }) {

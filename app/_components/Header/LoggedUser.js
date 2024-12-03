@@ -1,14 +1,14 @@
 'use client';
 
-import NavLink from '@components/NavLink';
+import NavLink from '@/app/_components/UI/NavLink';
 import { useRef, useState, useActionState } from 'react';
 import { logoutAction } from '@libs/actions';
 import Image from 'next/image';
-import Spinner from './Spinner';
+import Spinner from '@components/UI/Spinner';
+import SignoutButton from '@components/UI/SignoutButton';
+import Loader from '@components/UI/Loader';
 
 function LoggedUser({ user }) {
-  const [, action, isPending] = useActionState(logoutAction, undefined);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const timeoutRef = useRef(null);
@@ -24,8 +24,6 @@ function LoggedUser({ user }) {
     }, 200);
   };
 
-  if (isPending) return <Spinner />;
-
   return (
     <>
       <div
@@ -36,7 +34,7 @@ function LoggedUser({ user }) {
         <NavLink hoverUnderline={false} href="/account/profile">
           <div className="flex items-center gap-2">
             <Image
-              src={user.photo}
+              src={user.photo.url}
               alt={user.name}
               width={35}
               height={35}
@@ -55,14 +53,14 @@ function LoggedUser({ user }) {
                 <NavLink href="/account/orders">Orders</NavLink>
               </li>
               <li>
-                <form action={action}>
+                <SignoutButton>
                   <button
                     className="text-red-500 hover:text-red-300"
                     type="submit"
                   >
                     Sign out
                   </button>
-                </form>
+                </SignoutButton>
               </li>
             </ul>
           </div>

@@ -1,8 +1,9 @@
 import { Manrope, Kanit } from 'next/font/google';
 
 import '@styles/globals.css';
-import Header from '@components/Header';
-import Footer from './_components/Footer';
+import Header from '@components/Header/Header';
+import Footer from '@components/Footer/Footer';
+import ToastProvider from '@components/UI/ToastProvider';
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -35,7 +36,7 @@ export default function RootLayout({ children }) {
         }
       >
         <Header />
-        {children}
+        <ToastProvider>{children}</ToastProvider>
         <Footer />
       </body>
     </html>

@@ -1,4 +1,5 @@
 import { checkEmailAvailability } from '@libs/apiServices';
+import validator from 'validator';
 
 export function validateLoginForm(data) {
   const validation = {
@@ -96,6 +97,94 @@ export async function validateSignupForm(data) {
   if (!data.terms) {
     validation.success = false;
     validation.errors.terms = 'You must agree to the terms';
+  }
+
+  return validation;
+}
+
+export function validateUpdateProfileForm(data) {
+  const validation = {
+    success: true,
+    errors: {},
+  };
+
+  if (!data.name || !data.name.trim()) {
+    validation.success = false;
+    validation.errors.name = 'Name is required';
+  }
+
+  if (!data.gender) {
+    validation.success = false;
+    validation.errors.gender = 'Not all the fields are filled';
+  }
+
+  if (data.photo.size === 0) delete data.photo;
+
+  return validation;
+}
+
+export function validateUpdatePasswordForm(data) {
+  const validation = {
+    success: true,
+    errors: {},
+  };
+
+  if (!data.passwordCurrent) {
+    validation.success = false;
+    validation.errors.passwordCurrent = 'Current password is required';
+  }
+
+  if (!data.password) {
+    validation.success = false;
+    validation.errors.password = 'New password is required';
+  }
+
+  if (!data.passwordConfirm) {
+    validation.success = false;
+    validation.errors.passwordConfirm = 'Confirm password is required';
+  } else if (data.password !== data.passwordConfirm) {
+    validation.success = false;
+    validation.errors.password = 'Passwords do not match';
+  }
+
+  return validation;
+}
+
+export function validateAddAddressForm(data) {
+  const validation = {
+    success: true,
+    errors: {},
+  };
+
+  if (!data.fullname) {
+    validation.success = false;
+    validation.errors.fullname = 'Full name is required';
+  }
+
+  if (!data.phoneNumber) {
+    validation.success = false;
+    validation.errors.phoneNumber = 'Phone number is required';
+  } else if (!validator.isMobilePhone(data.phoneNumber, 'vi-VN')) {
+    validation.success = false;
+    validation.errors.phoneNumber = 'Phone number is invalid';
+  }
+
+  if (!data.city) {
+    validation.success = false;
+    validation.errors.city = 'City is required';
+  }
+  if (!data.district) {
+    validation.success = false;
+    validation.errors.district = 'District is required';
+  }
+  if (!data.ward) {
+    validation.success = false;
+    validation.errors.ward = 'Ward is required';
+  }
+
+  if (!data.address) {
+    validation.success = false;
+    validation.errors.address = 'Address is required';
   }
 
   return validation;

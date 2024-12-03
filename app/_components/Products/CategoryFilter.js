@@ -7,7 +7,7 @@ import {
   FaChair,
 } from 'react-icons/fa6';
 import { PiDeskBold } from 'react-icons/pi';
-import Button from './Button';
+import Button from '../UI/Button';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 function CategoryFilter() {

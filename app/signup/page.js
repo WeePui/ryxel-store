@@ -1,6 +1,6 @@
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
-import NavLink from '@components/NavLink';
-import FormSignup from '@components/FormSignup';
+import NavLink from '@/app/_components/UI/NavLink';
+import FormSignup from '@/app/_components/Signup/FormSignup';
 
 function page({ children }) {
   return (

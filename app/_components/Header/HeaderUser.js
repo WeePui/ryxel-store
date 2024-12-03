@@ -1,5 +1,5 @@
-import NavLink from './NavLink';
-import LoggedUser from '@components/LoggedUser';
+import NavLink from '../UI/NavLink';
+import LoggedUser from '@/app/_components/Header/LoggedUser';
 import { checkToken, getProfile } from '@libs/apiServices';
 import { cookies } from 'next/headers';
 import { FaCircleUser } from 'react-icons/fa6';
@@ -31,7 +31,8 @@ async function HeaderUser() {
   }
 
   try {
-    const { user } = await getProfile(token);
+    const { data } = await getProfile(token);
+    const { user } = data;
     return <>{user && <LoggedUser user={user} />}</>;
   } catch (error) {
     return (

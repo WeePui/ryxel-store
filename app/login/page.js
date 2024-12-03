@@ -1,6 +1,6 @@
-import Button from '@components/Button';
-import FormLogin from '@components/FormLogin';
-import NavLink from '@components/NavLink';
+import Button from '@/app/_components/UI/Button';
+import FormLogin from '@/app/_components/Login/FormLogin';
+import NavLink from '@/app/_components/UI/NavLink';
 
 export const metadata = {
   title: 'Login',

@@ -1,8 +1,8 @@
 'use client';
 
-import NavLink from '@components/NavLink';
+import NavLink from '@/app/_components/UI/NavLink';
 
-function Navigation() {
+function HeaderNav() {
   return (
     <nav className="z-10 text-lg">
       <ul className="flex gap-8 text-primary-500">
@@ -20,4 +20,4 @@ function Navigation() {
   );
 }
 
-export default Navigation;
+export default HeaderNav;

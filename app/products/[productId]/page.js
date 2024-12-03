@@ -1,5 +1,5 @@
-import Button from '@/app/_components/Button';
-import Counter from '@/app/_components/Counter';
+import Button from '@/app/_components/UI/Button';
+import Counter from '@/app/_components/UI/Counter';
 import { getProductById } from '@/app/_libs/apiServices';
 import Image from 'next/image';
 import { FaCartShopping, FaStar } from 'react-icons/fa6';
