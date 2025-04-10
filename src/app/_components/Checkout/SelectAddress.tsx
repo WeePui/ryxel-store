@@ -12,9 +12,10 @@ import { Address } from '@/app/_types/address';
 
 interface SelectAddressProps {
   addresses: Address[];
+  onSelect: (address: Address) => void;
 }
 
-function SelectAddress({ addresses }: SelectAddressProps) {
+function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [isModalAddAddressVisible, setIsModalAddAddressVisible] =
     useState(false);
@@ -38,7 +39,7 @@ function SelectAddress({ addresses }: SelectAddressProps) {
       setSelectedAddress(null);
       return;
     } else {
-      setSelectedAddress(defaultAddress);
+      handleSelectAddress(defaultAddress);
     }
   }, [addresses]);
 
@@ -47,12 +48,17 @@ function SelectAddress({ addresses }: SelectAddressProps) {
       router.replace('/cart');
   }
 
+  function handleSelectAddress(address: Address) {
+    setSelectedAddress(address);
+    onSelect(address);
+  }
+
   return (
     <>
       {isModalConfirmAddFirstAddressVisible && (
         <Modal onClose={handleCancelAddFirstAddress}>
           <ConfirmDialogue
-            message="Bạn chưa có địa chỉ giao hàng nào được thêm. Bạn có muốn thêm địa chỉ mới"
+            message="Bạn chưa có địa chỉ giao hàng nào được thêm. Bạn có muốn thêm địa chỉ mới?"
             onCancel={handleCancelAddFirstAddress}
             onConfirm={() => setIsModalAddAddressVisible(true)}
           />
@@ -100,7 +106,12 @@ function SelectAddress({ addresses }: SelectAddressProps) {
 
       {isModalAddAddressVisible && (
         <Modal onClose={() => setIsModalAddAddressVisible(false)}>
-          <FormAddAddress onSubmit={() => setIsModalAddAddressVisible(false)} />
+          <FormAddAddress
+            onSubmit={() => {
+              setIsModalAddAddressVisible(false);
+              setIsModalConfirmAddFirstAddressVisible(false);
+            }}
+          />
         </Modal>
       )}
 
@@ -111,7 +122,7 @@ function SelectAddress({ addresses }: SelectAddressProps) {
         >
           <CheckoutAddressList
             addresses={addresses}
-            onSelect={setSelectedAddress}
+            onSelect={handleSelectAddress}
             selected={selectedAddress}
           />
         </Modal>

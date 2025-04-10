@@ -131,6 +131,7 @@ function Slider() {
         type="primaryOnTheDark"
         // className="inline-flex items-center justify-center rounded-lg bg-secondary-200 px-4 py-2 font-bold text-primary-400 shadow-lg transition-shadow hover:bg-transparent hover:text-secondary-100"
         href={slides[currentSlide].href}
+        size="large"
       >
         {slides[currentSlide].slideButtonContent}
       </Button>

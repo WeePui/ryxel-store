@@ -8,4 +8,5 @@ export interface User {
   gender: string;
   phoneNo: string;
   dob: string;
+  emailVerified: boolean;
 }

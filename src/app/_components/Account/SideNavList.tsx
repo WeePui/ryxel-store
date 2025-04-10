@@ -5,8 +5,8 @@ import {
   FaBagShopping,
   FaTruckFast,
   FaLock,
-  FaTicket,
   FaDoorOpen,
+  FaHeart,
 } from 'react-icons/fa6';
 import NavLink from '../UI/NavLink';
 import SignoutButton from '../UI/SignoutButton';
@@ -60,11 +60,11 @@ function SideNavList() {
       <li className="---mt-8">
         <NavLink
           type="sideNav"
-          href="/account/vouchers"
-          active={pathName === '/vouchers'}
+          href="/account/wishlist"
+          active={pathName === '/wishlist'}
         >
-          <FaTicket />
-          Vouchers
+          <FaHeart className="text" />
+          Danh sách yêu thích
         </NavLink>
       </li>
       <li className="---mt-8">

@@ -8,6 +8,7 @@ export interface Variant {
     [key: string]: string;
   };
   stock: number;
+  weight: number;
   createdAt: Date;
   updatedAt: Date;
 }

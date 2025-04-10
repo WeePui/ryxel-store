@@ -12,7 +12,7 @@ function OTPInput() {
 
   if (isPending) return <Loader />;
 
-  if (state?.errors?.otp) alert(state?.errors?.otp);
+  if (state?.errors?.message) alert(state?.errors?.message);
 
   const handleChange = (element: HTMLInputElement, index: number) => {
     const value = element.value.replace(/[^0-9]/g, '');

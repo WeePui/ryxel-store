@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import Spinner from '@/app/_components/UI/Spinner';
 import { Metadata } from 'next';
+import Loader from '../_components/UI/Loader';
 
 export const metadata: Metadata = {
   title: 'Products Page',
@@ -8,12 +8,28 @@ export const metadata: Metadata = {
 };
 
 async function Layout({
+  searchParams,
   children,
 }: {
-  children: React.ReactNode;
   searchParams: Promise<{ [key: string]: string }>;
+  children: React.ReactNode;
 }) {
-  return <Suspense fallback={<Spinner />}>{children}</Suspense>;
+  const filter = await searchParams;
+  console.log(filter);
+  // const { search, sort, rating, brand, category } = await searchParams;
+  // const key = `${search ? search : 'default'}-${sort ? sort : 'default'}-${
+  //   rating ? rating : 'default'
+  // }-${brand ? brand : 'default'}-${category ? category : 'default'}`;
+  // const cacheKey = `products-${key}`;
+
+  return (
+    <Suspense
+      fallback={<Loader />}
+      // key={cacheKey}
+    >
+      {children}
+    </Suspense>
+  );
 }
 
 export default Layout;

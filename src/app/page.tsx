@@ -1,4 +1,9 @@
 import HeroSlider from '@components/Home/HeroSlider';
+import BestsellerSection from './_components/Home/BestsellerSection';
+import HotCategoriesSection from './_components/Home/HotCategoriesSection';
+import TestimonialSection from './_components/Home/TestimonialSection';
+import NewReleasesSection from './_components/Home/NewReleasesSection';
+import FeaturesSeciton from './_components/Home/FeaturesSeciton';
 
 const slides = [
   {
@@ -24,12 +29,17 @@ const slides = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="flex w-full flex-col items-center">
       <section className="relative flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden bg-gray-800">
         <HeroSlider slides={slides} />
       </section>
+      <HotCategoriesSection />
+      <NewReleasesSection />
+      <BestsellerSection />
+      <FeaturesSeciton />
+      <TestimonialSection />
     </div>
   );
 }

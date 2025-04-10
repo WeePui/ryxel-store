@@ -2,7 +2,13 @@
 
 import formatCurrency from '@/app/_utils/formatCurrency';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import { createContext, JSX, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  JSX,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {
   FaRegCircleXmark,
   FaChevronDown,
@@ -10,21 +16,39 @@ import {
   FaStar,
   FaRegStar,
 } from 'react-icons/fa6';
+import SpecsFilter from './SpecsFilter';
 
 interface SideFilterProps {
-  brands: string[];
+  brands: Array<{ value: string; count?: number }>;
   priceRanges: { min: number; max?: number }[];
+  specifications: {
+    [key: string]: Array<{
+      value: string;
+      count: number;
+    }>;
+  };
 }
 
 interface FilterItemProps {
   filterName: string;
-  options: { value: string; label: string | JSX.Element }[];
+  options: {
+    value: string | number;
+    label: string | JSX.Element;
+    count?: number;
+  }[];
   label: string;
 }
 
 interface Filter {
-  brand: string;
-  price: string;
+  brand: string[];
+  price: {
+    min: number;
+    max?: number;
+  };
+  rating: {
+    min?: number;
+    max?: number;
+  };
 }
 
 interface SideFilterContextType {
@@ -39,7 +63,7 @@ const SideFilterContext = createContext<SideFilterContextType | undefined>(
 
 const ratingOptions = [
   {
-    value: '5',
+    value: 5,
     label: (
       <span className="flex items-center text-yellow-500">
         <FaStar /> <FaStar /> <FaStar /> <FaStar /> <FaStar />
@@ -47,7 +71,7 @@ const ratingOptions = [
     ),
   },
   {
-    value: '4',
+    value: 4,
     label: (
       <span className="flex items-center text-yellow-500">
         <FaStar /> <FaStar /> <FaStar /> <FaStar />
@@ -56,7 +80,7 @@ const ratingOptions = [
     ),
   },
   {
-    value: '3',
+    value: 3,
     label: (
       <span className="flex items-center text-yellow-500">
         <FaStar /> <FaStar /> <FaStar />
@@ -65,7 +89,7 @@ const ratingOptions = [
     ),
   },
   {
-    value: '2',
+    value: 2,
     label: (
       <span className="flex items-center text-yellow-500">
         <FaStar /> <FaStar />
@@ -74,7 +98,7 @@ const ratingOptions = [
     ),
   },
   {
-    value: '1',
+    value: 1,
     label: (
       <span className="flex items-center text-yellow-500">
         <FaStar />
@@ -84,10 +108,11 @@ const ratingOptions = [
   },
 ];
 
-function SideFilter({ brands, priceRanges }: SideFilterProps) {
+function SideFilter({ brands, priceRanges, specifications }: SideFilterProps) {
   const brandOptions = brands.map((brand) => ({
-    value: brand,
-    label: brand,
+    value: brand.value,
+    label: brand.value,
+    count: brand.count,
   }));
   const priceRangeOptions = priceRanges.map((range) => ({
     value: `${range.min}-${range.max}`,
@@ -97,87 +122,146 @@ function SideFilter({ brands, priceRanges }: SideFilterProps) {
   }));
 
   const [filters, setFilters] = useState<Filter>({
-    brand: '',
-    price: '',
+    brand: [],
+    price: {
+      min: 0,
+      max: undefined,
+    },
+    rating: {
+      min: undefined,
+      max: 5,
+    },
   });
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams);
-    let hasFilterChanged = false;
+    const brand = searchParams.get('brand')?.split(',') || [];
+    const price = {
+      min: Number(searchParams.get('price[gte]')) || 0,
+      max: Number(searchParams.get('price[lte]')) || undefined,
+    };
+    const rating = {
+      min: Number(searchParams.get('rating[gte]')) || undefined,
+      max: 5,
+    };
 
-    Object.keys(filters).forEach((key) => {
-      if (filters[key as keyof Filter]) {
-        if (key === 'price') {
-          const [min, max] = filters.price.split('-');
-          if (
-            params.get('price[lte]') !== max ||
-            params.get('price[gte]') !== min
-          ) {
-            params.set('price[lte]', max);
-            params.set('price[gte]', min);
-            hasFilterChanged = true;
-          }
-        } else if (key === 'rating') {
-          if (params.get('rating[gte]') !== filters[key as keyof Filter]) {
-            params.set('rating[gte]', filters[key as keyof Filter]);
-            hasFilterChanged = true;
-          }
-        } else {
-          if (params.get(key) !== filters[key as keyof Filter]) {
-            params.set(key, filters[key as keyof Filter]);
-            hasFilterChanged = true;
-          }
-        }
-      } else {
-        if (key === 'price') {
-          if (params.has('price[lte]') || params.has('price[gte]')) {
-            params.delete('price[lte]');
-            params.delete('price[gte]');
-            hasFilterChanged = true;
-          }
-        } else if (key === 'rating') {
-          if (params.has('rating[gte]')) {
-            params.delete('rating[gte]');
-            hasFilterChanged = true;
-          }
-        } else if (params.has(key)) {
-          params.delete(key);
-          hasFilterChanged = true;
-        }
-      }
+    setFilters({
+      brand,
+      price,
+      rating,
     });
+  }, [searchParams]);
 
-    if (hasFilterChanged) {
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    if (filters.brand.length > 0) {
+      params.set('brand', filters.brand.join(','));
       params.delete('page');
+    } else {
+      params.delete('brand');
+    }
+    if (filters.price.min) {
+      params.set('price[gte]', filters.price.min.toString());
+      params.delete('page');
+    }
+    if (filters.price.max) {
+      params.set('price[lte]', filters.price.max.toString());
+      params.delete('page');
+    }
+    if (filters.price.min === 0 && filters.price.max === undefined) {
+      params.delete('price[gte]');
+      params.delete('price[lte]');
+    }
+    if (filters.price.max === undefined) {
+      params.delete('price[lte]');
+    }
+    if (filters.rating.min) {
+      params.set('rating[gte]', filters.rating.min.toString());
+      params.delete('page');
+    }
+    if (typeof filters.rating.min === 'number') {
+      params.set('rating[gte]', filters.rating.min.toString());
+      params.delete('page');
+    } else {
+      params.delete('rating[gte]'); // Xóa param nếu không có rating
     }
 
     router.replace(`${pathname}?${params.toString()}`);
-  }, [filters, searchParams, pathname, router]);
+  }, [filters, pathname, router, searchParams]);
 
   const onChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
 
-    setFilters((prev) => ({
-      ...prev,
-      [name]: checked ? value : '',
-    }));
+    const currentFilters = { ...filters };
+
+    if (name === 'brand') {
+      if (checked) {
+        currentFilters.brand.push(value);
+      } else {
+        currentFilters.brand = currentFilters.brand.filter(
+          (brand) => brand !== value
+        );
+      }
+    } else if (name === 'price') {
+      const [min, max] = value.split('-').map(Number);
+      currentFilters.price.min = min;
+      currentFilters.price.max = max || undefined;
+    } else if (name === 'rating') {
+      const newRating = checked ? Number(value) : undefined;
+      // Nếu click vào rating đang được chọn -> bỏ chọn
+      currentFilters.rating.min =
+        currentFilters.rating.min === newRating ? undefined : newRating;
+    }
+
+    setFilters(currentFilters);
   };
 
   function onClear() {
-    setFilters(() => ({
-      brand: '',
-      price: '',
-      rating: '',
-    }));
-    router.replace(pathname);
+    router.push(`${pathname}`);
+
+    setFilters({
+      brand: [],
+      price: {
+        min: 0,
+        max: undefined,
+      },
+      rating: {
+        min: undefined,
+        max: 5,
+      },
+    });
+  }
+
+  function handleSpecsChange(specName: string, value: string) {
+    console.log('Spec changed:', specName, value);
+
+    const params = new URLSearchParams(searchParams);
+    const specs = params.get('specs')
+      ? JSON.parse(params.get('specs') as string)
+      : {};
+
+    const currentSpecs = { ...specs };
+    if (currentSpecs[specName] === value) {
+      delete currentSpecs[specName];
+    } else {
+      currentSpecs[specName] = value;
+    }
+
+    if (Object.keys(currentSpecs).length === 0) {
+      params.delete('specs');
+    } else {
+      params.set('specs', JSON.stringify(currentSpecs));
+      params.delete('page');
+    }
+    router.replace(`${pathname}?${params.toString()}`);
   }
 
   return (
     <SideFilterContext.Provider value={{ filters, setFilters, onChecked }}>
-      <div className="flex h-full flex-col gap-2 rounded-xl bg-grey-50 px-4">
+      <div className="flex h-full flex-col gap-2 rounded-xl bg-grey-50 px-4 pb-6">
         <div className="flex items-center justify-between px-4 pb-2 pt-6">
           <h3 className="text-xl font-bold text-primary-default">Bộ lọc</h3>
           <button onClick={onClear} className="flex items-center gap-2">
@@ -185,7 +269,7 @@ function SideFilter({ brands, priceRanges }: SideFilterProps) {
             Đặt lại
           </button>
         </div>
-        <div className="flex flex-col gap-4 overflow-auto rounded-xl bg-white p-4">
+        <div className="flex flex-col gap-2 overflow-auto rounded-xl bg-white p-4 scrollbar-hide">
           <FilterItem filterName="brand" label="Hãng" options={brandOptions} />
           <hr className="my-1 border-t border-grey-200" />
           <FilterItem
@@ -199,6 +283,10 @@ function SideFilter({ brands, priceRanges }: SideFilterProps) {
             label="Đánh giá"
             options={ratingOptions}
           />
+          <SpecsFilter
+            specifications={specifications}
+            onSelectSpecs={handleSpecsChange}
+          />
         </div>
       </div>
     </SideFilterContext.Provider>
@@ -209,6 +297,19 @@ function FilterItem({ filterName, options, label }: FilterItemProps) {
   const [openFilter, setOpenFilter] = useState(false);
   const context = useContext(SideFilterContext);
   const { filters, onChecked } = context!;
+  const isChecked = (value: string | number) => {
+    if (filterName === 'brand') {
+      return filters.brand.includes(value as string);
+    } else if (filterName === 'price') {
+      const [min, max] = (value as string).split('-').map(Number);
+      return (
+        filters.price.min === min && (filters.price.max || undefined) === max
+      );
+    } else if (filterName === 'rating') {
+      return filters.rating.min === Number(value);
+    }
+    return false;
+  };
 
   return (
     <div>
@@ -227,21 +328,23 @@ function FilterItem({ filterName, options, label }: FilterItemProps) {
         <div className="mt-4 flex flex-col gap-3 pl-2">
           {options.map((option, index) => (
             <label
-              className="flex items-center gap-4 text-primary-default"
+              className="flex items-center text-primary-default"
               key={index}
             >
-              <input
-                type="checkbox"
-                name={filterName}
-                className="hover:filter-red-500 h-6 w-6 cursor-pointer"
-                value={option.value}
-                onChange={onChecked}
-                checked={
-                  filters[filterName as keyof Filter]?.includes(option.value) ||
-                  false
-                }
-              />
-              {option.label}
+              <div className="flex items-center gap-4">
+                <input
+                  type="checkbox"
+                  name={filterName}
+                  className="hover:filter-red-500 h-6 w-6 cursor-pointer"
+                  value={option.value}
+                  onChange={onChecked}
+                  checked={isChecked(option.value)}
+                />
+                {option.label}
+              </div>
+              <span className="ml-auto text-grey-400">
+                {option.count ? `(${option.count})` : ''}
+              </span>
             </label>
           ))}
         </div>

@@ -1,4 +1,7 @@
 import type { Config } from 'tailwindcss';
+import forms from '@tailwindcss/forms';
+import scrollbarHide from 'tailwind-scrollbar-hide';
+import typography from '@tailwindcss/typography';
 
 export default {
   content: [
@@ -75,5 +78,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [forms, typography, scrollbarHide],
 } satisfies Config;

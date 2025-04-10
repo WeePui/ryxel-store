@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import NavLink from '../UI/NavLink';
 import { FaRegHeart } from 'react-icons/fa';
-
 import formatCurrency from '@/app/_utils/formatCurrency';
 import { CartItem } from '@/app/_types/cart';
 
@@ -32,7 +31,7 @@ function CheckoutItem({ item }: CheckoutItemProps) {
         </div>
         <div className="flex flex-col gap-4 py-2">
           <p className="text-lg font-bold">
-            <NavLink href={`/products/${product._id}`} hoverUnderline={false}>
+            <NavLink href={`/products/${product.slug}`} hoverUnderline={false}>
               {product.name} - {itemVariant.name}
             </NavLink>
           </p>

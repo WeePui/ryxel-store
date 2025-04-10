@@ -1,9 +1,8 @@
 import { cookies } from 'next/headers';
-import SelectAddress from '../_components/Checkout/SelectAddress';
-import { getAddresses, getCart } from '../_libs/apiServices';
-import CheckoutItems from '../_components/Checkout/CheckoutItems';
-import CheckoutSummary from '../_components/Checkout/CheckoutSummary';
+import { getAddresses, getCart, getOrderById } from '../_libs/apiServices';
 import { Metadata } from 'next';
+import CheckoutPage from '../_components/Checkout/CheckoutPage';
+import { LineItem } from '../_types/lineItem';
 
 export const metadata: Metadata = {
   title: 'Đặt hàng',
@@ -13,9 +12,13 @@ export const metadata: Metadata = {
 async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ code: string }>;
+  searchParams: Promise<{
+    orderId: string;
+    buyAgain: string;
+    processPayment: string;
+  }>;
 }) {
-  const { code } = await searchParams;
+  const { orderId, buyAgain, processPayment } = await searchParams;
   const cookiesStore = await cookies();
   const token = cookiesStore.get('jwt');
 
@@ -24,21 +27,31 @@ async function Page({
   }
 
   const { data: addressData } = await getAddresses(token);
-  const { data: cartData } = await getCart(token);
-  const { cart } = cartData;
   const { addresses } = addressData;
 
+  let items: LineItem[] = [];
+  let subtotal = 0;
+
+  if (!orderId) {
+    const { data: cartData } = await getCart(token);
+    const { cart } = cartData;
+
+    items = cart.lineItems;
+    subtotal = cart.subtotal;
+  } else {
+    if (
+      (buyAgain && buyAgain === '1') ||
+      (processPayment && processPayment === '1')
+    ) {
+      const { data: orderData } = await getOrderById(orderId, token);
+      const { order } = orderData;
+      items = order.lineItems;
+      subtotal = order.subtotal;
+    }
+  }
+
   return (
-    <div className="mx-auto mt-14 grid w-full max-w-7xl grid-cols-[70fr_30fr] gap-10">
-      <h1 className="col-span-full self-start font-title text-3xl font-semibold text-primary-500">
-        Đặt hàng
-      </h1>
-      <SelectAddress addresses={addresses} />
-      <CheckoutItems cart={cart} />
-      <div className="col-start-2 row-span-3 row-start-2">
-        <CheckoutSummary subtotal={cart.subtotal} code={code || ''} />
-      </div>
-    </div>
+    <CheckoutPage addresses={addresses} lineItems={items} subtotal={subtotal} />
   );
 }
 

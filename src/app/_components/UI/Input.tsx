@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface InputProps {
   id: string;
@@ -21,6 +21,7 @@ interface InputProps {
   value?: string | number;
   optionPlaceholder?: string;
   bgColor?: string;
+  maxLength?: number;
 }
 
 function Input({
@@ -38,11 +39,12 @@ function Input({
   value,
   optionPlaceholder = '- - Select an option - -',
   bgColor = 'bg-white',
-  ...props
+  maxLength,
 }: InputProps) {
   const inputRef = useRef<
     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
   >(null);
+  const [errorState, setError] = useState(error);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -52,12 +54,24 @@ function Input({
     if (onChange) {
       onChange?.(e);
     }
-    if (inputRef.current && inputRef.current.value !== '') {
-      inputRef.current.classList.add('border-primary-500');
-    } else {
-      inputRef.current?.classList.remove('border-primary-500');
+    if (inputRef.current) {
+      const value = inputRef.current.value.trim();
+      if (value !== '') {
+        inputRef.current.classList.add('border-primary-500');
+        inputRef.current.classList.remove('border-red-500', 'text-red-500');
+        setError(false);
+      } else {
+        setError(error);
+        inputRef.current.classList.remove('border-primary-500');
+      }
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      setError(true); // Đảm bảo errorState được cập nhật khi có lỗi từ props
+    }
+  }, [error]);
 
   useEffect(() => {
     if (inputRef.current && inputRef.current.value !== '') {
@@ -82,7 +96,6 @@ function Input({
           disabled={disabled}
           onChange={handleChange}
           value={value}
-          {...props}
         >
           <option value="" disabled>
             {optionPlaceholder}
@@ -123,6 +136,8 @@ function Input({
           disabled={disabled}
           defaultValue={defaultValue}
           onChange={handleChange}
+          maxLength={maxLength || 524288}
+          value={value}
         />
         <label
           htmlFor={id}
@@ -170,19 +185,24 @@ function Input({
         ref={inputRef as React.RefObject<HTMLInputElement>}
         id={id}
         className={`${
-          error
+          errorState
             ? 'border-red-500 text-red-500'
             : 'border-grey-300 text-gray-900'
-        } peer block w-full appearance-none rounded-lg border-2 border-grey-300 bg-transparent px-2.5 pb-2.5 pt-4 focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500`}
+        } 
+        peer block w-full appearance-none rounded-lg border-2 border-grey-300 bg-transparent px-2.5 pb-2.5 pt-4 focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${
+          disabled && 'cursor-not-allowed text-grey-300 !border-grey-300'
+        } !${bgColor}`}
         placeholder=" "
         disabled={disabled}
         defaultValue={defaultValue}
         onChange={handleChange}
+        value={value}
+        maxLength={maxLength || 524288}
       />
       <label
         htmlFor={id}
         className={`${
-          error
+          errorState
             ? 'border-red-500 text-red-500 peer-focus:text-red-500'
             : 'border-grey-300 text-gray-500 peer-focus:text-primary-500'
         } !${bgColor} absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-primary-300`}

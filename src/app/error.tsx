@@ -18,7 +18,6 @@ function Error({ error, reset }: ErrorProps) {
             Thử lại
           </Button>
           <span>hoặc</span>
-
           <Button type="primary" href="/">
             Trở về Trang chủ
           </Button>

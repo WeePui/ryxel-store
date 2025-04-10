@@ -12,7 +12,8 @@ function NotFound() {
           Oopsie !!!
         </h2>
         <p>Khách hàng yêu dấu đang làm gì ở đây vậy?</p>
-        <p>Hãy thử tìm kiếm gì đó trên thanh tìm kiếm hoặc</p>
+        <p>Hãy thử tìm kiếm gì đó trên thanh tìm kiếm </p>
+        <p className="mb-4 mt-2">hoặc</p>
         <Button type="primary" href="/">
           Trở về trang chủ
         </Button>

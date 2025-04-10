@@ -1,4 +1,10 @@
+import { Address } from '../_types/address';
+import { LineItem } from '../_types/lineItem';
+import { Order } from '../_types/order';
 import {
+  AddressFormInput,
+  ReviewInput,
+  ReviewUpdateInput,
   SignupInput,
   UpdatePasswordInput,
   UpdateProfileInput,
@@ -12,11 +18,8 @@ interface Filter {
 
 export async function getProducts(filters: Filter = {}) {
   const query = new URLSearchParams(filters).toString();
-  console.log('query', query);
-  console.log('filter', filters);
 
   const response = await fetch(`${API_URL}/products?${query}`);
-  console.log(`${API_URL}/products?${query}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch products');
@@ -30,7 +33,17 @@ export async function getProducts(filters: Filter = {}) {
 export async function getProductById(id: string) {
   const response = await fetch(`${API_URL}/products/${id}`);
 
-  console.log(`${API_URL}/products/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch product');
+  }
+
+  const { data } = await response.json();
+
+  return data;
+}
+
+export async function getProductBySlug(slug: string) {
+  const response = await fetch(`${API_URL}/products/slug/${slug}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch product');
@@ -198,8 +211,6 @@ export async function updateProfile(
   input: UpdateProfileInput,
   token: { value: string }
 ) {
-  console.log('formData', input);
-
   const form = new FormData();
   for (const key of Object.keys(input) as (keyof UpdateProfileInput)[]) {
     const value = input[key];
@@ -259,9 +270,7 @@ export async function getAddresses(token: { value: string }) {
 }
 
 export async function addAddress(
-  formData: {
-    [key: string]: { code: string | number; name: string } | string;
-  },
+  formData: AddressFormInput,
   token: { value: string }
 ) {
   const response = await fetch(`${API_URL}/addresses`, {
@@ -346,8 +355,6 @@ export async function addOrUpdateCartItem(
   quantity: number,
   token: { value: string }
 ) {
-  console.log(`${API_URL}/items/${productId}/${variantId}`);
-
   const response = await fetch(
     `${API_URL}/cart/items/${productId}/${variantId}`,
     {
@@ -389,15 +396,16 @@ export async function removeCartItem(
 
 export async function verifyDiscountCode(
   code: string,
+  lineItems: LineItem[],
   token: { value: string }
 ) {
-  console.log(`${API_URL}/discounts/${code}`);
-
   const response = await fetch(`${API_URL}/discounts/${code}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token.value}`,
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify({ lineItems }),
     credentials: 'include',
   });
 
@@ -425,14 +433,406 @@ export async function reauthenticate(
   return data;
 }
 
-export async function createCheckoutSession(token: { value: string }) {
-  const response = await fetch(`${API_URL}/payments/createCheckoutSession`, {
+export async function createCheckoutSession(
+  order: Order,
+  token: { value: string },
+  method: 'Stripe' | 'ZaloPay'
+) {
+  const response = await fetch(
+    `${API_URL}/payments/create${method}CheckoutSession`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order),
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to create checkout session');
+  }
+
+  const result = await response.json();
+
+  return result;
+}
+
+export async function createOrder(
+  data: {
+    code?: string;
+    address: string;
+    paymentMethod: string;
+    lineItems: LineItem[];
+  },
+  token: { value: string }
+) {
+  const response = await fetch(`${API_URL}/orders`, {
     method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    if (
+      error.message === 'You have an unpaid order. Please complete the payment'
+    ) {
+      return {
+        status: 'error',
+        message: error.message,
+      };
+    }
+
+    throw new Error(error.message);
+  }
+
+  const result = await response.json();
+
+  return result;
+}
+
+export const checkUnpaidOrder = async (token: { value: string }) => {
+  const response = await fetch(`${API_URL}/orders/checkUnpaidOrder`, {
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
     credentials: 'include',
   });
+
+  if (!response.ok) {
+    const error = await response.json();
+    if (error.message === 'No unpaid order found for this user') {
+      return {
+        status: 'No unpaid order found',
+        message: error.message,
+      };
+    }
+
+    throw new Error('Failed to check unpaid order');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export async function getOrders(token: { value: string }, search: string) {
+  const response = await fetch(`${API_URL}/orders?search=${search}`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch orders');
+  }
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function getOrderById(id: string, token: { value: string }) {
+  const response = await fetch(`${API_URL}/orders/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch order');
+  }
+
+  const data = await response.json();
+
+  return data;
+}
+
+export const getShippingFee = async (
+  address: Address,
+  lineItems: {
+    product: string;
+    variant: string;
+    quantity: number;
+  }[]
+) => {
+  const response = await fetch(
+    `http://localhost:8000/api/v1/orders/shippingFee?toWardCode=${address.ward.code}&toDistrictCode=${address.district.code}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ lineItems }),
+    }
+  );
+
+  console.log(response);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch shipping fee');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const cancelOrder = async (id: string, token: { value: string }) => {
+  const response = await fetch(
+    `http://localhost:8000/api/v1/orders/${id}/cancel`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to cancel order');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const getOrderByOrderCode = async (
+  code: string,
+  token: { value: string }
+) => {
+  const response = await fetch(
+    `http://localhost:8000/api/v1/orders/orderCode/${code}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch order');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const createReviewsByOrder = async (
+  reviews: ReviewInput[],
+  orderId: string,
+  token: { value: string }
+) => {
+  const formData = new FormData();
+
+  reviews.forEach((review, index) => {
+    formData.append(`reviews[${index}][productId]`, review.productId);
+    formData.append(`reviews[${index}][variantId]`, review.variantId);
+    formData.append(`reviews[${index}][rating]`, review.rating.toString());
+    formData.append(`reviews[${index}][review]`, review.review);
+
+    // Gửi từng ảnh vào đúng index của sản phẩm
+    review.images.forEach((file, imgIndex) => {
+      formData.append(`reviews[${index}][images][${imgIndex}]`, file);
+    });
+
+    if (review.video) formData.append(`reviews[${index}][video]`, review.video);
+  });
+
+  const response = await fetch(
+    `http://localhost:8000/api/v1/reviews/order/${orderId}`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      body: formData,
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(await response.json().then((err) => err.message));
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const updateReviewsByOrder = async (
+  reviews: ReviewUpdateInput[],
+  orderId: string,
+  token: { value: string }
+) => {
+  const formData = new FormData();
+
+  reviews.forEach((review) => {
+    formData.append(`reviews[${review._id}][rating]`, review.rating.toString());
+    formData.append(`reviews[${review._id}][review]`, review.review);
+
+    // Gửi từng ảnh vào đúng index của sản phẩm
+    review.images.forEach((file, imgIndex) => {
+      formData.append(`reviews[${review._id}][images][${imgIndex}]`, file);
+    });
+
+    if (review.video)
+      formData.append(`reviews[${review._id}][video]`, review.video);
+  });
+
+  const response = await fetch(
+    `http://localhost:8000/api/v1/reviews/order/${orderId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      body: formData,
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(await response.json().then((err) => err.message));
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const getWishlist = async (token: { value: string }) => {
+  const response = await fetch(`http://localhost:8000/api/v1/wishlist`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch wishlist');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const addProductToWishlist = async (
+  productId: string,
+  token: { value: string }
+) => {
+  const response = await fetch(
+    `http://localhost:8000/api/v1/wishlist/${productId}`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to add product to wishlist');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const getWishlistByShareCode = async (shareCode: string) => {
+  const response = await fetch(
+    `http://localhost:8000/api/v1/wishlist/${shareCode}`
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch wishlist');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const removeProductFromWishlist = async (
+  productId: string,
+  token: { value: string }
+) => {
+  const response = await fetch(
+    `http://localhost:8000/api/v1/wishlist/${productId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to remove product from wishlist');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const addMultipleItemsToCart = async (
+  items: { productId: string; variantId: string; quantity: number }[],
+  token: { value: string }
+) => {
+  const response = await fetch(`${API_URL}/cart/items`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ items }),
+    credentials: 'include',
+  });
+
+  const data = await response.json();
+
+  return data;
+};
+
+export async function getFilterData(filters: Filter) {
+  const query = new URLSearchParams(filters).toString();
+
+  const response = await fetch(`${API_URL}/products/filters?${query}`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch filter data');
+  }
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function getBestsellers() {
+  const response = await fetch(`${API_URL}/products/top-5-bestsellers`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch bestsellers');
+  }
 
   const data = await response.json();
 

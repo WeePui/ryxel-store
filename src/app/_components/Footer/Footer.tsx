@@ -16,26 +16,37 @@ function Footer() {
         <div className="justify-items-between grid grid-cols-4 gap-x-10 px-12">
           <FooterColumn title="Ryxel Company">
             <li>
-              <NavLink href="/about">Về chúng tôi</NavLink>
+              <NavLink type="footerNav" href="/about">
+                Về chúng tôi
+              </NavLink>
             </li>
             <li>
-              <NavLink href="/terms">Quy chế hoạt động</NavLink>
+              <NavLink type="footerNav" href="/terms-of-service">
+                Điều khoản và Dịch vụ
+              </NavLink>
             </li>
             <li>
-              <NavLink href="/privacy">Chính sách bảo mật</NavLink>
+              <NavLink type="footerNav" href="/privacy-policy">
+                Chính sách bảo mật
+              </NavLink>
+            </li>
+            <li>
+              <NavLink type="footerNav" href="/faq">
+                FAQ
+              </NavLink>
             </li>
           </FooterColumn>
           <FooterColumn title="Liên hệ">
-            <li>Giờ làm việc: 8:00 am - 5:00 pm (GMT +7)</li>
+            <li>Giờ làm việc: 8:00 - 17:00 (GMT +7)</li>
             <li className="flex gap-2">
               SĐT:
-              <NavLink href="tel:+8491282383">
+              <NavLink type="footerNav" href="tel:+8491282383">
                 <span className="border-b-[1px]">(+84) 912 823 83</span>
               </NavLink>
             </li>
             <li className="flex gap-2">
               E-mail:
-              <NavLink href="mailto:bhtcag@gmail.com">
+              <NavLink type="footerNav" href="mailto:bhtcag@gmail.com">
                 <span className="border-b-[1px]">bhtcag@gmail.com</span>
               </NavLink>
             </li>
@@ -63,7 +74,7 @@ function Footer() {
       </div>
       <div className="mx-auto py-4 text-sm">
         <p className="text-gray-default text-center">
-          © 2024 Ryxel Store. All rights reserved. Ryxel Inc. Headquarters are
+          © 2025 Ryxel Store. All rights reserved. Ryxel Inc. Headquarters are
           in Ho Chi Minh City, Vietnam.
         </p>
       </div>

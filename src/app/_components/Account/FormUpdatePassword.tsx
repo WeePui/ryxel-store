@@ -7,32 +7,25 @@ import Button from '@/app/_components/UI/Button';
 import Input from '@/app/_components/UI/Input';
 import { updatePasswordAction } from '@libs/actions';
 import { FaCircleExclamation } from 'react-icons/fa6';
-
-interface UpdatePasswordState {
-  success: boolean;
-  errors: {
-    passwordCurrent?: string;
-    password?: string;
-    passwordConfirm?: string;
-  };
-}
+import { hasFormError } from '@/app/_helpers/hasFormError';
 
 function FormUpdatePassword() {
   const [state, action, isPending] = useActionState(updatePasswordAction, {
     success: false,
-    errors: null,
+    errors: {},
   });
 
   useEffect(() => {
-    if (state.success) {
+    if (state?.success) {
       toast.success('Password updated successfully');
       return;
     }
-    if (state.errors) {
+
+    if (state?.errors && 'message' in state.errors) {
       toast.error(state.errors.message);
       return;
     }
-  }, [state.success, state.errors]);
+  }, [state?.success, state?.errors]);
 
   if (isPending) return <Spinner />;
 
@@ -42,7 +35,7 @@ function FormUpdatePassword() {
       action={action}
     >
       <div className="w-full">
-        {state?.errors?.passwordConfirm && (
+        {hasFormError('passwordCurrent', state.errors) && (
           <p className="flex items-center gap-2 p-2 text-xs text-red-500">
             <FaCircleExclamation />
             {state?.errors?.passwordCurrent}
@@ -53,15 +46,15 @@ function FormUpdatePassword() {
           id="passwordCurrent"
           type="password"
           label="Mật khẩu hiện tại"
-          error={state?.errors?.passwordCurrent}
+          error={hasFormError('passwordCurrent', state.errors)}
         />
       </div>
 
       <div className="w-full">
-        {state?.errors?.password && (
+        {hasFormError('password', state.errors) && (
           <p className="flex items-center gap-2 p-2 text-xs text-red-500">
             <FaCircleExclamation />
-            {state?.errors?.password}
+            {state.errors.password}
           </p>
         )}
         <Input
@@ -69,15 +62,15 @@ function FormUpdatePassword() {
           id="password"
           type="password"
           label="Mật khẩu mới"
-          error={state?.errors?.password}
+          error={hasFormError('password', state.errors)}
         />
       </div>
 
       <div className="w-full">
-        {state?.errors?.passwordConfirm && (
+        {hasFormError('passwordConfirm', state.errors) && (
           <p className="flex items-center gap-2 p-2 text-xs text-red-500">
             <FaCircleExclamation />
-            {state?.errors?.passwordConfirm}
+            {state.errors.passwordConfirm}
           </p>
         )}
         <Input
@@ -87,7 +80,9 @@ function FormUpdatePassword() {
           label="Xác nhận mật khẩu"
         />
         <div className="mt-6 flex justify-center">
-          <Button role="submit">Đổi mật khẩu</Button>
+          <Button role="submit" size="medium">
+            Đổi mật khẩu
+          </Button>
         </div>
       </div>
     </form>

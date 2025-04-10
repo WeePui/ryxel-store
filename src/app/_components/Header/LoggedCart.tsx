@@ -35,7 +35,7 @@ function LoggedCart({ cart }: LoggedCartProps) {
       <NavLink hoverUnderline={false} href="/cart">
         <div className="flex items-center gap-2">
           <FaCartShopping className="text-xl" />
-          <span className="text-tertiary-500">({cart.products?.length})</span>
+          <span className="text-tertiary-500">({cart.lineItems?.length})</span>
         </div>
       </NavLink>
       {isModalVisible && <HeaderCartModal cart={cart} />}

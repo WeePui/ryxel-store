@@ -15,27 +15,17 @@ async function Profile() {
   const cookiesStore = await cookies();
   const token = cookiesStore.get('jwt');
 
-  let user = null;
+  const data = await getProfile(token!);
+  if (data.status !== 'success') throw new Error(data.message);
 
-  try {
-    if (!token) throw new Error('Unauthorized');
+  const user = data.data.user;
 
-    const data = await getProfile(token);
-    if (data.status !== 'success') throw new Error(data.message);
-    user = data.data.user;
-  } catch (error) {
-    return (
-      <AccountPage
-        title="My Profile"
-        description={description}
-        error={error as Error}
-      />
-    );
-  }
+  if (!user)
+    return <AccountPage title="My Profile" description={description} />;
 
   return (
     <AccountPage title="Hồ sơ tài khoản" description={description}>
-      {user && <FormUpdateProfile user={user} />}
+      <FormUpdateProfile user={user} />
     </AccountPage>
   );
 }

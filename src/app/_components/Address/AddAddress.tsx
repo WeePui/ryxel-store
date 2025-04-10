@@ -11,7 +11,7 @@ function AddAddress() {
 
   return (
     <div>
-      <Button onClick={() => setIsOpen(true)}>
+      <Button onClick={() => setIsOpen(true)} size="medium">
         <FaPlus />
         Địa chỉ mới
       </Button>

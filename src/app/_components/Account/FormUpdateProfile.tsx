@@ -1,8 +1,8 @@
 'use client';
 
-import { useActionState, useEffect, useState } from 'react';
+import { useActionState, useEffect, useState, useTransition } from 'react';
 import Spinner from '@/app/_components/UI/Spinner';
-import { updateProfileAction } from '@libs/actions';
+import { sendOTPAction, updateProfileAction } from '@libs/actions';
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import NavLink from '@/app/_components/UI/NavLink';
 import Button from '../UI/Button';
@@ -11,12 +11,14 @@ import { toast } from 'react-toastify';
 import imageCompression from 'browser-image-compression';
 import Loader from '../UI/Loader';
 import { User } from '@/app/_types/user';
+import { useRouter } from 'next/navigation';
 
 interface FormUpdateProfileProps {
   user: User;
 }
 
 function FormUpdateProfile({ user }: FormUpdateProfileProps) {
+  const [, startTransition] = useTransition();
   const [photo, setPhoto] = useState<File | undefined>(undefined);
   const updateProfileActionWithPhoto = updateProfileAction.bind(null, photo);
   const [state, action, isPending] = useActionState(
@@ -28,14 +30,16 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
   );
   const [previewPhoto, setPreviewPhoto] = useState(user.photo.url);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (state.success) {
       toast.success('Profile updated successfully');
+      router.push('/account/profile');
       return;
     }
     if (state.errors) {
-      if ('message' in state.errors) {
+      if ('message' in state.errors && state.errors.message) {
         toast.error(state.errors.message);
       }
       return;
@@ -65,6 +69,18 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
         setIsLoading(false);
       }
     }
+  };
+
+  const handleVerifyEmail = () => {
+    startTransition(async () => {
+      const result = await sendOTPAction({ counter: 0 });
+      if (result.success) {
+        toast.success('OTP sent successfully');
+        router.push('/signup/verifyEmail');
+      } else {
+        toast.error(result.errors!.message);
+      }
+    });
   };
 
   const handlePhotoClick = () => {
@@ -132,13 +148,18 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               Email
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
-              <span>{user && user.email}</span>
-              <NavLink href="/account/email" hoverUnderline={false}>
-                <div className="flex items-center gap-2 text-xs font-semibold underline">
-                  <FaArrowUpRightFromSquare />
-                  Thay đổi
-                </div>
-              </NavLink>
+              <span>{user && user.email}</span>{' '}
+              {!user.emailVerified && (
+                <NavLink href="#" hoverUnderline={false}>
+                  <div
+                    className="flex items-center gap-2 text-xs font-semibold underline"
+                    onClick={handleVerifyEmail}
+                  >
+                    <FaArrowUpRightFromSquare />
+                    Xác thực
+                  </div>
+                </NavLink>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -153,8 +174,11 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                   (Bạn vẫn chưa thêm số điện thoại)
                 </span>
               )}
-              <NavLink href="/account/phone" hoverUnderline={false}>
-                <div className="flex items-center gap-2 text-xs font-semibold underline">
+              <NavLink href="#" hoverUnderline={false}>
+                <div
+                  className="flex items-center gap-2 text-xs font-semibold underline"
+                  onClick={() => {}}
+                >
                   <FaArrowUpRightFromSquare />
                   Thay đổi
                 </div>
@@ -170,10 +194,10 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
               {user?.dob ? (
-                new Date(user.dob).toLocaleDateString(navigator.language, {
+                new Date(user.dob).toLocaleDateString('vi-VN', {
                   year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
                 })
               ) : (
                 <span className="text-xs">(Bạn vẫn chưa thêm ngày sinh)</span>
@@ -183,7 +207,11 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
         </div>
         <div className="mt-4 flex w-full justify-center">
           <div className="w-auto justify-self-center">
-            <Button role="submit" disabled={isLoading || isPending}>
+            <Button
+              role="submit"
+              disabled={isLoading || isPending}
+              size="medium"
+            >
               Cập nhật hồ sơ
             </Button>
           </div>
@@ -219,8 +247,9 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               role="button"
               onClick={handlePhotoClick}
               disabled={isLoading || isPending}
+              size="small"
             >
-              <span className="text-sm">Đổi ảnh đại diện</span>
+              Đổi ảnh đại diện
             </Button>
             <span className="text-sm text-gray-400">
               Định dạng: .JPEG, .JPG, .PNG

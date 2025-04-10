@@ -1,4 +1,5 @@
 import { Category } from './category';
+import { Review } from './review';
 import { Variant } from './variant';
 
 export interface Product {
@@ -14,4 +15,6 @@ export interface Product {
   ratingsQuantity: number;
   category: Category;
   updatedAt: Date;
+  slug: string;
+  reviews: Review[];
 }

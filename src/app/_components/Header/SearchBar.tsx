@@ -1,22 +1,21 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaSistrix } from 'react-icons/fa6';
 
 function SearchBar() {
   const [keyword, setKeyword] = useState('');
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (keyword) {
-      const params = new URLSearchParams(searchParams);
+      const params = new URLSearchParams();
       params.set('search', keyword);
 
-      router.replace(`products?${params.toString()}`);
+      router.replace(`/products?${params.toString()}`);
     }
   }
 

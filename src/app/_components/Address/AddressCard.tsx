@@ -100,6 +100,7 @@ function AddressCard({ address }: AddressCardProps) {
           type="tertiary"
           disabled={address.isDefault}
           onClick={handleSetDefaultAddress}
+          size="small"
         >
           Đặt mặc định
         </Button>

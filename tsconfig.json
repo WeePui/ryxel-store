@@ -12,6 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "jsxImportSource": "react",
     "incremental": true,
     "plugins": [
       {
@@ -30,7 +31,8 @@
       "@helpers/*": ["./src/app/_helpers/*"],
       "@context/*": ["./src/app/_contexts/*"],
       "@hooks/*": ["./src/app/_hooks/*"],
-      "@types/*": ["./src/app/_types/*"]
+      "@types/*": ["./src/app/_types/*"],
+      "@content/*": ["./src/content/*"]
     }
   },
   "include": [

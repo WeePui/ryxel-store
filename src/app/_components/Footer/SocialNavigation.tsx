@@ -5,22 +5,25 @@ function SocialNavigation() {
   return (
     <ul className="flex items-center gap-4 text-2xl text-white">
       <li>
-        <NavLink href="https://www.facebook.com/weepui.bh">
+        <NavLink type="footerNav" href="https://www.facebook.com/weepui.bh">
           <FaFacebook />
         </NavLink>
       </li>
       <li>
-        <NavLink href="https://www.youtube.com/@huybui1131">
+        <NavLink type="footerNav" href="https://www.youtube.com/@huybui1131">
           <FaYoutube />
         </NavLink>
       </li>
       <li>
-        <NavLink href="https://www.instagram.com/weepui.nouseins">
+        <NavLink
+          type="footerNav"
+          href="https://www.instagram.com/weepui.nouseins"
+        >
           <FaInstagram />
         </NavLink>
       </li>
       <li>
-        <NavLink href="https://discord.gg/ZfkkPbvy">
+        <NavLink type="footerNav" href="https://discord.gg/ZfkkPbvy">
           <FaDiscord />
         </NavLink>
       </li>

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@plugin "@tailwindcss/typography";
 
 @layer base {
   input[type='number']::-webkit-inner-spin-button,
@@ -25,6 +26,10 @@
 }
 
 @layer components {
+  table th {
+    font-weight: normal;
+  }
+
   .loading-container {
     display: flex;
     gap: 0.2rem;
@@ -39,6 +44,10 @@
     animation: jump 2s ease-in-out infinite;
     transform-origin: bottom;
     animation-fill-mode: both;
+  }
+
+  input[type='number'] {
+    border: 0;
   }
 
   .header-link:hover .absolute {

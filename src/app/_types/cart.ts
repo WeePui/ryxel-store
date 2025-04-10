@@ -1,11 +1,5 @@
-import { Product } from './product';
+import { LineItem } from './lineItem';
 
 export interface Cart {
-  products: CartItem[];
-}
-
-export interface CartItem {
-  product: Product;
-  variant: string;
-  quantity: number;
+  lineItems: LineItem[];
 }

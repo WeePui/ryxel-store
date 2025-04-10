@@ -9,22 +9,22 @@ interface HeaderCartModalProps {
 }
 
 function HeaderCartModal({ cart }: HeaderCartModalProps) {
-  const { products } = cart;
+  const { lineItems } = cart;
 
   return (
     <div className="absolute right-0 z-[100] mt-2 w-96 rounded-lg bg-white p-4 shadow-lg">
       <h3 className="mb-2 text-lg font-semibold">Sản phẩm đã thêm</h3>
-      {products.length > 0 ? (
+      {lineItems.length > 0 ? (
         <div className="relative max-h-48 overflow-hidden">
           <ul className="space-y-2">
-            {products.slice(0, 4).map((item, index: number) => (
+            {lineItems.slice(0, 4).map((item, index: number) => (
               <li
-                key={item.product._id}
+                key={item.product.slug}
                 className={`flex items-center ${
                   index === 3 ? 'blurred-item' : ''
                 }`}
               >
-                <NavLink href={`/products/${item.product._id}`}>
+                <NavLink href={`/products/${item.product.slug}`}>
                   <Image
                     src={item.product.imageCover}
                     alt={item.product.name}
@@ -42,7 +42,7 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
                 </NavLink>
               </li>
             ))}
-            {products.length > 3 && (
+            {lineItems.length > 3 && (
               <div className="absolute bottom-0 left-0 h-12 w-full bg-gradient-to-t from-white to-transparent"></div>
             )}
           </ul>

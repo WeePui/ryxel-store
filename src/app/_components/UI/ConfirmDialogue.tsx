@@ -1,13 +1,18 @@
+import { JSX } from 'react';
 import Button from './Button';
 
 interface ConfirmDialogueProps {
-  message: string;
+  message: string | JSX.Element;
+  confirmText?: string;
+  cancelText?: string;
   onConfirm: () => void;
-  onCancel: () => void;
+  onCancel?: () => void;
 }
 
 function ConfirmDialogue({
   message,
+  confirmText = 'Xác nhận',
+  cancelText = 'Hủy bỏ',
   onConfirm,
   onCancel,
 }: ConfirmDialogueProps) {
@@ -15,10 +20,13 @@ function ConfirmDialogue({
     <div className="flex flex-col items-center justify-center gap-8">
       <p className="text-lg">{message}</p>
       <div className="flex gap-6">
-        <Button type="secondary" onClick={onCancel}>
-          Hủy bỏ
-        </Button>
-        <Button onClick={onConfirm}>Xác nhận</Button>
+        {onCancel && (
+          <Button type="secondary" onClick={onCancel}>
+            {cancelText}
+          </Button>
+        )}
+
+        <Button onClick={onConfirm}>{confirmText}</Button>
       </div>
     </div>
   );

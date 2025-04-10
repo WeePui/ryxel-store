@@ -15,13 +15,13 @@ function ProductDescription() {
     <section className="mt-32 flex w-full justify-center bg-secondary-50 p-4">
       <div className="flex w-full max-w-7xl justify-between">
         <div className="flex w-7/12 flex-col justify-center p-4">
-          <h2 className="text-xl font-semibold text-primary-500">Mô tả</h2>
+          <h2 className="text-2xl font-semibold text-primary-500">Mô tả</h2>
           <div className="mt-4 text-primary-700">
             <p>{product.description}</p>
           </div>
         </div>
         <div className="w-5/12 p-4">
-          <h2 className="pl-4 text-xl font-semibold text-primary-500">
+          <h2 className="pl-4 text-2xl font-semibold text-primary-500">
             Thông số kĩ thuật
           </h2>
           <div className="relative mt-4 w-full overflow-hidden">
@@ -43,7 +43,7 @@ function ProductDescription() {
                         </th>
                         <td className="w-[70%] px-4 py-2">{value}</td>
                       </tr>
-                    ),
+                    )
                   )}
                 </tbody>
               </table>

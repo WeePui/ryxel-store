@@ -23,10 +23,19 @@ import {
   setDefaultAddress,
   addOrUpdateCartItem,
   removeCartItem,
-  checkToken,
   verifyDiscountCode,
   reauthenticate,
   createCheckoutSession,
+  createOrder,
+  cancelOrder,
+  getOrderById,
+  createReviewsByOrder,
+  updateReviewsByOrder,
+  getWishlist,
+  getWishlistByShareCode,
+  addProductToWishlist,
+  removeProductFromWishlist,
+  addMultipleItemsToCart,
 } from '@libs/apiServices';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -36,9 +45,31 @@ import {
   AddressSelectInput,
   SignupInput,
   UpdateProfileInput,
+  ReviewInput,
+  ReviewUpdateInput,
 } from '../_types/validateInput';
 import { transformAddressFormData } from '../_helpers/transformAddressFormData';
 import { FormError } from '../_types/formError';
+import { Wishlist } from '../_types/wishlist';
+
+async function checkLogin() {
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('jwt');
+
+  if (!token) {
+    return {
+      success: false,
+      errors: {
+        message: 'No token found. Please log in again.',
+      } as FormError,
+    };
+  }
+
+  return {
+    success: true,
+    token,
+  };
+}
 
 export async function loginAction(
   _: unknown,
@@ -63,6 +94,9 @@ export async function loginAction(
   }
 
   const loginData = await login(userInput);
+  const {
+    data: { user },
+  } = loginData;
 
   if (loginData.message)
     return {
@@ -85,6 +119,10 @@ export async function loginAction(
     httpOnly: true,
     secure: true,
     expires: expiresAt,
+  });
+  cookiesStore.set('verified', user.emailVerified, {
+    httpOnly: true,
+    secure: true,
   });
   cookiesStore.delete('reauthenticated');
 
@@ -109,8 +147,6 @@ export async function signupAction(
     terms: formData.get('terms') === 'true',
   };
 
-  console.log('formData', formData);
-
   const validation = await validateSignupForm(input);
   if (!validation.success) {
     return {
@@ -132,7 +168,13 @@ export async function signupAction(
     };
 
   const cookiesStore = await cookies();
-  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+  const expiresAt = new Date(
+    (Date.now() + Number(process.env.JWT_COOKIES_EXPIRES_IN!)) *
+      24 *
+      60 *
+      60 *
+      1000
+  );
   cookiesStore.set('jwt', signupData.token, {
     httpOnly: true,
     secure: true,
@@ -144,7 +186,12 @@ export async function signupAction(
   redirect('/signup/verifyEmail');
 }
 
-export const sendOTPAction = async ({ counter }: { counter: number }) => {
+export const sendOTPAction = async ({
+  counter,
+}: {
+  counter: number;
+  success?: true;
+}) => {
   try {
     const cookiesStore = await cookies();
     const token = cookiesStore.get('jwt');
@@ -155,7 +202,7 @@ export const sendOTPAction = async ({ counter }: { counter: number }) => {
 
     const response = await sendOTP(token);
     if (response.status === 'success') {
-      return { counter: counter + 1 };
+      return { counter: counter + 1, success: true };
     }
 
     throw new Error(response.message || 'Failed to send OTP.');
@@ -175,35 +222,34 @@ export async function verifyOTPAction(_: unknown, formData: FormData) {
   if (!otp) {
     return {
       errors: {
-        otp: 'OTP is required',
+        message: 'OTP is required',
       },
     };
   }
 
-  // Verify OTP
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
 
-  if (!token) {
-    return {
-      errors: {
-        otp: 'No token found. Please log in again.',
-      },
-    };
-  }
-
+  const token = checkIsLogin.token!;
   const data = await verifyOTP(otp as string, token);
-  if (data.status !== 'success')
+  if (data.status !== 'success') {
+    const cookiesStore = await cookies();
+    cookiesStore.set('verified', 'true', {
+      httpOnly: true,
+      secure: true,
+    });
+
     return {
       errors: {
-        otp: data.message,
+        message: data.message,
       },
     };
+  }
 
   redirect('/account');
 }
 
-export async function logoutAction() {
+export async function logoutAction(isRedirect = true) {
   const data = await logout();
 
   if (data.status !== 'success')
@@ -217,7 +263,9 @@ export async function logoutAction() {
   cookiesStore.delete('jwt');
   cookiesStore.delete('reauthenticated');
 
-  redirect('/');
+  if (isRedirect) {
+    redirect('/');
+  }
 }
 
 export async function forgotPasswordAction(
@@ -297,8 +345,6 @@ export async function resetPasswordAction(
         errors: { message: data.message || 'Failed to reset password.' },
       };
   } catch (error) {
-    console.log(error);
-
     return {
       success: false,
       errors: {
@@ -325,17 +371,10 @@ export async function updateProfileAction(
     };
   }
 
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
 
-  if (!token) {
-    return {
-      success: false,
-      errors: {
-        message: 'No token found. Please log in again.',
-      },
-    };
-  }
+  const token = checkIsLogin.token!;
 
   const response = await updateProfile(data, token);
   if (response.status === 'success') {
@@ -353,7 +392,10 @@ export async function updateProfileAction(
     };
 }
 
-export async function updatePasswordAction(_: unknown, formData: FormData) {
+export async function updatePasswordAction(
+  _: unknown,
+  formData: FormData
+): Promise<{ success: boolean; errors: FormError }> {
   const input: UpdatePasswordInput = {
     passwordCurrent: formData.get('passwordCurrent') as string,
     password: formData.get('password') as string,
@@ -364,25 +406,27 @@ export async function updatePasswordAction(_: unknown, formData: FormData) {
 
   if (!validation.success) {
     return {
+      success: false,
       errors: validation.errors,
     };
   }
 
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
 
-  if (!token) {
-    return {
-      errors: {
-        message: 'No token found. Please log in again.',
-      },
-    };
-  }
+  const token = checkIsLogin.token!;
 
   const response = await updatePassword(input, token);
   if (response.status === 'success') {
     const cookiesStore = await cookies();
-    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    const expiresAt = new Date(
+      (Date.now() + Number(process.env.JWT_COOKIES_EXPIRES_IN!)) *
+        24 *
+        60 *
+        60 *
+        1000
+    );
     cookiesStore.set('jwt', response.token, {
       httpOnly: true,
       secure: true,
@@ -394,9 +438,11 @@ export async function updatePasswordAction(_: unknown, formData: FormData) {
     revalidatePath('/account');
     return {
       success: true,
+      errors: {},
     };
   } else {
     return {
+      success: false,
       errors: {
         message: response.message,
       },
@@ -420,19 +466,13 @@ export async function addAddressAction(
     };
   }
 
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
 
-  if (!token) {
-    return {
-      success: false,
-      errors: {
-        message: 'No token found. Please log in again.',
-      },
-    };
-  }
+  const token = checkIsLogin.token!;
 
-  const response = await addAddress(data, token);
+  const response = await addAddress(addressData, token);
   if (response.status === 'success') {
     revalidatePath('/account/addresses');
     revalidatePath('/checkout');
@@ -451,16 +491,10 @@ export async function addAddressAction(
 }
 
 export async function deleteAddressAction(addressId: string) {
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
 
-  if (!token) {
-    return {
-      errors: {
-        message: 'No token found. Please log in again.',
-      },
-    };
-  }
+  const token = checkIsLogin.token!;
 
   try {
     await deleteAddress(addressId, token);
@@ -493,17 +527,11 @@ export async function updateAddressAction(
     };
   }
 
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
 
-  if (!token) {
-    return {
-      success: false,
-      errors: {
-        message: 'No token found. Please log in again.',
-      },
-    };
-  }
+  const token = checkIsLogin.token!;
 
   const response = await updateAddress(addressId, data, token);
   if (response.status === 'success') {
@@ -554,25 +582,16 @@ export async function addOrUpdateCartItemAction(
   variantId: string,
   quantity: number
 ) {
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
-
-  if (!token) {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
     return {
-      errors: {
-        message: 'No token found. Please log in again.',
-      },
-    };
-  }
-
-  const { valid } = await checkToken(token);
-  if (!valid) {
-    return {
+      success: false,
       errors: {
         user: 'Please login to continue',
       },
     };
-  }
+
+  const token = checkIsLogin.token!;
 
   const response = await addOrUpdateCartItem(
     productId,
@@ -598,16 +617,11 @@ export async function removeCartItemAction(
   productId: string,
   variantId: string
 ) {
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
 
-  if (!token) {
-    return {
-      errors: {
-        message: 'No token found. Please log in again.',
-      },
-    };
-  }
+  const token = checkIsLogin.token!;
 
   const response = await removeCartItem(productId, variantId, token);
   if (response.status === 'success') {
@@ -634,6 +648,7 @@ export async function verifyDiscountCodeAction(
   errors: FormError;
 }> {
   const code = formData.get('code') as string;
+  const lineItems = JSON.parse(formData.get('lineItems') as string);
 
   if (!code) {
     return {
@@ -644,22 +659,16 @@ export async function verifyDiscountCodeAction(
     };
   }
 
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
 
-  if (!token) {
-    return {
-      success: false,
-      errors: {
-        message: 'No token found. Please log in again.',
-      },
-    };
-  }
+  const token = checkIsLogin.token!;
 
-  const response = await verifyDiscountCode(code as string, token);
+  const response = await verifyDiscountCode(code as string, lineItems, token);
+  console.log(response);
+
   if (response.data.isValid) {
-    revalidatePath('/cart');
-
     return {
       success: true,
       code,
@@ -692,17 +701,13 @@ export async function reauthenticateAction(
     };
   }
 
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
+
+  const token = checkIsLogin.token!;
+
   const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
-
-  if (!token) {
-    return {
-      errors: {
-        message: 'No token found. Please log in again.',
-      },
-    };
-  }
-
   const response = await reauthenticate(data.password as string, token);
 
   if (response.status === 'success') {
@@ -725,20 +730,327 @@ export async function reauthenticateAction(
   }
 }
 
-export async function createCheckoutSessionAction() {
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+export async function createCheckoutSessionAction(
+  _: unknown,
+  formData: FormData
+) {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
+  const token = checkIsLogin.token!;
 
-  if (!token) {
+  const data = {
+    code: formData.get('code') as string,
+    address: formData.get('address') as string,
+    paymentMethod: formData.get('paymentMethod') as string,
+    lineItems: JSON.parse(formData.get('lineItems') as string),
+    processPayment: formData.get('processPayment') as string,
+    orderId: formData.get('orderId') as string,
+  };
+
+  if (!data.address) {
     return {
       errors: {
-        message: 'No token found. Please log in again.',
+        message: 'Address is required',
       },
     };
   }
 
-  const response = await createCheckoutSession(token);
-  if (response.status === 'success') {
-    redirect(response.session.url);
+  if (!data.paymentMethod) {
+    return {
+      errors: {
+        message: 'Payment method is required',
+      },
+    };
   }
+
+  if (!data.lineItems.length) {
+    return {
+      errors: {
+        message: 'Line items are required',
+      },
+    };
+  }
+
+  let checkoutOrder;
+
+  if (data.processPayment === '1') {
+    if (!data.orderId) {
+      return {
+        errors: {
+          message: 'Order ID is required',
+        },
+      };
+    }
+
+    const response = await getOrderById(data.orderId, token);
+
+    if (response.status !== 'success') {
+      return {
+        errors: {
+          message: response.message,
+        },
+      };
+    }
+
+    const { order } = response.data;
+    checkoutOrder = order;
+  } else {
+    const createOrderResponse = await createOrder(data, token);
+
+    if (createOrderResponse.status !== 'success') {
+      if (
+        createOrderResponse.message ===
+        'You have an unpaid order. Please complete the payment'
+      ) {
+        redirect('/cart?error=unpaidOrder');
+      } else {
+        return {
+          errors: {
+            message: createOrderResponse.message,
+          },
+        };
+      }
+    }
+
+    const { order } = createOrderResponse.data;
+    checkoutOrder = order;
+  }
+
+  if (checkoutOrder.paymentMethod === 'cod') {
+    redirect(`/account/orders/${checkoutOrder._id}`);
+  }
+
+  if (checkoutOrder.paymentMethod === 'stripe') {
+    const response = await createCheckoutSession(
+      checkoutOrder,
+      checkIsLogin.token!,
+      'Stripe'
+    );
+
+    if (response.status === 'success') {
+      redirect(response.session.url);
+    } else {
+      return {
+        errors: {
+          message: response.message,
+        },
+      };
+    }
+  } else if (checkoutOrder.paymentMethod === 'zalopay') {
+    const response = await createCheckoutSession(
+      checkoutOrder,
+      checkIsLogin.token!,
+      'ZaloPay'
+    );
+
+    if (response.status === 'success') {
+      redirect(response.data.order_url);
+    }
+  }
+
+  // const response = await createCheckoutSession(token);
+
+  // if (response.status === 'success') {
+  //   redirect(response.session.url);
+  // }
 }
+
+export const cancelOrderAction = async (orderId: string) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
+
+  const token = checkIsLogin.token!;
+
+  const response = await cancelOrder(orderId, token);
+
+  if (response.status === 'success') {
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const createReviewsByOrderAction = async (
+  orderId: string,
+  reviews: ReviewInput[]
+) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
+
+  const token = checkIsLogin.token!;
+
+  const response = await createReviewsByOrder(reviews, orderId, token);
+
+  if (response.status === 'success') {
+    revalidatePath(`/account/orders/${orderId}`);
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const updateReviewsByOrderAction = async (
+  orderId: string,
+  reviews: ReviewUpdateInput[]
+) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success)
+    return checkIsLogin as { success: boolean; errors: FormError };
+
+  const token = checkIsLogin.token!;
+
+  const response = await updateReviewsByOrder(reviews, orderId, token);
+
+  if (response.status === 'success') {
+    revalidatePath(`/account/orders/${orderId}`);
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const getWishlistAction = async () => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return { ...checkIsLogin, wishlist: null };
+
+  const token = checkIsLogin.token!;
+
+  const response = await getWishlist(token);
+
+  if (response.status === 'success') {
+    return {
+      success: true,
+      wishlist: response.data.wishlist as Wishlist,
+    };
+  } else {
+    return {
+      success: false,
+      wishlist: null,
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const getWishlistByShareCodeAction = async (shareCode: string) => {
+  const response = await getWishlistByShareCode(shareCode);
+
+  if (response.status === 'success') {
+    return {
+      success: true,
+      wishlist: response.data.wishlist as Wishlist,
+    };
+  } else {
+    return {
+      success: false,
+      wishlist: null,
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const addProductToWishlistAction = async (productId: string) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return { ...checkIsLogin, wishlist: null };
+
+  const token = checkIsLogin.token!;
+
+  const response = await addProductToWishlist(productId, token);
+
+  if (response.status === 'success') {
+    revalidatePath('/wishlist');
+    return {
+      success: true,
+      wishlist: response.data.wishlist,
+    };
+  } else {
+    return {
+      success: false,
+      wishlist: null,
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const removeProductFromWishlistAction = async (productId: string) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return { checkIsLogin, wishlist: null };
+
+  const token = checkIsLogin.token!;
+
+  const response = await removeProductFromWishlist(productId, token);
+
+  if (response.status === 'success') {
+    revalidatePath('/wishlist');
+    return {
+      success: true,
+      wishlist: response.data.wishlist,
+    };
+  } else {
+    return {
+      success: false,
+      wishlist: null,
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const addMultipleItemsToCartAction = async (
+  items: { product: string; variant: string; quantity: number }[]
+) => {
+  const input = items.map((item) => ({
+    productId: item.product,
+    variantId: item.variant,
+    quantity: item.quantity,
+  }));
+
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return { ...checkIsLogin, wishlist: null };
+
+  const token = checkIsLogin.token!;
+
+  const response = await addMultipleItemsToCart(input, token);
+
+  if (response.status === 'success') {
+    revalidatePath('/cart');
+    return {
+      success: true,
+      cart: response.data.cart,
+    };
+  } else {
+    return {
+      success: false,
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};

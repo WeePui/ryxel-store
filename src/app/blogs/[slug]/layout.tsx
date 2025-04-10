@@ -1,0 +1,52 @@
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="w-full overflow-x-hidden px-4 sm:px-6">
+      <div
+        className="prose max-w-4xl mx-auto
+        prose-headings:font-title 
+        prose-headings:mt-14 
+        prose-headings:text-primary-default 
+        prose-headings:font-bold 
+        prose-headings:leading-tight 
+        prose-headings:tracking-tight 
+        prose-headings:mb-2 
+        prose-p:text-primary-default 
+        prose-p:leading-7 
+        prose-p:tracking-tight 
+        prose-p:mb-4 
+        prose-p:my-2 
+        prose-a:text-primary-default 
+        prose-a:no-underline 
+        hover:prose-a:no-underline 
+        hover:prose-a:text-primary-default 
+        prose-hr:hidden
+        prose-table:my-4 
+        prose-table:rounded-lg 
+        prose-table:border 
+        prose-table:border-gray-300 
+        prose-table:shadow-md 
+        prose-table:overflow-hidden 
+        prose-table:table-auto 
+        prose-table:text-sm 
+        prose-table:text-left 
+        prose-table:divide-y 
+        prose-table:divide-gray-200 
+        prose-table:whitespace-nowrap
+        prose-th:p-4
+        prose-td:p-4
+        prose-th:border
+        prose-td:border
+        prose-th:border-gray-200
+        prose-td:border-gray-200
+        prose-img:rounded-lg 
+        prose-img:shadow-md 
+        prose-img:max-w-full 
+        prose-img:h-auto 
+        prose-tr:transition-colors
+        hover:prose-tr:bg-gray-50"
+      >
+        {children}
+      </div>
+    </div>
+  );
+}

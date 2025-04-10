@@ -10,7 +10,7 @@ async function SideNavigation() {
   let user;
 
   try {
-    const { status, data } = await getProfile(token);
+    const { status, data } = await getProfile(token!);
     user = data.user;
     if (status !== 'success') throw new Error('Failed to get profile');
   } catch (error) {
@@ -18,7 +18,7 @@ async function SideNavigation() {
   }
 
   return (
-    <div className="h-full py-10 pl-2">
+    <div className="py-10 pl-2 sticky top-0 max-h-[calc(100vh-2rem)] h-fit">
       <div className="flex items-center gap-6">
         <div className="relative aspect-square w-1/4 overflow-hidden rounded-full ring-2 ring-primary-default">
           <Image src={user?.photo?.url} alt={user.name} fill />

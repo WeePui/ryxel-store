@@ -13,14 +13,10 @@ function NumResults({ results, totalResults }: NumResultsProps) {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams);
-    const page = Number(params.get('page')) || 1;
-    if (page > 1 && displayedResults > 0) {
-      setDisplayedResults((prev) => prev + results);
-    } else {
-      setDisplayedResults(results);
-    }
-  }, [searchParams, displayedResults, results]);
+    setDisplayedResults((prev) => {
+      return prev + results;
+    });
+  }, [searchParams, results]);
 
   return (
     <p className="py-6 text-xs text-grey-400">

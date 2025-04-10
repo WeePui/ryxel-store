@@ -1,22 +1,26 @@
 import Link from 'next/link';
 
 const base =
-  'relative transition-colors duration-300 group flex items-center gap-2';
+  'relative transition-colors duration-300 group  items-center gap-2';
 
 const variant = {
-  mainNav: `${base} text-primary-default hover:text-grey-300`,
-  sideNav: `${base} text-grey-300 hover:text-primary-default gap-8 px-4 py-2`,
-  footerNav: `${base} text-grey-300 hover:text-primary-default gap-8 border-gray-300`,
-  danger: `${base} text-red-500 hover:text-red-600 gap-8 px-4 py-2`,
-  filterNav: `${base} text-primary-default font-extrabold`,
+  mainNav: `${base} flex text-primary-default hover:text-grey-300`,
+  sideNav: `${base} flex text-grey-300 hover:text-primary-default gap-8 px-4 py-2`,
+  footerNav: `${base} flex text-white hover:text-primary-50 gap-8 border-gray-300 hover:border-b-[1px]`,
+  danger: `${base} flex text-red-500 hover:text-red-600 gap-8 px-4 py-2`,
+  filterNav: `${base} flex text-primary-default font-extrabold`,
+  mainNavInline: `${base} inline text-primary-default hover:text-grey-300`,
+  secondaryNavInline: `${base} inline text-grey-300 hover:text-primary-default`,
 };
 
 const currentlyActive = {
   mainNav: 'text-primary-default',
   sideNav: 'text-primary-default bg-secondary-300',
-  footerNav: 'text-primary-default bg-secondary-300',
+  footerNav: 'text-white',
   danger: 'text-red-500',
   filterNav: 'text-secondary-50 bg-primary-500',
+  mainNavInline: 'text-primary-default',
+  secondaryNavInline: 'text-grey-300',
 };
 
 interface NavLinkProps {

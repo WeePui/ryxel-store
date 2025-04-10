@@ -3,12 +3,34 @@ import { Product } from '@/app/_types/product';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaRegHeart, FaStar } from 'react-icons/fa6';
+import { FaStar } from 'react-icons/fa6';
+import WishlistButton from '../Wistlist/WishlistButton';
+import { WishlistProvider } from '@/app/_contexts/WishlistContext';
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({
+  product,
+  size = 'default',
+}: {
+  product: Product;
+  size?: 'default' | 'compact';
+}) {
+  const isCompact = size === 'compact';
+
+  function handleCardClick(e: React.MouseEvent) {
+    if ((e.target as HTMLElement).closest('button')) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
   return (
-    <div className="group relative origin-bottom transform rounded-xl border-[1px] border-gray-200 bg-white shadow-sm transition-all duration-300 hover:scale-105">
-      <Link href={`/products/${product._id}`} className="flex h-full flex-col">
+    <div
+      className={`group relative origin-bottom transform rounded-xl border-[1px] border-gray-200 bg-white shadow-sm transition-all duration-300 hover:scale-105 ${
+        isCompact ? 'w-[14rem]' : ''
+      }`}
+      onClick={handleCardClick}
+    >
+      <Link href={`/products/${product.slug}`} className="flex h-full flex-col">
         <div className="relative h-32 w-full">
           <Image
             src={product.imageCover}
@@ -39,9 +61,9 @@ function ProductCard({ product }: { product: Product }) {
               </span>
               {product.category.name}
             </span>
-            <div className="text-xl text-red-700">
-              <FaRegHeart />
-            </div>
+            <WishlistProvider>
+              <WishlistButton productId={product._id} size="small" />
+            </WishlistProvider>
           </div>
         </div>
       </Link>

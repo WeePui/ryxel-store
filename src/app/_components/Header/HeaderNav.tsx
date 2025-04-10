@@ -13,7 +13,10 @@ function HeaderNav() {
           <NavLink href="/products">Category</NavLink>
         </li>
         <li>
-          <NavLink href="/contact">Contact</NavLink>
+          <NavLink href="/contact">Liên hệ</NavLink>
+        </li>
+        <li>
+          <NavLink href="/blogs">Blog</NavLink>
         </li>
       </ul>
     </nav>

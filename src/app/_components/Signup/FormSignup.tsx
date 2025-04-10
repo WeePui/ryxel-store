@@ -178,7 +178,7 @@ function FormSignup() {
               type="checkbox"
               name="terms"
               id="terms"
-              className="h-6 w-6"
+              className="h-5 w-5 rounded-md border border-grey-300 focus:ring-primary-500 focus:ring-1 focus:ring-offset-primary-500 checked:bg-primary-500 mr-2"
             />
             <p className="text-sm text-grey-300">
               Khi bạn chọn vào ô này đồng nghĩa rằng bạn đồng ý với{' '}
@@ -187,14 +187,14 @@ function FormSignup() {
                 className="gap-2 font-normal text-primary-400 transition-colors duration-300 hover:text-grey-300"
               >
                 Quy chế hoạt động
-              </Link>
+              </Link>{' '}
               và{' '}
               <Link
                 href="/privacy"
                 className="gap-2 font-normal text-primary-400 transition-colors duration-300 hover:text-grey-300"
               >
                 Chính sách bảo mật
-              </Link>
+              </Link>{' '}
               của chúng tôi.
             </p>
           </div>

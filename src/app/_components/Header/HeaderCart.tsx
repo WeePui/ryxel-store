@@ -24,24 +24,19 @@ async function HeaderCart() {
     );
   }
 
-  try {
-    const { data } = await getCart(token);
+  const { data } = await getCart(token);
 
-    if (!data) throw new Error('Failed to fetch cart');
-
-    const { cart } = data;
-
-    if (cart) return <>{cart.products && <LoggedCart cart={cart} />}</>;
-    return null;
-  } catch (error) {
-    console.error('Failed to fetch cart:', error);
-
+  if (!data)
     return (
       <NavLink href="/cart" hoverUnderline={false}>
         <FaCartShopping className="text-xl" />
       </NavLink>
     );
-  }
+
+  const { cart } = data;
+
+  if (cart) return <>{cart.lineItems && <LoggedCart cart={cart} />}</>;
+  return null;
 }
 
 export default HeaderCart;

@@ -6,7 +6,8 @@ import { cookies } from 'next/headers';
 async function AddressesList() {
   const cookiesStore = await cookies();
   const token = cookiesStore.get('jwt');
-  const data = await getAddresses(token);
+
+  const data = await getAddresses(token!);
   if (data.status !== 'success') throw new Error(data.message);
   const addresses = data.data.addresses as Address[];
 

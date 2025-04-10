@@ -3,7 +3,6 @@
 import { useState, useTransition } from 'react';
 import Image from 'next/image';
 import NavLink from '../UI/NavLink';
-import { FaRegHeart } from 'react-icons/fa';
 import Counter from '../UI/Counter';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import {
@@ -15,21 +14,30 @@ import Modal from '../UI/Modal';
 import formatCurrency from '@/app/_utils/formatCurrency';
 import Loader from '../UI/Loader';
 import { toast } from 'react-toastify';
+import { LineItem } from '@/app/_types/lineItem';
+import WishlistButton from '../Wistlist/WishlistButton';
+import { Product } from '@/app/_types/product';
 
-function CartItem({ item }) {
+interface CartItemProps {
+  item: LineItem;
+}
+
+function CartItem({ item }: CartItemProps) {
   const [isPending, startTransition] = useTransition();
   const [openConfirm, setOpenConfirm] = useState(false);
   const { product, variant, quantity } = item;
 
-  const itemVariant = product.variants.find((v) => v._id === variant);
+  const itemVariant = (product as Product).variants.find(
+    (v) => v._id === variant
+  )!;
   const image = itemVariant.images[0];
 
-  function handleChangeQuality(value) {
+  function handleChangeQuality(value: number) {
     startTransition(async () => {
       const result = await addOrUpdateCartItemAction(
-        product._id,
-        variant,
-        value,
+        (product as Product)._id,
+        variant as string,
+        value
       );
 
       if (result.errors) {
@@ -40,7 +48,10 @@ function CartItem({ item }) {
 
   function handleRemoveItem() {
     startTransition(async () => {
-      const result = await removeCartItemAction(product._id, variant);
+      const result = await removeCartItemAction(
+        (product as Product)._id,
+        variant as string
+      );
 
       if (result.errors) {
         toast.error(result.errors.message);
@@ -62,7 +73,7 @@ function CartItem({ item }) {
             <div className="relative h-28 w-44 flex-shrink-0 overflow-hidden rounded-xl border-2 border-grey-100 bg-white">
               <Image
                 src={image}
-                alt={product.name}
+                alt={(product as Product).name}
                 className="absolute object-contain"
                 fill
               />
@@ -70,13 +81,13 @@ function CartItem({ item }) {
             <div className="flex flex-1 flex-col gap-4 py-2">
               <p className="text-lg font-bold">
                 <NavLink
-                  href={`/products/${product._id}`}
+                  href={`/products/${(product as Product).slug}`}
                   hoverUnderline={false}
                 >
-                  {product.name} - {itemVariant.name}
+                  {(product as Product).name} - {itemVariant.name}
                 </NavLink>
               </p>
-              <FaRegHeart className="stroke-[14px] text-2xl text-red-500" />
+              <WishlistButton productId={(product as Product)._id} />
             </div>
           </div>
           <div className="flex items-center gap-12">
@@ -105,7 +116,7 @@ function CartItem({ item }) {
                       <span>
                         Bạn có chắc muốn xoá{' '}
                         <span className="font-semibold text-primary-500">
-                          {product.name}
+                          {(product as Product).name}
                         </span>{' '}
                         ra khỏi giỏ hàng?
                       </span>

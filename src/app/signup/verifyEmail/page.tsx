@@ -2,10 +2,15 @@ import ResendOTP from '@/app/_components/ResetPassword/ResendOTP';
 import OTPInput from '@/app/_components/ResetPassword/OTPInput';
 import { FaCircleInfo } from 'react-icons/fa6';
 
+export const metadata = {
+  title: 'Xác thực tài khoản',
+  description: 'Xác thực tài khoản của bạn',
+};
+
 async function page() {
   return (
-    <div className="mx-auto my-auto flex max-w-7xl flex-col items-center justify-center gap-8">
-      <h1 className="text-3xl font-bold text-primary-500">One more step</h1>
+    <div className="mx-auto my-auto flex max-w-7xl flex-col items-center justify-center gap-8 pt-32">
+      <h1 className="text-3xl font-bold text-primary-500">Chỉ một chút nữa</h1>
       <div className="text-center text-grey-default">
         <p>
           Chúng tôi đã gửi e-mail có chứa OTP tới địa chỉ e-mail của bạn. Xin

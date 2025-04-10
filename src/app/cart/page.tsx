@@ -11,7 +11,14 @@ export const metadata: Metadata = {
   description: 'This is the cart page',
 };
 
-async function Page() {
+interface PageProps {
+  searchParams: Promise<{
+    error: string | null;
+  }>;
+}
+
+async function Page({ searchParams }: PageProps) {
+  const error = (await searchParams).error || null;
   const cookiesStore = await cookies();
   const token = cookiesStore.get('jwt');
   let items = [];
@@ -25,8 +32,8 @@ async function Page() {
       if (response.data && response.data.cart) {
         const { data } = response;
         const { cart } = data;
-        items = cart.products;
         subtotal = cart.subtotal;
+        items = cart.lineItems;
       }
     }
   }
@@ -62,7 +69,7 @@ async function Page() {
         </div>
       ) : (
         <>
-          <CartItemsList items={items} />
+          <CartItemsList items={items} error={error} />
           <div className="h-auto">
             <OrderSummary subtotal={subtotal} />
           </div>

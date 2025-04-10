@@ -13,6 +13,8 @@ import NavLink from '../UI/NavLink';
 import { useRouter } from 'next/navigation';
 import formatCurrency from '@/app/_utils/formatCurrency';
 import { Variant } from '@/app/_types/variant';
+import WishlistButton from '../Wistlist/WishlistButton';
+import { WishlistProvider } from '@/app/_contexts/WishlistContext';
 
 function OverviewSection() {
   const { currentVariant, setCurrentVariant, product } = useProductDetail();
@@ -32,11 +34,13 @@ function OverviewSection() {
         quantity
       );
       if (result.success) {
-        toast.success('Product added to cart');
+        toast.success('Sản phẩm đã được thêm vào giỏ hàng.');
       }
       if (result.errors) {
-        if (result.errors.user) router.push('/login');
-        else toast.error(result.errors.message);
+        if (result.errors.user) {
+          toast.error('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
+          router.push('/login');
+        } else toast.error(result.errors.message);
       }
     });
   }
@@ -81,6 +85,13 @@ function OverviewSection() {
               <span className="mr-1 font-semibold">{product.rating}</span>
               <span className="text-xs text-grey-500">
                 (với {product.ratingsQuantity} đánh giá)
+                <span className="ml-4 mr-2 text-grey-400">
+                  Đã bán: {product.sold}
+                </span>
+                |
+                <span className="ml-2 text-grey-400">
+                  Còn lại: {currentVariant.stock}
+                </span>
               </span>
             </span>
           </div>
@@ -89,18 +100,24 @@ function OverviewSection() {
           <div className="mb-6 flex flex-wrap gap-2">
             {product.variants.map((variant) => (
               <Button
-                type="filter"
+                type={variant.stock > 20 ? 'filter' : 'disabledFilter'}
                 key={variant._id}
                 onClick={handleVariantChange.bind(null, variant)}
                 active={currentVariant._id === variant._id}
+                disabled={variant.stock < 20}
               >
                 {variant.name}
               </Button>
             ))}
           </div>
 
-          <h2 className="text-3xl font-bold text-grey-default">
-            {formatCurrency(product.variants[0].price)}
+          <h2 className="flex items-center text-3xl font-bold text-grey-default">
+            <span>{formatCurrency(currentVariant.price)}</span>
+            <div className="ml-auto">
+              <WishlistProvider>
+                <WishlistButton productId={product._id} />
+              </WishlistProvider>
+            </div>
           </h2>
 
           <div className="mt-6 grid grid-cols-[30fr_70fr] items-center gap-4">

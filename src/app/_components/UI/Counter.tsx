@@ -16,7 +16,7 @@ function Counter({ value = 0, onSetValue }: CounterProps) {
 
     if (value === '') {
       setCount('');
-      onSetValue(0);
+      // onSetValue(0);
       return;
     }
 
