@@ -19,14 +19,16 @@ function ConfirmDialogue({
   return (
     <div className="flex flex-col items-center justify-center gap-8">
       <p className="text-lg">{message}</p>
-      <div className="flex gap-6">
+      <div className="flex gap-6 md:gap-4 flex-wrap justify-center">
         {onCancel && (
           <Button type="secondary" onClick={onCancel}>
             {cancelText}
           </Button>
         )}
 
-        <Button onClick={onConfirm}>{confirmText}</Button>
+        <div className="md:order-first">
+          <Button onClick={onConfirm}>{confirmText}</Button>
+        </div>
       </div>
     </div>
   );

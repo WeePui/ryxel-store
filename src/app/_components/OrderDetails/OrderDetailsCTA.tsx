@@ -3,13 +3,18 @@
 import { useState, useTransition } from 'react';
 import Button from '../UI/Button';
 import { useRouter } from 'next/navigation';
-import { cancelOrderAction } from '@/app/_libs/actions';
+import {
+  addMultipleItemsToCartAction,
+  cancelOrderAction,
+} from '@/app/_libs/actions';
 import { toast } from 'react-toastify';
 import ConfirmDialogue from '../UI/ConfirmDialogue';
 import Modal from '../UI/Modal';
 import FormReviewOrder from '../Order/FormReviewOrder';
 import { Order } from '@/app/_types/order';
 import FormUpdateReview from '../Order/FormUpdateReview';
+import { FaCartPlus } from 'react-icons/fa6';
+import { Product } from '@/app/_types/product';
 
 interface OrderDetailsCTAProps {
   order: Order;
@@ -29,6 +34,7 @@ export default function OrderDetailsCTA({
   const router = useRouter();
   const [isDialogueOpen, setIsDialogueOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [buyAgainDialogueOpen, setBuyAgainDialogueOpen] = useState(false);
 
   // Order is cancellable if it's created not longer than 30 minutes
   const currentTime = new Date();
@@ -65,6 +71,29 @@ export default function OrderDetailsCTA({
     });
   }
 
+  function handleAddToCart() {
+    startTransition(async () => {
+      const lineItems = order.lineItems.map((item) => ({
+        product: (item.product as Product)._id,
+        variant: item.variant as string,
+        quantity: item.quantity,
+      }));
+
+      const result = await addMultipleItemsToCartAction(lineItems);
+      if (result.success) {
+        toast.success('Tất cả sản phẩm đã được thêm vào giỏ hàng.', {
+          icon: <FaCartPlus className="text-primary-500" />,
+        });
+
+        router.push('/cart');
+      } else {
+        toast.error('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.', {
+          icon: <FaCartPlus className="text-red-500" />,
+        });
+      }
+    });
+  }
+
   return (
     <div className="flex items-center gap-4">
       {orderStatus === 'unpaid' && (
@@ -92,9 +121,30 @@ export default function OrderDetailsCTA({
         </>
       )}
       {orderStatus === 'cancelled' || orderStatus === 'delivered' ? (
-        <Button type="primary" onClick={handleBuyAgain} size="medium">
-          Mua lại
-        </Button>
+        <>
+          <Button
+            type="primary"
+            onClick={() => {
+              setBuyAgainDialogueOpen(true);
+            }}
+            size="medium"
+          >
+            Mua lại
+          </Button>
+          {buyAgainDialogueOpen && (
+            <Modal onClose={() => setBuyAgainDialogueOpen(false)}>
+              <ConfirmDialogue
+                message={
+                  'Bạn muốn chuyển đến trang thanh toán hay thêm toàn bộ vào giỏ hàng?'
+                }
+                confirmText="Chuyển đến thanh toán"
+                onConfirm={handleBuyAgain}
+                cancelText="Thêm vào giỏ hàng"
+                onCancel={handleAddToCart}
+              />
+            </Modal>
+          )}
+        </>
       ) : null}
       {isCancellable && (
         <>

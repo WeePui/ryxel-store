@@ -27,7 +27,7 @@ function Modal({
     <div className="fixed left-0 top-0 z-[100] h-screen w-full bg-grey-400 bg-opacity-30 backdrop-blur-sm transition-all duration-500">
       {closeOnOutsideClick ? (
         <div
-          className={`fixed left-1/2 top-1/2 max-h-[90vh] max-w-full -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl scrollbar-hide ${
+          className={`fixed md:w-full left-1/2 top-1/2 max-h-[90vh] max-w-full -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl scrollbar-hide ${
             transparent
               ? 'bg-transparent-400 shadow-none'
               : 'bg-white shadow-lg'
@@ -46,7 +46,7 @@ function Modal({
         </div>
       ) : (
         <div
-          className={`fixed left-1/2 top-1/2 max-h-[90vh] max-w-full -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl ${
+          className={`fixed left-1/2 top-1/2 max-h-[90vh] max-w-full -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl md:w-full ${
             transparent
               ? 'bg-transparent-400 shadow-none'
               : 'bg-white shadow-lg'
