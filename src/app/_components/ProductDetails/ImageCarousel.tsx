@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 
@@ -14,6 +14,9 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
   const [slideDirection, setSlideDirection] = useState('');
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const handleThumbnailClick = (clickedImage: string) => {
     const newIndex = images.indexOf(clickedImage);
@@ -54,8 +57,39 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
 
   const mainImage = images[currentIndex];
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+    setTouchEndX(0);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+
+    const minSwipeDistance = 100;
+    const deltaX = touchStartX - touchEndX;
+
+    // Swipe sang trái (next)
+    if (deltaX > minSwipeDistance) {
+      handleNextClick();
+    }
+    // Swipe sang phải (prev)
+    else if (deltaX < -minSwipeDistance) {
+      handlePrevClick();
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center pr-10 lg:pr-0 w-full">
+    <div
+      className="flex flex-col items-center pr-10 lg:pr-0 w-full"
+      ref={carouselRef}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className="relative flex aspect-video h-96 lg:h-64 w-full min-w-0 flex-col overflow-hidden">
         <div className="absolute inset-0 flex transition-transform duration-500">
           <div

@@ -7,6 +7,7 @@ import { ReviewInput, ReviewUpdateInput } from '@/app/_types/validateInput';
 import { toast } from 'react-toastify';
 import { Review } from '@/app/_types/review';
 import Button from '../UI/Button';
+import { Product } from '@/app/_types/product';
 
 interface OrderReviewItemProps {
   lineItem: LineItem;
@@ -56,7 +57,7 @@ export default function OrderReviewItem({
 
   const variant = useMemo(
     () =>
-      lineItem.product.variants.find(
+      (lineItem.product as Product).variants.find(
         (variant) => variant._id === lineItem.variant
       ),
     [lineItem]
@@ -79,7 +80,7 @@ export default function OrderReviewItem({
       review,
       images,
       video,
-      productId: lineItem.product._id,
+      productId: (lineItem.product as Product)._id,
       variantId: variant!._id,
     } as ReviewInput);
   }, [
@@ -87,7 +88,7 @@ export default function OrderReviewItem({
     review,
     images,
     video,
-    lineItem.product._id,
+    (lineItem.product as Product)._id,
     variant,
     reviewItem,
   ]);
@@ -126,14 +127,16 @@ export default function OrderReviewItem({
       <div className="flex items-center gap-1">
         <div className="w-16 h-16 relative aspect-square">
           <Image
-            src={lineItem.product.imageCover}
-            alt={lineItem.product.name}
+            src={(lineItem.product as Product).imageCover}
+            alt={(lineItem.product as Product).name}
             layout="fill"
             objectFit="cover"
           />
         </div>
         <div className="ml-4">
-          <h2 className="font-title text-lg">{lineItem.product.name}</h2>
+          <h2 className="font-title text-lg">
+            {(lineItem.product as Product).name}
+          </h2>
           <p className="text-sm text-gray-400">Phân loại: {variant!.name}</p>
         </div>
         {updatable && !isAllowedToUpdate && (
@@ -239,7 +242,9 @@ export default function OrderReviewItem({
               role="button"
               onClick={() =>
                 document
-                  .getElementById(`file-input-${lineItem.product._id}`)
+                  .getElementById(
+                    `file-input-${(lineItem.product as Product)._id}`
+                  )
                   ?.click()
               }
             >
@@ -252,7 +257,7 @@ export default function OrderReviewItem({
                   : 'Thêm video'}
               </p>
               <input
-                id={`file-input-${lineItem.product._id}`}
+                id={`file-input-${(lineItem.product as Product)._id}`}
                 type="file"
                 accept="image/*,video/*"
                 className="hidden"
@@ -270,14 +275,16 @@ export default function OrderReviewItem({
               role="button"
               onClick={() =>
                 document
-                  .getElementById(`file-input-${lineItem.product._id}`)
+                  .getElementById(
+                    `file-input-${(lineItem.product as Product)._id}`
+                  )
                   ?.click()
               }
             >
               <FaCamera className="text-xl text-gray-500 hover:scale-110 transform transition-transform" />
               <p className="text-sm text-gray-400">Thêm ảnh hoặc video</p>
               <input
-                id={`file-input-${lineItem.product._id}`}
+                id={`file-input-${(lineItem.product as Product)._id}`}
                 type="file"
                 accept="image/*,video/*"
                 className="hidden"
