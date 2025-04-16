@@ -60,7 +60,13 @@ function CheckoutSummary({
 
   return (
     <div className="sticky top-20 flex flex-col divide-y-2 divide-gray-300 rounded-xl bg-grey-50 px-4 font-semibold">
-      <h2 className="py-4 text-2xl font-bold">Tóm tắt đơn hàng</h2>
+      <div className="flex items-center justify-between py-4 xl:flex-col gap-2">
+        <h2 className="text-2xl font-bold">Tóm tắt đơn hàng</h2>
+        <p className="text-xs text-grey-400">
+          *Lưu ý: bạn chỉ có thể huỷ đơn trong vòng 30 phút kể từ khi đặt hàng
+          và trước khi đơn hàng được xác nhận.
+        </p>
+      </div>
       <div className="flex flex-col transition-all duration-300">
         <h3
           onClick={() => setIsApplyVoucher((prev) => !prev)}

@@ -189,7 +189,7 @@ function Input({
             ? 'border-red-500 text-red-500'
             : 'border-grey-300 text-gray-900'
         } 
-        peer block w-full appearance-none rounded-lg border-2 border-grey-300 bg-transparent px-2.5 pb-2.5 pt-4 focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${
+        peer block w-full appearance-none rounded-lg border-2 border-grey-300 bg-transparent px-2.5 pb-2.5  lg:pt-3 lg:pb-1 pt-4 focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${
           disabled && 'cursor-not-allowed text-grey-300 !border-grey-300'
         } !${bgColor}`}
         placeholder=" "

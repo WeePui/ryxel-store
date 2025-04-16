@@ -22,6 +22,7 @@ export default function OrderDetailsCTA({
 }: OrderDetailsCTAProps) {
   const {
     _id: orderId,
+    orderCode,
     status: orderStatus,
     createdAt: orderCreatedAt,
   } = order;
@@ -35,8 +36,9 @@ export default function OrderDetailsCTA({
   const [isPending, startTransition] = useTransition();
 
   const isCancellable =
-    (orderStatus === 'unpaid' || orderStatus === 'pending') &&
-    (currentTime.getTime() - orderTime.getTime()) / (1000 * 60) < 30;
+    orderStatus === 'unpaid' ||
+    (orderStatus === 'pending' &&
+      (currentTime.getTime() - orderTime.getTime()) / (1000 * 60) < 30);
   const isReviewable =
     orderStatus === 'delivered' &&
     order.reviewCount === 0 &&
@@ -44,11 +46,11 @@ export default function OrderDetailsCTA({
   const isReviewViewable = orderStatus === 'delivered' && order.reviewCount > 0;
 
   function handleBuyAgain() {
-    router.push(`/checkout?buyAgain=1&orderId=${orderId}`);
+    router.push(`/checkout?buyAgain=1&orderCode=${orderCode}`);
   }
 
   function handleCheckout() {
-    router.push(`/checkout?processPayment=1&orderId=${orderId}`);
+    router.push(`/checkout?processPayment=1&orderCode=${orderCode}`);
   }
 
   function handleCancelOrder() {
@@ -137,7 +139,7 @@ export default function OrderDetailsCTA({
       {showDetailsButton && (
         <Button
           type="secondary"
-          onClick={() => router.push(`orders/${orderId}`)}
+          onClick={() => router.push(`orders/${orderCode}`)}
           size="medium"
         >
           Xem chi tiết

@@ -16,11 +16,13 @@ import { LineItem } from '@/app/_types/lineItem';
 interface WishlistProductItemProps {
   item: Product;
   onSelectVariant: (cartItem: LineItem) => void;
+  isMobile?: boolean;
 }
 
 export default function WishlistProductItem({
   item,
   onSelectVariant,
+  isMobile = false,
 }: WishlistProductItemProps) {
   const [isPending, startTransition] = useTransition();
   const [selectedVariant, setSelectedVariant] = useState(item.variants[0]);
@@ -47,6 +49,63 @@ export default function WishlistProductItem({
       }
     });
   };
+
+  if (isMobile) {
+    return (
+      <div className="flex gap-4 rounded-lg border border-gray-200 p-4 sm:flex-col sm:gap-2">
+        <div className="relative aspect-square w-24 h-24 sm:w-full flex-shrink-0 rounded-md overflow-hidden border border-gray-300">
+          <Image
+            src={selectedVariant.images[0]}
+            alt={item.name}
+            fill
+            className="object-cover sm:object-contain"
+          />
+        </div>
+        <div className="flex flex-col gap-2 flex-1">
+          <div className="flex justify-between items-center">
+            <span className="font-semibold text-sm">{item.name}</span>
+            <FaTrash
+              onClick={() => removeProductFromWishlist(item._id)}
+              className="text-gray-400 hover:text-red-500 cursor-pointer"
+            />
+          </div>
+
+          <select
+            className="w-full border border-gray-300 rounded-md p-2 text-sm"
+            onChange={(e) => {
+              const selected = item.variants.find(
+                (variant) => variant._id === e.target.value
+              );
+              if (selected) {
+                setSelectedVariant(() => selected);
+                onSelectVariant({
+                  product: item._id,
+                  variant: selected._id,
+                  quantity: 1,
+                });
+              }
+            }}
+          >
+            {item.variants.map((variant) => (
+              <option key={variant._id} value={variant._id}>
+                {variant.name}
+              </option>
+            ))}
+          </select>
+
+          <div className="flex justify-between items-center mt-2">
+            <span className="text-sm font-semibold">
+              <span className="text-gray-400 font-normal">Giá tiền: </span>
+              {formatCurrency(item.lowestPrice)}
+            </span>
+            <Button size="small" disabled={isPending} onClick={handleAddToCart}>
+              {isPending ? <Spinner /> : 'Thêm giỏ hàng'}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <tr className="p-4">

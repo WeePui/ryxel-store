@@ -14,7 +14,7 @@ async function page({ params }: Props) {
   const { resetToken } = await params;
 
   return (
-    <div className="mx-auto mt-14 flex w-full max-w-7xl flex-col items-center gap-8">
+    <div className="mx-auto mt-14  flex w-full max-w-7xl flex-col items-center gap-8  xl:px-6">
       <h1 className="font-title text-3xl font-semibold text-primary-500">
         Đặt lại mật khẩu
       </h1>

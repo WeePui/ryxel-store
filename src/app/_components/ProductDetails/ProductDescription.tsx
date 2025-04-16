@@ -12,16 +12,16 @@ function ProductDescription() {
   };
 
   return (
-    <section className="mt-32 flex w-full justify-center bg-secondary-50 p-4">
-      <div className="flex w-full max-w-7xl justify-between">
-        <div className="flex w-7/12 flex-col justify-center p-4">
+    <section className="mt-32 lg:mt-4 flex w-full justify-center bg-secondary-50 p-4">
+      <div className="flex w-full max-w-7xl justify-between lg:flex-col lg:gap-8 lg:p-0">
+        <div className="flex w-7/12 lg:w-full flex-col justify-center p-4">
           <h2 className="text-2xl font-semibold text-primary-500">Mô tả</h2>
           <div className="mt-4 text-primary-700">
             <p>{product.description}</p>
           </div>
         </div>
-        <div className="w-5/12 p-4">
-          <h2 className="pl-4 text-2xl font-semibold text-primary-500">
+        <div className="w-5/12 lg:w-full p-4 lg:pt-0">
+          <h2 className="pl-4 lg:pl-0 text-2xl font-semibold text-primary-500">
             Thông số kĩ thuật
           </h2>
           <div className="relative mt-4 w-full overflow-hidden">

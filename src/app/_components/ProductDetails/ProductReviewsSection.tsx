@@ -19,15 +19,15 @@ export default function ProductReviewsSection({
   };
 
   return (
-    <section className="mt-16 flex flex-col w-full mx-auto max-w-7xl bg-secondary-50 p-4">
+    <section className="mt-16 lg:mt-2 flex flex-col w-full mx-auto max-w-7xl bg-secondary-50 p-4">
       <h2 className="text-2xl font-semibold text-primary-500 mb-8">
         Đánh giá sản phẩm
       </h2>
-      <div className="flex">
-        <div className="flex-[3] shadow-md px-4 py-3 rounded-lg h-fit sticky top-0">
+      <div className="flex lg:flex-col lg:gap-8 gap-4 w-full">
+        <div className="flex-[3] shadow-md px-4 py-3 rounded-lg self-center h-fit sticky top-0 max-w-md w-full">
           <ReviewOverview onSelectRating={handleRatingSelect} />
         </div>
-        <div className="flex-[7]">
+        <div className="flex-[7] w-full">
           <ReviewList reviews={reviews} selectedRating={selectedRating} />
         </div>
       </div>

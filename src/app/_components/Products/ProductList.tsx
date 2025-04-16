@@ -49,7 +49,7 @@ function ProductList({
 
   return (
     <div className="w-full">
-      <div className="mb-12 grid auto-rows-min grid-cols-4 gap-x-8 gap-y-12">
+      <div className="mb-12 grid auto-rows-min grid-cols-4 xl:grid-cols-3 md:grid-cols-2 gap-x-8 gap-y-12 lg:gap-y-8 lg:gap-x-3">
         {products.length > 0 &&
           products.map((product) => (
             <ProductCard product={product} key={product._id} />

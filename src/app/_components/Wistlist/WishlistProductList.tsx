@@ -39,7 +39,7 @@ export default function WishlistProductList({
 
   return (
     <>
-      <table className="w-full border-collapse border border-gray-200 table-fixed">
+      <table className="w-full border-collapse border border-gray-200 table-fixed md:hidden">
         <thead className="bg-gray-100">
           <tr className="p-4">
             <th className="pl-1 text-center w-1"></th>
@@ -64,6 +64,17 @@ export default function WishlistProductList({
           </tbody>
         </WishlistProvider>
       </table>
+      <div className="flex flex-col gap-4">
+        {items.map((item) => (
+          <WishlistProvider key={item._id}>
+            <WishlistProductItem
+              item={item}
+              onSelectVariant={handleOnUpdateCartItems}
+              isMobile={true}
+            />
+          </WishlistProvider>
+        ))}
+      </div>
       <WishlistCTA cartItems={cartItems} />
     </>
   );

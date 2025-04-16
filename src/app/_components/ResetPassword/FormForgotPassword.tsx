@@ -27,7 +27,7 @@ function FormForgotPassword() {
           Có một liên kết (URL) được đính kèm trong e-mail, xin vui lòng bấm vào
           liên kết đó để đặt lại mật khẩu.
         </p>
-        <div className="flex w-full max-w-xl flex-col gap-2 rounded-lg bg-white px-16 py-12 shadow-sm">
+        <div className="flex w-full max-w-xl flex-col gap-2 rounded-lg bg-white px-16 lg:px-8 py-12 shadow-sm">
           <h4 className="flex items-center gap-2 text-lg font-bold">
             <FaCircleQuestion /> Bạn không tìm thấy e-mail?
           </h4>
@@ -62,7 +62,7 @@ function FormForgotPassword() {
       </p>
       <form
         action={action}
-        className="flex w-full max-w-xl flex-col items-center gap-8 rounded-lg bg-white px-16 py-12 shadow-sm"
+        className="flex w-full max-w-xl flex-col items-center gap-8 rounded-lg bg-white px-16 lg:px-8 py-12 shadow-sm"
       >
         {hasFormError('message', state.errors) && (
           <p className="flex items-center gap-2 p-2 text-sm text-red-500">

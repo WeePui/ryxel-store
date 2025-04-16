@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto grid w-full max-w-7xl grid-cols-[25fr_75fr] gap-2">
+    <div className="mx-auto grid w-full max-w-7xl grid-cols-[25fr_75fr] gap-2 xl:px-2 lg:grid-cols-1">
       <SideNavigation />
-      <div className="h-auto py-8">{children}</div>
+      <div className="h-auto py-8 lg:py-0">{children}</div>
     </div>
   );
 }

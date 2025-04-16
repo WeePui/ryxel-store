@@ -1,8 +1,8 @@
-import { CartItem } from '@/app/_types/cart';
 import CheckoutItem from './CheckoutItem';
+import { LineItem } from '@/app/_types/lineItem';
 
 interface CheckoutItemsListProps {
-  items: CartItem[];
+  items: LineItem[];
   isExpanded?: boolean;
 }
 
@@ -14,12 +14,12 @@ function CheckoutItemsList({ items, isExpanded }: CheckoutItemsListProps) {
       >
         {isExpanded
           ? items.map((item) => (
-              <li key={item.variant} className="py-8">
+              <li key={item.variant as string} className="py-8">
                 <CheckoutItem item={item} />
               </li>
             ))
           : items.slice(0, 3).map((item) => (
-              <li key={item.variant} className="py-8">
+              <li key={item.variant as string} className="py-8">
                 <CheckoutItem item={item} />
               </li>
             ))}
@@ -29,7 +29,7 @@ function CheckoutItemsList({ items, isExpanded }: CheckoutItemsListProps) {
     return (
       <ul className="flex flex-col divide-y divide-gray-200">
         {items.map((item) => (
-          <li key={item.variant} className="py-8">
+          <li key={item.variant as string} className="py-8">
             <CheckoutItem item={item} />
           </li>
         ))}

@@ -20,7 +20,7 @@ function NumResults({ results, totalResults }: NumResultsProps) {
 
   return (
     <p className="py-6 text-xs text-grey-400">
-      Hiển thị {displayedResults} kết quả trong tổng số {totalResults} sản phẩm
+      Tìm thấy {displayedResults} kết quả trong tổng số {totalResults} sản phẩm
     </p>
   );
 }

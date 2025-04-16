@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 function Page() {
   return (
     <div className="flex h-full flex-col bg-white px-8 py-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between sm:flex-col sm:gap-2 sm:items-start">
         <h1 className="text-xl font-bold">Địa chỉ giao hàng</h1>
         <AddAddress />
       </div>

@@ -109,11 +109,8 @@ export async function loginAction(
 
   const cookiesStore = await cookies();
   const expiresAt = new Date(
-    (Date.now() + Number(process.env.JWT_COOKIES_EXPIRES_IN!)) *
-      24 *
-      60 *
-      60 *
-      1000
+    Date.now() +
+      Number(process.env.JWT_COOKIES_EXPIRES_IN!) * 24 * 60 * 60 * 1000
   );
   cookiesStore.set('jwt', loginData.token, {
     httpOnly: true,
@@ -169,11 +166,8 @@ export async function signupAction(
 
   const cookiesStore = await cookies();
   const expiresAt = new Date(
-    (Date.now() + Number(process.env.JWT_COOKIES_EXPIRES_IN!)) *
-      24 *
-      60 *
-      60 *
-      1000
+    Date.now() +
+      Number(process.env.JWT_COOKIES_EXPIRES_IN!) * 24 * 60 * 60 * 1000
   );
   cookiesStore.set('jwt', signupData.token, {
     httpOnly: true,
@@ -421,11 +415,8 @@ export async function updatePasswordAction(
   if (response.status === 'success') {
     const cookiesStore = await cookies();
     const expiresAt = new Date(
-      (Date.now() + Number(process.env.JWT_COOKIES_EXPIRES_IN!)) *
-        24 *
-        60 *
-        60 *
-        1000
+      Date.now() +
+        Number(process.env.JWT_COOKIES_EXPIRES_IN!) * 24 * 60 * 60 * 1000
     );
     cookiesStore.set('jwt', response.token, {
       httpOnly: true,
@@ -692,6 +683,7 @@ export async function reauthenticateAction(
   formData: FormData
 ) {
   const data = Object.fromEntries(formData);
+  const decodedUrl = decodeURIComponent(redirectUrl);
 
   if (!data.password) {
     return {
@@ -713,14 +705,14 @@ export async function reauthenticateAction(
   if (response.status === 'success') {
     const expiresAt = new Date(
       Date.now() +
-        1000 * Number(process.env.REAUTHENTICATED_COOKIES_EXPIRES_IN!)
+        Number(process.env.REAUTHENTICATED_COOKIES_EXPIRES_IN!) * 30 * 1000
     );
     cookiesStore.set('reauthenticated', 'true', {
       httpOnly: true,
       secure: true,
       expires: expiresAt,
     });
-    redirect(redirectUrl);
+    redirect(decodedUrl);
   } else {
     return {
       errors: {
@@ -1053,4 +1045,35 @@ export const addMultipleItemsToCartAction = async (
       },
     };
   }
+};
+
+export const storeSelectedCartItemsAction = async (
+  items: { product: string; variant: string }[]
+) => {
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('jwt');
+
+  if (!token) {
+    return {
+      success: false,
+      errors: {
+        message: 'No token found. Please log in again.',
+      },
+    };
+  }
+  const selectedItems = items.map((item) => {
+    return {
+      product: item.product,
+      variant: item.variant,
+    };
+  });
+
+  cookiesStore.set('selectedCartItems', JSON.stringify(selectedItems), {
+    httpOnly: true,
+    secure: true,
+  });
+  return {
+    success: true,
+    selectedItems,
+  };
 };

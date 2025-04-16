@@ -55,13 +55,13 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
   const mainImage = images[currentIndex];
 
   return (
-    <div className="flex flex-col items-center pr-10">
-      <div className="relative flex aspect-video h-96 w-full flex-col overflow-hidden">
+    <div className="flex flex-col items-center pr-10 lg:pr-0 w-full">
+      <div className="relative flex aspect-video h-96 lg:h-64 w-full min-w-0 flex-col overflow-hidden">
         <div className="absolute inset-0 flex transition-transform duration-500">
           <div
             className={`zoom-container relative ${isZoomed ? 'zoomed' : ''} ${
               slideDirection === 'right' ? 'slide-right' : 'slide-left'
-            } aspect-video h-96 w-full overflow-hidden`}
+            } aspect-video h-96 lg:h-64 w-full overflow-hidden`}
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -77,23 +77,23 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
             />
           </div>
           <button
-            className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-full transform rounded-full bg-primary-default p-3 text-white hover:bg-grey-200 hover:text-primary-400"
+            className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-full transform rounded-full bg-primary-default p-3 text-white hover:bg-grey-200 hover:text-primary-400 lg:hidden"
             onClick={handlePrevClick}
           >
             <FaChevronLeft />
           </button>
           <button
-            className="absolute right-0 top-1/2 -translate-x-full -translate-y-1/2 transform rounded-full bg-primary-default p-3 text-white hover:bg-grey-200 hover:text-primary-400"
+            className="absolute right-0 top-1/2 -translate-x-full -translate-y-1/2 transform rounded-full bg-primary-default p-3 text-white hover:bg-grey-200 hover:text-primary-400 lg:hidden"
             onClick={handleNextClick}
           >
             <FaChevronRight />
           </button>
         </div>
       </div>
-      <div className="item s-center flex gap-4">
+      <div className="items-center flex gap-4">
         {images.map((image, index) => (
           <div
-            className={`group relative h-16 w-28 overflow-hidden rounded-2xl border-2 border-grey-100 transition-all duration-300 hover:scale-110`}
+            className={`group relative h-16 w-28 lg:h-12 lg:w-20 overflow-hidden rounded-2xl border-2 border-grey-100 transition-all duration-300 hover:scale-110`}
             key={image}
             onClick={() => handleThumbnailClick(image)}
           >

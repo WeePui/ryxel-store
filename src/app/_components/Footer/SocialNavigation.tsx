@@ -1,9 +1,9 @@
 import NavLink from '../UI/NavLink';
 import { FaFacebook, FaYoutube, FaInstagram, FaDiscord } from 'react-icons/fa6';
 
-function SocialNavigation() {
+function SocialNavigation({ className }: { className?: string }) {
   return (
-    <ul className="flex items-center gap-4 text-2xl text-white">
+    <ul className={`flex items-center gap-4 text-2xl text-white ${className}`}>
       <li>
         <NavLink type="footerNav" href="https://www.facebook.com/weepui.bh">
           <FaFacebook />

@@ -9,7 +9,7 @@ const base =
 const variant = {
   primary: `${base} rounded-lg text-primary-50 bg-primary-default hover:bg-tertiary-default hover:text-secondary-100`,
   primaryOnTheDark: `${base} rounded-lg text-primary-50 bg-primary-default hover:bg-transparent hover:text-secondary-100`,
-  primaryLarge: `${base} gap-4 text-xl rounded-lg text-primary-50 bg-primary-default py-4 px-6 hover:animate-[jitter_0.5s_ease-in-out_forwards]`,
+  primaryLarge: `${base} gap-4 text-xl rounded-lg text-primary-50 bg-primary-default !py-4 !px-6 hover:animate-[jitter_0.5s_ease-in-out_forwards]`,
   secondary: `${base} rounded-lg text-primary-400 bg-secondary-200 hover:bg-grey-20- hover:text-primary-300`,
   secondaryOnTheDark: `${base} rounded-lg text-primary-400 bg-secondary-200 hover:bg-transparent hover:text-secondary-100`,
   filter: `${base} rounded-3xl text-primary-default font-normal shadow-none bg-secondary-50 py-2 px-4 border-2 border-primary-default hover:bg-grey-50 transition-colors duration-300`,
@@ -20,8 +20,8 @@ const variant = {
 
 const buttonSize = {
   small: 'px-4 py-2 text-sm',
-  medium: 'px-6 py-3 text-base',
-  large: 'px-8 py-4 text-lg',
+  medium: 'px-6 py-3 text-base sm:px-4 sm:py-2 sm:text-sm',
+  large: 'px-8 py-4 text-lg sm:px-4 sm:py-2 sm:text-sm',
 };
 
 const currentlyActive = {

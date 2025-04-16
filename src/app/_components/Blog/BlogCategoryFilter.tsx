@@ -10,7 +10,7 @@ export default function BlogCategoryFilter({
   onCategoryChange,
 }: BlogCategoryFilterProps) {
   return (
-    <div className="flex gap-4 my-4">
+    <div className="flex gap-4 my-4 whitespace-nowrap overflow-auto max-w-full scrollbar-hide px-4 md:bg-grey-100 md:px-6 md:py-2">
       <CategoryButton
         category="Tất cả"
         selectedCategory={selectedCategory}

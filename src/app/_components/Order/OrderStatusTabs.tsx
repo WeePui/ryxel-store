@@ -25,7 +25,7 @@ export default function OrderStatusTabs({ onChangeTab }: OrderStatusTabsProps) {
 
   return (
     <div>
-      <ul className="text-sm font-medium text-center rounded-lg shadow-sm flex dark:divide-gray-700 dark:text-gray-400 overflow-hidden">
+      <ul className="text-sm font-medium text-center rounded-lg shadow-sm flex dark:divide-gray-700 dark:text-gray-400 overflow-hidden overflow-x-auto w-full scrollbar-hide whitespace-nowrap">
         <TabItem
           href="#"
           current={activeTab === 'all'}

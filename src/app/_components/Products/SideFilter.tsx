@@ -27,6 +27,7 @@ interface SideFilterProps {
       count: number;
     }>;
   };
+  isMobile?: boolean;
 }
 
 interface FilterItemProps {
@@ -108,7 +109,12 @@ const ratingOptions = [
   },
 ];
 
-function SideFilter({ brands, priceRanges, specifications }: SideFilterProps) {
+function SideFilter({
+  brands,
+  priceRanges,
+  specifications,
+  isMobile = false,
+}: SideFilterProps) {
   const brandOptions = brands.map((brand) => ({
     value: brand.value,
     label: brand.value,
@@ -236,8 +242,6 @@ function SideFilter({ brands, priceRanges, specifications }: SideFilterProps) {
   }
 
   function handleSpecsChange(specName: string, value: string) {
-    console.log('Spec changed:', specName, value);
-
     const params = new URLSearchParams(searchParams);
     const specs = params.get('specs')
       ? JSON.parse(params.get('specs') as string)
@@ -261,7 +265,11 @@ function SideFilter({ brands, priceRanges, specifications }: SideFilterProps) {
 
   return (
     <SideFilterContext.Provider value={{ filters, setFilters, onChecked }}>
-      <div className="flex h-full flex-col gap-2 rounded-xl bg-grey-50 px-4 pb-6">
+      <div
+        className={`flex h-full flex-col gap-2 rounded-xl ${
+          isMobile ? 'bg-white' : 'bg-grey-50'
+        } px-4 pb-6`}
+      >
         <div className="flex items-center justify-between px-4 pb-2 pt-6">
           <h3 className="text-xl font-bold text-primary-default">Bộ lọc</h3>
           <button onClick={onClear} className="flex items-center gap-2">

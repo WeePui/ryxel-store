@@ -21,13 +21,13 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
 
   if (state?.success === false) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-white px-16 py-12 text-grey-400 shadow-sm">
+      <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-white px-16 lg:px-8 py-12 text-grey-400 shadow-sm">
         <FaRegCircleXmark className="text-5xl text-red-500" />
         <p>Token lấy lại mật khẩu của bạn không hợp lệ hoặc đã hết hạn.</p>
         <p className="mb-4">
           Bạn có thể thử lại bằng cách bấm vào nút Quên mật khẩu bên dưới.
         </p>
-        <Button href="/forgotPassword">Quên mật khẩu</Button>
+        <Button href="/forgot-password">Quên mật khẩu</Button>
       </div>
     );
   }
@@ -39,7 +39,7 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
       </p>
       <form
         action={action}
-        className="flex w-full max-w-xl flex-col items-center gap-8 rounded-lg bg-white px-16 py-12 shadow-sm"
+        className="flex w-full max-w-xl flex-col items-center gap-8 rounded-lg bg-white  px-16 lg:px-8 py-12 shadow-sm"
       >
         <div className="w-full">
           {state?.errors?.password && (

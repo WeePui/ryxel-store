@@ -2,9 +2,8 @@ import { FaCartShopping, FaChevronRight } from 'react-icons/fa6';
 import NavLink from '@components/UI/NavLink';
 import { cookies } from 'next/headers';
 import { checkToken, getCart } from '../_libs/apiServices';
-import CartItemsList from '../_components/Cart/CartItemsList';
-import OrderSummary from '../_components/Cart/OrderSummary';
 import { Metadata } from 'next';
+import CartSummary from '../_components/Cart/CartSummary';
 
 export const metadata: Metadata = {
   title: 'Cart Page',
@@ -22,7 +21,6 @@ async function Page({ searchParams }: PageProps) {
   const cookiesStore = await cookies();
   const token = cookiesStore.get('jwt');
   let items = [];
-  let subtotal = 0;
 
   if (token) {
     const { valid } = await checkToken(token);
@@ -32,14 +30,13 @@ async function Page({ searchParams }: PageProps) {
       if (response.data && response.data.cart) {
         const { data } = response;
         const { cart } = data;
-        subtotal = cart.subtotal;
         items = cart.lineItems;
       }
     }
   }
 
   return (
-    <div className="mx-auto mt-14 grid w-full max-w-7xl grid-cols-[70fr_30fr] gap-10">
+    <div className="mx-auto mt-14 lg:mt-4 grid w-full max-w-7xl grid-cols-[70fr_30fr] gap-10 lg:grid-cols-1 xl:px-6">
       <div className="col-span-full">
         <h1 className="font-title text-3xl font-semibold text-primary-500">
           Giỏ hàng
@@ -68,12 +65,7 @@ async function Page({ searchParams }: PageProps) {
           </p>
         </div>
       ) : (
-        <>
-          <CartItemsList items={items} error={error} />
-          <div className="h-auto">
-            <OrderSummary subtotal={subtotal} />
-          </div>
-        </>
+        <CartSummary items={items} error={error} />
       )}
     </div>
   );

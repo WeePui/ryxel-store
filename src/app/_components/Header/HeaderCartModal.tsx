@@ -3,6 +3,7 @@ import NavLink from '../UI/NavLink';
 import Button from '../UI/Button';
 import formatCurrency from '@/app/_utils/formatCurrency';
 import { Cart } from '@/app/_types/cart';
+import { Product } from '@/app/_types/product';
 
 interface HeaderCartModalProps {
   cart: Cart;
@@ -19,24 +20,26 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
           <ul className="space-y-2">
             {lineItems.slice(0, 4).map((item, index: number) => (
               <li
-                key={item.product.slug}
+                key={item.variant as string}
                 className={`flex items-center ${
                   index === 3 ? 'blurred-item' : ''
                 }`}
               >
-                <NavLink href={`/products/${item.product.slug}`}>
+                <NavLink href={`/products/${(item.product as Product).slug}`}>
                   <Image
-                    src={item.product.imageCover}
-                    alt={item.product.name}
+                    src={(item.product as Product).imageCover}
+                    alt={(item.product as Product).name}
                     width={40}
                     height={40}
                     className="mr-2 rounded"
                   />
                   <div>
-                    <p className="text-sm font-medium">{item.product.name}</p>
+                    <p className="text-sm font-medium">
+                      {(item.product as Product).name}
+                    </p>
                     <p className="text-sm text-gray-500">
                       {item.quantity} (sản phẩm) x{' '}
-                      {formatCurrency(item.product.lowestPrice)}
+                      {formatCurrency((item.product as Product).lowestPrice)}
                     </p>
                   </div>
                 </NavLink>

@@ -35,14 +35,15 @@ function LoggedUser({ user }: LoggedUserProps) {
       >
         <NavLink hoverUnderline={false} href="/account/profile">
           <div className="flex items-center gap-2 rounded-full">
-            <Image
-              src={user.photo.url}
-              alt={user.name}
-              width={35}
-              height={35}
-              className="rounded-full"
-            />
-            <span>{user.name}</span>
+            <div className="w-8 h-8 relative rounded-full overflow-hidden">
+              <Image
+                src={user.photo.url}
+                alt={user.name}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <span className="xl:hidden max-w-[8rem] truncate">{user.name}</span>
           </div>
         </NavLink>
         {isModalVisible && (

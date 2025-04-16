@@ -1,8 +1,6 @@
-import Image from 'next/image';
-
-import SideNavList from './SideNavList';
 import { getProfile } from '../../_libs/apiServices';
 import { cookies } from 'next/headers';
+import ClientWrapper from './ClientWrapper';
 
 async function SideNavigation() {
   const cookiesStore = await cookies();
@@ -17,17 +15,7 @@ async function SideNavigation() {
     return <div className="py-10 pl-2">{(error as Error).message}</div>;
   }
 
-  return (
-    <div className="py-10 pl-2 sticky top-0 max-h-[calc(100vh-2rem)] h-fit">
-      <div className="flex items-center gap-6">
-        <div className="relative aspect-square w-1/4 overflow-hidden rounded-full ring-2 ring-primary-default">
-          <Image src={user?.photo?.url} alt={user.name} fill />
-        </div>
-        <span className="text-lg font-bold text-grey-300">{user?.name}</span>
-      </div>
-      <SideNavList />
-    </div>
-  );
+  return <ClientWrapper user={user} />;
 }
 
 export default SideNavigation;

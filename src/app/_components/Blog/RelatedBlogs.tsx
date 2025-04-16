@@ -14,7 +14,7 @@ export default function RelatedBlogs({ relatedPosts }: RelatedBlogsProps) {
   return (
     <section className="mt-20">
       <h2 className="text-2xl font-bold mb-6">Bài viết liên quan</h2>
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 xl:grid-cols-2 md:grid-cols-1 gap-6">
         {relatedPosts.map((post) => (
           <RelatedBlogCard key={post.slug} blog={post} />
         ))}

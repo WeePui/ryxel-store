@@ -11,11 +11,11 @@ export default {
   ],
   theme: {
     screens: {
-      sm: { max: '639px' },
-      md: { min: '640px', max: '767px' },
-      lg: { min: '768px', max: '1023px' },
-      xl: { min: '1024px', max: '1279px' },
-      '2xl': { min: '1280px' },
+      '2xl': { max: '1535px' }, // Desktop large
+      xl: { max: '1279px' }, // Desktop
+      lg: { max: '1023px' }, // Tablet landscape
+      md: { max: '767px' }, // Tablet portrait
+      sm: { max: '639px' }, // Mobile
     },
     extend: {
       colors: {
@@ -75,6 +75,20 @@ export default {
       fontFamily: {
         sans: ['var(--font-manrope)', 'sans-serif'],
         title: ['var(--font-kanit)', 'sans-serif'],
+      },
+      animation: {
+        'slide-in': 'slideIn 0.3s ease-out forwards',
+        'slide-in-reverse': 'slideInReverse 0.3s ease-out forwards',
+      },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateX(-100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        slideInReverse: {
+          '0%': { transform: 'translateX(100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
       },
     },
   },

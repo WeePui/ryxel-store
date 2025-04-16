@@ -46,7 +46,6 @@ export async function middleware(request: NextRequest) {
 
     if (verified === 'false') {
       const result = await sendOTPAction({ counter: 0 });
-      console.log('result', result);
 
       if (result.success) {
         return NextResponse.redirect(
@@ -75,7 +74,11 @@ export async function middleware(request: NextRequest) {
     try {
       if (!reauthToken || reauthToken.value !== 'true') {
         const reauthUrl = new URL('/reauthenticate', request.nextUrl);
-        reauthUrl.searchParams.set('redirect', request.nextUrl.pathname);
+        reauthUrl.searchParams.set(
+          'redirect',
+          encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)
+        );
+
         return NextResponse.redirect(reauthUrl);
       }
 

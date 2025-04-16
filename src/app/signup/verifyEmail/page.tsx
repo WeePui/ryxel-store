@@ -9,14 +9,14 @@ export const metadata = {
 
 async function page() {
   return (
-    <div className="mx-auto my-auto flex max-w-7xl flex-col items-center justify-center gap-8 pt-32">
+    <div className="mx-auto my-auto flex max-w-7xl flex-col items-center justify-center gap-8 pt-32 lg:pt-16 xl:px-6">
       <h1 className="text-3xl font-bold text-primary-500">Chỉ một chút nữa</h1>
       <div className="text-center text-grey-default">
         <p>
           Chúng tôi đã gửi e-mail có chứa OTP tới địa chỉ e-mail của bạn. Xin
           lưu ý OTP chỉ có tác dụng trong 10 phút.
         </p>
-        <p>Xin hãy nhập OTP dưới đây.</p>
+        <p>Xin hãy nhập OTP dưới đây:</p>
       </div>
       <OTPInput />
       <ResendOTP />

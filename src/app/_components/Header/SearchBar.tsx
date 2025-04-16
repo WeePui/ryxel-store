@@ -20,12 +20,12 @@ function SearchBar() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <FaSistrix className="absolute left-3 top-1/2 z-10 -translate-y-1/2 transform text-xl text-gray-500" />
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          className="w-56 rounded-full border-2 border-gray-200 py-2 pl-10 pr-8 transition-all duration-500 focus:w-96 focus:outline-none focus:ring-2 focus:ring-tertiary-400"
+          className="w-56 lg:w-full xl:w-[13.4rem] rounded-full border-2 border-gray-200 py-2 pl-10 pr-8 transition-all duration-500 focus:w-96 xl:focus:w-[13.4rem] focus:outline-none focus:ring-2 focus:ring-tertiary-400 md:focus:w-full"
           placeholder="Tìm kiếm sản phẩm, danh mục & khác ..."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}

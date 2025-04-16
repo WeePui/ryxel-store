@@ -43,7 +43,7 @@ function FormAddAddress({ onSubmit }: FormAddAddressProps) {
   if (isPending) return <Loader />;
 
   return (
-    <form className="flex w-[600px] flex-col gap-6" action={action}>
+    <form className="flex w-[600px] max-w-full flex-col gap-6" action={action}>
       <h1 className="mb-2 text-xl font-semibold">Địa chỉ mới</h1>
       <div className="flex items-center gap-6">
         <div className="w-full">

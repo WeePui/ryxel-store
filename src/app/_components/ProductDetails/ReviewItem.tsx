@@ -24,7 +24,9 @@ export default function ReviewItem({ review }: ReviewItemProps) {
         <div className="relative aspect-w-1 aspect-h-1 w-12 h-12 overflow-hidden rounded-full border-2 border-gray-default">
           <Image src={review.user.photo.url} alt={review.user.name} fill />
         </div>{' '}
-        <span className="text-sm font-semibold">{review.user.name}</span>
+        <span className="text-sm lg:text-center font-semibold">
+          {review.user.name}
+        </span>
       </div>
       <div className="flex flex-col flex-[8] gap-1">
         <div className="flex gap-1">

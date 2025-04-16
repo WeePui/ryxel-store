@@ -29,7 +29,7 @@ function CheckoutAddressList({
 
   return (
     <>
-      <div className="mb-10 flex items-center justify-between">
+      <div className="mb-10 flex items-center justify-between md:flex-col md:gap-4 md:items-start">
         <h2 className="text-xl font-bold">Danh sách địa chỉ</h2>
         <AddAddress />
       </div>
@@ -37,15 +37,18 @@ function CheckoutAddressList({
         {sortedAddresses.map((address) => (
           <label
             key={address._id}
-            className="flex cursor-pointer items-center gap-4 p-4"
+            className="flex cursor-pointer items-center gap-4 p-4 lg:flex-col lg:gap-2 lg:items-start"
           >
-            <input
-              type="radio"
-              name="address"
-              checked={selectedAddress?._id === address._id}
-              onChange={() => handleAddressChange(address)}
-              className="h-4 w-4 cursor-pointer"
-            />
+            <div className="flex items-center gap-2 ">
+              <input
+                type="radio"
+                name="address"
+                checked={selectedAddress?._id === address._id}
+                onChange={() => handleAddressChange(address)}
+                className="h-4 w-4 cursor-pointer"
+              />
+              <span className="hidden lg:block">Chọn địa chỉ</span>
+            </div>
             <AddressCard address={address} />
           </label>
         ))}

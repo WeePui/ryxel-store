@@ -6,6 +6,7 @@ import NumResults from '@components/Products/NumResults';
 import { generatePriceRanges } from '@helpers/generatePriceRanges';
 import SortSelector from '@components/Products/SortSelector';
 import { Product } from '../../_types/product';
+import FilterButton from './FilterButton';
 
 interface Props {
   searchParams: Promise<{ [key: string]: string }>;
@@ -59,16 +60,36 @@ export default async function ProductsPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl flex-1">
+    <div className="mx-auto max-w-7xl xl:max-w-full flex-1 xl:px-6 lg:px-3">
       <main className="mb-16">
         <NumResults
           results={displayResults}
           totalResults={displayTotalProducts}
         />
-        <CategoryFilter />
-        <SortSelector />
-        <div className="grid grid-cols-[20fr_80fr] gap-x-6 py-7">
-          <div className="sticky top-4 max-h-[calc(100vh-2rem)] h-fit shadow-md rounded-xl overflow-auto scrollbar-hide">
+
+        <div className="overflow-x-hidden max-w-full">
+          <CategoryFilter />
+        </div>
+        <div className="hidden lg:flex flex-col justify-between py-4">
+          <p className="mb-2 pl-2 font-thin hidden md:block">Sắp xếp:</p>
+          <div className="hidden lg:flex gap-2 items-center">
+            <div className="flex-[6]">
+              <SortSelector />
+            </div>
+            <div className="md:flex-[4]">
+              <FilterButton
+                brands={brands}
+                priceRanges={priceRanges}
+                specifications={specs}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="lg:hidden">
+          <SortSelector />
+        </div>
+        <div className="grid grid-cols-[20fr_80fr] xl:grid-cols-[25fr_75fr] lg:grid-cols-1 gap-x-6 py-7">
+          <div className="lg:hidden sticky top-4 max-h-[calc(100vh-2rem)] h-fit shadow-md rounded-xl overflow-auto scrollbar-hide">
             <SideFilter
               brands={brands}
               priceRanges={priceRanges}

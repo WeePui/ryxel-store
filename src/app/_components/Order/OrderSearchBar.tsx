@@ -25,7 +25,7 @@ export default function OrderSearchBar() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          className="w-60 rounded-full border-2 border-gray-200 py-2 pl-10 pr-8 transition-all duration-500 focus:w-96 focus:outline-none focus:ring-2 focus:ring-tertiary-400"
+          className="w-60 rounded-full border-2 border-gray-200 py-2 pl-10 pr-8 transition-all duration-500 focus:w-96 md:focus:w-full focus:outline-none focus:ring-2 focus:ring-tertiary-400"
           placeholder="Tìm kiếm bằng tên sản phẩm, mã đơn hàng, ..."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}

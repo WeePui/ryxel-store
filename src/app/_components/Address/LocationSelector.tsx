@@ -124,7 +124,7 @@ function LocationSelector({ address }: LocationSelectorProps) {
   };
 
   return (
-    <div className="flex w-full items-center gap-2">
+    <div className="flex w-full items-center gap-2 sm:flex-col sm:gap-4">
       <Input
         type="select"
         label="Province/City"
@@ -146,7 +146,7 @@ function LocationSelector({ address }: LocationSelectorProps) {
       <Input
         type="select"
         label="Quận/Huyện"
-        optionPlaceholder="Select district"
+        optionPlaceholder="Chọn quận/huyện"
         name="districtCode"
         id="districtCode"
         options={districts.map((district) => ({
@@ -165,7 +165,7 @@ function LocationSelector({ address }: LocationSelectorProps) {
       <Input
         type="select"
         label="Phường/Xã"
-        optionPlaceholder="Select ward"
+        optionPlaceholder="Chọn phường/xã"
         name="wardCode"
         id="wardCode"
         options={wards.map((ward) => ({

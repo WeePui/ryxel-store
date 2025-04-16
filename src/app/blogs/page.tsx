@@ -11,7 +11,7 @@ export default function page() {
 
   return (
     <div>
-      <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-grey-400 max-w-7xl mx-auto">
+      <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-grey-400 max-w-7xl mx-auto xl:px-6">
         <NavLink href="/">
           <span className="text-grey-400">Trang chủ</span>
         </NavLink>

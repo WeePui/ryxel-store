@@ -42,7 +42,7 @@ export default function BlogList({ blogs }: BlogListProps) {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 p-4">
+          <div className="grid grid-cols-2 xl:grid-cols-1 gap-4 p-4">
             {filteredBlogs.map((blog) => (
               <BlogCard key={blog.slug} blog={blog} />
             ))}

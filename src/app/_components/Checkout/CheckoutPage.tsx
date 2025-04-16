@@ -7,6 +7,7 @@ import CheckoutItems from './CheckoutItems';
 import SelectPaymentMethod from './SelectPaymentMethod';
 import CheckoutSummary from './CheckoutSummary';
 import { LineItem } from '@/app/_types/lineItem';
+import { Product } from '@/app/_types/product';
 
 interface CheckoutPageProps {
   addresses: Address[];
@@ -30,14 +31,14 @@ export default function CheckoutPage({
   };
 
   return (
-    <div className="mx-auto mt-14 grid w-full max-w-7xl grid-cols-[70fr_30fr] gap-10">
+    <div className="mx-auto mt-14 lg:mt-4 grid w-full max-w-7xl xl:px-6 grid-cols-[70fr_30fr] lg:grid-cols-1 gap-10">
       <h1 className="col-span-full self-start font-title text-3xl font-semibold text-primary-500">
         Đặt hàng
       </h1>
       <SelectAddress addresses={addresses} onSelect={setSelectedAddress} />
       <CheckoutItems items={lineItems} />
       <SelectPaymentMethod onSelect={setSelectedPaymentMethod} />
-      <div className="col-start-2 row-span-3 row-start-2">
+      <div className="col-start-2 row-span-3 row-start-2 lg:col-span-full lg:row-start-5">
         <CheckoutSummary
           subtotal={subtotal}
           code={code || ''}
@@ -45,7 +46,7 @@ export default function CheckoutPage({
           paymentMethod={selectedPaymentMethod}
           lineItems={lineItems.map((item) => {
             return {
-              product: item.product._id,
+              product: (item.product as Product)._id,
               variant: item.variant,
               quantity: item.quantity,
             } as {

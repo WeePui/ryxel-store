@@ -31,7 +31,7 @@ function FormSignup() {
   };
 
   return (
-    <div className="w-full max-w-xl gap-2 rounded-lg bg-white px-16 py-8 shadow-sm">
+    <div className="w-full max-w-xl gap-2 rounded-lg bg-white px-16 lg:px-8 py-8 shadow-sm">
       <h3 className="mb-8 text-center text-primary-500">
         Chỉ một tài khoản cho mọi dịch vụ của Ryxel Store
       </h3>
@@ -118,7 +118,7 @@ function FormSignup() {
           <Input
             name="email"
             id="email"
-            label="E-mail address"
+            label="Địa chỉ email"
             type="email"
             error={!!state?.errors?.email}
             defaultValue={state?.inputData?.email || ''}

@@ -42,10 +42,10 @@ function AddressCard({ address }: AddressCardProps) {
   }
 
   return (
-    <div className="flex w-full justify-between gap-6 py-4">
+    <div className="flex w-full justify-between gap-6 py-4 sm:flex-col sm:gap-4 sm:py-2">
       <div>
         <div className="flex items-center gap-2">
-          <h3 className="text-lg">{address.fullname}</h3>
+          <h3 className="text-lg whitespace-nowrap">{address.fullname}</h3>
           <span className="text-xl font-thin text-grey-default">&#x2758;</span>
           <p className="text-grey-300">{address.phoneNumber}</p>
         </div>
@@ -54,15 +54,15 @@ function AddressCard({ address }: AddressCardProps) {
           {address.ward.name}, {address.district.name}, {address.city.name}
         </p>
         {address.isDefault && (
-          <span className="mt-2 inline-block rounded-xl border-2 border-primary-default px-2 text-center">
+          <span className="mt-2 inline-block rounded-xl border-2 border-primary-default px-2 text-center lg:text-sm">
             Mặc định
           </span>
         )}
       </div>
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
         <div className="flex items-center gap-4">
           <button
-            className="text-primary-default"
+            className="text-primary-default truncate"
             onClick={() => setOpenEditModal(true)}
           >
             Cập nhật
@@ -77,7 +77,7 @@ function AddressCard({ address }: AddressCardProps) {
           )}
           {!address.isDefault && (
             <button
-              className="text-red-500"
+              className="text-red-500 lg:mr-4"
               onClick={() => setOpenDeleteModal(true)}
             >
               Xoá
@@ -102,7 +102,7 @@ function AddressCard({ address }: AddressCardProps) {
           onClick={handleSetDefaultAddress}
           size="small"
         >
-          Đặt mặc định
+          <span className="whitespace-nowrap">Đặt mặc định</span>
         </Button>
       </div>
     </div>

@@ -16,7 +16,7 @@ function SideNavList() {
   const pathName = usePathname();
 
   return (
-    <ul className="mt-10 flex flex-col gap-4 text-lg text-primary-500">
+    <ul className="mt-10 lg:mt-6 flex flex-col gap-4 lg:gap-2 text-lg lg:text-base lg:font-semibold text-primary-500">
       <li>
         <NavLink
           type="sideNav"
@@ -61,7 +61,7 @@ function SideNavList() {
         <NavLink
           type="sideNav"
           href="/account/wishlist"
-          active={pathName === '/wishlist'}
+          active={pathName.includes('/wishlist')}
         >
           <FaHeart className="text" />
           Danh sách yêu thích

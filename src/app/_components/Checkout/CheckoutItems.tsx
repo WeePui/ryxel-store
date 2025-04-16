@@ -17,7 +17,7 @@ function CheckoutItems({ items }: CheckoutItemsProps) {
   };
 
   return (
-    <div className="flex w-full flex-col gap-6 rounded-xl bg-white p-8 shadow-md">
+    <div className="flex w-full flex-col gap-6 md:gap-2 rounded-xl bg-white p-8 md:px-4 md:pb-2 shadow-md">
       <div className="flex justify-between items-center">
         <h2 className="flex items-center text-xl font-bold">
           <FaBagShopping />

@@ -46,27 +46,27 @@ function OverviewSection() {
   }
 
   return (
-    <section className="h-[36rem] bg-grey-400">
-      <div className="mx-auto grid h-full max-w-[77.5rem] translate-y-12 grid-cols-[65fr_35fr] overflow-hidden rounded-3xl bg-white px-12 py-6 shadow-lg">
-        <div className="flex flex-col gap-6">
+    <section className="min-h-[36rem] xl:h-full bg-grey-400">
+      <div className="mx-auto grid h-full max-w-[77.5rem] lg:max-w-full translate-y-12 xl:translate-y-0 grid-cols-[65fr_35fr] xl:grid-cols-[60fr_40fr] lg:grid-cols-1 rounded-3xl xl:rounded-none bg-white px-12 lg:px-8 md:px-4 py-6 lg:py-2 shadow-lg">
+        <div className="flex flex-col gap-6 min-w-0">
           <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-grey-400">
             <NavLink href="/">
-              <span className="text-grey-400">Trang chủ</span>
+              <span className="text-grey-400 md:truncate">Trang chủ</span>
             </NavLink>
             <FaChevronRight className="text-xs" />
             <NavLink href="/products">
-              <span className="text-grey-400">Cửa hàng</span>
+              <span className="text-grey-400 md:truncate">Cửa hàng</span>
             </NavLink>
             <FaChevronRight className="text-xs" />
-            <span className="text-primary-500">{product.name}</span>
+            <span className="text-primary-500 md:truncate">{product.name}</span>
           </div>
           <ImageCarousel
             images={currentVariant.images}
             alt={currentVariant.name}
           />
         </div>
-        <div className="py-8">
-          <div className="mb-6">
+        <div className="py-8 lg:py-4 min-w-0">
+          <div className="mb-6 lg:hidden">
             <span className="flex items-center text-sm text-grey-500">
               <span className="mr-2 text-2xl font-bold text-primary-default">
                 &#10072;
@@ -79,7 +79,7 @@ function OverviewSection() {
             {product.name}
           </h2>
 
-          <div className="mb-8">
+          <div className="mb-8 lg:mb-4">
             <span className="flex items-center">
               <FaStar className="mr-2 text-xl text-yellow-500" />
               <span className="mr-1 font-semibold">{product.rating}</span>
@@ -96,7 +96,7 @@ function OverviewSection() {
             </span>
           </div>
 
-          <p className="mb-6 text-xs text-grey-500">Chọn sản phẩm:</p>
+          <p className="mb-6 lg:mb-2 text-xs text-grey-500">Chọn sản phẩm:</p>
           <div className="mb-6 flex flex-wrap gap-2">
             {product.variants.map((variant) => (
               <Button

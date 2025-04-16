@@ -14,4 +14,5 @@ export interface Order {
   discountAmount: number;
   subtotal: number;
   reviewCount: number;
+  orderCode: string;
 }

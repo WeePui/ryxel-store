@@ -30,6 +30,7 @@ interface NavLinkProps {
   hoverUnderline?: boolean;
   active?: boolean;
   isInline?: boolean;
+  className?: string;
 }
 
 function NavLink({
@@ -39,13 +40,14 @@ function NavLink({
   hoverUnderline = true,
   active = false,
   isInline = false,
+  className = '',
 }: NavLinkProps) {
   return (
     <Link
       href={href}
       className={`${variant[type]} ${active && currentlyActive[type]} ${
         isInline ? 'inline' : ''
-      }`}
+      } ${className}`}
     >
       {children}
       {type === 'mainNav' && hoverUnderline && (

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className="mx-auto mt-14 flex w-full max-w-7xl flex-col gap-10">
+    <div className="mx-auto mt-14 lg:mt-4 flex w-full max-w-7xl flex-col gap-10 xl:px-6">
       <div>
         <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-grey-400">
           <NavLink href="/">

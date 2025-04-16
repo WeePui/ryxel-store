@@ -13,7 +13,7 @@ async function HeaderUser() {
       <NavLink hoverUnderline={false} href="/login">
         <div className="flex items-center gap-2">
           <FaCircleUser className="text-xl" />
-          <span>Đăng nhập</span>
+          <span className="lg:hidden">Đăng nhập</span>
         </div>
       </NavLink>
     );
@@ -24,7 +24,7 @@ async function HeaderUser() {
       <NavLink hoverUnderline={false} href="/login">
         <div className="flex items-center gap-2">
           <FaCircleUser className="text-xl" />
-          <span>Đăng nhập</span>
+          <span className="lg:hidden">Đăng nhập</span>
         </div>
       </NavLink>
     );
@@ -41,7 +41,7 @@ async function HeaderUser() {
       <NavLink hoverUnderline={false} href="/login">
         <div className="flex items-center gap-2">
           <FaCircleUser className="text-xl" />
-          <span>Đăng nhập</span>
+          <span className="lg:hidden">Đăng nhập</span>
         </div>
       </NavLink>
     );

@@ -26,20 +26,20 @@ export default function ReviewOverview({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2">
-      <div className="flex gap-4 items-center">
-        <h3 className="text-[94px] font-title  text-primary-500 flex items-center gap-2">
+    <div className="flex flex-col items-center justify-center gap-2 lg:gap-0">
+      <div className="flex gap-4 items-center ">
+        <h3 className="text-[94px] font-title lg:text-[56px] text-primary-500 flex items-center gap-2">
           {product.rating}
         </h3>
         <div className="flex flex-col gap-1">
           <div className="flex gap-1">
             {Array.from({ length: Math.ceil(product.rating) }, (_, i) => (
-              <span key={i} className="text-yellow-500 text-xl">
+              <span key={i} className="text-yellow-500 text-xl lg:text-lg">
                 <FaStar />
               </span>
             ))}
             {Array.from({ length: 5 - product.rating }, (_, i) => (
-              <span key={i} className="text-gray-300 text-xl">
+              <span key={i} className="text-gray-300 text-xl lg:text-lg">
                 <FaRegStar />
               </span>
             ))}
@@ -47,7 +47,7 @@ export default function ReviewOverview({
           <p className="text-gray-400">{product.ratingsQuantity} đánh giá</p>
         </div>
       </div>
-      <div className="flex flex-col w-full px-4 gap-2">
+      <div className="flex flex-col w-full px-4 gap-2 lg:px-2 lg:gap-1">
         {product.reviews.length > 0 &&
           Array.from({ length: 5 }, (_, i) => {
             return (
@@ -65,7 +65,7 @@ export default function ReviewOverview({
           role="button"
           onClick={() => handleRatingSelect(0)}
         >
-          <span className="text-sm font-medium text-primary-default dark:text-white ">
+          <span className="text-sm font-medium lg:text-xs text-primary-default dark:text-white ">
             (Xem tất cả đánh giá)
           </span>
         </div>
@@ -99,10 +99,10 @@ function RatingProgressBar({
       className="cursor-pointer hover:opacity-70 transition-all hover:scale-105 duration-300"
     >
       <div className="flex justify-between mb-1">
-        <span className="text-sm font-medium text-primary-default dark:text-white">
+        <span className="text-sm lg:text-xs font-medium text-primary-default dark:text-white">
           {rating} sao
         </span>
-        <span className="text-sm font-medium text-primary-default dark:text-white">
+        <span className="text-sm lg:text-xs font-medium text-primary-default dark:text-white">
           {count}
         </span>
       </div>

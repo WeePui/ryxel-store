@@ -2,7 +2,7 @@
 
 import { FaCartShopping } from 'react-icons/fa6';
 import NavLink from '../UI/NavLink';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import HeaderCartModal from './HeaderCartModal';
 import { Cart } from '@/app/_types/cart';
 
@@ -12,15 +12,24 @@ interface LoggedCartProps {
 
 function LoggedCart({ cart }: LoggedCartProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  useEffect(() => {
+    setIsTouchDevice(window.matchMedia('(pointer: coarse)').matches);
+  }, []);
+
   const handleMouseEnter = () => {
+    if (isTouchDevice) return;
+
     clearTimeout(timeoutRef.current!);
     setIsModalVisible(true);
   };
 
   const handleMouseLeave = () => {
+    if (isTouchDevice) return;
+
     timeoutRef.current = setTimeout(() => {
       setIsModalVisible(false);
     }, 200);
@@ -38,7 +47,7 @@ function LoggedCart({ cart }: LoggedCartProps) {
           <span className="text-tertiary-500">({cart.lineItems?.length})</span>
         </div>
       </NavLink>
-      {isModalVisible && <HeaderCartModal cart={cart} />}
+      {!isTouchDevice && isModalVisible && <HeaderCartModal cart={cart} />}
     </div>
   );
 }

@@ -29,8 +29,8 @@ export default async function page({ searchParams }: PageProps) {
   const { orders } = data;
 
   return (
-    <div className="flex h-full flex-col bg-white px-8 py-6">
-      <div className="flex items-center justify-between">
+    <div className="flex h-full flex-col bg-white px-8 sm:px-2 py-6">
+      <div className="flex items-center justify-between sm:flex-col sm:gap-4 sm:items-start">
         <div>
           <h1 className="text-xl font-bold">Đơn hàng</h1>
           <p className="text-sm text-grey-400">{description}</p>

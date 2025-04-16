@@ -1,5 +1,6 @@
+'use client';
+
 import { Order } from '@/app/_types/order';
-import React from 'react';
 import OrderCard from './OrderCard';
 
 interface OrderListProps {

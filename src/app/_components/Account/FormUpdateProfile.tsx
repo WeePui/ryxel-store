@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useState, useTransition } from 'react';
 import Spinner from '@/app/_components/UI/Spinner';
 import { sendOTPAction, updateProfileAction } from '@libs/actions';
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
+import { FaArrowUpRightFromSquare, FaCircleInfo } from 'react-icons/fa6';
 import NavLink from '@/app/_components/UI/NavLink';
 import Button from '../UI/Button';
 import Image from 'next/image';
@@ -88,11 +88,14 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
   };
 
   return (
-    <form className="flex py-2" action={action}>
+    <form className="flex py-2 md:flex-col" action={action}>
       <div className="flex flex-[7] flex-col gap-4">
         <div className="grid grid-cols-1 gap-6">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="name" className="text-right text-grey-300">
+          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+            <label
+              htmlFor="name"
+              className="text-right text-grey-300 md:text-left"
+            >
               Tên tài khoản
             </label>
             <input
@@ -103,8 +106,11 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               className="col-span-3 w-full rounded-lg border-2 border-grey-300 p-2"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="phone" className="text-right text-grey-300">
+          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+            <label
+              htmlFor="gender"
+              className="text-right text-grey-300 md:text-left"
+            >
               Giới tính
             </label>
             <div className="col-span-3 flex w-full gap-3">
@@ -143,8 +149,11 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="email" className="text-right text-grey-300">
+          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+            <label
+              htmlFor="email"
+              className="text-right text-grey-300 md:text-left"
+            >
               Email
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
@@ -162,8 +171,11 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               )}
             </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="phone" className="text-right text-grey-300">
+          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+            <label
+              htmlFor="phone"
+              className="text-right text-grey-300 md:text-left"
+            >
               Số điện thoại
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
@@ -188,8 +200,11 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
           {
             //TODO: Add birthday field if OAuth can't get user's birthday
           }
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="phone" className="text-right text-grey-300">
+          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+            <label
+              htmlFor="dob"
+              className="text-right text-grey-300 md:text-left"
+            >
               Sinh nhật
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
@@ -218,13 +233,13 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
         </div>
       </div>
       <div className="ml-6 w-[1px] bg-grey-300"></div>
-      <div className="mt-6 flex flex-[3] flex-col items-center gap-4">
+      <div className="mt-6 flex flex-[3] flex-col items-center gap-4 md:order-first md:mb-12">
         {isLoading ? (
           <div className="flex flex-[3] flex-col items-center gap-4">
             <Spinner />
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-4 md:gap-1">
             <div
               className="relative aspect-square w-3/5 cursor-pointer overflow-hidden rounded-full"
               onClick={handlePhotoClick}
@@ -248,10 +263,14 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               onClick={handlePhotoClick}
               disabled={isLoading || isPending}
               size="small"
+              className="md:hidden"
             >
               Đổi ảnh đại diện
             </Button>
-            <span className="text-sm text-gray-400">
+            <span className="items-center gap-2 mt-2 text-md font-semibold text-grey-300 hidden md:flex">
+              <FaCircleInfo /> Bấm vào ảnh để thay đổi
+            </span>
+            <span className="text-md md:text-xs text-gray-400">
               Định dạng: .JPEG, .JPG, .PNG
             </span>
           </div>

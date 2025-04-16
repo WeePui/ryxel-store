@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 
 async function Login() {
   return (
-    <div className="mx-auto mt-14 flex w-full max-w-7xl flex-col items-center gap-10">
+    <div className="mx-auto mt-14 flex w-full max-w-7xl flex-col items-center gap-10 lg:gap-6 xl:px-6">
       <h2 className="font-title text-3xl font-semibold text-primary-500">
         Tài khoản Ryxel
       </h2>
       <FormLogin />
-      <NavLink href="/forgotPassword">Quên mật khẩu?</NavLink>
+      <NavLink href="/forgot-password">Quên mật khẩu?</NavLink>
       <hr className="my-1 w-1/2 border-t border-gray-200" />
       <div className="flex flex-col items-center gap-4">
         <p>Bạn chưa có tài khoản?</p>

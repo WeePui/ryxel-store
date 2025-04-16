@@ -66,13 +66,13 @@ function HeroSlider({ slides }: HeroSliderProps) {
 
       <button
         onClick={prevSlide}
-        className="absolute left-5 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-secondary-200 text-xl text-primary-400"
+        className="absolute left-5 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-secondary-200 text-xl text-primary-400 xl:hidden"
       >
         <FaChevronLeft />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-5 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-secondary-200 text-xl text-primary-400"
+        className="absolute right-5 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-secondary-200 text-xl text-primary-400 xl:hidden"
       >
         <FaChevronRight />
       </button>
@@ -120,11 +120,11 @@ function Slider() {
   const { slides, currentSlide } = context;
 
   return (
-    <div className="absolute z-20 flex flex-col items-center gap-10">
-      <p className="font-title text-lg font-semibold text-primary-50">
+    <div className="absolute z-20 flex max-w-[90%] flex-col items-center gap-6 text-center sm:gap-8 sm:max-w-xl xl:gap-10 px-2">
+      <p className="font-title text-xl xl:text-base  font-semibold text-primary-50">
         {slides[currentSlide].subTitle}
       </p>
-      <p className="font-title text-4xl font-bold text-primary-50">
+      <p className="font-title text-5xl xl:text-2xl font-bold text-primary-50">
         {slides[currentSlide].title}
       </p>
       <Button
@@ -132,6 +132,7 @@ function Slider() {
         // className="inline-flex items-center justify-center rounded-lg bg-secondary-200 px-4 py-2 font-bold text-primary-400 shadow-lg transition-shadow hover:bg-transparent hover:text-secondary-100"
         href={slides[currentSlide].href}
         size="large"
+        className="px-4 py-2 text-sm sm:text-base xl:px-6 xl:py-3"
       >
         {slides[currentSlide].slideButtonContent}
       </Button>
@@ -149,7 +150,7 @@ function Navigation() {
   const { slides, currentSlide, toSlide } = context;
 
   return (
-    <div className="absolute bottom-4 z-20 flex gap-4">
+    <div className="absolute bottom-2 sm:bottom-4 z-20 flex gap-2 sm:gap-4">
       {slides.map((_, index) => (
         <button
           key={index}

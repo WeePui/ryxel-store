@@ -70,30 +70,34 @@ function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
           <FaMapLocationDot />
           <span className="ml-2">Địa chỉ nhận hàng</span>
         </h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 lg:flex-col lg:items-start">
           {selectedAddress && (
             <>
-              <span className="font-semibold">{selectedAddress.fullname}</span>
-              <span className="text-xl font-thin text-grey-default">
-                &#x2758;
-              </span>
-              <span className="font-semibold">
-                {selectedAddress.phoneNumber}
-              </span>
-              <div className="pl-6">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold whitespace-nowrap">
+                  {selectedAddress.fullname}
+                </span>
+                <span className="text-xl font-thin text-grey-default">
+                  &#x2758;
+                </span>
+                <span className="font-semibold">
+                  {selectedAddress.phoneNumber}
+                </span>
+              </div>
+              <div className="pl-6 lg:pl-0">
                 <p className="text-grey-default">
                   {selectedAddress.address}, {selectedAddress.ward?.name},{' '}
                   {selectedAddress.district?.name}, {selectedAddress.city?.name}
                 </p>
                 {selectedAddress.isDefault && (
-                  <span className="mt-2 inline-block w-auto rounded-xl border-2 border-primary-default px-2 text-center">
+                  <span className="mt-2 inline-block w-auto rounded-xl border-2 border-primary-default px-2 text-center lg:text-sm">
                     Mặc định
                   </span>
                 )}
               </div>
             </>
           )}
-          <div className="ml-10">
+          <div className="ml-10 lg:ml-0 lg:mt-4 lg:w-full">
             <Button
               type="tertiary"
               onClick={() => setIsModalSelectAddressVisible(true)}

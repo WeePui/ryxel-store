@@ -50,7 +50,7 @@ const faqs = [
 
 export default function page() {
   return (
-    <div className="mx-auto mt-14 flex w-full max-w-7xl flex-col gap-10">
+    <div className="mx-auto mt-14 lg:mt-4  flex w-full max-w-7xl flex-col gap-10 xl:px-6">
       <div>
         <h1 className="font-title text-3xl font-semibold text-primary-500">
           Câu hỏi thường gặp

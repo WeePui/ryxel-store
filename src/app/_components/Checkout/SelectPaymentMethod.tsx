@@ -51,7 +51,7 @@ export default function SelectPaymentMethod({
   };
 
   return (
-    <div className="flex w-full flex-col gap-6 rounded-xl bg-white p-8 shadow-md">
+    <div className="flex w-full flex-col gap-6 rounded-xl bg-white p-8 lg:px-4 shadow-md">
       <h2 className="flex items-center text-xl font-bold">
         <FaMoneyCheckDollar />
         <span className="ml-2">Phương thức thanh toán</span>
@@ -103,7 +103,7 @@ function PaymentMethodOption({
   onSelect,
 }: paymentMethodOptionProps) {
   return (
-    <li className="flex items-center gap-5 border-2 p-4 rounded-xl border-gray-300">
+    <li className="flex items-center gap-5 border-2 p-4 md:p-2 rounded-xl border-gray-300">
       <div className="flex gap-4 items-center">
         <input
           type="radio"
