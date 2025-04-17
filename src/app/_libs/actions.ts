@@ -810,7 +810,7 @@ export async function createCheckoutSessionAction(
   }
 
   if (checkoutOrder.paymentMethod === 'cod') {
-    redirect(`/account/orders/${checkoutOrder._id}`);
+    redirect(`/account/orders/${checkoutOrder.orderCode}`);
   }
 
   if (checkoutOrder.paymentMethod === 'stripe') {

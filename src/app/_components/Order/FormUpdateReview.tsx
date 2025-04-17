@@ -55,7 +55,7 @@ export default function FormUpdateReview({
     new Date(order.createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000;
 
   return (
-    <form className="max-w-3xl w-[600px]" onSubmit={handleSubmit}>
+    <form className="max-w-3xl w-[600px] md:max-w-full" onSubmit={handleSubmit}>
       <h1 className="font-title text-2xl mb-6">Đánh giá sản phẩm</h1>
       <div className="flex flex-col gap-6">
         {order.lineItems.map((item, index) => (

@@ -153,7 +153,7 @@ export default function OrderReviewItem({
           </div>
         )}
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 sm:flex-col sm:items-start sm:gap-2">
         <p>Chất lượng sản phẩm: </p>
         <StarRating
           rating={rating}
@@ -318,5 +318,9 @@ function StarRating({
       {index < rating ? <FaStar /> : <FaRegStar />}
     </div>
   ));
-  return <div className="flex gap-2 text-yellow-500 text-3xl">{stars}</div>;
+  return (
+    <div className="flex gap-2 text-yellow-500 text-3xl md:text-2xl">
+      {stars}
+    </div>
+  );
 }
