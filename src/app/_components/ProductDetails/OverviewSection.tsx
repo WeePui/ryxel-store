@@ -11,7 +11,7 @@ import { addOrUpdateCartItemAction } from '@/app/_libs/actions';
 import { toast } from 'react-toastify';
 import NavLink from '../UI/NavLink';
 import { useRouter } from 'next/navigation';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import { Variant } from '@/app/_types/variant';
 import WishlistButton from '../Wistlist/WishlistButton';
 import { WishlistProvider } from '@/app/_contexts/WishlistContext';
@@ -61,7 +61,7 @@ function OverviewSection() {
             <span className="text-primary-500 md:truncate">{product.name}</span>
           </div>
           <ImageCarousel
-            images={currentVariant.images}
+            images={currentVariant.images as string[]}
             alt={currentVariant.name}
           />
         </div>
@@ -112,7 +112,7 @@ function OverviewSection() {
           </div>
 
           <h2 className="flex items-center text-3xl font-bold text-grey-default">
-            <span>{formatCurrency(currentVariant.price)}</span>
+            <span>{formatMoney(currentVariant.price)}</span>
             <div className="ml-auto">
               <WishlistProvider>
                 <WishlistButton productId={product._id} />

@@ -8,6 +8,7 @@ import { FaCircleInfo, FaCircleExclamation } from 'react-icons/fa6';
 import Link from 'next/link';
 import { FormError } from '@/app/_types/formError';
 import { SignupInput } from '@/app/_types/validateInput';
+import Spinner from '../UI/Spinner';
 
 function FormSignup() {
   const [state, action, isPending] = useActionState(signupAction, {
@@ -183,15 +184,16 @@ function FormSignup() {
             <p className="text-sm text-grey-300">
               Khi bạn chọn vào ô này đồng nghĩa rằng bạn đồng ý với{' '}
               <Link
-                href="/terms"
+                href="/terms-of-service"
                 className="gap-2 font-normal text-primary-400 transition-colors duration-300 hover:text-grey-300"
               >
                 Quy chế hoạt động
               </Link>{' '}
               và{' '}
               <Link
-                href="/privacy"
+                href="/privacy-policy"
                 className="gap-2 font-normal text-primary-400 transition-colors duration-300 hover:text-grey-300"
+                target="_blank"
               >
                 Chính sách bảo mật
               </Link>{' '}
@@ -203,7 +205,7 @@ function FormSignup() {
         <hr className="my-1 w-full border-t border-grey-100" />
 
         <Button type="primary" disabled={isPending} role="submit">
-          Đăng ký
+          {isPending ? <Spinner /> : 'Đăng ký'}
         </Button>
       </form>
     </div>

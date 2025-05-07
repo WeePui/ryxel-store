@@ -40,7 +40,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/_components/Account/FormUpdateProfile.tsx"
+    "src/app/_components/Account/FormUpdateProfile.tsx",
+    "src/app/admin/dashboard"
   ],
   "exclude": ["node_modules"]
 }

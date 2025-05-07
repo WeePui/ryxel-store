@@ -13,7 +13,7 @@ interface ReviewItemProps {
 }
 
 export default function ReviewItem({ review }: ReviewItemProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<false | number>(false);
   const reviewAssets = review.images.concat(
     review.video ? [review.video] : []
   ) as Array<string>;
@@ -53,32 +53,29 @@ export default function ReviewItem({ review }: ReviewItemProps) {
               <div
                 key={index}
                 className="relative aspect-square w-16 h-16 rounded-md overflow-hidden"
-                onClick={() => setIsOpen(true)}
+                onClick={() => setIsOpen(index)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
-                    setIsOpen(true);
+                    setIsOpen(index);
                   }
                 }}
                 role="button"
               >
                 <Image src={image} alt={`review-image-${index}`} fill />
-                {isOpen && (
-                  <Modal onClose={() => setIsOpen(false)} captureClick={false}>
-                    <ZoomedAssetsList
-                      assets={reviewAssets}
-                      initialIndex={index}
-                    />
-                  </Modal>
-                )}
               </div>
             ))}
+            {typeof isOpen === 'number' && (
+              <Modal onClose={() => setIsOpen(false)}>
+                <ZoomedAssetsList assets={reviewAssets} initialIndex={isOpen} />
+              </Modal>
+            )}
             {review.video && (
               <div
                 className="relative aspect-video w-40 h-16 rounded-md overflow-hidden"
-                onClick={() => setIsOpen(true)}
+                onClick={() => setIsOpen(review.images.length)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
-                    setIsOpen(true);
+                    setIsOpen(review.images.length);
                   }
                 }}
                 role="button"

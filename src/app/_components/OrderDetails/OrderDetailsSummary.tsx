@@ -1,5 +1,5 @@
 import { Order } from '@/app/_types/order';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import { mappingPaymentMethodText } from '@/app/_utils/mappingPaymentMethodText';
 
 interface OrderDetailsSummaryProps {
@@ -24,12 +24,10 @@ export default function OrderDetailsSummary({
           </thead>
           <tbody>
             <tr className="flex flex-col justify-center">
-              <td>{formatCurrency(order.subtotal)}</td>
-              <td>- {formatCurrency(order.discountAmount)}</td>
-              <td>{formatCurrency(order.shippingFee)}</td>
-              <td className="font-bold text-xl">
-                {formatCurrency(order.total)}
-              </td>
+              <td>{formatMoney(order.subtotal)}</td>
+              <td>- {formatMoney(order.discountAmount)}</td>
+              <td>{formatMoney(order.shippingFee)}</td>
+              <td className="font-bold text-xl">{formatMoney(order.total)}</td>
               <td>{mappingPaymentMethodText[order.paymentMethod]}</td>
             </tr>
           </tbody>

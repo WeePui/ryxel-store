@@ -9,4 +9,5 @@ export interface User {
   phoneNo: string;
   dob: string;
   emailVerified: boolean;
+  role: string;
 }

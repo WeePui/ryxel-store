@@ -27,49 +27,53 @@ function LoggedUser({ user }: LoggedUserProps) {
   };
 
   return (
-    <>
-      <div
-        className="relative"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <NavLink hoverUnderline={false} href="/account/profile">
-          <div className="flex items-center gap-2 rounded-full">
-            <div className="w-8 h-8 relative rounded-full overflow-hidden">
-              <Image
-                src={user.photo.url}
-                alt={user.name}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <span className="xl:hidden max-w-[8rem] truncate">{user.name}</span>
+    <div
+      className="relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <NavLink hoverUnderline={false} href="/account/profile">
+        <div className="flex items-center gap-2 rounded-full">
+          <div className="w-8 h-8 relative rounded-full overflow-hidden">
+            <Image
+              src={user.photo.url}
+              alt={user.name}
+              fill
+              className="object-cover"
+            />
           </div>
-        </NavLink>
-        {isModalVisible && (
-          <div className="absolute right-0 z-20 mt-2 w-40 rounded-lg border border-gray-200 bg-white shadow-lg">
-            <ul className="px-6 py-4">
-              <li>
-                <NavLink href="/account/profile">Hồ sơ</NavLink>
-              </li>
-              <li>
-                <NavLink href="/account/orders">Đơn hàng</NavLink>
-              </li>
-              <li>
-                <SignoutButton>
-                  <button
-                    className="text-red-500 hover:text-red-300"
-                    type="submit"
-                  >
-                    Đăng xuất
-                  </button>
-                </SignoutButton>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
-    </>
+          <span className="xl:hidden max-w-[8rem] whitespace-nowrap">
+            {user.name}
+          </span>
+        </div>
+      </NavLink>
+      {isModalVisible && (
+        <div className="absolute right-0 z-20 mt-2 w-40 rounded-lg border border-gray-200 bg-white shadow-lg">
+          <ul className="px-6 py-4">
+            {user.role !== 'admin' && (
+              <>
+                <li>
+                  <NavLink href="/account/profile">Hồ sơ</NavLink>
+                </li>
+                <li>
+                  <NavLink href="/account/orders">Đơn hàng</NavLink>
+                </li>
+              </>
+            )}
+            <li>
+              <SignoutButton>
+                <button
+                  className="text-red-500 hover:text-red-300"
+                  type="submit"
+                >
+                  Đăng xuất
+                </button>
+              </SignoutButton>
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
   );
 }
 

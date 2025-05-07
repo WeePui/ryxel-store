@@ -6,6 +6,7 @@ import { useActionState } from 'react';
 import { loginAction } from '@libs/actions';
 import { FaCircleExclamation } from 'react-icons/fa6';
 import Spinner from '../UI/Spinner';
+import errorMessages from '@/app/_utils/mappingErrorMessages';
 
 function FormLogin() {
   const [state, action, isPending] = useActionState(loginAction, undefined);
@@ -24,7 +25,7 @@ function FormLogin() {
             {state?.errors?.email && (
               <p className="flex items-center gap-2 p-2 text-xs text-red-500">
                 <FaCircleExclamation />
-                {state?.errors?.email}
+                {errorMessages[state?.errors?.email] || state?.errors?.email}
               </p>
             )}
             <Input

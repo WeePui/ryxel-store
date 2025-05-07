@@ -1,13 +1,16 @@
 'use client';
 
 import CartItem from './CartItem';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 import ConfirmDialogue from '../UI/ConfirmDialogue';
 import Modal from '../UI/Modal';
 import { LineItem } from '@/app/_types/lineItem';
 import { WishlistProvider } from '@/app/_contexts/WishlistContext';
 import NavLink from '../UI/NavLink';
 import { Product } from '@/app/_types/product';
+import Loader from '../UI/Loader';
+import { clearCartItemsAction } from '@/app/_libs/actions';
+import { toast } from 'react-toastify';
 
 interface CartItemsListProps {
   items: LineItem[];
@@ -26,12 +29,15 @@ function CartItemsList({
   onChangeLineItems,
 }: CartItemsListProps) {
   const [isOpened, setIsOpened] = useState(false);
+  const [isClearCartConfirmDialogue, setIsClearCartConfirmDialogue] =
+    useState(false);
   const [selectedItems, setSelectedItems] = useState<
     {
       product: string;
       variant: string;
     }[]
   >([]);
+  const [pending, startTransition] = useTransition();
 
   const errorDetails = useMemo(
     () =>
@@ -106,6 +112,18 @@ function CartItemsList({
     }
   };
 
+  const handleClearCart = () => {
+    setSelectedItems([]);
+    onChangeLineItems([]);
+
+    startTransition(async () => {
+      const result = await clearCartItemsAction();
+
+      if (!result.success) toast.error(result.errors!.message);
+      else toast.success('Xoá giỏ hàng thành công!');
+    });
+  };
+
   return (
     <WishlistProvider>
       {isOpened && (
@@ -118,36 +136,57 @@ function CartItemsList({
         </Modal>
       )}
 
-      <ul className="flex flex-col divide-y divide-gray-200">
-        <div className="flex justify-between mb-4 px-2">
-          <div className="flex items-center gap-3">
-            <input
-              id="select-all"
-              type="checkbox"
-              className="w-7 h-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300"
-              checked={selectedItems.length === items.length}
-              onChange={toggleSelectAll}
-            />
-            <label htmlFor="select-all" className="font-medium">
-              Chọn tất cả
-            </label>
+      {isClearCartConfirmDialogue && (
+        <Modal onClose={() => setIsClearCartConfirmDialogue(false)}>
+          <ConfirmDialogue
+            onConfirm={() => setIsClearCartConfirmDialogue(false)}
+            confirmText="Huỷ bỏ"
+            cancelText="Xoá"
+            onCancel={handleClearCart}
+            message="Bạn có chắc chắn muốn xoá giỏ hàng?"
+          />
+        </Modal>
+      )}
+
+      {pending ? (
+        <Loader />
+      ) : (
+        <ul className="flex flex-col divide-y divide-gray-200">
+          <div className="flex justify-between mb-4 px-2">
+            <div className="flex items-center gap-3">
+              <input
+                id="select-all"
+                type="checkbox"
+                className="w-7 h-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300"
+                checked={selectedItems.length === items.length}
+                onChange={toggleSelectAll}
+              />
+              <label htmlFor="select-all" className="font-medium">
+                Chọn tất cả
+              </label>
+            </div>
+            <NavLink
+              href="#"
+              onClick={() => setIsClearCartConfirmDialogue(true)}
+            >
+              Xoá tất cả
+            </NavLink>
           </div>
-          <NavLink href="#">Xoá tất cả</NavLink>
-        </div>
-        {items.map((item) => (
-          <li key={item.variant as string} className="py-8 flex">
-            <CartItem
-              item={item}
-              onChangeLineItems={toggleSelectItem}
-              selected={selectedItems.some(
-                (selected) =>
-                  selected.product === (item.product as Product)._id &&
-                  selected.variant === item.variant
-              )}
-            />
-          </li>
-        ))}
-      </ul>
+          {items.map((item) => (
+            <li key={item.variant as string} className="py-8 flex">
+              <CartItem
+                item={item}
+                onChangeLineItems={toggleSelectItem}
+                selected={selectedItems.some(
+                  (selected) =>
+                    selected.product === (item.product as Product)._id &&
+                    selected.variant === item.variant
+                )}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </WishlistProvider>
   );
 }

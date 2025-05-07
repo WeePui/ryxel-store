@@ -1,11 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaSistrix } from 'react-icons/fa6';
 
 function SearchBar() {
   const [keyword, setKeyword] = useState('');
+  const pathname = usePathname();
   const router = useRouter();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -15,7 +16,7 @@ function SearchBar() {
       const params = new URLSearchParams();
       params.set('search', keyword);
 
-      router.replace(`/products?${params.toString()}`);
+      router.replace(`${pathname}?${params.toString()}`);
     }
   }
 

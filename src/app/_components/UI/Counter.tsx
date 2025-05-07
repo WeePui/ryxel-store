@@ -8,39 +8,41 @@ interface CounterProps {
   onSetValue: (value: number) => void;
 }
 
-function Counter({ value = 0, onSetValue }: CounterProps) {
+function Counter({ value = 1, onSetValue }: CounterProps) {
   const [count, setCount] = useState(value + '');
 
+  const normalize = (val: string | number) => {
+    const num = Number(val);
+    return Math.max(1, Math.min(10, num));
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    if (value === '') {
-      setCount('');
-      // onSetValue(0);
-      return;
-    }
-
-    const numericValue = Math.max(1, Math.min(10, Number(value)));
-    setCount(numericValue + '');
-    onSetValue(numericValue);
+    setCount(e.target.value);
   };
 
   const handleBlur = () => {
-    if (count === '' || isNaN(Number(count))) {
-      setCount(1 + '');
-      onSetValue(1);
-    }
+    const normalized = normalize(count);
+    setCount(normalized + '');
+    onSetValue(normalized);
+  };
+
+  const handleDecrement = () => {
+    const newValue = normalize(Number(count) - 1);
+    setCount(newValue + '');
+    onSetValue(newValue);
+  };
+
+  const handleIncrement = () => {
+    const newValue = normalize(Number(count) + 1);
+    setCount(newValue + '');
+    onSetValue(newValue);
   };
 
   return (
     <div className="flex h-full items-center justify-between overflow-hidden rounded-xl border-[1px] border-gray-300 text-lg font-bold text-gray-800">
       <button
         className="flex h-full flex-1 items-center justify-center text-center hover:bg-grey-100 disabled:text-gray-300"
-        onClick={() => {
-          const newValue = Math.max(1, Number(count) - 1);
-          setCount(newValue + '');
-          onSetValue(newValue);
-        }}
+        onClick={handleDecrement}
         disabled={Number(count) <= 1}
       >
         <FaMinus />
@@ -56,11 +58,7 @@ function Counter({ value = 0, onSetValue }: CounterProps) {
       />
       <button
         className="flex h-full flex-1 items-center justify-center hover:bg-grey-100 disabled:text-gray-300"
-        onClick={() => {
-          const newValue = Math.min(10, Number(count) + 1);
-          setCount(newValue + '');
-          onSetValue(newValue);
-        }}
+        onClick={handleIncrement}
         disabled={Number(count) >= 10}
       >
         <FaPlus />

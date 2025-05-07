@@ -140,8 +140,8 @@ export async function checkToken(token: { value: string }) {
     body: JSON.stringify({ token: token.value }),
   });
 
-  const { valid, expired } = await response.json();
-  return { valid, expired };
+  const { valid, expired, isAdmin } = await response.json();
+  return { valid, expired, isAdmin };
 }
 
 export async function checkEmailAvailability(email: string) {
@@ -838,3 +838,113 @@ export async function getBestsellers() {
 
   return data;
 }
+
+export async function clearCartItems(token: { value: string }) {
+  const response = await fetch(`${API_URL}/cart/items`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    credentials: 'include',
+  });
+  const data = await response.json();
+  return data;
+}
+
+export async function getDashboardStats(token: { value: string }) {
+  const response = await fetch(`${API_URL}/admin/dashboard`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch dashboard stats');
+  }
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function getRecentOrders(token: { value: string }) {
+  const response = await fetch(`${API_URL}/admin/dashboard/recent-orders`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch recent orders');
+  }
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function getCategories(token: { value: string }) {
+  const response = await fetch(`${API_URL}/categories`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch categories');
+  }
+  const { data } = await response.json();
+  return data;
+}
+
+export async function getCategoryBySlug(
+  slug: string,
+  token: { value: string }
+) {
+  const response = await fetch(`${API_URL}/categories/slug/${slug}`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch category');
+  }
+
+  const data = await response.json();
+
+  return data;
+}
+
+export const getStockData = async (token: { value: string }) => {
+  const response = await fetch(`${API_URL}/admin/products/stock`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch stock date');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const getProductsSummary = async (token: { value: string }) => {
+  const response = await fetch(`${API_URL}/admin/products/summary`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch products summary');
+  }
+
+  const data = await response.json();
+
+  return data;
+};

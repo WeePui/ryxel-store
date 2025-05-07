@@ -1,21 +1,41 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { checkToken, checkUnpaidOrder } from '@libs/apiServices';
-import { logoutAction, sendOTPAction } from './app/_libs/actions';
+import { sendOTPAction } from './app/_libs/actions';
 
 export async function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname === '/account') {
+    return NextResponse.rewrite(new URL('/account/profile', request.url));
+  }
+
+  if (request.nextUrl.pathname === '/admin') {
+    return NextResponse.rewrite(new URL('/admin/dashboard', request.url));
+  }
+
   const token = request.cookies.get('jwt');
 
   if (!token) {
     return NextResponse.redirect(new URL('/login', request.nextUrl));
   }
 
-  const tokenValidation = await checkToken(token);
+  // const tokenValidation = await checkToken(token);
 
-  if (!tokenValidation.valid || tokenValidation.expired) {
-    const response = NextResponse.redirect(new URL('/login', request.nextUrl));
-    response.cookies.delete('jwt');
-    response.cookies.delete('reauthToken');
-    return response;
+  // if (!tokenValidation.valid || tokenValidation.expired) {
+  //   const response = NextResponse.redirect(new URL('/login', request.nextUrl));
+  //   response.cookies.delete('jwt');
+  //   response.cookies.delete('reauthToken');
+  //   return response;
+  // }
+
+  if (request.nextUrl.pathname.includes('/admin')) {
+    const tokenValidation = await checkToken(token);
+
+    if (
+      !tokenValidation.valid ||
+      tokenValidation.expired ||
+      !tokenValidation.isAdmin
+    ) {
+      return NextResponse.redirect(new URL('/not-found', request.nextUrl));
+    }
   }
 
   const reauthToken = request.cookies.get('reauthenticated');
@@ -64,8 +84,12 @@ export async function middleware(request: NextRequest) {
         );
       }
     } else if (verified !== 'true') {
-      await logoutAction(false);
-      return NextResponse.redirect(new URL('/login', request.nextUrl));
+      const response = NextResponse.redirect(
+        new URL('/login', request.nextUrl)
+      );
+      response.cookies.delete('jwt');
+      response.cookies.delete('reauthenticated');
+      return response;
     }
   }
 
@@ -92,6 +116,10 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === '/account') {
     return NextResponse.rewrite(new URL('/account/profile', request.url));
   }
+
+  if (request.nextUrl.pathname === '/admin') {
+    return NextResponse.rewrite(new URL('/admin/dashboard', request.url));
+  }
 }
 
 export const config = {
@@ -106,5 +134,7 @@ export const config = {
     '/checkout',
     '/reauthenticate',
     '/signup/verifyEmail',
+    '/admin',
+    '/admin/:path*',
   ],
 };

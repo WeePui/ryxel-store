@@ -3,6 +3,7 @@ import validator from 'validator';
 import { checkEmailAvailability } from '@libs/apiServices';
 import {
   AddressFormInput,
+  CategoryInput,
   LoginInput,
   SignupInput,
   UpdatePasswordInput,
@@ -25,7 +26,9 @@ export function validateLoginForm(data: LoginInput) {
   };
 
   const emailSchema = z.string().email('Địa chỉ email không hợp lệ');
-  const passwordSchema = z.string({ message: 'Xin hãy nhập mật khẩu' });
+  const passwordSchema = z
+    .string()
+    .min(1, { message: 'Xin hãy nhập mật khẩu' });
 
   const emailValidation = emailSchema.safeParse(data.email);
   if (!emailValidation.success) {
@@ -66,13 +69,18 @@ export async function validateSignupForm(data: SignupInput) {
       },
       { message: 'Địa chỉ email đã được sử dụng' }
     );
-  const passwordSchema = z.string({ message: 'Xin hãy nhập mật khẩu' });
+  const passwordSchema = z
+    .string()
+    .min(1, { message: 'Xin hãy nhập mật khẩu' });
   const passwordConfirmSchema = z
-    .string({ message: 'Xin hãy xác nhận mật khẩu' })
+    .string()
+    .min(1, { message: 'Xin hãy xác nhận mật khẩu' })
     .refine((passwordConfirm) => passwordConfirm === data.password, {
       message: 'Mật khẩu không khớp',
     });
-  const nameSchema = z.string({ message: 'Xin hãy nhập tên tài khoản' });
+  const nameSchema = z
+    .string()
+    .min(1, { message: 'Xin hãy nhập tên tài khoản' });
   const genderSchema = z.string({ message: 'Bạn chưa điền hết thông tin' });
   const dobSchema = z.string({ message: 'Xin hãy nhập ngày sinh' }).refine(
     (dob) => {
@@ -147,7 +155,9 @@ export function validateUpdateProfileForm(data: UpdateProfileInput) {
     },
   };
 
-  const nameSchema = z.string({ message: 'Xin hãy nhập tên tài khoản' });
+  const nameSchema = z
+    .string()
+    .min(1, { message: 'Xin hãy nhập tên tài khoản' });
 
   const nameValidation = nameSchema.safeParse(data.name);
   if (!nameValidation.success) {
@@ -170,12 +180,15 @@ export function validateUpdatePasswordForm(data: UpdatePasswordInput) {
     },
   };
 
-  const passwordCurrentSchema = z.string({
+  const passwordCurrentSchema = z.string().min(1, {
     message: 'Xin hãy nhập mật khẩu hiện tại',
   });
-  const passwordSchema = z.string({ message: 'Xin hãy nhập mật khẩu mới' });
+  const passwordSchema = z
+    .string()
+    .min(1, { message: 'Xin hãy nhập mật khẩu mới' });
   const passwordConfirmSchema = z
-    .string({ message: 'Xin hãy xác nhận mật khẩu mới' })
+    .string()
+    .min(1, { message: 'Xin hãy xác nhận mật khẩu mới' })
     .refine((passwordConfirm) => passwordConfirm === data.password, {
       message: 'Mật khẩu không khớp',
     });
@@ -220,9 +233,12 @@ export function validateAddressForm(data: AddressFormInput) {
     },
   };
 
-  const fullnameSchema = z.string({ message: 'Xin hãy nhập họ và tên' });
+  const fullnameSchema = z
+    .string()
+    .min(1, { message: 'Xin hãy nhập họ và tên' });
   const phoneNumberSchema = z
-    .string({ message: 'Xin hãy nhập số điện thoại' })
+    .string()
+    .min(1, { message: 'Xin hãy nhập số điện thoại' })
     .refine((phoneNumber) => validator.isMobilePhone(phoneNumber, 'vi-VN'), {
       message: 'Số điện thoại không hợp lệ',
     });
@@ -266,6 +282,56 @@ export function validateAddressForm(data: AddressFormInput) {
   if (!addressValidation.success) {
     validation.success = false;
     validation.errors.address = addressValidation.error.format()._errors[0];
+  }
+
+  return validation;
+}
+
+export function validateCategoryForm(data: CategoryInput) {
+  const validation = {
+    success: true,
+    errors: {
+      name: '',
+      slug: '',
+      description: '',
+      image: '',
+    },
+  };
+
+  const nameSchema = z
+    .string()
+    .min(1, { message: 'Xin hãy nhập tên danh mục' });
+  const slugSchema = z.string().optional();
+  const descriptionSchema = z.string().optional();
+  const imageSchema = z
+    .instanceof(File, { message: 'Xin hãy chọn ảnh danh mục' })
+    .refine((file) => file.size > 0, {
+      message: 'Xin hãy chọn ảnh danh mục',
+    });
+
+  const nameValidation = nameSchema.safeParse(data.name);
+  if (!nameValidation.success) {
+    validation.success = false;
+    validation.errors.name = nameValidation.error.format()._errors[0];
+  }
+
+  const slugValidation = slugSchema.safeParse(data.slug);
+  if (!slugValidation.success) {
+    validation.success = false;
+    validation.errors.slug = slugValidation.error.format()._errors[0];
+  }
+
+  const descriptionValidation = descriptionSchema.safeParse(data.description);
+  if (!descriptionValidation.success) {
+    validation.success = false;
+    validation.errors.description =
+      descriptionValidation.error.format()._errors[0];
+  }
+
+  const imageValidation = imageSchema.safeParse(data.image);
+  if (!imageValidation.success) {
+    validation.success = false;
+    validation.errors.image = imageValidation.error.format()._errors[0];
   }
 
   return validation;

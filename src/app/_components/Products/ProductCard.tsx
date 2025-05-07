@@ -1,4 +1,4 @@
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import { Product } from '@/app/_types/product';
 
 import Image from 'next/image';
@@ -52,7 +52,7 @@ function ProductCard({
         </div>
         <div className="mt-auto flex flex-col gap-2 px-6 py-4 text-grey-400">
           <p className="font-bold transition-colors duration-300 group-hover:text-primary-default">
-            {formatCurrency(product.lowestPrice)}
+            {formatMoney(product.lowestPrice)}
           </p>
           <div className="mt-auto flex items-center justify-between capitalize">
             <span className="flex items-center text-sm">

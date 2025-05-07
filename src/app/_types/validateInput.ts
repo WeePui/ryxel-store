@@ -56,3 +56,10 @@ export interface ReviewUpdateInput {
   images: Array<File | string>;
   video?: string | File | null;
 }
+
+export interface CategoryInput {
+  name: string;
+  description: string;
+  image: File | string | null;
+  slug?: string;
+}

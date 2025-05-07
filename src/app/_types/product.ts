@@ -14,7 +14,9 @@ export interface Product {
   rating: number;
   ratingsQuantity: number;
   category: Category;
-  updatedAt: Date;
+  updatedAt: string;
+  createdAt: string;
   slug: string;
   reviews: Review[];
+  totalStock: number;
 }

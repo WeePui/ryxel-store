@@ -7,7 +7,7 @@ import PaymentMethods from '../UI/PaymentMethods';
 import Spinner from '../UI/Spinner';
 import { verifyDiscountCodeAction } from '@/app/_libs/actions';
 import { FaCheck, FaXmark } from 'react-icons/fa6';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import CheckoutButton from './CheckoutButton';
 import { Address } from '@/app/_types/address';
 import { getShippingFee } from '@/app/_libs/apiServices';
@@ -59,8 +59,8 @@ function CheckoutSummary({
   }, [address, lineItems]);
 
   return (
-    <div className="sticky top-20 flex flex-col divide-y-2 divide-gray-300 rounded-xl bg-grey-50 px-4 font-semibold">
-      <div className="flex items-center justify-between py-4 xl:flex-col gap-2">
+    <div className="sticky top-20 flex flex-col divide-y-2 divide-gray-300 rounded-xl bg-grey-100 px-4 font-semibold">
+      <div className="flex items-center justify-between py-4 flex-col gap-2">
         <h2 className="text-2xl font-bold">Tóm tắt đơn hàng</h2>
         <p className="text-xs text-grey-400">
           *Lưu ý: bạn chỉ có thể huỷ đơn trong vòng 30 phút kể từ khi đặt hàng
@@ -126,12 +126,12 @@ function CheckoutSummary({
       <div className="flex flex-col gap-2 py-4">
         <div className="flex justify-between">
           <h3>Tổng cộng</h3>
-          <span>{formatCurrency(subtotal)}</span>
+          <span>{formatMoney(subtotal)}</span>
         </div>
         <div>
           <div className="flex justify-between">
             <h3>Phí vận chuyển</h3>
-            <span>{formatCurrency(shippingFee)}</span>
+            <span>{formatMoney(shippingFee)}</span>
           </div>
           <p className="text-xs text-gray-500 text-right">
             *Dự kiến giao hàng:{' '}
@@ -141,7 +141,7 @@ function CheckoutSummary({
         {discountState?.success && (
           <div className="flex justify-between">
             <h3>Giảm giá</h3>
-            <span>- {formatCurrency(discountState?.discountAmount || 0)}</span>
+            <span>- {formatMoney(discountState?.discountAmount || 0)}</span>
           </div>
         )}
       </div>
@@ -149,7 +149,7 @@ function CheckoutSummary({
       <div className="flex justify-between py-6 text-xl">
         <h3>Tổng thanh toán</h3>
         <span>
-          {formatCurrency(
+          {formatMoney(
             subtotal - (discountState?.discountAmount || 0) + (shippingFee || 0)
           )}
         </span>

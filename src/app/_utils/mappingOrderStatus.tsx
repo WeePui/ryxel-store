@@ -12,6 +12,7 @@ export function mappingOrderStatus(orderStatus: string): {
   icon: JSX.Element;
   textColor: string;
   text: string;
+  color: string;
 } {
   switch (orderStatus) {
     case 'unpaid':
@@ -19,42 +20,49 @@ export function mappingOrderStatus(orderStatus: string): {
         icon: <FaHandshakeSlash className="inline" />,
         textColor: 'text-red-500',
         text: 'Chưa thanh toán',
+        color: '#ef4444',
       };
     case 'pending':
       return {
         icon: <FaClockRotateLeft className="inline" />,
         textColor: 'text-yellow-500',
         text: 'Chờ xác nhận',
+        color: '#eab308',
       };
     case 'processing':
       return {
         icon: <FaGears className="inline" />,
         textColor: 'text-blue-500',
         text: 'Đang xử lý',
+        color: '#3b82f6',
       };
     case 'shipped':
       return {
         textColor: 'text-orange-500',
         icon: <FaTruck className="inline" />,
-        text: 'Đã giao',
+        text: 'Đã vận chuyển',
+        color: '#f97316',
       };
     case 'delivered':
       return {
         icon: <FaCircleCheck className="inline" />,
         textColor: 'text-gray-500',
         text: 'Đã giao',
+        color: '#6b7280',
       };
     case 'cancelled':
       return {
         icon: <FaCircleXmark className="inline" />,
         textColor: 'text-red-500',
         text: 'Đã hủy',
+        color: '#ef4444',
       };
     default:
       return {
         icon: <FaTruck className="inline" />,
-        textColor: 'text-black',
+        textColor: 'text-white',
         text: 'Không xác định',
+        color: '#000000',
       };
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import React, {
   createContext,
@@ -123,8 +123,8 @@ function SideFilter({
   const priceRangeOptions = priceRanges.map((range) => ({
     value: `${range.min}-${range.max}`,
     label: range.max
-      ? `${formatCurrency(range.min)} - ${formatCurrency(range.max)}`
-      : `${formatCurrency(range.min)}+`,
+      ? `${formatMoney(range.min)} - ${formatMoney(range.max)}`
+      : `${formatMoney(range.min)}+`,
   }));
 
   const [filters, setFilters] = useState<Filter>({
@@ -226,19 +226,18 @@ function SideFilter({
   };
 
   function onClear() {
-    router.push(`${pathname}`);
+    const params = new URLSearchParams(searchParams);
+    params.delete('brand');
+    params.delete('price[gte]');
+    params.delete('price[lte]');
+    params.delete('rating[gte]');
+    params.delete('page');
+    params.delete('specs');
+    params.delete('sort');
+    params.delete('search');
+    params.delete('category');
 
-    setFilters({
-      brand: [],
-      price: {
-        min: 0,
-        max: undefined,
-      },
-      rating: {
-        min: undefined,
-        max: 5,
-      },
-    });
+    router.replace(`${pathname}?${params.toString()}`);
   }
 
   function handleSpecsChange(specName: string, value: string) {
@@ -267,7 +266,7 @@ function SideFilter({
     <SideFilterContext.Provider value={{ filters, setFilters, onChecked }}>
       <div
         className={`flex h-full flex-col gap-2 rounded-xl ${
-          isMobile ? 'bg-white' : 'bg-grey-50'
+          isMobile ? 'bg-white' : 'bg-grey-100'
         } px-4 pb-6`}
       >
         <div className="flex items-center justify-between px-4 pb-2 pt-6">

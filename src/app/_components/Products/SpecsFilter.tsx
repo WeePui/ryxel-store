@@ -1,5 +1,6 @@
 'use client';
 
+import { mappingSpecsName } from '@/app/_utils/mappingSpecs';
 import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
@@ -91,7 +92,7 @@ function SpecsFilterItem({
         onClick={() => setOpenFilter((prev) => !prev)}
       >
         <h4 className="text-lg font-semibold capitalize text-primary-default">
-          {label}
+          {mappingSpecsName[label] || filterName}
         </h4>
         <span className="text-grey-300">
           {openFilter ? <FaChevronUp /> : <FaChevronDown />}

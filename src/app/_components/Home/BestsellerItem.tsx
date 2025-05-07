@@ -1,7 +1,7 @@
 'use client';
 
 import { Product } from '@/app/_types/product';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import Image from 'next/image';
 import Link from 'next/link';
 import Button from '../UI/Button';
@@ -59,7 +59,7 @@ export default function BestsellerItem({ item }: BestsellerItemProps) {
           {item.name}
         </Link>
         <p className="text-primary-500 mt-1 flex items-center gap-2">
-          <span>{formatCurrency(item.lowestPrice)}</span> -
+          <span>{formatMoney(item.lowestPrice)}</span> -
           <span className="text-sm text-gray-400">Đã bán: {item.sold}</span>
         </p>
 

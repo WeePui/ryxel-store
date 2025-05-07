@@ -50,18 +50,22 @@ export default function ZoomedAssetsList({
           />
         )}
       </div>
-      <button
-        onClick={handlePrev}
-        className="p-4 bg-white rounded-full absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1/2 shadow-lg text-primary-500 text-lg "
-      >
-        <FaChevronLeft className="stroke-2" />
-      </button>
-      <button
-        onClick={handleNext}
-        className="p-4 bg-white rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/2 shadow-md text-primary-500 text-lg"
-      >
-        <FaChevronRight className="stroke-2" />
-      </button>
+      {assetIndex > 0 && (
+        <button
+          onClick={handlePrev}
+          className="p-4 bg-white rounded-full absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1/2 shadow-lg text-primary-500 text-lg "
+        >
+          <FaChevronLeft className="stroke-2" />
+        </button>
+      )}
+      {assetIndex < assets.length - 1 && (
+        <button
+          onClick={handleNext}
+          className="p-4 bg-white rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/2 shadow-md text-primary-500 text-lg"
+        >
+          <FaChevronRight className="stroke-2" />
+        </button>
+      )}
     </div>
   );
 }

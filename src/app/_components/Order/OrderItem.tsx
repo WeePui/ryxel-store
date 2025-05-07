@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import NavLink from '../UI/NavLink';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import { LineItem } from '@/app/_types/lineItem';
 import { Variant } from '@/app/_types/variant';
 import { Product } from '@/app/_types/product';
@@ -51,7 +51,7 @@ export default function OrderItem({ item }: OrderItemProps) {
         </p>
         <div className="font-semibold">
           <p className="text-sm font-normal text-grey-300">Thành tiền:</p>
-          {formatCurrency(subtotal)}
+          {formatMoney(subtotal)}
         </div>
       </div>
     </div>

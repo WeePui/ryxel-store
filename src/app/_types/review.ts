@@ -22,4 +22,5 @@ export interface Review {
   variant: string;
   createdAt: string;
   updatedAt: string;
+  status: 'processing' | 'approved' | 'rejected';
 }

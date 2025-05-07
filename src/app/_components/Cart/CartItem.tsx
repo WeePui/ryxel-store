@@ -11,7 +11,7 @@ import {
 } from '@/app/_libs/actions';
 import ConfirmDialogue from '../UI/ConfirmDialogue';
 import Modal from '../UI/Modal';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import Loader from '../UI/Loader';
 import { toast } from 'react-toastify';
 import { LineItem } from '@/app/_types/lineItem';
@@ -119,7 +119,7 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
               </div>
               <div className="flex h-[4.6rem] flex-col items-center justify-between gap-2 md:justify-center xl:flex-[7] xl:items-end">
                 <p className="text-lg font-bold">
-                  {formatCurrency(itemVariant.price * quantity)}
+                  {formatMoney(itemVariant.price * quantity)}
                 </p>
                 <button
                   className="flex items-center gap-2 border-b-2 border-red-500 text-red-500"

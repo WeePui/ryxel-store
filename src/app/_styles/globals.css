@@ -15,6 +15,7 @@ body {
     -webkit-appearance: none;
     margin: 0;
   }
+
   @keyframes gentle-bounce {
     0% {
       transform: translateY(0) scale(1);
@@ -144,6 +145,10 @@ body {
     cursor: crosshair;
   }
 
+  .animate-shake {
+    animation: shake 0.4s ease-in-out;
+  }
+
   @keyframes slideRight {
     from {
       transform: translateX(-100%);
@@ -159,6 +164,25 @@ body {
     }
     to {
       transform: translateX(0);
+    }
+  }
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-4px);
+    }
+    40% {
+      transform: translateX(4px);
+    }
+    60% {
+      transform: translateX(-4px);
+    }
+    80% {
+      transform: translateX(4px);
     }
   }
 }

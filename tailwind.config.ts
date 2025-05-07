@@ -60,8 +60,8 @@ export default {
         },
         grey: {
           default: '#47494B',
-          50: '#EDEEEF',
-          100: '#DBDDDF',
+          50: '#F9FAFB',
+          100: '#E8EBEF',
           200: '#B2B6BA',
           300: '#8C9093',
           400: '#696B6E',

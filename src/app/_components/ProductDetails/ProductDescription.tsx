@@ -14,7 +14,7 @@ function ProductDescription() {
   return (
     <section className="mt-32 lg:mt-4 flex w-full justify-center bg-secondary-50 p-4">
       <div className="flex w-full max-w-7xl justify-between lg:flex-col lg:gap-8 lg:p-0">
-        <div className="flex w-7/12 lg:w-full flex-col justify-center p-4">
+        <div className="flex w-7/12 lg:w-full flex-col p-4">
           <h2 className="text-2xl font-semibold text-primary-500">Mô tả</h2>
           <div className="mt-4 text-primary-700">
             <p>{product.description}</p>

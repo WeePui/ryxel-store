@@ -22,6 +22,8 @@ interface InputProps {
   optionPlaceholder?: string;
   bgColor?: string;
   maxLength?: number;
+  className?: string;
+  onBlur?: (e: React.FocusEvent<HTMLElement>) => void;
 }
 
 function Input({
@@ -40,11 +42,14 @@ function Input({
   optionPlaceholder = '- - Select an option - -',
   bgColor = 'bg-white',
   maxLength,
+  className = '',
+  onBlur,
 }: InputProps) {
   const inputRef = useRef<
     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
   >(null);
   const [errorState, setError] = useState(error);
+  const [animateError, setAnimateError] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -69,7 +74,10 @@ function Input({
 
   useEffect(() => {
     if (error) {
-      setError(true); // Đảm bảo errorState được cập nhật khi có lỗi từ props
+      setError(true);
+      setAnimateError(true);
+      const timer = setTimeout(() => setAnimateError(false), 400);
+      return () => clearTimeout(timer);
     }
   }, [error]);
 
@@ -83,7 +91,7 @@ function Input({
 
   if (type === 'select') {
     return (
-      <div className="relative w-full rounded-lg">
+      <div className={`relative w-full rounded-lg ${className}`}>
         <select
           name={name}
           id={id}
@@ -92,10 +100,13 @@ function Input({
             error
               ? 'border-red-500 text-red-500'
               : 'border-grey-300 text-gray-900'
-          } focus:border-primary-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500`}
+          } ${
+            animateError ? 'animate-shake' : ''
+          } focus:border-primary-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500}`}
           disabled={disabled}
           onChange={handleChange}
           value={value}
+          onBlur={onBlur}
         >
           <option value="" disabled>
             {optionPlaceholder}
@@ -109,7 +120,7 @@ function Input({
         </select>
         <label
           htmlFor={id}
-          className={`absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-primary-300 ${
+          className={`absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:bg-gray-900 dark:text-gray-400 truncate peer-focus:dark:text-primary-300 ${
             error
               ? 'text-red-500 peer-focus:text-red-500'
               : 'text-gray-500 peer-focus:text-primary-500'
@@ -122,7 +133,7 @@ function Input({
   }
   if (type === 'textarea')
     return (
-      <div className="relative w-full rounded-lg">
+      <div className={`relative w-full min-w-0 rounded-lg ${className}`}>
         <textarea
           ref={inputRef as React.RefObject<HTMLTextAreaElement>}
           name={name}
@@ -131,13 +142,14 @@ function Input({
             error
               ? 'border-red-500 text-red-500'
               : 'border-grey-300 text-gray-900'
-          } peer block w-full resize-none appearance-none rounded-lg border-2 border-grey-300 bg-transparent px-2.5 pb-2.5 pt-4 focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${bgColor}`}
+          } peer block w-full resize-none appearance-none rounded-lg border-2 border-grey-300 bg-transparent px-2.5 pb-2.5 pt-4 focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${bgColor} min-h-28`}
           placeholder=" "
           disabled={disabled}
           defaultValue={defaultValue}
           onChange={handleChange}
           maxLength={maxLength || 524288}
           value={value}
+          onBlur={onBlur}
         />
         <label
           htmlFor={id}
@@ -145,7 +157,7 @@ function Input({
             error
               ? 'border-red-500 text-red-500 peer-focus:text-red-500'
               : 'border-grey-300 text-gray-500 peer-focus:text-primary-500'
-          } absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-primary-300`}
+          } absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-primary-300 truncate`}
         >
           {label}
         </label>
@@ -154,7 +166,7 @@ function Input({
 
   if (type === 'checkbox')
     return (
-      <div className="flex items-center">
+      <div className={`flex items-center ${className}`}>
         <input
           id={id}
           name={name}
@@ -165,6 +177,7 @@ function Input({
           onChange={(e) => onChange?.(e)}
           className={`h-4 w-4 rounded-xl border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:text-grey-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 !${bgColor}`}
           disabled={disabled}
+          onBlur={onBlur}
         />
         <label
           htmlFor={id}
@@ -178,7 +191,7 @@ function Input({
     );
 
   return (
-    <div className="relative w-full rounded-lg">
+    <div className={`relative w-full rounded-lg ${className}`}>
       <input
         type={type}
         name={name}
@@ -191,13 +204,14 @@ function Input({
         } 
         peer block w-full appearance-none rounded-lg border-2 border-grey-300 bg-transparent px-2.5 pb-2.5  lg:pt-3 lg:pb-1 pt-4 focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${
           disabled && 'cursor-not-allowed text-grey-300 !border-grey-300'
-        } !${bgColor}`}
+        } !${bgColor} ${animateError ? 'animate-shake' : ''}`}
         placeholder=" "
         disabled={disabled}
         defaultValue={defaultValue}
         onChange={handleChange}
         value={value}
         maxLength={maxLength || 524288}
+        onBlur={onBlur}
       />
       <label
         htmlFor={id}
@@ -205,7 +219,7 @@ function Input({
           errorState
             ? 'border-red-500 text-red-500 peer-focus:text-red-500'
             : 'border-grey-300 text-gray-500 peer-focus:text-primary-500'
-        } !${bgColor} absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-primary-300`}
+        } !${bgColor} absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-primary-300 truncate`}
       >
         {label}
       </label>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Product } from '@/app/_types/product';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import Image from 'next/image';
 import React, { useState, useTransition } from 'react';
 import Button from '../UI/Button';
@@ -96,7 +96,7 @@ export default function WishlistProductItem({
           <div className="flex justify-between items-center mt-2">
             <span className="text-sm font-semibold">
               <span className="text-gray-400 font-normal">Giá tiền: </span>
-              {formatCurrency(item.lowestPrice)}
+              {formatMoney(item.lowestPrice)}
             </span>
             <Button size="small" disabled={isPending} onClick={handleAddToCart}>
               {isPending ? <Spinner /> : 'Thêm giỏ hàng'}
@@ -155,7 +155,7 @@ export default function WishlistProductItem({
         </select>
       </td>
       <td className="text-center font-semibold">
-        {formatCurrency(item.lowestPrice)}
+        {formatMoney(item.lowestPrice)}
       </td>
       <td>
         <Button size="small" disabled={isPending} onClick={handleAddToCart}>

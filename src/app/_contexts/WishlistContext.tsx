@@ -133,7 +133,7 @@ function WishlistProvider({ children }: { children: React.ReactNode }) {
           <ConfirmDialogue
             onConfirm={() => {
               setIsModalOpen(false);
-              router.push('/account/login');
+              router.push('/login');
             }}
             confirmText="Xác nhận"
             message="Bạn chưa đăng nhập nên không thể sử dụng tính năng này, vui lòng đăng nhập trước!"

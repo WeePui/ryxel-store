@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import NavLink from '../UI/NavLink';
 import Button from '../UI/Button';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import { Cart } from '@/app/_types/cart';
 import { Product } from '@/app/_types/product';
 
@@ -39,7 +39,7 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
                     </p>
                     <p className="text-sm text-gray-500">
                       {item.quantity} (sản phẩm) x{' '}
-                      {formatCurrency((item.product as Product).lowestPrice)}
+                      {formatMoney((item.product as Product).lowestPrice)}
                     </p>
                   </div>
                 </NavLink>

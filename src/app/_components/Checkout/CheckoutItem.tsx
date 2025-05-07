@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import NavLink from '../UI/NavLink';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import { LineItem } from '@/app/_types/lineItem';
 import { Product } from '@/app/_types/product';
 import { WishlistProvider } from '@/app/_contexts/WishlistContext';
@@ -57,12 +57,12 @@ function CheckoutItem({ item }: CheckoutItemProps) {
         <div className="flex flex-col justify-between gap-4 md:gap-1 text-lg font-bold">
           <div>
             <p className="text-xs font-normal text-grey-300">Đơn giá:</p>
-            <span className="text-sm">{formatCurrency(itemVariant.price)}</span>
+            <span className="text-sm">{formatMoney(itemVariant.price)}</span>
           </div>
           <div>
             <p className="text-sm font-normal text-grey-300">Thành tiền:</p>
             <span className="">
-              {formatCurrency(itemVariant.price * quantity)}
+              {formatMoney(itemVariant.price * quantity)}
             </span>
           </div>
         </div>

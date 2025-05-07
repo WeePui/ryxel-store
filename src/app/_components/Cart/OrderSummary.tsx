@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Button from '../UI/Button';
 import PaymentMethods from '../UI/PaymentMethods';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import { useTransition } from 'react';
 import { storeSelectedCartItemsAction } from '@/app/_libs/actions';
 import { toast } from 'react-toastify';
@@ -39,13 +39,13 @@ function OrderSummary({ subtotal, selectedItems }: OrderSummaryProps) {
   }
 
   return (
-    <div className="sticky top-20 flex flex-col divide-y-2 divide-gray-300 rounded-xl bg-grey-50 px-4 font-semibold">
+    <div className="sticky top-20 flex flex-col divide-y-2 divide-gray-300 rounded-xl bg-grey-100 px-4 font-semibold">
       <h2 className="py-4 text-2xl font-bold">Tóm tắt đơn hàng</h2>
 
       <div className="py-6">
         <div className="flex justify-between text-xl">
           <h3>Tổng thanh toán</h3>
-          <span>{formatCurrency(subtotal)}</span>
+          <span>{formatMoney(subtotal)}</span>
         </div>
         <p className="text-xs text-grey-400 mt-1 text-right">
           (Sản phẩm đã chọn: x{selectedItems.length})

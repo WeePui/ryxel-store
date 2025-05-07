@@ -1,16 +1,31 @@
+'use client';
+
 import Image from 'next/image';
-import React from 'react';
 import NavLink from '../UI/NavLink';
+import { useRouter } from 'next/navigation';
 
 export default function HeaderCategory() {
+  const router = useRouter();
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const id = target.id;
+    if (id) {
+      router.push(`/products?category=${id}`);
+    }
+  };
+
   return (
     <div className="fixed left-0 p-4 bg-grey-50 w-full mx-auto z-10 shadow-md border-b border-primary-200 ">
       <div className="grid grid-cols-[60fr_40fr] divide-x divide-primary-200 max-w-7xl mx-auto">
-        <div className="p-6">
+        <div className="p-6" onClick={handleClick} role="button">
           <h1 className="mb-4 text-xl">Mua sắm theo danh mục</h1>
           <div className="flex">
             <div className="grid grid-cols-3 gap-x-12 gap-y-6 justify-start w-fit">
-              <div className="flex flex-col gap-2 items-center w-fit">
+              <div
+                className="flex flex-col gap-2 items-center w-fit"
+                id="mouse"
+              >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
                   <Image
                     src={'/categories/mouse-category.jpg'}
@@ -21,7 +36,10 @@ export default function HeaderCategory() {
                 </div>
                 <p className="text-base">Chuột Gaming</p>
               </div>
-              <div className="flex flex-col gap-2 items-center w-fit">
+              <div
+                className="flex flex-col gap-2 items-center w-fit"
+                id="keyboard"
+              >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
                   <Image
                     src={'/categories/keyboard-category.jpg'}
@@ -32,7 +50,10 @@ export default function HeaderCategory() {
                 </div>
                 <p className="text-base">Bàn phím</p>
               </div>
-              <div className="flex flex-col gap-2 items-center w-fit">
+              <div
+                className="flex flex-col gap-2 items-center w-fit"
+                id="headphone"
+              >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
                   <Image
                     src={'/categories/headset-category.jpg'}
@@ -43,7 +64,10 @@ export default function HeaderCategory() {
                 </div>
                 <p className="text-base">Tai nghe</p>
               </div>
-              <div className="flex flex-col gap-2 items-center w-fit">
+              <div
+                className="flex flex-col gap-2 items-center w-fit"
+                id="table"
+              >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
                   <Image
                     src={'/categories/table-category.jpg'}
@@ -54,7 +78,10 @@ export default function HeaderCategory() {
                 </div>
                 <p className="text-base">Bàn Gaming</p>
               </div>
-              <div className="flex flex-col gap-2 items-center w-fit">
+              <div
+                className="flex flex-col gap-2 items-center w-fit"
+                id="chair"
+              >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
                   <Image
                     src={'/categories/chair-category.jpg'}
@@ -65,7 +92,10 @@ export default function HeaderCategory() {
                 </div>
                 <p className="text-base">Ghế Gaming</p>
               </div>
-              <div className="flex flex-col gap-2 items-center w-fit">
+              <div
+                className="flex flex-col gap-2 items-center w-fit"
+                id="accessory"
+              >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
                   <Image
                     src={'/categories/accessory-category.jpg'}
@@ -78,10 +108,10 @@ export default function HeaderCategory() {
               </div>
             </div>
             <div className="flex flex-col gap-2 w-fit ml-12">
-              <NavLink href="/products?brand=logitech">
+              <NavLink href="/products?brand=Logitech">
                 <span className="text-base">Logitech</span>
               </NavLink>
-              <NavLink href="/products?brand=razer">
+              <NavLink href="/products?brand=Razer">
                 <span className="text-base">Razer</span>
               </NavLink>
               <NavLink href="/products?brand=Steelseries">

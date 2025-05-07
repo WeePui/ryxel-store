@@ -2,6 +2,7 @@
 
 import {
   validateAddressForm,
+  validateCategoryForm,
   validateLoginForm,
   validateSignupForm,
   validateUpdatePasswordForm,
@@ -28,7 +29,6 @@ import {
   createCheckoutSession,
   createOrder,
   cancelOrder,
-  getOrderById,
   createReviewsByOrder,
   updateReviewsByOrder,
   getWishlist,
@@ -36,6 +36,8 @@ import {
   addProductToWishlist,
   removeProductFromWishlist,
   addMultipleItemsToCart,
+  clearCartItems,
+  getOrderByOrderCode,
 } from '@libs/apiServices';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -47,6 +49,7 @@ import {
   UpdateProfileInput,
   ReviewInput,
   ReviewUpdateInput,
+  CategoryInput,
 } from '../_types/validateInput';
 import { transformAddressFormData } from '../_helpers/transformAddressFormData';
 import { FormError } from '../_types/formError';
@@ -94,9 +97,6 @@ export async function loginAction(
   }
 
   const loginData = await login(userInput);
-  const {
-    data: { user },
-  } = loginData;
 
   if (loginData.message)
     return {
@@ -107,11 +107,16 @@ export async function loginAction(
       },
     };
 
+  const {
+    data: { user },
+  } = loginData;
+
   const cookiesStore = await cookies();
   const expiresAt = new Date(
     Date.now() +
       Number(process.env.JWT_COOKIES_EXPIRES_IN!) * 24 * 60 * 60 * 1000
   );
+
   cookiesStore.set('jwt', loginData.token, {
     httpOnly: true,
     secure: true,
@@ -123,7 +128,7 @@ export async function loginAction(
   });
   cookiesStore.delete('reauthenticated');
 
-  redirect('/account');
+  redirect(user.role !== 'admin' ? '/account' : '/admin/dashboard');
 }
 
 export async function signupAction(
@@ -737,7 +742,7 @@ export async function createCheckoutSessionAction(
     paymentMethod: formData.get('paymentMethod') as string,
     lineItems: JSON.parse(formData.get('lineItems') as string),
     processPayment: formData.get('processPayment') as string,
-    orderId: formData.get('orderId') as string,
+    orderCode: formData.get('orderCode') as string,
   };
 
   if (!data.address) {
@@ -767,15 +772,15 @@ export async function createCheckoutSessionAction(
   let checkoutOrder;
 
   if (data.processPayment === '1') {
-    if (!data.orderId) {
+    if (!data.orderCode) {
       return {
         errors: {
-          message: 'Order ID is required',
+          message: 'Order code is required',
         },
       };
     }
 
-    const response = await getOrderById(data.orderId, token);
+    const response = await getOrderByOrderCode(data.orderCode, token);
 
     if (response.status !== 'success') {
       return {
@@ -1075,5 +1080,105 @@ export const storeSelectedCartItemsAction = async (
   return {
     success: true,
     selectedItems,
+  };
+};
+
+export const clearCartItemsAction = async () => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+  const token = checkIsLogin.token!;
+  const response = await clearCartItems(token);
+
+  if (response.status === 'success') {
+    const cookiesStore = await cookies();
+    cookiesStore.delete('selectedCartItems');
+
+    revalidatePath('/cart');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      success: false,
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const updateCategoryAction = async (
+  _: unknown,
+  formData: FormData
+): Promise<{
+  success: boolean | undefined;
+  errors?: FormError;
+  input: CategoryInput;
+}> => {
+  const data = {
+    name: formData.get('name') as string,
+    description: formData.get('description') as string,
+    slug: formData.get('slug') as string,
+    image: formData.get('image') as File | null | string,
+  } as CategoryInput;
+
+  const validation = validateCategoryForm(data);
+  if (!validation.success) {
+    return {
+      success: false,
+      errors: validation.errors,
+      input: data,
+    };
+  }
+
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return { ...checkIsLogin, input: data };
+
+  // const token = checkIsLogin.token!;
+
+  console.log('Update category data:', data);
+  // const response = await updateCategory(data, token);
+
+  return {
+    success: true,
+    input: data,
+  };
+};
+
+export const addCategoryAction = async (
+  _: unknown,
+  formData: FormData
+): Promise<{
+  success: boolean | undefined;
+  errors?: FormError;
+  input: CategoryInput;
+}> => {
+  const data = {
+    name: formData.get('name') as string,
+    description: formData.get('description') as string,
+    slug: formData.get('slug') as string,
+    image: formData.get('image') as File | null | string,
+  } as CategoryInput;
+
+  const validation = validateCategoryForm(data);
+  if (!validation.success) {
+    return {
+      success: false,
+      errors: validation.errors,
+      input: data,
+    };
+  }
+
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return { ...checkIsLogin, input: data };
+
+  // const token = checkIsLogin.token!;
+
+  console.log('Add category data:', data);
+  // const response = await addCategory(data, token);
+
+  return {
+    success: true,
+    input: data,
   };
 };

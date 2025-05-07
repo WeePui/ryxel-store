@@ -4,7 +4,7 @@ import OrderItem from './OrderItem';
 import { Order } from '@/app/_types/order';
 import { mappingOrderStatus } from '@/app/_utils/mappingOrderStatus';
 import OrderDetailsCTA from '../OrderDetails/OrderDetailsCTA';
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import { useState } from 'react';
 
 interface OrderCardProps {
@@ -48,7 +48,7 @@ export default function OrderCard({ order }: OrderCardProps) {
         <p className="text-right text-sm text-grey-300 my-4">
           Tổng tiền:{' '}
           <span className="text-xl font-bold text-primary-default">
-            {formatCurrency(order.total)}
+            {formatMoney(order.total)}
           </span>
         </p>
         <OrderDetailsCTA order={order} />

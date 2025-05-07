@@ -1,0 +1,17 @@
+export const mappingSpecsName: Record<string, string> = {
+  color: 'Màu sắc',
+  size: 'Kích thước',
+  brand: 'Thương hiệu',
+  material: 'Chất liệu',
+  pattern: 'Họa tiết',
+  adjustability: 'Tuỳ chỉnh',
+  weightCapacity: 'Chịu tải',
+  sound: 'Âm thanh',
+  connection: 'Chuẩn kết nối',
+  rgb: 'RGB',
+  maxLoad: 'Tải trọng',
+  switchType: 'Switch',
+  dpi: 'DPI',
+  pollingRate: 'Tần số quét',
+  battery: 'Pin',
+};

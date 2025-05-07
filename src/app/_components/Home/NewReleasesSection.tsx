@@ -1,6 +1,6 @@
 'use client';
 
-import formatCurrency from '@/app/_utils/formatCurrency';
+import formatMoney from '@/app/_utils/formatMoney';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FaCircleChevronRight } from 'react-icons/fa6';
@@ -37,7 +37,7 @@ export default function NewReleasesSection() {
             "
           >
             <span className="text-xl font-semibold text-primary-light">
-              {formatCurrency(9490000)}
+              {formatMoney(9490000)}
             </span>
             <button
               className="px-5 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition flex items-center gap-2"

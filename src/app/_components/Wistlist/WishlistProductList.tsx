@@ -64,7 +64,7 @@ export default function WishlistProductList({
           </tbody>
         </WishlistProvider>
       </table>
-      <div className="flex flex-col gap-4">
+      <div className=" flex-col gap-4 hidden md:flex">
         {items.map((item) => (
           <WishlistProvider key={item._id}>
             <WishlistProductItem

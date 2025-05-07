@@ -1,14 +1,21 @@
 export interface Variant {
-  _id: string;
+  _id?: string;
   name: string;
-  title: string;
+  title?: string;
   price: number;
-  images: string[];
+  images: (string | File)[];
   specifications: {
     [key: string]: string;
   };
   stock: number;
   weight: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: string;
+  updatedAt?: string;
+  sku: string;
+  sold: number;
+  saleOff: {
+    startDate: Date;
+    endDate: Date;
+    percentage: number;
+  };
 }

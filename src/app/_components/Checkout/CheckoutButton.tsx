@@ -34,7 +34,7 @@ function CheckoutButton({
   );
   const searchParams = useSearchParams();
   const processPayment = searchParams.get('processPayment');
-  const orderId = searchParams.get('orderId');
+  const orderCode = searchParams.get('orderCode');
 
   useEffect(() => {
     if (state?.errors) {
@@ -53,7 +53,7 @@ function CheckoutButton({
         name="processPayment"
         value={processPayment || '0'}
       />
-      <input type="hidden" name="orderId" value={orderId || ''} />
+      <input type="hidden" name="orderCode" value={orderCode || ''} />
       {/* Added processPayment */}
       <Button role="submit" disabled={isPending}>
         {isPending || loading ? <Spinner /> : 'Tiến hành thanh toán'}

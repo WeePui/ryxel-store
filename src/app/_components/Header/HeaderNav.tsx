@@ -46,7 +46,9 @@ function HeaderNav({
     <nav className="z-10 text-lg">
       <ul className="flex lg:flex-col gap-8 xl:gap-5 text-primary-500">
         <li onClick={onNavigate}>
-          <NavLink href="/products">Cửa hàng</NavLink>
+          <NavLink href="/products" onClick={onNavigate}>
+            Cửa hàng
+          </NavLink>
         </li>
         {!isMobile && !isTouchDevice && (
           <li className="xl:hidden">
