@@ -14,7 +14,14 @@ async function Page({ searchParams }: Props) {
   const cacheKey = `products-${key}`;
 
   return (
-    <Suspense fallback={<Loader />} key={cacheKey}>
+    <Suspense
+      fallback={
+        <div className="flex items-center mx-auto h-screen">
+          <Loader />
+        </div>
+      }
+      key={cacheKey}
+    >
       <ProductsPage searchParams={searchParams} />
     </Suspense>
   );

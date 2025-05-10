@@ -62,4 +62,5 @@ export interface CategoryInput {
   description: string;
   image: File | string | null;
   slug?: string;
+  id?: string;
 }

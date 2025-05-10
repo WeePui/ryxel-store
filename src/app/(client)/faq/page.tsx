@@ -6,7 +6,7 @@ import FAQItem from '../../_components/FAQ/FAQItem';
 
 export const metadata: Metadata = {
   title: 'Câu hỏi thường gặp',
-  description: 'Câu hỏi thường gặp của Ryzel Store.',
+  description: 'Câu hỏi thường gặp của Ryxel Store.',
 };
 
 const faqs = [

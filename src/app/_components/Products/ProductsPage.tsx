@@ -1,6 +1,10 @@
 import CategoryFilter from '@components/Products/CategoryFilter';
 import SideFilter from '@components/Products/SideFilter';
-import { getFilterData, getProducts } from '@libs/apiServices';
+import {
+  getClientCategories,
+  getFilterData,
+  getProducts,
+} from '@libs/apiServices';
 import ProductList from '@components/Products/ProductList';
 import NumResults from '@components/Products/NumResults';
 import { generatePriceRanges } from '@helpers/generatePriceRanges';
@@ -27,6 +31,8 @@ export default async function ProductsPage({ searchParams }: Props) {
     }>;
   } = {}; // Changed from [] to {} to match the new structure
   const filters = await searchParams;
+
+  const { categories } = await getClientCategories();
 
   try {
     const productsData = await getProducts(filters);
@@ -60,7 +66,7 @@ export default async function ProductsPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl xl:max-w-full flex-1 xl:px-6 lg:px-3">
+    <div className="mx-auto max-w-7xl xl:max-w-full flex-1 xl:px-6 lg:px-3 sm:px-0">
       <main className="mb-16">
         <NumResults
           results={displayResults}
@@ -68,9 +74,9 @@ export default async function ProductsPage({ searchParams }: Props) {
         />
 
         <div className="overflow-x-hidden max-w-full">
-          <CategoryFilter />
+          <CategoryFilter categories={categories} />
         </div>
-        <div className="hidden lg:flex flex-col justify-between py-4">
+        <div className="hidden lg:flex flex-col justify-between py-4 sm:px-3">
           <p className="mb-2 pl-2 font-thin hidden md:block">Sắp xếp:</p>
           <div className="hidden lg:flex gap-2 items-center">
             <div className="flex-[6]">
@@ -88,7 +94,7 @@ export default async function ProductsPage({ searchParams }: Props) {
         <div className="lg:hidden">
           <SortSelector />
         </div>
-        <div className="grid grid-cols-[20fr_80fr] xl:grid-cols-[25fr_75fr] lg:grid-cols-1 gap-x-6 py-7">
+        <div className="grid grid-cols-[20fr_80fr] xl:grid-cols-[25fr_75fr] lg:grid-cols-1 gap-x-6 py-7 sm:px-3">
           <div className="lg:hidden sticky top-4 max-h-[calc(100vh-2rem)] h-fit shadow-md rounded-xl overflow-auto scrollbar-hide">
             <SideFilter
               brands={brands}

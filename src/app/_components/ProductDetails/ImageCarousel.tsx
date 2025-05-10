@@ -124,7 +124,7 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
           </button>
         </div>
       </div>
-      <div className="items-center flex gap-4">
+      <div className="items-center flex gap-4 sm:gap-1 flex-wrap sm:justify-center">
         {images.map((image, index) => (
           <div
             className={`group relative h-16 w-28 lg:h-12 lg:w-20 overflow-hidden rounded-2xl border-2 border-grey-100 transition-all duration-300 hover:scale-110`}

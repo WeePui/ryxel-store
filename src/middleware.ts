@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
   //   return response;
   // }
 
-  if (request.nextUrl.pathname.includes('/admin')) {
+  if (request.nextUrl.pathname.startsWith('/admin')) {
     const tokenValidation = await checkToken(token);
 
     if (
@@ -125,11 +125,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/account',
-    '/account/profile',
-    '/account/settings',
-    '/account/orders',
-    '/account/addresses',
-    '/account/updatePassword',
+    '/account/:path*',
     '/cart',
     '/checkout',
     '/reauthenticate',

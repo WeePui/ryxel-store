@@ -38,6 +38,8 @@ import {
   addMultipleItemsToCart,
   clearCartItems,
   getOrderByOrderCode,
+  updateCategory,
+  createCategory,
 } from '@libs/apiServices';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -128,7 +130,7 @@ export async function loginAction(
   });
   cookiesStore.delete('reauthenticated');
 
-  redirect(user.role !== 'admin' ? '/account' : '/admin/dashboard');
+  redirect(user.role !== 'admin' ? '/products' : '/admin/dashboard');
 }
 
 export async function signupAction(
@@ -196,7 +198,7 @@ export const sendOTPAction = async ({
     const token = cookiesStore.get('jwt');
 
     if (!token) {
-      throw new Error('No token found.');
+      throw new Error('No token found. Please log in again.');
     }
 
     const response = await sendOTP(token);
@@ -929,7 +931,7 @@ export const updateReviewsByOrderAction = async (
 
 export const getWishlistAction = async () => {
   const checkIsLogin = await checkLogin();
-  if (!checkIsLogin.success) return { ...checkIsLogin, wishlist: null };
+  if (!checkIsLogin.success) return { success: false, wishlist: null };
 
   const token = checkIsLogin.token!;
 
@@ -1114,12 +1116,14 @@ export const updateCategoryAction = async (
   success: boolean | undefined;
   errors?: FormError;
   input: CategoryInput;
+  slug?: string;
 }> => {
   const data = {
     name: formData.get('name') as string,
     description: formData.get('description') as string,
     slug: formData.get('slug') as string,
     image: formData.get('image') as File | null | string,
+    id: formData.get('id') as string,
   } as CategoryInput;
 
   const validation = validateCategoryForm(data);
@@ -1134,14 +1138,26 @@ export const updateCategoryAction = async (
   const checkIsLogin = await checkLogin();
   if (!checkIsLogin.success) return { ...checkIsLogin, input: data };
 
-  // const token = checkIsLogin.token!;
+  const token = checkIsLogin.token!;
 
-  console.log('Update category data:', data);
-  // const response = await updateCategory(data, token);
+  const response = await updateCategory(data, token, data.id!);
+
+  if (response.status !== 'success') {
+    return {
+      success: false,
+      errors: {
+        message: response.message,
+      },
+      input: data,
+    };
+  }
+
+  const { category } = response.data;
 
   return {
     success: true,
     input: data,
+    slug: category.slug,
   };
 };
 
@@ -1152,6 +1168,7 @@ export const addCategoryAction = async (
   success: boolean | undefined;
   errors?: FormError;
   input: CategoryInput;
+  slug?: string;
 }> => {
   const data = {
     name: formData.get('name') as string,
@@ -1172,13 +1189,20 @@ export const addCategoryAction = async (
   const checkIsLogin = await checkLogin();
   if (!checkIsLogin.success) return { ...checkIsLogin, input: data };
 
-  // const token = checkIsLogin.token!;
+  const token = checkIsLogin.token!;
+  const response = await createCategory(data, token);
 
-  console.log('Add category data:', data);
-  // const response = await addCategory(data, token);
+  if (response.status !== 'success') {
+    return {
+      success: false,
+      errors: {
+        message: response.message,
+      },
+      input: data,
+    };
+  }
 
-  return {
-    success: true,
-    input: data,
-  };
+  const { category } = response.data;
+
+  redirect(`/admin/categories/${category.slug}`);
 };

@@ -11,6 +11,7 @@ import { Product } from '@/app/_types/product';
 import Loader from '../UI/Loader';
 import { clearCartItemsAction } from '@/app/_libs/actions';
 import { toast } from 'react-toastify';
+import { FaCircleInfo } from 'react-icons/fa6';
 
 interface CartItemsListProps {
   items: LineItem[];
@@ -38,6 +39,36 @@ function CartItemsList({
     }[]
   >([]);
   const [pending, startTransition] = useTransition();
+  const selectableItems = items
+    .filter(
+      (item) =>
+        ((item.product as Product).variants.find((v) => v._id === item.variant)
+          ?.stock ?? 0) > 0
+    )
+    .map((item) => ({
+      product: (item.product as Product)._id as string,
+      variant: item.variant as string,
+    }));
+
+  const isAllSelected =
+    selectedItems.length === selectableItems.length &&
+    selectableItems.length > 0;
+
+  const sortedItems = useMemo(() => {
+    return [...items].sort((a, b) => {
+      const variantA = (a.product as Product).variants.find(
+        (v) => v._id === a.variant
+      );
+      const variantB = (b.product as Product).variants.find(
+        (v) => v._id === b.variant
+      );
+
+      const stockA = variantA ? variantA.stock : 0;
+      const stockB = variantB ? variantB.stock : 0;
+
+      return stockB - stockA; // stock giảm dần
+    });
+  }, [items]);
 
   const errorDetails = useMemo(
     () =>
@@ -87,16 +118,24 @@ function CartItemsList({
   };
 
   const toggleSelectAll = () => {
-    if (selectedItems.length === items.length) {
-      setSelectedItems([]);
-      onChangeLineItems([]);
-    } else {
-      const allItems = items.map((item) => ({
+    const selectableItems = items
+      .filter(
+        (item) =>
+          ((item.product as Product).variants.find(
+            (v) => v._id === item.variant
+          )?.stock ?? 0) > 0
+      )
+      .map((item) => ({
         product: (item.product as Product)._id as string,
         variant: item.variant as string,
       }));
-      setSelectedItems(allItems);
-      onChangeLineItems(allItems);
+
+    if (selectedItems.length === selectableItems.length) {
+      setSelectedItems([]);
+      onChangeLineItems([]);
+    } else {
+      setSelectedItems(selectableItems);
+      onChangeLineItems(selectableItems);
     }
   };
 
@@ -152,27 +191,36 @@ function CartItemsList({
         <Loader />
       ) : (
         <ul className="flex flex-col divide-y divide-gray-200">
-          <div className="flex justify-between mb-4 px-2">
-            <div className="flex items-center gap-3">
-              <input
-                id="select-all"
-                type="checkbox"
-                className="w-7 h-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300"
-                checked={selectedItems.length === items.length}
-                onChange={toggleSelectAll}
-              />
-              <label htmlFor="select-all" className="font-medium">
-                Chọn tất cả
-              </label>
+          <div className="mb-4">
+            {selectableItems.length === 0 && (
+              <p className="text-xs text-gray-400 mb-2 flex items-center gap-2 ml-2">
+                <FaCircleInfo /> Giỏ hàng của bạn không có sản phẩm nào còn hàng
+              </p>
+            )}
+            <div className="flex justify-between px-2">
+              <div className="flex items-center gap-3">
+                <input
+                  id="select-all"
+                  type="checkbox"
+                  className="w-7 h-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300 disabled:bg-grey-100 disabled:cursor-not-allowed disabled:border-grey-200"
+                  checked={isAllSelected}
+                  onChange={toggleSelectAll}
+                  disabled={selectableItems.length === 0}
+                />
+                <label htmlFor="select-all" className="font-medium">
+                  Chọn tất cả
+                </label>
+              </div>
+
+              <NavLink
+                href="#"
+                onClick={() => setIsClearCartConfirmDialogue(true)}
+              >
+                Xoá tất cả
+              </NavLink>
             </div>
-            <NavLink
-              href="#"
-              onClick={() => setIsClearCartConfirmDialogue(true)}
-            >
-              Xoá tất cả
-            </NavLink>
           </div>
-          {items.map((item) => (
+          {sortedItems.map((item) => (
             <li key={item.variant as string} className="py-8 flex">
               <CartItem
                 item={item}

@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Liên hệ',
-  description: 'Liên hệ với Ryzel Store.',
+  description: 'Liên hệ với Ryxel Store.',
 };
 
 export default function page() {

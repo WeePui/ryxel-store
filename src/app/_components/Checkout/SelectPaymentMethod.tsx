@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { BiSolidBank } from 'react-icons/bi';
 import { FaMoneyCheckDollar } from 'react-icons/fa6';
 
 const codIcon = (
@@ -67,20 +66,14 @@ export default function SelectPaymentMethod({
           />
           <PaymentMethodOption
             id="stripe"
-            label="Stripe (Visa, MasterCard)"
+            label="Stripe (Link, Visa, MasterCard)"
             icon={stripeIcon}
             onSelect={handleSelect}
           />
           <PaymentMethodOption
             id="zalopay"
-            label="Ví ZaloPay"
+            label="Ví ZaloPay (Thẻ ATM/tín dụng)"
             icon={zaloPayIcon}
-            onSelect={handleSelect}
-          />
-          <PaymentMethodOption
-            id="atm"
-            label="Thẻ ATM (Qua cổng thanh toán ZaloPay)"
-            icon={<BiSolidBank className="text-xl" />}
             onSelect={handleSelect}
           />
         </ul>

@@ -303,11 +303,6 @@ export function validateCategoryForm(data: CategoryInput) {
     .min(1, { message: 'Xin hãy nhập tên danh mục' });
   const slugSchema = z.string().optional();
   const descriptionSchema = z.string().optional();
-  const imageSchema = z
-    .instanceof(File, { message: 'Xin hãy chọn ảnh danh mục' })
-    .refine((file) => file.size > 0, {
-      message: 'Xin hãy chọn ảnh danh mục',
-    });
 
   const nameValidation = nameSchema.safeParse(data.name);
   if (!nameValidation.success) {
@@ -326,12 +321,6 @@ export function validateCategoryForm(data: CategoryInput) {
     validation.success = false;
     validation.errors.description =
       descriptionValidation.error.format()._errors[0];
-  }
-
-  const imageValidation = imageSchema.safeParse(data.image);
-  if (!imageValidation.success) {
-    validation.success = false;
-    validation.errors.image = imageValidation.error.format()._errors[0];
   }
 
   return validation;

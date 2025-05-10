@@ -2,7 +2,11 @@ import OverviewSection from '@components/ProductDetails/OverviewSection';
 import ProductDescription from '@/app/_components/ProductDetails/ProductDescription';
 import { ProductDetailProvider } from '@/app/_contexts/ProductDetailContext';
 
-import { getProductBySlug } from '@/app/_libs/apiServices';
+import {
+  getProductBySlug,
+  getRecommendedProducts,
+  getSimilarProducts,
+} from '@/app/_libs/apiServices';
 import ProductReviewsSection from '@/app/_components/ProductDetails/ProductReviewsSection';
 import { Variant } from '@/app/_types/variant';
 import RecommendedProducts from '@/app/_components/ProductDetails/RecommendedProducts';
@@ -26,12 +30,24 @@ async function ProductDetails({
     };
   });
 
+  const { products: recommendedProducts } = await getRecommendedProducts(
+    product._id
+  );
+  const { products: similarProducts } = await getSimilarProducts(product._id);
+
   return (
     <ProductDetailProvider product={product}>
       <OverviewSection />
       <ProductDescription />
-      <RecommendedProducts />
+      <RecommendedProducts
+        products={recommendedProducts}
+        title={'Thường được mua chung'}
+      />
       <ProductReviewsSection reviews={reviews} />
+      <RecommendedProducts
+        products={similarProducts}
+        title={'Sản phẩm tương tự'}
+      />
     </ProductDetailProvider>
   );
 }

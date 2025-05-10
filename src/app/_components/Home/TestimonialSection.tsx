@@ -102,7 +102,7 @@ export default function TestimonialSection() {
   };
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 py-16 bg-slate-50 border-t">
+    <section className="w-full max-w-7xl mx-auto px-4 py-16 bg-slate-50 border-t overflow-x-hidden">
       <p className="text-center text-3xl font-title font-bold">
         Khách hàng nói gì về chúng tôi
       </p>
@@ -115,7 +115,7 @@ export default function TestimonialSection() {
           return (
             <motion.div
               key={testimonial.name}
-              className="w-[26rem] p-6 rounded-xl bg-white shadow-md overflow-hidden absolute transition-all duration-500 flex flex-col justify-between items-center text-center"
+              className="w-[26rem] lg:w-[24rem] sm:w-[22rem] p-6 rounded-xl bg-white shadow-md overflow-hidden absolute transition-all duration-500 flex flex-col justify-between items-center text-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{
                 scale: style.scale,

@@ -31,14 +31,20 @@ export default function WishlistButton({
   const [isWishlistLoaded, setIsWishlistLoaded] = useState(false); // Trạng thái kiểm tra wishlist đã được load chưa
 
   useEffect(() => {
-    if (!wishlist) return;
-    if (!wishlist.products) return;
+    if (!wishlist) {
+      setIsWishlistLoaded(true); // Nếu wishlist chưa được load, không cần kiểm tra
+      return;
+    }
+    if (wishlist.products.length === 0) {
+      setIsInWishlist(false); // Nếu wishlist rỗng, không có sản phẩm nào
+      setIsWishlistLoaded(true); // Đánh dấu là wishlist đã được load
+      return;
+    }
 
     // Đánh dấu là wishlist đã được load
     setIsWishlistLoaded(true);
-
     setIsInWishlist(() => checkProductInWishlist(productId, wishlist));
-  }, [wishlist, productId]);
+  }, [wishlist, productId, checkProductInWishlist]);
 
   function handleClick(e: React.MouseEvent) {
     e.stopPropagation();

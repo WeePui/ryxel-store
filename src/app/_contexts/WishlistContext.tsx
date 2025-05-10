@@ -43,8 +43,9 @@ function WishlistProvider({ children }: { children: React.ReactNode }) {
     } else {
       const fetchWishlist = async () => {
         const result = await getWishlistAction();
-        if (!result.success) {
+        if (!result.success && result.errors) {
           toast.error(result.errors!.message);
+          setWishlist(null); // Nếu không thành công, đặt wishlist là null
         } else {
           setWishlist(result.wishlist);
           localStorage.setItem('wishlist', JSON.stringify(result.wishlist)); // Lưu vào localStorage nếu không có dữ liệu

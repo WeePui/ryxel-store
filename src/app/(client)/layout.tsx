@@ -50,7 +50,7 @@ export default async function RootLayout({
     <html lang="vi" className={`${manrope.variable} ${kanit.variable}`}>
       <body
         className={
-          'flex min-h-screen flex-col bg-secondary-100 text-primary-default antialiased overflow-x-hidden'
+          'flex min-h-screen flex-col bg-secondary-100 text-primary-default antialiased'
         }
       >
         <Header />

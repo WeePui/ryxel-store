@@ -4,9 +4,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaSistrix } from 'react-icons/fa6';
 
-function SearchBar() {
+interface SearchBarProps {
+  onHeader?: boolean;
+}
+
+function SearchBar({ onHeader = false }: SearchBarProps) {
   const [keyword, setKeyword] = useState('');
   const pathname = usePathname();
+  const navigation = onHeader ? '/products' : pathname;
   const router = useRouter();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -16,7 +21,7 @@ function SearchBar() {
       const params = new URLSearchParams();
       params.set('search', keyword);
 
-      router.replace(`${pathname}?${params.toString()}`);
+      router.replace(`${navigation}?${params.toString()}`);
     }
   }
 

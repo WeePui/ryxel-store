@@ -1,7 +1,7 @@
 'use client';
 
 import { useWindowSize } from '@/app/_hooks/useWindowSize';
-import formatMoney from '@/app/_utils/formatMoney';
+import { formatMoneyCompact } from '@/app/_utils/formatMoney';
 import { memo } from 'react';
 import {
   ResponsiveContainer,
@@ -54,7 +54,7 @@ function RevenueChart({ data }: RevenueChartProps) {
           {!isSmallScreen && (
             <YAxis
               width={90}
-              tickFormatter={(value) => formatMoney(value)}
+              tickFormatter={(value) => formatMoneyCompact(value)}
               tick={{ dx: -10, fontSize: 12 }}
             />
           )}

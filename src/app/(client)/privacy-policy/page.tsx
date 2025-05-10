@@ -4,7 +4,7 @@ import { FaChevronRight } from 'react-icons/fa6';
 
 export const metadata: Metadata = {
   title: 'Chính sách Quyền riêng tư',
-  description: 'Chính sách Quyền riêng tư của Ryzel Store.',
+  description: 'Chính sách Quyền riêng tư của Ryxel Store.',
 };
 
 export default function PrivacyPage() {
@@ -27,10 +27,10 @@ export default function PrivacyPage() {
           </h2>
           <p className="italic">Ngày có hiệu lực: 24/04/2025</p>
           <p className="font-medium">
-            Tại Ryzel Store, chúng tôi coi trọng sự riêng tư và bảo mật của
+            Tại Ryxel Store, chúng tôi coi trọng sự riêng tư và bảo mật của
             khách hàng. Chính sách này mô tả cách chúng tôi thu thập, sử dụng và
             bảo vệ thông tin cá nhân của bạn khi sử dụng trang web và ứng dụng
-            Ryzel.
+            Ryxel.
           </p>
         </div>
 

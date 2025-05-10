@@ -17,11 +17,7 @@ export async function generateMetadata({
 }
 
 function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <div>
-      <Suspense fallback={<Spinner />}>{children}</Suspense>
-    </div>
-  );
+  return <Suspense fallback={<Spinner />}>{children}</Suspense>;
 }
 
 export default Layout;

@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Điều khoản và Dịch vụ',
-  description: 'Điều khoản và Dịch vụ của Ryzel Store.',
+  description: 'Điều khoản và Dịch vụ của Ryxel Store.',
 };
 
 export default function Page() {
@@ -27,7 +27,7 @@ export default function Page() {
           </h2>
           <p className="italic">Ngày có hiệu lực: 24/02/2025</p>
           <p className="font-medium">
-            Chào mừng bạn đến với Ryzel! Trước khi sử dụng ứng dụng của chúng
+            Chào mừng bạn đến với Ryxel! Trước khi sử dụng ứng dụng của chúng
             tôi, vui lòng đọc kỹ các điều khoản và dịch vụ dưới đây. Bằng cách
             sử dụng ứng dụng của chúng tôi, bạn đồng ý tuân thủ và bị ràng buộc
             bởi các điều khoản này.
@@ -36,7 +36,7 @@ export default function Page() {
         <div className="flex flex-col gap-4">
           <h3 className="font-bold text-xl ">1. Chấp nhận Điều khoản</h3>
           <p className="font-medium">
-            Bằng cách truy cập và sử dụng Ryzel, bạn đồng ý tuân thủ các điều
+            Bằng cách truy cập và sử dụng Ryxel, bạn đồng ý tuân thủ các điều
             khoản và dịch vụ này. Nếu bạn không đồng ý với bất kỳ phần nào của
             các điều khoản này, vui lòng không sử dụng ứng dụng của chúng tôi.
           </p>
@@ -62,7 +62,7 @@ export default function Page() {
         <div className="flex flex-col gap-4">
           <h3 className="font-bold text-xl ">4. Sử dụng Ứng dụng</h3>
           <p className="font-medium">
-            Bạn đồng ý sử dụng Ryzel chỉ cho các mục đích hợp pháp và tuân thủ
+            Bạn đồng ý sử dụng Ryxel chỉ cho các mục đích hợp pháp và tuân thủ
             tất cả các quy định pháp luật hiện hành. Bạn không được sử dụng ứng
             dụng của chúng tôi để:
           </p>
@@ -81,7 +81,7 @@ export default function Page() {
         <div className="flex flex-col gap-4">
           <h3 className="font-bold text-xl ">5. Sản phẩm và Dịch vụ</h3>
           <p className="font-medium">
-            Ryzel cung cấp các sản phẩm và dịch vụ liên quan đến gaming, bao gồm
+            Ryxel cung cấp các sản phẩm và dịch vụ liên quan đến gaming, bao gồm
             nhưng không giới hạn ở các sản phẩm phần cứng, phần mềm, và phụ kiện
             chơi game. Chúng tôi cam kết cung cấp sản phẩm và dịch vụ chất lượng
             cao, nhưng không chịu trách nhiệm cho bất kỳ thiệt hại nào phát sinh
@@ -100,7 +100,7 @@ export default function Page() {
         <div className="flex flex-col gap-4">
           <h3 className="font-bold text-xl ">7. Sở hữu trí tuệ</h3>
           <p className="font-medium">
-            Toàn bộ nội dung trên Ryzel, bao gồm nhưng không giới hạn ở văn bản,
+            Toàn bộ nội dung trên Ryxel, bao gồm nhưng không giới hạn ở văn bản,
             đồ họa, logo, biểu tượng, hình ảnh và phần mềm, là tài sản của chúng
             tôi hoặc các nhà cung cấp của chúng tôi và được bảo vệ bởi luật sở
             hữu trí tuệ.
@@ -110,7 +110,7 @@ export default function Page() {
           <h3 className="font-bold text-xl">8. Giới hạn Trách nhiệm</h3>
           <p className="font-medium">
             Chúng tôi không chịu trách nhiệm cho bất kỳ thiệt hại nào phát sinh
-            từ việc sử dụng hoặc không thể sử dụng Ryzel. Bạn đồng ý rằng việc
+            từ việc sử dụng hoặc không thể sử dụng Ryxel. Bạn đồng ý rằng việc
             sử dụng ứng dụng là hoàn toàn tự nguyện và tại rủi ro của bạn.
           </p>
         </div>

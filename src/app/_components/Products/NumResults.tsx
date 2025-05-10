@@ -19,7 +19,7 @@ function NumResults({ results, totalResults }: NumResultsProps) {
   }, [searchParams, results]);
 
   return (
-    <p className="py-6 text-xs text-grey-400">
+    <p className="py-6 text-xs text-grey-400 sm:px-3">
       Tìm thấy {displayedResults} kết quả trong tổng số {totalResults} sản phẩm
     </p>
   );

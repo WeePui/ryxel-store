@@ -19,7 +19,7 @@ async function Header() {
         </div>
         <div className="flex items-center gap-8 lg:gap-4 lg:pr-4">
           <div className="lg:hidden">
-            <SearchBar />
+            <SearchBar onHeader={true} />
           </div>
           <Suspense fallback={<Spinner />}>
             <HeaderCart />

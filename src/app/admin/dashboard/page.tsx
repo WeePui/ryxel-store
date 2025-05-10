@@ -5,7 +5,7 @@ import StatCard from '@/app/_components/Admin/Dashboard/StatCard';
 import TopCustomers from '@/app/_components/Admin/Dashboard/TopCustomers';
 import TopSellingProducts from '@/app/_components/Admin/Dashboard/TopSellingProducts';
 import { getDashboardStats, getRecentOrders } from '@/app/_libs/apiServices';
-import formatMoney from '@/app/_utils/formatMoney';
+import { formatMoneyCompact } from '@/app/_utils/formatMoney';
 import { cookies } from 'next/headers';
 import { FaBoxes, FaDollarSign, FaReceipt, FaUser } from 'react-icons/fa';
 
@@ -28,7 +28,7 @@ export default async function Page() {
       <div className="flex gap-4 col-span-4 w-full flex-wrap flex-shrink-0">
         <StatCard
           title="Tổng doanh số"
-          value={formatMoney(dashboardStatsData.sales.value)}
+          value={formatMoneyCompact(dashboardStatsData.sales.value)}
           icon={<FaDollarSign />}
           iconColor="#4F46E5"
           changeRate={dashboardStatsData.sales.changeRate}

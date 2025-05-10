@@ -75,7 +75,7 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
             <input
               id="select-item"
               type="checkbox"
-              className="w-7 h-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300"
+              className="w-7 h-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300 disabled:bg-grey-100 disabled:cursor-not-allowed disabled:border-grey-200"
               checked={selected}
               onChange={() => {
                 onChangeLineItems(
@@ -83,6 +83,9 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
                   variant as string
                 );
               }}
+              disabled={
+                itemVariant.stock < Number(process.env.NEXT_PUBLIC_STOCK_LIMIT)
+              }
             />
             <label className="hidden md:block">Chọn sản phẩm</label>
           </div>
@@ -90,33 +93,57 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
             <div className="flex items-center gap-4">
               <div className="relative flex-[3] h-28 w-44 overflow-hidden rounded-xl border-2 border-grey-100 bg-white">
                 <Image
-                  src={image}
+                  src={image as string}
                   alt={(product as Product).name}
                   className="absolute object-contain"
                   fill
                 />
               </div>
-              <div className="flex flex-[7] flex-col gap-4 py-2">
+              <div className="flex flex-[7] flex-col py-2">
                 <p className="text-lg font-bold">
                   <NavLink
                     href={`/products/${(product as Product).slug}`}
                     hoverUnderline={false}
                   >
-                    {(product as Product).name} - {itemVariant.name}
+                    {(product as Product).name}
                   </NavLink>
                 </p>
-                <WishlistButton productId={(product as Product)._id} />
-              </div>
-            </div>
-            <div className="flex items-center gap-12 lg:gap-4">
-              <div className="flex h-[4.6rem] w-28 flex-col gap-2 xl:flex-[3] md:justify-center">
-                <span className="text-sm text-grey-300 md:hidden">
-                  Số lượng
-                </span>
-                <div className="xl:w-44 md:w-full">
-                  <Counter value={quantity} onSetValue={handleChangeQuality} />
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-grey-200 text-sm">
+                    Phân loại: {itemVariant.name}
+                  </p>
+                  <div className="hidden sm:block">
+                    <WishlistButton
+                      productId={(product as Product)._id}
+                      size="small"
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:hidden">
+                  <WishlistButton productId={(product as Product)._id} />
                 </div>
               </div>
+            </div>
+            <div className="flex items-center gap-12 lg:gap-4 ml-auto xl:ml-2 sm:mr-0">
+              {(item.product as Product).totalStock >
+              Number(process.env.NEXT_PUBLIC_STOCK_LIMIT) ? (
+                <div className="flex h-[4.6rem] w-28 flex-col gap-2 xl:flex-[3] md:justify-center">
+                  <span className="text-sm text-grey-300 md:hidden">
+                    Số lượng
+                  </span>
+                  <div className="xl:w-44 md:w-full">
+                    <Counter
+                      value={quantity}
+                      onSetValue={handleChangeQuality}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="text-red-500 text-sm font-bold whitespace-nowrap border-2 border-red-500 rounded-full px-2 py-1 text-center xl:flex-[3] md:justify-center max-w-fit">
+                  Hết hàng
+                </div>
+              )}
               <div className="flex h-[4.6rem] flex-col items-center justify-between gap-2 md:justify-center xl:flex-[7] xl:items-end">
                 <p className="text-lg font-bold">
                   {formatMoney(itemVariant.price * quantity)}

@@ -24,7 +24,7 @@ export default function ProductReviewsSection({
         Đánh giá sản phẩm
       </h2>
       <div className="flex lg:flex-col lg:gap-8 gap-4 w-full">
-        <div className="flex-[3] shadow-md px-4 py-3 rounded-lg self-center h-fit sticky top-0 max-w-md w-full">
+        <div className="flex-[3] shadow-md px-4 py-3 rounded-lg lg:self-center h-fit sticky top-0 max-w-md w-full self-start">
           <ReviewOverview onSelectRating={handleRatingSelect} />
         </div>
         <div className="flex-[7] w-full">

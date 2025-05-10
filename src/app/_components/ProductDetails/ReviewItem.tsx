@@ -19,8 +19,8 @@ export default function ReviewItem({ review }: ReviewItemProps) {
   ) as Array<string>;
 
   return (
-    <div className="flex gap-4">
-      <div className="flex flex-col items-center gap-2 flex-[2]">
+    <div className="flex gap-4 sm:flex-col">
+      <div className="flex flex-col items-center gap-2 flex-[2] sm:flex-row">
         <div className="relative aspect-w-1 aspect-h-1 w-12 h-12 overflow-hidden rounded-full border-2 border-gray-default">
           <Image src={review.user.photo.url} alt={review.user.name} fill />
         </div>{' '}

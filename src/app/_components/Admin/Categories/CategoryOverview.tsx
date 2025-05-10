@@ -1,22 +1,18 @@
-import React from 'react';
+import BarChart from '../../UI/BarChart';
 import Card from '../../UI/Card';
-import CategoryStat from './CategoryStat';
-import { Category } from '@/app/_types/category';
 
 interface CategoryOverviewProps {
-  data: Array<
-    Category & { revenue: number; changeRate: number; totalProducts?: number }
-  >;
+  data: { name: string; sales: number }[];
 }
 
 export default function CategoryOverview({ data }: CategoryOverviewProps) {
   return (
     <Card title="Tổng quan" className="w-full">
-      <ul className="grid grid-cols-[repeat(auto-fit,_minmax(260px,_1fr))] gap-4">
-        {data.map((category) => (
-          <CategoryStat key={category._id} category={category} />
-        ))}
-      </ul>
+      {data && data.length > 0 ? (
+        <BarChart data={data} keys={['sales']} />
+      ) : (
+        <p className="text-gray-400 font-semibold">Không có dữ liệu.</p>
+      )}
     </Card>
   );
 }

@@ -1,3 +1,4 @@
+import { formatMoneyCompact } from '@/app/_utils/formatMoney';
 import { memo } from 'react';
 import {
   Cell,
@@ -57,7 +58,7 @@ function PieChart({ data }: PieChartProps) {
             cy="50%"
             outerRadius={80}
             fill="#8884d8"
-            label
+            label={({ value }) => formatMoneyCompact(value)}
           >
             {safeData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.color} />

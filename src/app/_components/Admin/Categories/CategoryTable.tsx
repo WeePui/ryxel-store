@@ -17,6 +17,7 @@ import Button from '../../UI/Button';
 import { useState } from 'react';
 import Modal from '../../UI/Modal';
 import AddCategoryForm from './AddCategoryForm';
+import { FaTrash } from 'react-icons/fa';
 
 interface CategoryOverviewProps {
   data: Array<
@@ -59,13 +60,15 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
               <TableBodyCell className="flex items-center gap-4 col-span-2">
                 <div className="w-16 relative aspect-square">
                   <Image
-                    src={category.image}
+                    src={category.image || '/no-image-placeholder.jpg'}
                     alt={category.name}
                     fill
                     className="object-cover rounded"
                   />
                 </div>
-                <div className="text-lg font-semibold">{category.name}</div>
+                <div className="text-lg font-semibold text-primary-default">
+                  {category.name}
+                </div>
               </TableBodyCell>
               <TableBodyCell
                 className="items-center flex md:flex-col md:items-start"
@@ -77,7 +80,7 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
                 className="items-center flex md:flex-col md:items-start"
                 label="Ngày tạo"
               >
-                {category.createdAt}
+                {new Date(category.createdAt).toLocaleDateString('vi-VN')}
               </TableBodyCell>
               <TableBodyCell
                 className="items-center flex justify-center md:items-start md:justify-start sm:flex-col sm:items-start gap-2"
@@ -85,13 +88,16 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
               >
                 {category.totalProducts ?? 0}
               </TableBodyCell>
-              <TableBodyCell className="text-center flex items-center justify-center">
+              <TableBodyCell className="text-center flex flex-col gap-2 items-center justify-center">
                 <Link
                   href={`/admin/categories/${category.slug}`}
                   className="text-primary-400 hover:underline"
                 >
                   Xem chi tiết
                 </Link>
+                <Button type="danger" size="small">
+                  <FaTrash />
+                </Button>
               </TableBodyCell>
             </TableBodyRow>
           ))}

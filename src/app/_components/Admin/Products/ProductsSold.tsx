@@ -68,7 +68,7 @@ export default function ProductsSold({ cookies }: ProductsSoldProps) {
         </div>
       }
     >
-      {loading ? <Loader /> : <BarChart data={data} />}{' '}
+      {loading ? <Loader /> : <BarChart data={data} keys={['value']} />}{' '}
     </Card>
   );
 }

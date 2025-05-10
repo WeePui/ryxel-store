@@ -9,6 +9,8 @@ import { addCategoryAction, updateCategoryAction } from '@/app/_libs/actions';
 import AssistiveText from '../../UI/AssistiveText';
 import { FaInfo } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import Spinner from '../../UI/Spinner';
+import { useRouter } from 'next/navigation';
 
 interface AddCategoryFormProps {
   category?: Category;
@@ -27,15 +29,28 @@ const initialState = {
 export default function AddCategoryForm({ category }: AddCategoryFormProps) {
   const [state, action, isPending] = useActionState(
     category ? updateCategoryAction : addCategoryAction,
-    category ? { success: undefined, input: { ...category } } : initialState
+    category
+      ? { success: undefined, input: { ...category }, slug: category.slug }
+      : initialState
   );
   const [categoryImage, setCategoryImage] = useState<string | File | null>(
     state?.input.image || null
   );
+  const router = useRouter();
 
   useEffect(() => {
     toast.error(state?.errors?.message);
   }, [state?.errors?.message]);
+
+  useEffect(() => {
+    if (state.success) {
+      toast.success('Cập nhật thành công.');
+
+      if (state.slug && state.slug !== category?.slug) {
+        router.replace(`/admin/categories/${state.slug}`);
+      }
+    }
+  }, [state.success, state.slug]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -47,6 +62,7 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
 
   return (
     <form className="grid grid-cols-2 gap-6 mt-4" action={action}>
+      <input type="hidden" name="id" value={category?._id || ''} />
       <div className="col-span-1 md:col-span-full">
         {state?.errors?.name && (
           <AssistiveText
@@ -98,6 +114,7 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
           name="description"
           type="textarea"
           error={!!state?.errors?.description}
+          disabled={isPending}
         />
       </div>
       {state?.errors?.image && (
@@ -147,7 +164,7 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
       <input type="hidden" name="_id" value={category?._id} />
       <div className="flex items-center justify-end gap-4 col-span-2">
         <Button disabled={isPending} role="submit">
-          {category ? 'Cập nhật' : 'Thêm mới'}
+          {isPending ? <Spinner /> : category ? 'Cập nhật' : 'Thêm mới'}
         </Button>
       </div>
     </form>

@@ -18,15 +18,16 @@ export default function HeaderCategory() {
   return (
     <div className="fixed left-0 p-4 bg-grey-50 w-full mx-auto z-10 shadow-md border-b border-primary-200 ">
       <div className="grid grid-cols-[60fr_40fr] divide-x divide-primary-200 max-w-7xl mx-auto">
-        <div className="p-6" onClick={handleClick} role="button">
+        <div className="p-6" onClick={handleClick}>
           <h1 className="mb-4 text-xl">Mua sắm theo danh mục</h1>
           <div className="flex">
             <div className="grid grid-cols-3 gap-x-12 gap-y-6 justify-start w-fit">
               <div
-                className="flex flex-col gap-2 items-center w-fit"
+                className="flex flex-col gap-2 items-center w-fit group"
                 id="mouse"
+                role="button"
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
+                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
                     src={'/categories/mouse-category.jpg'}
                     alt="Chuột Gaming"
@@ -34,13 +35,14 @@ export default function HeaderCategory() {
                     fill
                   />
                 </div>
-                <p className="text-base">Chuột Gaming</p>
+                <p className="text-base group-hover:underline">Chuột Gaming</p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit"
+                className="flex flex-col gap-2 items-center w-fit group"
                 id="keyboard"
+                role="button"
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
+                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
                     src={'/categories/keyboard-category.jpg'}
                     alt="Bàn phím"
@@ -48,13 +50,14 @@ export default function HeaderCategory() {
                     fill
                   />
                 </div>
-                <p className="text-base">Bàn phím</p>
+                <p className="text-base group-hover:underline">Bàn phím</p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit"
+                className="flex flex-col gap-2 items-center w-fit group"
+                role="button"
                 id="headphone"
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
+                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
                     src={'/categories/headset-category.jpg'}
                     alt="Tai nghe"
@@ -62,13 +65,14 @@ export default function HeaderCategory() {
                     fill
                   />
                 </div>
-                <p className="text-base">Tai nghe</p>
+                <p className="text-base group-hover:underline">Tai nghe</p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit"
+                className="flex flex-col gap-2 items-center w-fit group"
+                role="button"
                 id="table"
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
+                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
                     src={'/categories/table-category.jpg'}
                     alt="Bàn Gaming"
@@ -76,13 +80,14 @@ export default function HeaderCategory() {
                     fill
                   />
                 </div>
-                <p className="text-base">Bàn Gaming</p>
+                <p className="text-base group-hover:underline">Bàn Gaming</p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit"
+                className="flex flex-col gap-2 items-center w-fit group"
+                role="button"
                 id="chair"
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
+                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
                     src={'/categories/chair-category.jpg'}
                     alt="Ghế Gaming"
@@ -90,13 +95,14 @@ export default function HeaderCategory() {
                     fill
                   />
                 </div>
-                <p className="text-base">Ghế Gaming</p>
+                <p className="text-base group-hover:underline">Ghế Gaming</p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit"
+                className="flex flex-col gap-2 items-center w-fit group"
+                role="button"
                 id="accessory"
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden">
+                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
                     src={'/categories/accessory-category.jpg'}
                     alt="Phụ kiện"
@@ -104,7 +110,7 @@ export default function HeaderCategory() {
                     fill
                   />
                 </div>
-                <p className="text-base">Phụ kiện</p>
+                <p className="text-base group-hover:underline">Phụ kiện</p>
               </div>
             </div>
             <div className="flex flex-col gap-2 w-fit ml-12">

@@ -1,18 +1,21 @@
 'use client';
 
-import {
-  FaComputerMouse,
-  FaKeyboard,
-  FaHeadset,
-  FaChair,
-} from 'react-icons/fa6';
-import { PiDeskBold } from 'react-icons/pi';
 import Button from '../UI/Button';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { MdCategory } from 'react-icons/md';
+import { categoryIcons, categoryNames } from '@/app/_utils/mappingCategory';
 
-function CategoryFilter() {
+interface CategoryFilterProps {
+  categories: {
+    name: string;
+    slug: string;
+    image: string;
+  }[];
+}
+
+function CategoryFilter({ categories }: CategoryFilterProps) {
   const searchParams = useSearchParams();
-  const category = searchParams.get('category');
+  const currentCategory = searchParams.get('category');
   const router = useRouter();
 
   const handleFilter = function (category: string) {
@@ -25,55 +28,26 @@ function CategoryFilter() {
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="mb-14 lg:mb-4 flex h-20 items-center rounded-lg bg-grey-100 overflow-x-auto w-full scrollbar-hide">
+      <div className="mb-14 lg:mb-4 flex h-20 items-center rounded-lg bg-grey-100 overflow-x-auto w-full lg:scrollbar-hide sm:rounded-none">
         <div className={`flex gap-2 px-5 md:px-2 flex-shrink-0`}>
           <Button
             type="filter"
             onClick={() => handleFilter('')}
-            active={!category}
+            active={!currentCategory}
           >
             <span>Tất cả</span>
           </Button>
-          <Button
-            type="filter"
-            onClick={() => handleFilter('mouse')}
-            active={category === 'mouse'}
-          >
-            <FaComputerMouse />
-            <span>Chuột</span>
-          </Button>
-          <Button
-            type="filter"
-            onClick={() => handleFilter('keyboard')}
-            active={category === 'keyboard'}
-          >
-            <FaKeyboard />
-            <span>Bàn phím</span>
-          </Button>
-          <Button
-            type="filter"
-            onClick={() => handleFilter('headphone')}
-            active={category === 'headphone'}
-          >
-            <FaHeadset />
-            <span>Tai nghe</span>
-          </Button>
-          <Button
-            type="filter"
-            onClick={() => handleFilter('chair')}
-            active={category === 'chair'}
-          >
-            <FaChair />
-            <span>Ghế gaming</span>
-          </Button>
-          <Button
-            type="filter"
-            onClick={() => handleFilter('table')}
-            active={category === 'table'}
-          >
-            <PiDeskBold className="text-xl" />
-            <span>Bàn gaming</span>
-          </Button>
+          {categories.map((category) => (
+            <Button
+              key={category.slug}
+              type="filter"
+              onClick={() => handleFilter(category.slug)}
+              active={category.slug === currentCategory}
+            >
+              {categoryIcons[category.slug] || <MdCategory />}
+              <span>{categoryNames[category.slug]}</span>
+            </Button>
+          ))}
         </div>
       </div>
     </div>

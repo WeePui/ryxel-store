@@ -1,6 +1,7 @@
 'use client';
 
 import { useWindowSize } from '@/app/_hooks/useWindowSize';
+import { formatMoneyCompact } from '@/app/_utils/formatMoney';
 import { memo } from 'react';
 import {
   ResponsiveContainer,
@@ -13,13 +14,12 @@ import {
   Bar,
 } from 'recharts';
 
-interface BarChartProps {
-  data: Array<{ name: string; value: number }> | undefined;
-}
-
 const formatLegendLabel = (value: string) => {
   const map: Record<string, string> = {
     value: 'Số lượng đã bán',
+    sales: 'Doanh số',
+    revenue: 'Doanh thu',
+    expense: 'Chi phí',
     // nếu sau này có thêm bar khác → thêm ở đây
     // stock: 'Tồn kho'
   };
@@ -27,9 +27,19 @@ const formatLegendLabel = (value: string) => {
   return map[value] ?? value;
 };
 
-function BarChart({ data }: BarChartProps) {
+interface BarChartProps {
+  data: Array<Record<string, number | string>> | undefined;
+  keys: string[]; // các trường muốn hiển thị như ['sales', 'revenue']
+}
+
+function BarChart({ data, keys }: BarChartProps) {
   const { width } = useWindowSize();
   const isSmallScreen = width < 768;
+  const moneyFields = ['sales', 'revenue', 'expense'];
+
+  const colors = ['#f57615', '#8884d8', '#82ca9d', '#ffc658'];
+
+  const isMoneyChart = keys.some((key) => moneyFields.includes(key));
 
   return (
     <div className="">
@@ -42,12 +52,20 @@ function BarChart({ data }: BarChartProps) {
           />
           {!isSmallScreen && (
             <YAxis
-              tickFormatter={(value) => value.toLocaleString('vi-VN')}
+              tickFormatter={(value) =>
+                isMoneyChart
+                  ? formatMoneyCompact(value)
+                  : value.toLocaleString('vi-VN')
+              }
               tick={{ dx: -10, fontSize: 12 }}
             />
           )}
           <Tooltip
-            formatter={(value: number) => value.toLocaleString('vi-VN')}
+            formatter={(value: number) =>
+              isMoneyChart
+                ? value.toLocaleString('vi-VN') + ' ₫'
+                : value.toLocaleString('vi-VN')
+            }
           />
           <Legend
             verticalAlign="top"
@@ -55,7 +73,15 @@ function BarChart({ data }: BarChartProps) {
             margin={{ top: 20, right: 0, bottom: 20, left: 0 }}
             formatter={formatLegendLabel}
           />
-          <Bar dataKey="value" fill="#f57615" radius={[4, 4, 0, 0]} />
+
+          {keys.map((key, index) => (
+            <Bar
+              key={key}
+              dataKey={key}
+              fill={colors[index % colors.length]}
+              radius={[4, 4, 0, 0]}
+            />
+          ))}
         </RechartsBarChart>
       </ResponsiveContainer>
     </div>

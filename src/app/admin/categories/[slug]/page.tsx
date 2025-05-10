@@ -60,9 +60,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const token = cookiesStore.get('jwt')?.value || '';
   const filter = await searchParams;
 
-  const {
-    data: { category },
-  } = await getCategoryBySlug(slug, { value: token });
+  const { category } = await getCategoryBySlug(slug, { value: token });
   const {
     data: { products },
   } = await getProducts({
@@ -73,6 +71,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     ...filter,
     category: category.name,
   });
+
   const { brands, minPrice, maxPrice, specs } = filtersData;
   const priceRange = products.reduce(
     (acc: { min: number; max: number }) => {
@@ -89,7 +88,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       <Card title="Chỉnh sửa danh mục" className="w-full h-fit">
         <AddCategoryForm category={category} />
       </Card>
-      <CategoryRevenue />
+      <CategoryRevenue cookies={token} slug={slug} />
       <div className="hidden lg:block py-4 cols-span-full">
         <div className="hidden lg:flex gap-2 items-center">
           <div className="flex-[6]">

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { FaStar } from 'react-icons/fa6';
 import WishlistButton from '../Wistlist/WishlistButton';
 import { WishlistProvider } from '@/app/_contexts/WishlistContext';
+import { categoryNames } from '@/app/_utils/mappingCategory';
 
 function ProductCard({
   product,
@@ -40,7 +41,7 @@ function ProductCard({
             sizes="100%"
           />
         </div>
-        <div className="flex flex-col gap-2 overflow-hidden px-6 py-4 text-grey-400">
+        <div className="flex flex-col gap-2 overflow-hidden px-6 lg:px-3 py-4 text-grey-400">
           <p className="transform-none font-bold transition-colors duration-300 group-hover:text-primary-default">
             {product.name}
           </p>
@@ -50,16 +51,20 @@ function ProductCard({
             <span className="ml-1">(Đã bán {product.sold})</span>
           </p>
         </div>
-        <div className="mt-auto flex flex-col gap-2 px-6 py-4 text-grey-400">
-          <p className="font-bold transition-colors duration-300 group-hover:text-primary-default">
+        <div className="mt-auto flex flex-col gap-2 px-6 lg:px-3 py-4 text-grey-400">
+          <p className="font-bold transition-colors duration-300 group-hover:text-primary-default flex items-center gap-2 flex-wrap">
             {formatMoney(product.lowestPrice)}
+            {product.totalStock <
+              Number(process.env.NEXT_PUBLIC_STOCK_LIMIT) && (
+              <span className="text-red-500 text-xs">(Hết hàng)</span>
+            )}
           </p>
           <div className="mt-auto flex items-center justify-between capitalize">
             <span className="flex items-center text-sm">
-              <span className="mr-2 text-xl font-bold text-red-700">
+              <span className="mr-2 text-xl font-bold text-primary-400">
                 &#10072;
               </span>
-              {product.category.name}
+              {categoryNames[product.category.slug]}
             </span>
             <WishlistProvider>
               <WishlistButton productId={product._id} size="small" />

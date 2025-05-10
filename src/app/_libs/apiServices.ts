@@ -3,6 +3,7 @@ import { LineItem } from '../_types/lineItem';
 import { Order } from '../_types/order';
 import {
   AddressFormInput,
+  CategoryInput,
   ReviewInput,
   ReviewUpdateInput,
   SignupInput,
@@ -912,7 +913,7 @@ export async function getCategoryBySlug(
     throw new Error('Failed to fetch category');
   }
 
-  const data = await response.json();
+  const { data } = await response.json();
 
   return data;
 }
@@ -946,5 +947,144 @@ export const getProductsSummary = async (token: { value: string }) => {
 
   const data = await response.json();
 
+  return data;
+};
+
+export const getRecommendedProducts = async (productId: string) => {
+  const response = await fetch(
+    `${API_URL}/products/cart-product-recommend/${productId}`
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch recommended products');
+  }
+
+  const { data } = await response.json();
+
+  return data;
+};
+
+export const getSimilarProducts = async (productId: string) => {
+  const response = await fetch(
+    `${API_URL}/products/similar-products/${productId}`
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch similar products');
+  }
+
+  const { data } = await response.json();
+
+  return data;
+};
+
+export const getClientCategories = async () => {
+  const response = await fetch(`${API_URL}/categories/client`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch categories');
+  }
+
+  const { data } = await response.json();
+
+  return data;
+};
+
+export const getCategorySummary = async (
+  token: { value: string },
+  slug: string
+) => {
+  const response = await fetch(`${API_URL}/categories/slug/${slug}/summary`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch categories summary');
+  }
+
+  const { data } = await response.json();
+
+  return data;
+};
+
+export const addCategory = async (
+  formData: FormData,
+  token: { value: string }
+) => {
+  const response = await fetch(`${API_URL}/categories`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    body: formData,
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to add category');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const updateCategory = async (
+  input: CategoryInput,
+  token: { value: string },
+  id: string
+) => {
+  const formData = new FormData();
+  for (const key of Object.keys(input) as (keyof CategoryInput)[]) {
+    const value = input[key];
+    if (value !== null && value !== undefined) {
+      formData.append(key as string, value as string | Blob);
+    }
+  }
+
+  const response = await fetch(`${API_URL}/categories/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    body: formData,
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update category');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const createCategory = async (
+  input: CategoryInput,
+  token: { value: string }
+) => {
+  const formData = new FormData();
+  for (const key of Object.keys(input) as (keyof CategoryInput)[]) {
+    const value = input[key];
+    if (value !== null && value !== undefined) {
+      formData.append(key as string, value as string | Blob);
+    }
+  }
+
+  const response = await fetch(`${API_URL}/categories`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    body: formData,
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to create category');
+  }
+
+  const data = await response.json();
   return data;
 };

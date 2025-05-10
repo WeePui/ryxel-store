@@ -30,7 +30,7 @@ function OverviewSection() {
     startTransition(async () => {
       const result = await addOrUpdateCartItemAction(
         product._id,
-        currentVariant._id,
+        currentVariant._id!,
         quantity
       );
       if (result.success) {
@@ -100,13 +100,22 @@ function OverviewSection() {
           <div className="mb-6 flex flex-wrap gap-2">
             {product.variants.map((variant) => (
               <Button
-                type={variant.stock > 20 ? 'filter' : 'disabledFilter'}
+                type="filter"
                 key={variant._id}
                 onClick={handleVariantChange.bind(null, variant)}
                 active={currentVariant._id === variant._id}
-                disabled={variant.stock < 20}
+                className="font-semibold relative overflow-hidden"
               >
                 {variant.name}
+                {variant.stock <
+                  Number(process.env.NEXT_PUBLIC_STOCK_LIMIT) && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-full h-full relative">
+                      <div className="absolute inset-0 bg-white/60 rounded-md" />
+                      <div className="absolute left-0 top-1/2 w-full rotate-45 h-[1px] bg-red-500 origin-center" />
+                    </div>
+                  </div>
+                )}
               </Button>
             ))}
           </div>
