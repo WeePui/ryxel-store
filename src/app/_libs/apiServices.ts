@@ -4,6 +4,7 @@ import { Order } from '../_types/order';
 import {
   AddressFormInput,
   CategoryInput,
+  ProductInput,
   ReviewInput,
   ReviewUpdateInput,
   SignupInput,
@@ -1083,6 +1084,118 @@ export const createCategory = async (
 
   if (!response.ok) {
     throw new Error('Failed to create category');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const addProduct = async (
+  product: ProductInput,
+  token: { value: string }
+) => {
+  const formData = new FormData();
+  formData.append('name', product.name);
+  formData.append('slug', product.slug);
+  formData.append('brand', product.brand);
+  formData.append('category', product.category);
+  formData.append('description', product.description);
+
+  // Thêm ảnh cover nếu là file
+  if (product.imageCover instanceof File) {
+    formData.append('imageCover', product.imageCover);
+  }
+
+  // Thêm variants (dữ liệu text)
+  formData.append(
+    'variants',
+    JSON.stringify(
+      product.variants.map((v) => ({
+        ...v,
+        images: v.images.map((img) => (img instanceof File ? null : img)),
+      }))
+    )
+  );
+
+  // Thêm ảnh của từng variant (nếu có file)
+  product.variants.forEach((variant, variantIndex) => {
+    variant.images.forEach((image, imageIndex) => {
+      if (image instanceof File) {
+        formData.append(`variantImages_${variantIndex}_${imageIndex}`, image);
+      }
+    });
+  });
+
+  const response = await fetch(`${API_URL}/products`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    body: formData,
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to add product');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const updateProduct = async (
+  product: ProductInput,
+  token: { value: string },
+  id: string
+) => {
+  const formData = new FormData();
+
+  formData.append('name', product.name);
+  formData.append('slug', product.slug);
+  formData.append('brand', product.brand);
+  formData.append('category', product.category);
+  formData.append('description', product.description);
+
+  // imageCover có thể là string (URL cũ) hoặc File mới
+  if (product.imageCover instanceof File) {
+    formData.append('imageCover', product.imageCover);
+  } else {
+    formData.append('imageCover', product.imageCover as string); // URL string
+  }
+
+  // Biến variants thành JSON (trừ images)
+  const variantsWithoutImages = product.variants.map((variant) => {
+    const { ...rest } = variant;
+    delete (rest as { images?: unknown }).images;
+    return rest;
+  });
+  formData.append('variants', JSON.stringify(variantsWithoutImages));
+
+  // Append ảnh variants (mỗi ảnh đặt tên cho rõ variant index + image index)
+  product.variants.forEach((variant, variantIndex) => {
+    variant.images.forEach((image, imageIndex) => {
+      if (image instanceof File) {
+        formData.append(`variantImages[${variantIndex}][${imageIndex}]`, image);
+      } else {
+        formData.append(
+          `variantImageUrls[${variantIndex}][${imageIndex}]`,
+          image
+        );
+      }
+    });
+  });
+
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    body: formData,
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update product');
   }
 
   const data = await response.json();

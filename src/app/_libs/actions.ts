@@ -40,6 +40,8 @@ import {
   getOrderByOrderCode,
   updateCategory,
   createCategory,
+  addProduct,
+  updateProduct,
 } from '@libs/apiServices';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -52,6 +54,7 @@ import {
   ReviewInput,
   ReviewUpdateInput,
   CategoryInput,
+  ProductInput,
 } from '../_types/validateInput';
 import { transformAddressFormData } from '../_helpers/transformAddressFormData';
 import { FormError } from '../_types/formError';
@@ -1205,4 +1208,48 @@ export const addCategoryAction = async (
   const { category } = response.data;
 
   redirect(`/admin/categories/${category.slug}`);
+};
+
+export const addProductAction = async (_: unknown, product: ProductInput) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+
+  const token = checkIsLogin.token!;
+  const response = await addProduct(product, token);
+  if (response.status === 'success') {
+    revalidatePath('/admin/products');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const updateProductAction = async (
+  _: unknown,
+  product: ProductInput,
+  productId: string
+) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+
+  const token = checkIsLogin.token!;
+  const response = await updateProduct(product, token, productId);
+  if (response.status === 'success') {
+    revalidatePath('/admin/products');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
 };

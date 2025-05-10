@@ -1,4 +1,5 @@
 import { City, District, Ward } from './address';
+import { Variant } from './variant';
 
 export interface LoginInput {
   email: string;
@@ -63,4 +64,14 @@ export interface CategoryInput {
   image: File | string | null;
   slug?: string;
   id?: string;
+}
+
+export interface ProductInput {
+  name: string;
+  slug: string;
+  brand: string;
+  category: string;
+  description: string;
+  imageCover: File | string | null;
+  variants: Variant[];
 }

@@ -6,6 +6,8 @@ import ProductInfo from './ProductInfo';
 import VariantInfo from './VariantInfo';
 import { useRef } from 'react';
 import { Variant } from '@/app/_types/variant';
+import { updateProductAction } from '@/app/_libs/actions';
+import { ProductInput } from '@/app/_types/validateInput';
 
 interface FormUpdateProductProps {
   product: Product;
@@ -48,7 +50,7 @@ export default function FormUpdateProduct({
       variants: variantsData,
     };
 
-    console.log('Updated Product Data:', updatedProductData);
+    updateProductAction({}, updatedProductData as ProductInput, product._id);
   };
 
   return (

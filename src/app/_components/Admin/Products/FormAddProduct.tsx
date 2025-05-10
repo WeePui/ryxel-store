@@ -6,6 +6,8 @@ import Button from '../../UI/Button';
 import AddProductInfo from './AddProductInfo';
 import AddVariantInfo from './AddVariantInfo';
 import { Variant } from '@/app/_types/variant';
+import { addProductAction } from '@/app/_libs/actions';
+import { ProductInput } from '@/app/_types/validateInput';
 
 interface FormAddProductProps {
   categories: Category[];
@@ -45,7 +47,7 @@ export default function FormAddProduct({ categories }: FormAddProductProps) {
       variants: variantsData,
     };
 
-    console.log('Updated Product Data:', updatedProductData);
+    addProductAction({}, updatedProductData as ProductInput);
   };
 
   return (
