@@ -1210,7 +1210,7 @@ export const addCategoryAction = async (
   redirect(`/admin/categories/${category.slug}`);
 };
 
-export const addProductAction = async (_: unknown, product: ProductInput) => {
+export const addProductAction = async (product: ProductInput) => {
   const checkIsLogin = await checkLogin();
   if (!checkIsLogin.success) return checkIsLogin;
 
@@ -1231,7 +1231,6 @@ export const addProductAction = async (_: unknown, product: ProductInput) => {
 };
 
 export const updateProductAction = async (
-  _: unknown,
   product: ProductInput,
   productId: string
 ) => {

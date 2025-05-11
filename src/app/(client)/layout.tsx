@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { checkToken } from '../_libs/apiServices';
 import { redirect } from 'next/navigation';
+import ClientMainScreen from '../_components/UI/ClientMainScreen';
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -54,7 +55,9 @@ export default async function RootLayout({
         }
       >
         <Header />
-        <ToastProvider>{children}</ToastProvider>
+        <ToastProvider>
+          <ClientMainScreen>{children}</ClientMainScreen>
+        </ToastProvider>
         <Footer />
       </body>
     </html>

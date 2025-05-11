@@ -1126,6 +1126,8 @@ export const addProduct = async (
     });
   });
 
+  console.log('hello');
+
   const response = await fetch(`${API_URL}/products`, {
     method: 'POST',
     headers: {

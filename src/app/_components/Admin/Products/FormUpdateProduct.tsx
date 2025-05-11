@@ -50,7 +50,7 @@ export default function FormUpdateProduct({
       variants: variantsData,
     };
 
-    updateProductAction({}, updatedProductData as ProductInput, product._id);
+    updateProductAction(updatedProductData as ProductInput, product._id);
   };
 
   return (

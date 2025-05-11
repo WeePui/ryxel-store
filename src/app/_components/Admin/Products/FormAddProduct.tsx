@@ -47,7 +47,7 @@ export default function FormAddProduct({ categories }: FormAddProductProps) {
       variants: variantsData,
     };
 
-    addProductAction({}, updatedProductData as ProductInput);
+    addProductAction(updatedProductData as ProductInput);
   };
 
   return (

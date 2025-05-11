@@ -31,7 +31,7 @@ const slides = [
 
 export default async function Home() {
   return (
-    <div className="flex w-full flex-col items-center">
+    <>
       <section className="relative flex h-[calc(100dvh-4rem)] xl:h-[60vh] sm:h-[70vh] w-full items-center justify-center overflow-hidden bg-gray-800">
         <HeroSlider slides={slides} />
       </section>
@@ -40,6 +40,6 @@ export default async function Home() {
       <BestsellerSection />
       <FeaturesSection />
       <TestimonialSection />
-    </div>
+    </>
   );
 }
