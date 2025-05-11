@@ -24,8 +24,8 @@ const emptyVariant = (): Variant => ({
   specifications: {},
   images: [],
   saleOff: {
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: '',
+    endDate: '',
     percentage: 0,
   },
 });
@@ -109,7 +109,6 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
               <FaTrash />
             </button>
           )}
-
           <Input
             type="text"
             label="Tên phân loại"
@@ -118,30 +117,48 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
             id="variant-name"
             name="variant-name"
           />
-          <Input
-            type="text"
-            label="Giá bán"
-            value={variant.price}
-            onChange={(e) => handleFieldChange(index, 'price', e.target.value)}
-            id="variant-price"
-            name="variant-price"
-          />
-          <Input
-            type="text"
-            label="Giá vốn"
-            value={variant.cost}
-            onChange={(e) => handleFieldChange(index, 'cost', e.target.value)}
-            id="variant-cost"
-            name="variant-cost"
-          />
-          <Input
-            type="text"
-            label="Trọng lượng (gram)"
-            value={variant.weight}
-            onChange={(e) => handleFieldChange(index, 'weight', e.target.value)}
-            id="variant-weight"
-            name="variant-weight"
-          />
+          <div className="flex md:flex-col gap-4">
+            <Input
+              type="text"
+              label="Giá bán"
+              value={variant.price}
+              onChange={(e) =>
+                handleFieldChange(index, 'price', e.target.value)
+              }
+              id="variant-price"
+              name="variant-price"
+            />
+            <Input
+              type="text"
+              label="Giá vốn"
+              value={variant.cost}
+              onChange={(e) => handleFieldChange(index, 'cost', e.target.value)}
+              id="variant-cost"
+              name="variant-cost"
+            />
+          </div>
+          <div className="flex md:flex-col gap-4">
+            <Input
+              type="text"
+              label="Tồn kho"
+              value={variant.stock}
+              onChange={(e) =>
+                handleFieldChange(index, 'stock', e.target.value)
+              }
+              id="variant-stock"
+              name="variant-stock"
+            />
+            <Input
+              type="text"
+              label="Trọng lượng (gram)"
+              value={variant.weight}
+              onChange={(e) =>
+                handleFieldChange(index, 'weight', e.target.value)
+              }
+              id="variant-weight"
+              name="variant-weight"
+            />
+          </div>
           <Input
             type="text"
             label="SKU"
@@ -150,7 +167,6 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
             id="variant-sku"
             name="variant-sku"
           />
-
           <p className="font-medium text-sm text-grey-300 pl-1 mt-4">
             Ảnh sản phẩm
           </p>
@@ -192,7 +208,6 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
               </div>
             ))}
           </div>
-
           <div className="flex justify-between items-center mt-4 sm:flex-col gap-2 sm:items-start mb-2">
             <p className="font-medium text-sm text-grey-300 pl-1">
               Thông số kỹ thuật
@@ -213,7 +228,6 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
               </Button>
             </div>
           </div>
-
           {Object.entries(variant.specifications || {}).map(
             ([specKey, specValue], specIndex) => (
               <div

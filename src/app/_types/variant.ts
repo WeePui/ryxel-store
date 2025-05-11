@@ -15,8 +15,8 @@ export interface Variant {
   sold: number;
   cost: number;
   saleOff: {
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
     percentage: number;
   };
 }

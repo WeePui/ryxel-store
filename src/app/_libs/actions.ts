@@ -1237,6 +1237,8 @@ export const updateProductAction = async (
   const checkIsLogin = await checkLogin();
   if (!checkIsLogin.success) return checkIsLogin;
 
+  console.log(product);
+
   const token = checkIsLogin.token!;
   const response = await updateProduct(product, token, productId);
   if (response.status === 'success') {

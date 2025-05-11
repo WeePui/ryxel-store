@@ -7,7 +7,6 @@ import Input from '../../UI/Input';
 import Image from 'next/image';
 import Button from '../../UI/Button';
 import { mappingSpecsName } from '@/app/_utils/mappingSpecs';
-import { format } from 'date-fns';
 import { FaTrash } from 'react-icons/fa6';
 
 interface VariantInfoProps {
@@ -178,48 +177,48 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           type="text"
           name="name"
           id="name"
-          defaultValue={currentVariant.name}
+          value={currentVariant.name}
           label="Tên phân loại"
-          className="col-span-2"
           onChange={(e) => handleFieldChange('name', e.target.value)}
-        />
-        <Input
-          type="text"
-          name="price"
-          id="price"
-          defaultValue={currentVariant.price + ''}
-          label="Giá bán"
-          onChange={(e) => handleFieldChange('price', e.target.value)}
-        />
-        <Input
-          type="text"
-          name="weight"
-          id="weight"
-          defaultValue={currentVariant.weight + ''}
-          label="Trọng lượng"
-          onChange={(e) => handleFieldChange('weight', e.target.value)}
         />
         <Input
           type="text"
           name="sku"
           id="sku"
-          defaultValue={currentVariant.sku}
+          value={currentVariant.sku}
           label="SKU"
+          className="col-span-2"
           onChange={(e) => handleFieldChange('sku', e.target.value)}
+        />
+        <Input
+          type="text"
+          name="price"
+          id="price"
+          value={currentVariant.price + ''}
+          label="Giá bán"
+          onChange={(e) => handleFieldChange('price', e.target.value)}
         />
         <Input
           type="text"
           name="cost"
           id="cost"
-          defaultValue={currentVariant.cost + ''}
+          value={currentVariant.cost + ''}
           label="Giá vốn"
           onChange={(e) => handleFieldChange('cost', e.target.value)}
         />
         <Input
           type="text"
+          name="weight"
+          id="weight"
+          value={currentVariant.weight + ''}
+          label="Trọng lượng"
+          onChange={(e) => handleFieldChange('weight', e.target.value)}
+        />
+        <Input
+          type="text"
           name="stock"
           id="stock"
-          defaultValue={currentVariant.stock + ''}
+          value={currentVariant.stock + ''}
           label="Tồn kho"
           onChange={(e) => handleFieldChange('stock', e.target.value)}
         />
@@ -227,7 +226,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           type="text"
           name="sold"
           id="sold"
-          defaultValue={currentVariant.sold + ''}
+          value={currentVariant.sold + ''}
           label="Đã bán"
           onChange={(e) => handleFieldChange('sold', e.target.value)}
         />
@@ -237,7 +236,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             type="text"
             name="saleOffPercentage"
             id="saleOffPercentage"
-            defaultValue="10"
+            value={(currentVariant.saleOff?.percentage || 0) + ''}
             // defaultValue={currentVariant.saleOff.percentage + ''}
             label="Giảm giá (%)"
           />
@@ -245,7 +244,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             type="date"
             name="saleOffStartDate"
             id="saleOffStartDate"
-            defaultValue={format(new Date(), 'yyyy-MM-dd') || ''}
+            value={currentVariant.saleOff?.startDate || ''}
             // defaultValue={format(currentVariant.saleOff.startDate, 'yyyy-MM-dd')}
             label="Ngày bắt đầu giảm giá"
           />
@@ -253,7 +252,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             type="date"
             name="saleOffEndDate"
             id="saleOffEndDate"
-            defaultValue={format(new Date(), 'yyyy-MM-dd') || ''}
+            value={currentVariant.saleOff?.endDate || ''}
             // defaultValue={format(currentVariant.saleOff.endDate, 'yyyy-MM-dd')}
             label="Ngày kết thúc giảm giá"
           />
