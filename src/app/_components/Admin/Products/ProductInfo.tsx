@@ -141,6 +141,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
                 setCategory(value);
               }
             }}
+            defaultValue={product.category._id}
           />
           <Input
             type="textarea"

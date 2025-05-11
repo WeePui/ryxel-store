@@ -56,7 +56,7 @@ export default function Chatbox({ authToken }: { authToken: string }) {
 
   return (
     <div className="max-w-md mx-auto w-full bg-white">
-      <h2 className="font-semibold text-lg mb-2 flex gap-2 items-center">
+      <h2 className="font-semibold text-2xl mb-6 flex gap-2 items-center font-title">
         Hỗ trợ tự động từ Ryxel Store
       </h2>
 

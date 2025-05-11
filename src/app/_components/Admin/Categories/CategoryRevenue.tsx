@@ -7,14 +7,10 @@ import RevenueChart from '../Dashboard/RevenueChart';
 import formatMoney from '@/app/_utils/formatMoney';
 import AdminDateSelector from '../../UI/AdminDateSelector';
 import Loader from '../../UI/Loader';
+import { useParams } from 'next/navigation';
 
-export default memo(function CategoryRevenue({
-  cookies,
-  slug,
-}: {
-  cookies: string;
-  slug: string;
-}) {
+export default memo(function CategoryRevenue({ cookies }: { cookies: string }) {
+  const { slug } = useParams();
   const [range, setRange] = useState('month');
   const [timeRange, setTimeRange] = useState('');
   const [data, setData] = useState<Array<{ name: string; value: number }>>([]);

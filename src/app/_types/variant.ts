@@ -13,6 +13,7 @@ export interface Variant {
   updatedAt?: string;
   sku: string;
   sold: number;
+  cost: number;
   saleOff: {
     startDate: Date;
     endDate: Date;

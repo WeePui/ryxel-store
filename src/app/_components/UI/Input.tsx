@@ -107,6 +107,7 @@ function Input({
           onChange={handleChange}
           value={value}
           onBlur={onBlur}
+          defaultValue={defaultValue}
         >
           <option value="" disabled>
             {optionPlaceholder}

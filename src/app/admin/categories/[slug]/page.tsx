@@ -88,7 +88,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       <Card title="Chỉnh sửa danh mục" className="w-full h-fit">
         <AddCategoryForm category={category} />
       </Card>
-      <CategoryRevenue cookies={token} slug={slug} />
+      <CategoryRevenue cookies={token} />
       <div className="hidden lg:block py-4 cols-span-full">
         <div className="hidden lg:flex gap-2 items-center">
           <div className="flex-[6]">

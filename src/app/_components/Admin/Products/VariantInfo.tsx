@@ -205,8 +205,15 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           id="sku"
           defaultValue={currentVariant.sku}
           label="SKU"
-          className="col-span-2"
           onChange={(e) => handleFieldChange('sku', e.target.value)}
+        />
+        <Input
+          type="text"
+          name="cost"
+          id="cost"
+          defaultValue={currentVariant.cost + ''}
+          label="Giá vốn"
+          onChange={(e) => handleFieldChange('cost', e.target.value)}
         />
         <Input
           type="text"

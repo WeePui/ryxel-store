@@ -73,5 +73,6 @@ export interface ProductInput {
   category: string;
   description: string;
   imageCover: File | string | null;
+  cost: string;
   variants: Variant[];
 }

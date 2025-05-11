@@ -20,6 +20,7 @@ const emptyVariant = (): Variant => ({
   sku: '',
   stock: 0,
   sold: 0,
+  cost: 0,
   specifications: {},
   images: [],
   saleOff: {
@@ -124,6 +125,14 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
             onChange={(e) => handleFieldChange(index, 'price', e.target.value)}
             id="variant-price"
             name="variant-price"
+          />
+          <Input
+            type="text"
+            label="Giá vốn"
+            value={variant.cost}
+            onChange={(e) => handleFieldChange(index, 'cost', e.target.value)}
+            id="variant-cost"
+            name="variant-cost"
           />
           <Input
             type="text"

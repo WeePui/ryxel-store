@@ -47,7 +47,7 @@ const AddProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
 
     return (
       <Card title="Thông tin sản phẩm" className="w-full mb-6">
-        <div className="flex gap-4 mt-8 w-full min-w-0 sm:flex-col flex-[6]">
+        <div className="flex gap-4 mt-8 w-full min-w-0 lg:flex-col flex-[6]">
           <div className="flex flex-col grid-cols-4 lg:grid-col-2 sm:grid-cols-1 gap-4 w-full">
             <Input
               type="text"
@@ -75,6 +75,7 @@ const AddProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
                 }
               }}
             />
+
             <div className="flex sm:flex-col gap-4">
               <Input
                 type="text"
@@ -102,6 +103,7 @@ const AddProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
                     setCategory(value);
                   }
                 }}
+                defaultValue={categories[0].value}
               />
             </div>
             <Input
