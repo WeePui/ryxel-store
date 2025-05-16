@@ -3,6 +3,7 @@ import OrderDetailsCTA from '@/app/_components/OrderDetails/OrderDetailsCTA';
 import OrderDetailsLineItems from '@/app/_components/OrderDetails/OrderDetailsLineItems';
 import OrderDetailsSummary from '@/app/_components/OrderDetails/OrderDetailsSummary';
 import NavLink from '@/app/_components/UI/NavLink';
+import TrackingTimeline from '@/app/_components/UI/TrackingTimeline';
 import { getOrderByOrderCode } from '@/app/_libs/apiServices';
 import { mappingOrderStatus } from '@/app/_utils/mappingOrderStatus';
 import { cookies } from 'next/headers';
@@ -49,8 +50,9 @@ async function page({ params }: Props) {
       </div>
       <hr className="border-t-1 my-4 border-grey-100" />
       <div className="flex flex-col gap-6 sm:gap-2">
-        <div className="sm:-order-2">
+        <div className="sm:-order-2 flex gap-4 md:flex-col mb-6">
           <OrderDetailsAddress address={order.shippingAddress} />
+          <TrackingTimeline history={order.shippingTracking.statusHistory} />
         </div>
         <div className="rounded-lg overflow-hidden mb-4">
           <OrderDetailsLineItems lineItems={order.lineItems} />

@@ -46,15 +46,22 @@ export function mappingOrderStatus(orderStatus: string): {
     case 'delivered':
       return {
         icon: <FaCircleCheck className="inline" />,
-        textColor: 'text-gray-500',
+        textColor: 'text-green-500',
         text: 'Đã giao',
-        color: '#6b7280',
+        color: '#22c55e',
       };
     case 'cancelled':
       return {
         icon: <FaCircleXmark className="inline" />,
         textColor: 'text-red-500',
         text: 'Đã hủy',
+        color: '#ef4444',
+      };
+    case 'refunded':
+      return {
+        icon: <FaCircleXmark className="inline" />,
+        textColor: 'text-red-500',
+        text: 'Đã hoàn tiền',
         color: '#ef4444',
       };
     default:

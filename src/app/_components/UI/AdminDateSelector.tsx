@@ -29,7 +29,7 @@ export default function AdminDateSelector({
 }: AdminDateSelectorProps) {
   const now = new Date();
   const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth(); // still 0-based
+  const currentMonth = now.getMonth(); // 0-based
 
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
   const [monthOptions, setMonthOptions] = useState(() =>
@@ -38,7 +38,7 @@ export default function AdminDateSelector({
   const [selectedMonth, setSelectedMonth] = useState<number>(() => {
     const months = getMonthRange(currentYear);
     return months.includes(currentMonth)
-      ? currentMonth + 1 // 1-based
+      ? currentMonth + 1
       : months[months.length - 1] + 1;
   });
 
@@ -47,19 +47,15 @@ export default function AdminDateSelector({
     setMonthOptions(newOptions);
 
     const validMonths = newOptions.map((opt) => opt.value);
+    let finalMonth = selectedMonth;
 
     if (!validMonths.includes(selectedMonth)) {
-      const fallbackMonth = validMonths[validMonths.length - 1];
-      setSelectedMonth(fallbackMonth);
-      onSelect(`year=${selectedYear}&month=${fallbackMonth}`);
-    } else {
-      onSelect(`year=${selectedYear}&month=${selectedMonth}`);
+      finalMonth = validMonths[validMonths.length - 1];
+      setSelectedMonth(finalMonth);
     }
-  }, [selectedYear, onSelect, selectedMonth]);
 
-  useEffect(() => {
-    onSelect(`year=${currentYear}&month=${currentMonth + 1}`);
-  }, [currentYear, currentMonth, onSelect]);
+    onSelect(`year=${selectedYear}&month=${finalMonth}`);
+  }, [selectedYear, selectedMonth, onSelect]);
 
   return (
     <div className="flex items-center gap-4">
@@ -71,9 +67,10 @@ export default function AdminDateSelector({
           name="month"
           id="month"
           onChange={(e) => {
-            setSelectedMonth(Number(e.target.value)); // no adjustment here (already 1-based)
+            setSelectedMonth(Number(e.target.value));
           }}
           value={selectedMonth}
+          variant="small"
         />
       )}
       <Input
@@ -86,6 +83,7 @@ export default function AdminDateSelector({
           setSelectedYear(Number(e.target.value));
         }}
         value={selectedYear}
+        variant="small"
       />
     </div>
   );

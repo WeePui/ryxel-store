@@ -9,14 +9,6 @@ import {
   Tooltip,
 } from 'recharts';
 
-// const data = [
-//   { name: 'Thời trang', value: 4000, color: '#FF6384' },
-//   { name: 'Điện tử', value: 3000, color: '#36A2EB' },
-//   { name: 'Đồ gia dụng', value: 2000, color: '#FFCE56' },
-//   { name: 'Sách', value: 2780, color: '#FF6384' },
-//   { name: 'Thể thao', value: 1890, color: '#36A2EB' },
-// ];
-
 const COLOR_PALETTE = [
   '#FF6384', // đỏ hồng
   '#36A2EB', // xanh dương
@@ -29,9 +21,10 @@ const COLOR_PALETTE = [
 
 interface PieChartProps {
   data: Array<{ name: string; value: number }> | undefined;
+  isMoney?: boolean;
 }
 
-function PieChart({ data }: PieChartProps) {
+function PieChart({ data, isMoney = true }: PieChartProps) {
   const safeData =
     data?.map((item, index) => ({
       ...item,
@@ -49,7 +42,7 @@ function PieChart({ data }: PieChartProps) {
   return (
     <div>
       <ResponsiveContainer width="100%" height={300}>
-        <RechartPieChart width={400} height={400}>
+        <RechartPieChart>
           <Pie
             data={safeData}
             dataKey="value"
@@ -57,19 +50,28 @@ function PieChart({ data }: PieChartProps) {
             cx="50%"
             cy="50%"
             outerRadius={80}
-            fill="#8884d8"
-            label={({ value }) => formatMoneyCompact(value)}
+            paddingAngle={2}
+            label={({ value }) => (isMoney ? formatMoneyCompact(value) : value)}
           >
             {safeData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
+          <Tooltip
+            formatter={(value: number, name: string) => [
+              isMoney ? `${formatMoneyCompact(value)}` : value,
+              name,
+            ]}
+          />
           <Legend
+            verticalAlign="bottom"
+            height={36}
             iconSize={10}
             iconType="circle"
-            style={{ textTransform: 'capitalize' }}
+            formatter={(value: string) => (
+              <span style={{ textTransform: 'capitalize' }}>{value}</span>
+            )}
           />
-          <Tooltip />
         </RechartPieChart>
       </ResponsiveContainer>
     </div>

@@ -14,6 +14,9 @@ export default memo(function CategoryRevenue({ cookies }: { cookies: string }) {
   const [range, setRange] = useState('month');
   const [timeRange, setTimeRange] = useState('');
   const [data, setData] = useState<Array<{ name: string; value: number }>>([]);
+  const [totalSales, setTotalSales] = useState(0);
+  const [changeAmount, setChangeAmount] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,20 +42,15 @@ export default memo(function CategoryRevenue({ cookies }: { cookies: string }) {
 
       const { data } = await response.json();
       const { sales } = data;
+      setTotalSales(data.totalSales);
+      setChangeAmount(data.changeAmount);
+      setTotalProducts(data.totalProducts);
       setData(sales);
       setLoading(false);
     }
 
     fetchData();
-  }, [range, timeRange]);
-
-  if (loading) {
-    return (
-      <Card title="Doanh thu" className="flex flex-col flex-grow ">
-        <Loader />
-      </Card>
-    );
-  }
+  }, [range, timeRange, slug, cookies]);
 
   return (
     <Card
@@ -70,27 +68,39 @@ export default memo(function CategoryRevenue({ cookies }: { cookies: string }) {
         </div>
       }
     >
-      <RevenueChart data={data} />
+      {loading ? (
+        <Loader />
+      ) : data.length === 0 ? (
+        <div className="text-center font-medium text-grey-300">
+          Không có dữ liệu
+        </div>
+      ) : (
+        <>
+          <RevenueChart data={data} />
 
-      <hr className="mt-4" />
-      <div className="flex items-center mt-2 gap-10 justify-around lg:flex-col lg:gap-2 lg:items-start">
-        <div className="text-center lg:flex lg:justify-between lg:items-center lg:w-full">
-          <div className="text-sm text-gray-500">Tổng doanh thu</div>
-          <div className="text-lg font-semibold text-gray-800">
-            {formatMoney(1000000)}
+          <hr className="mt-4" />
+          <div className="flex items-center mt-8 gap-10 justify-around lg:flex-col lg:gap-2 lg:items-start">
+            <div className="text-center lg:flex lg:justify-between lg:items-center lg:w-full">
+              <div className="text-sm text-gray-500">Tổng doanh thu</div>
+              <div className="text-lg font-semibold text-primary-500">
+                {formatMoney(totalSales)}
+              </div>
+            </div>
+            <div className="text-center lg:flex lg:justify-between lg:items-center lg:w-full">
+              <div className="text-sm text-gray-500">Tăng trưởng</div>
+              <div className="text-lg font-semibold text-primary-500">
+                {formatMoney(changeAmount)}
+              </div>
+            </div>
+            <div className="text-center lg:flex lg:justify-between lg:items-center lg:w-full">
+              <div className="text-sm text-gray-500">Tổng sản phẩm</div>
+              <div className="text-lg font-semibold text-primary-500">
+                {totalProducts}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="text-center lg:flex lg:justify-between lg:items-center lg:w-full">
-          <div className="text-sm text-gray-500">Tăng trưởng</div>
-          <div className="text-lg font-semibold text-gray-800">
-            {formatMoney(1000000)}
-          </div>
-        </div>
-        <div className="text-center lg:flex lg:justify-between lg:items-center lg:w-full">
-          <div className="text-sm text-gray-500">Tổng sản phẩm</div>
-          <div className="text-lg font-semibold text-gray-800">40000</div>
-        </div>
-      </div>
+        </>
+      )}
     </Card>
   );
 });

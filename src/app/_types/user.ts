@@ -10,4 +10,6 @@ export interface User {
   dob: string;
   emailVerified: boolean;
   role: string;
+  createdAt: string;
+  updatedAt: string;
 }

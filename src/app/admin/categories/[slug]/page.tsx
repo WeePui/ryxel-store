@@ -95,11 +95,14 @@ export default async function Page({ params, searchParams }: PageProps) {
             <SortSelector />
           </div>
           <div className="md:flex-[4] whitespace-nowrap">
-            <FilterButton
-              brands={brands}
-              priceRanges={priceRanges}
-              specifications={specs}
-            />
+            <FilterButton>
+              <SideFilter
+                brands={brands}
+                priceRanges={priceRanges}
+                specifications={specs}
+                isMobile
+              />
+            </FilterButton>
           </div>
         </div>
       </div>

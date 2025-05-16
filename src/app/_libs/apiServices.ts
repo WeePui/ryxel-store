@@ -1203,3 +1203,161 @@ export const updateProduct = async (
   const data = await response.json();
   return data;
 };
+
+export const createShippingOrder = async (
+  orderId: string,
+  token: { value: string }
+) => {
+  const response = await fetch(`${API_URL}/orders/${orderId}/shipping-order`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to create shipping order');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const updateOrderStatus = async (
+  orderId: string,
+  status: string,
+  adminNotes: string,
+  token: { value: string }
+) => {
+  const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token.value}`,
+    },
+    body: JSON.stringify({ status, adminNotes }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update order status');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const refundOrder = async (
+  orderId: string,
+  token: { value: string }
+) => {
+  const response = await fetch(`${API_URL}/orders/${orderId}/refund`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Refund not successful');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const downloadFile = async (url: string, token: { value: string }) => {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to download file');
+  }
+
+  const blob = await res.blob();
+  const a = document.createElement('a');
+  a.href = window.URL.createObjectURL(blob);
+  a.download = url.includes('pdf') ? 'order.pdf' : 'order.xlsx';
+  a.click();
+};
+
+interface AdminOrdersFilter {
+  search?: string;
+  startDate?: string;
+  endDate?: string;
+  total?: number;
+  status?: string;
+  paymentMethod?: string;
+}
+
+export const getAdminOrders = async (
+  authToken: string,
+  filter: AdminOrdersFilter
+) => {
+  const filterParams = new URLSearchParams();
+  for (const key in filter) {
+    if (filter[key as keyof AdminOrdersFilter] !== undefined) {
+      filterParams.append(
+        key,
+        filter[key as keyof AdminOrdersFilter] as string
+      );
+    }
+  }
+
+  const response = await fetch(
+    `${API_URL}/orders/all-orders?${filterParams.toString()}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      credentials: 'include',
+    }
+  );
+  if (!response.ok) {
+    throw new Error('Failed to fetch orders');
+  }
+
+  const { data } = await response.json();
+  return data;
+};
+
+export const getOrderSummaryStats = async (authToken: string) => {
+  const response = await fetch(`${API_URL}/admin/orders/summary`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch order summary stats');
+  }
+  const { data } = await response.json();
+  return data;
+};
+
+export const deleteProduct = async (id: string, token: { value: string }) => {
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete product');
+  }
+
+  return { status: 'success', message: 'Product deleted successfully' };
+};

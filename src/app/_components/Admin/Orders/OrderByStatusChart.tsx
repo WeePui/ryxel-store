@@ -2,32 +2,40 @@
 
 import { useEffect, useState } from 'react';
 import Card from '../../UI/Card';
-import TabSelector from '../../UI/TabSelector';
-import BarChart from '../../UI/BarChart';
 import AdminDateSelector from '../../UI/AdminDateSelector';
+import TabSelector from '../../UI/TabSelector';
+import DonutChart from '../../UI/DonutChart';
 import Loader from '../../UI/Loader';
 
-interface ProductsSoldProps {
-  cookies: string;
-}
+// const data = [
+//   { name: 'Chờ xác nhận', value: 400 },
+//   { name: 'Đang giao hàng', value: 300 },
+//   { name: 'Đã giao hàng', value: 200 },
+//   { name: 'Đã hủy', value: 100 },
+//   { name: 'Hoàn trả', value: 50 },
+// ];
 
-export default function ProductsSold({ cookies }: ProductsSoldProps) {
+export default function OrderByStatusChart({
+  authToken,
+}: {
+  authToken: string;
+}) {
   const [range, setRange] = useState('month');
   const [timeRange, setTimeRange] = useState('');
-  const [data, setData] = useState<Array<{ name: string; value: number }>>([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/products/sold?${timeRange}&range=${range}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/orders/order-by-status?${timeRange}&range=${range}`,
         {
           method: 'GET',
           cache: 'no-store',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookies}`,
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -38,25 +46,18 @@ export default function ProductsSold({ cookies }: ProductsSoldProps) {
         return;
       }
 
-      const { data: apiData } = await response.json();
-      const mappedData = apiData.map(
-        (item: { name: string; sold: number }) => ({
-          name: item.name,
-          value: item.sold,
-        })
-      );
-      setData(mappedData);
+      const { data } = await response.json();
+      setData(data);
       setLoading(false);
     }
 
     fetchData();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [range, timeRange]);
 
   return (
     <Card
-      title="Sản phẩm đã bán"
+      title="Đơn hàng theo trạng thái"
       className="flex flex-col gap-6 flex-grow pb-10"
       titleAction={
         <div className="flex items-center gap-4">
@@ -77,7 +78,7 @@ export default function ProductsSold({ cookies }: ProductsSoldProps) {
           Không có dữ liệu
         </div>
       ) : (
-        <BarChart data={data} keys={['value']} />
+        <DonutChart data={data} isMoney={false} />
       )}
     </Card>
   );

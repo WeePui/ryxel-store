@@ -15,7 +15,7 @@ export default function ClientWrapper({ user }: ClientWrapperProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="py-10 pl-2 sticky top-0 max-h-[calc(100vh-2rem)] h-fit">
+    <div className="py-10 pl-2 sticky sm:static top-0 max-h-[calc(100vh-2rem)] h-fit">
       <div className="lg:flex lg:justify-between">
         <div className="flex items-center gap-6 lg:gap-4">
           <div className="relative aspect-square w-1/4 lg:w-12 overflow-hidden rounded-full ring-2 ring-primary-default">

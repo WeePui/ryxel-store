@@ -15,6 +15,7 @@ export interface Address {
     name: string;
     code: string;
   };
+  country?: string;
   address: string;
   addressInfo?: string;
 }

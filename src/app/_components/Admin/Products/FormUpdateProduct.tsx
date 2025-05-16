@@ -54,7 +54,7 @@ export default function FormUpdateProduct({
   };
 
   return (
-    <form className="grid grid-cols-2 gap-6">
+    <form className="grid grid-cols-2 lg:grid-cols-1 gap-6">
       <ProductInfo
         product={product}
         categories={categoryOptions}

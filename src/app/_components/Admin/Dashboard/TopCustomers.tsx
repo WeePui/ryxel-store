@@ -102,6 +102,7 @@ export default function TopCustomers({ cookies }: { cookies: string }) {
     }
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [range, timeRange]);
 
   return (
@@ -120,7 +121,15 @@ export default function TopCustomers({ cookies }: { cookies: string }) {
         </div>
       }
     >
-      {loading ? <Loader /> : <TopCustomerList topCustomers={data} />}
+      {loading ? (
+        <Loader />
+      ) : data.length === 0 ? (
+        <div className="text-center font-medium text-grey-300">
+          Không có dữ liệu
+        </div>
+      ) : (
+        <TopCustomerList topCustomers={data} />
+      )}
     </Card>
   );
 }

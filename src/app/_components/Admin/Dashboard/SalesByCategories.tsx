@@ -45,6 +45,8 @@ export default function SalesByCategories({ cookies }: SalesByCategoriesProps) {
     }
 
     fetchData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [range, timeRange]);
 
   return (
@@ -63,7 +65,15 @@ export default function SalesByCategories({ cookies }: SalesByCategoriesProps) {
         </div>
       }
     >
-      {loading ? <Loader /> : <PieChart data={data} />}
+      {loading ? (
+        <Loader />
+      ) : data.length === 0 ? (
+        <div className="text-center font-medium text-grey-300">
+          Không có dữ liệu
+        </div>
+      ) : (
+        <PieChart data={data} />
+      )}
     </Card>
   );
 }

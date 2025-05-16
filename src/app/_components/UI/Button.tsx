@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import Spinner from './Spinner';
 
 const base =
   'inline-flex outline outline-2 outline-transparent justify-center items-center gap-2 duration-300 focus:ring-2 focus:ring-tertiary-300 focus:ring-tertiary-300 focus:outline-none shadow-lg transition-all hover:shadow-none hover:outline-2 hover:outline-secondary-300 font-bold';
@@ -45,6 +46,7 @@ interface ButtonProps {
   disabled?: boolean;
   role?: 'button' | 'submit' | 'reset';
   size?: keyof typeof buttonSize;
+  loading?: boolean;
   className?: string;
 }
 
@@ -57,6 +59,7 @@ function Button({
   disabled = false,
   role = 'button',
   size = 'medium',
+  loading = false,
   className = '',
 }: ButtonProps) {
   if (href) {
@@ -81,7 +84,7 @@ function Button({
       disabled={disabled}
       type={role}
     >
-      {children}
+      {loading ? <Spinner /> : children}
     </button>
   );
 }

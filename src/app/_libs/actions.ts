@@ -42,6 +42,10 @@ import {
   createCategory,
   addProduct,
   updateProduct,
+  createShippingOrder,
+  updateOrderStatus,
+  refundOrder,
+  deleteProduct,
 } from '@libs/apiServices';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -667,7 +671,6 @@ export async function verifyDiscountCodeAction(
   const token = checkIsLogin.token!;
 
   const response = await verifyDiscountCode(code as string, lineItems, token);
-  console.log(response);
 
   if (response.data.isValid) {
     return {
@@ -1237,10 +1240,96 @@ export const updateProductAction = async (
   const checkIsLogin = await checkLogin();
   if (!checkIsLogin.success) return checkIsLogin;
 
-  console.log(product);
-
   const token = checkIsLogin.token!;
   const response = await updateProduct(product, token, productId);
+  if (response.status === 'success') {
+    revalidatePath('/admin/products');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const createShippingOrderAction = async (
+  orderId: string,
+  orderCode: string
+) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+
+  const token = checkIsLogin.token!;
+  const response = await createShippingOrder(orderId, token);
+  if (response.status === 'success') {
+    revalidatePath('/admin/orders/' + orderCode);
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const updateOrderStatusAction = async (
+  orderId: string,
+  status: string,
+  adminNotes: string,
+  orderCode: string
+) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+
+  const token = checkIsLogin.token!;
+  const response = await updateOrderStatus(orderId, status, adminNotes, token);
+  if (response.status === 'success') {
+    revalidatePath('/admin/orders/' + orderCode);
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const refundOrderAction = async (orderId: string, orderCode: string) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+
+  const token = checkIsLogin.token!;
+  const response = await refundOrder(orderId, token);
+  if (response.status === 'success') {
+    revalidatePath('/admin/orders/' + orderCode);
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const deleteProductAction = async (productId: string) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+
+  const token = checkIsLogin.token!;
+  const response = await deleteProduct(productId, token);
   if (response.status === 'success') {
     revalidatePath('/admin/products');
     return {

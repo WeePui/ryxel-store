@@ -8,6 +8,9 @@ import Image from 'next/image';
 import Button from '../../UI/Button';
 import { mappingSpecsName } from '@/app/_utils/mappingSpecs';
 import { FaTrash } from 'react-icons/fa6';
+import { toast } from 'react-toastify';
+import Modal from '../../UI/Modal';
+import TextConfirmDialogue from '../../UI/TextConfirmDialogue';
 
 interface VariantInfoProps {
   variants: Variant[];
@@ -34,6 +37,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
     const [newSpecs, setNewSpecs] = useState<{ key: string; value: string }[]>(
       []
     );
+    const [confirmDelete, setConfirmDelete] = useState(false);
 
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -58,10 +62,49 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
 
     const handleImageChange = (index: number, file: File) => {
       const newImages = [...images];
-      newImages[index] = file;
+
+      const emptyIndex = newImages.findIndex((img) => !img || img === '');
+
+      if (emptyIndex !== -1) {
+        newImages[emptyIndex] = file;
+      } else if (newImages.length < 4) {
+        newImages.push(file);
+      } else {
+        newImages[index] = file;
+      }
+
       setImages(newImages);
 
       // Update the currentVariant with new images
+      const updatedVariant = {
+        ...currentVariant,
+        images: newImages,
+      };
+
+      setVariantList((prevList) =>
+        prevList.map((v) => (v._id === updatedVariant._id ? updatedVariant : v))
+      );
+    };
+
+    const handleImageDelete = (index: number, e: React.MouseEvent) => {
+      e.stopPropagation(); // Prevent triggering the file input click
+
+      // Create a compact array by removing the deleted image and shifting others up
+      const filteredImages = images.filter(
+        (img, i) => i !== index && img !== ''
+      );
+
+      // Create a new array of length 4, filled with remaining images followed by empty strings
+      const newImages: (string | File)[] = Array(4).fill('');
+
+      // Copy the filtered images to the beginning of the new array
+      filteredImages.forEach((img, i) => {
+        if (i < 4) newImages[i] = img;
+      });
+
+      setImages(newImages);
+
+      // Update the currentVariant with the modified images
       const updatedVariant = {
         ...currentVariant,
         images: newImages,
@@ -141,6 +184,44 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
       onSave();
     };
 
+    const handleChangeSaleOff = (
+      field: 'percentage' | 'startDate' | 'endDate',
+      value: string
+    ) => {
+      const updatedVariant = {
+        ...currentVariant,
+        saleOff: {
+          ...currentVariant.saleOff,
+          [field]: value,
+        },
+      };
+      setCurrentVariant(updatedVariant);
+      setVariantList((prevList) =>
+        prevList.map((v) => (v._id === updatedVariant._id ? updatedVariant : v))
+      );
+    };
+
+    const handleDeleteVariant = () => {
+      // Remove current variant from list
+      const newVariantList = variantList.filter(
+        (v) => v._id !== currentVariant._id
+      );
+      setVariantList(newVariantList);
+
+      // Select first variant in the updated list
+      setCurrentVariant(newVariantList[0]);
+      setImages(newVariantList[0].images?.slice(0, 4) || []);
+
+      // Close the confirmation modal
+      setConfirmDelete(false);
+
+      // Show success message
+      toast.success(`Đã xoá phân loại "${currentVariant.name}"`);
+
+      // Automatically save changes to parent component
+      onSave();
+    };
+
     const handleReset = () => {
       const originalVariant =
         variants.find((v) => v._id === currentVariant._id) || variants[0];
@@ -156,9 +237,9 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
     return (
       <Card
         title="Thông tin phân loại"
-        className="w-full grid grid-cols-4 md:grid-cols-2 gap-4 h-fit"
+        className="w-full grid grid-cols-4 xl:grid-cols-3 gap-4 h-fit"
         titleAction={
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <Input
               type="select"
               options={variantOptions}
@@ -169,7 +250,25 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               onChange={(e) =>
                 handleVariantChange(e as React.ChangeEvent<HTMLSelectElement>)
               }
+              variant="small"
             />
+            {variantList.length > 1 && (
+              <Button
+                size="small"
+                type="danger"
+                className="whitespace-nowrap"
+                onClick={() => {
+                  if (variantList.length <= 1) {
+                    toast.error('Sản phẩm phải có ít nhất một phân loại');
+                    return;
+                  }
+
+                  setConfirmDelete(true);
+                }}
+              >
+                Xoá phân loại
+              </Button>
+            )}
           </div>
         }
       >
@@ -230,14 +329,13 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           label="Đã bán"
           onChange={(e) => handleFieldChange('sold', e.target.value)}
         />
-
-        <div className="flex gap-4 col-span-full">
+        <div className="flex gap-4 col-span-full xl:flex-col lg:flex-row md:flex-col">
           <Input
             type="text"
             name="saleOffPercentage"
             id="saleOffPercentage"
-            value={(currentVariant.saleOff?.percentage || 0) + ''}
-            // defaultValue={currentVariant.saleOff.percentage + ''}
+            value={currentVariant.saleOff?.percentage + ''}
+            onChange={(e) => handleChangeSaleOff('percentage', e.target.value)}
             label="Giảm giá (%)"
           />
           <Input
@@ -245,7 +343,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             name="saleOffStartDate"
             id="saleOffStartDate"
             value={currentVariant.saleOff?.startDate || ''}
-            // defaultValue={format(currentVariant.saleOff.startDate, 'yyyy-MM-dd')}
+            onChange={(e) => handleChangeSaleOff('startDate', e.target.value)}
             label="Ngày bắt đầu giảm giá"
           />
           <Input
@@ -253,12 +351,11 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             name="saleOffEndDate"
             id="saleOffEndDate"
             value={currentVariant.saleOff?.endDate || ''}
-            // defaultValue={format(currentVariant.saleOff.endDate, 'yyyy-MM-dd')}
+            onChange={(e) => handleChangeSaleOff('endDate', e.target.value)}
             label="Ngày kết thúc giảm giá"
           />
         </div>
-
-        <div className="col-span-full flex justify-between items-center">
+        <div className="col-span-full flex justify-between items-center mt-4">
           <p className="font-medium text-sm text-grey-300 pl-2">
             Thông số kỹ thuật
           </p>
@@ -271,13 +368,12 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             Thêm thông số
           </Button>
         </div>
-
         <div className="col-span-full flex flex-col gap-4">
           {Object.entries(currentVariant.specifications).map(
             ([key, value], index) => {
               return (
                 <div className="flex gap-2 items-center w-full" key={key}>
-                  <div className="flex flex-1 gap-2">
+                  <div className="flex flex-1 gap-2 md:flex-col xl:flex-col lg:flex-row md:relative md:mb-2">
                     <Input
                       type="select"
                       name={`spec-key-${index}`}
@@ -313,7 +409,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                     />
                     <button
                       type="button"
-                      className="self-center w-8 h-8 flex items-center justify-center rounded-full bg-red-500 text-white text-xs shrink-0"
+                      className="self-center w-8 h-8 flex items-center justify-center rounded-full bg-red-500 text-white text-xs shrink-0 md:absolute md:top-0 md:right-0 md:w-6 md:h-6 md:translate-x-1/2 md:-translate-y-1/2"
                       onClick={() => {
                         const updatedSpecs = {
                           ...currentVariant.specifications,
@@ -396,7 +492,6 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             );
           })}
         </div>
-
         <p className="col-span-full font-medium text-sm text-grey-300 pl-2">
           Ảnh sản phẩm
         </p>
@@ -404,21 +499,32 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           {[0, 1, 2, 3].map((index) => (
             <div
               key={index}
-              className="relative aspect-square cursor-pointer border rounded overflow-hidden"
+              className="relative aspect-square cursor-pointer border rounded"
               onClick={() => inputRefs.current[index]?.click()}
             >
               <Image
                 src={
-                  typeof images[index] === 'string'
+                  typeof images[index] === 'string' && images[index]
                     ? (images[index] as string)
                     : images[index] instanceof File
                     ? URL.createObjectURL(images[index])
-                    : '/no-image-placeholder.jpg'
+                    : '/no-image-placeholder.jpg rounded'
                 }
                 alt={`Ảnh ${index + 1}`}
                 fill
                 className="object-cover"
               />
+
+              {/* Delete button overlay - only show if there's an image */}
+              {images[index] && images[index] !== '' && (
+                <div
+                  className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full cursor-pointer hover:bg-red-600 z-10"
+                  onClick={(e) => handleImageDelete(index, e)}
+                >
+                  <FaTrash size={12} />
+                </div>
+              )}
+
               <input
                 type="file"
                 accept="image/*"
@@ -449,6 +555,18 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             Lưu thay đổi
           </Button>
         </div>
+
+        {confirmDelete && (
+          <Modal onClose={() => setConfirmDelete(false)}>
+            <TextConfirmDialogue
+              onConfirm={handleDeleteVariant}
+              confirmText={currentVariant.sku}
+              message={`Nhập mã SKU của phân loại để xác nhận xoá`}
+              noticeText="Bạn phải lưu thay đổi để áp dụng"
+              errorText="Phân loại không chính xác"
+            />
+          </Modal>
+        )}
       </Card>
     );
   }

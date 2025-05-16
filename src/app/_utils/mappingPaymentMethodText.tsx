@@ -14,9 +14,30 @@ export const mappingPaymentMethodShortText: { [key: string]: string } = {
 };
 
 export const mappingPaymentMethodIcon: { [key: string]: JSX.Element } = {
-  cod: <Image src="/images/payment-methods/cod.png" alt="COD" />,
-  zalopay: <Image src="/images/payment-methods/zalopay.png" alt="ZaloPay" />,
-  stripe: <Image src="/images/payment-methods/stripe.png" alt="Stripe" />,
+  cod: (
+    <Image
+      src="/images/payment-methods/cod.png"
+      alt="COD"
+      width={16}
+      height={16}
+    />
+  ),
+  zalopay: (
+    <Image
+      src="/images/payment-methods/zalopay.png"
+      alt="ZaloPay"
+      width={16}
+      height={16}
+    />
+  ),
+  stripe: (
+    <Image
+      src="/images/payment-methods/stripe.png"
+      alt="Stripe"
+      width={16}
+      height={16}
+    />
+  ),
 };
 
 export function mappingPaymentMethod(paymentMethod: string, fullText = true) {

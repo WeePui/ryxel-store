@@ -48,6 +48,8 @@ export default function RevenueCard({ cookies }: RevenueCardProps) {
     }
 
     fetchData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [range, timeRange]);
 
   return (
@@ -66,7 +68,15 @@ export default function RevenueCard({ cookies }: RevenueCardProps) {
         </div>
       }
     >
-      {loading ? <Loader /> : <DynamicRevenueChart data={data} />}
+      {loading ? (
+        <Loader />
+      ) : data.length === 0 ? (
+        <div className="text-center font-medium text-grey-300">
+          Không có dữ liệu
+        </div>
+      ) : (
+        <DynamicRevenueChart data={data} />
+      )}
     </Card>
   );
 }

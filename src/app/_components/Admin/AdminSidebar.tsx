@@ -12,7 +12,7 @@ export default function AdminSidebar() {
     <div
       className={`h-screen overflow-y-auto bg-primary-default text-grey-50 pb-6 flex flex-col transition-all animate-slide-in duration-300 ${
         isOpen ? 'w-64 sm:w-screen' : 'w-16 sm:hidden'
-      }`}
+      } no-print`}
     >
       <div
         className={`text-center border-b border-grey-200 h-16 mb-6 overflow-hidden transition-all duration-300 ease-in-out sm:flex sm:justify-between px-8`}

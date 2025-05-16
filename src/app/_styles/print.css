@@ -1,0 +1,24 @@
+@media print {
+  body {
+    padding: 20px;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .print-page {
+    width: 100%;
+    font-family: Arial, sans-serif;
+    color: #000;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  tr,
+  table {
+    break-inside: avoid;
+  }
+}

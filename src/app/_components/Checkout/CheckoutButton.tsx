@@ -6,6 +6,7 @@ import Button from '@components/UI/Button';
 import Spinner from '../UI/Spinner';
 import { toast } from 'react-toastify';
 import { useSearchParams } from 'next/navigation';
+import errorMessages from '@/app/_utils/mappingErrorMessages';
 
 interface LineItem {
   product: string;
@@ -38,7 +39,7 @@ function CheckoutButton({
 
   useEffect(() => {
     if (state?.errors) {
-      toast.error(state.errors.message);
+      toast.error(errorMessages[state.errors.message] || state.errors.message);
     }
   }, [state?.errors]);
 

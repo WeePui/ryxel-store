@@ -3,11 +3,13 @@ import ProductsOverview from '@/app/_components/Admin/Products/ProductsOverview'
 import ProductsSold from '@/app/_components/Admin/Products/ProductsSold';
 import ProductsTable from '@/app/_components/Admin/Products/ProductsTable';
 import StockChart from '@/app/_components/Admin/Products/StockChart';
+import CategoryFilter from '@/app/_components/Products/CategoryFilter';
 import FilterButton from '@/app/_components/Products/FilterButton';
 import SideFilter from '@/app/_components/Products/SideFilter';
 import SortSelector from '@/app/_components/Products/SortSelector';
 import { generatePriceRanges } from '@/app/_helpers/generatePriceRanges';
 import {
+  getCategories,
   getFilterData,
   getProducts,
   getProductsSummary,
@@ -46,16 +48,23 @@ export default async function Page({ searchParams }: PageProps) {
   const token = cookiesStore.get('jwt')?.value || '';
   const filter = await searchParams;
 
-  const [productsData, filterData, stockData, productSummary] =
-    await Promise.all([
-      getProducts(filter),
-      getFilterData(filter),
-      getStockData({ value: token }),
-      getProductsSummary({ value: token }),
-    ]);
+  const [
+    productsData,
+    filterData,
+    stockData,
+    productSummary,
+    clientCategories,
+  ] = await Promise.all([
+    getProducts(filter),
+    getFilterData(filter),
+    getStockData({ value: token }),
+    getProductsSummary({ value: token }),
+    getCategories({ value: token }),
+  ]);
 
+  const { categories } = clientCategories;
   const {
-    data: { products },
+    data: { products, totalProducts, resultsPerPage },
   } = productsData;
   const { data: filtersData } = filterData;
   const { brands, minPrice, maxPrice, specs } = filtersData;
@@ -76,6 +85,9 @@ export default async function Page({ searchParams }: PageProps) {
     prediction: { predictions },
   } = productSummary;
 
+  console.log('totalProducts', totalProducts);
+  console.log('resultsPerPage', resultsPerPage);
+
   return (
     <div className="grid grid-cols-4 xl:grid-cols-2 md:grid-cols-1 p-6 gap-6">
       <div className="col-span-full">
@@ -87,7 +99,7 @@ export default async function Page({ searchParams }: PageProps) {
         />
       </div>
       <div className="col-span-1">
-        <ProductsByCategory />
+        <ProductsByCategory categories={categories} />
       </div>
       <div className="col-span-2 xl:col-span-full">
         <ProductsSold cookies={token} />
@@ -95,17 +107,23 @@ export default async function Page({ searchParams }: PageProps) {
       <div className="col-span-1">
         <StockChart data={stockData.data} />
       </div>
+      <div className="overflow-x-hidden max-w-full col-span-full mt-14">
+        <CategoryFilter categories={categories} />
+      </div>
       <div className="hidden lg:block py-4 cols-span-full">
         <div className="hidden lg:flex gap-2 items-center">
           <div className="flex-[6]">
             <SortSelector />
           </div>
           <div className="md:flex-[4] whitespace-nowrap">
-            <FilterButton
-              brands={brands}
-              priceRanges={priceRanges}
-              specifications={specs}
-            />
+            <FilterButton>
+              <SideFilter
+                brands={brands}
+                priceRanges={priceRanges}
+                specifications={specs}
+                isMobile
+              />
+            </FilterButton>
           </div>
         </div>
       </div>
@@ -120,7 +138,11 @@ export default async function Page({ searchParams }: PageProps) {
             specifications={specs}
           />
         </div>
-        <ProductsTable products={products} />
+        <ProductsTable
+          products={products}
+          totalProducts={totalProducts}
+          resultsPerPage={resultsPerPage}
+        />
       </div>
     </div>
   );

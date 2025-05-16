@@ -46,7 +46,7 @@ function OverviewSection() {
   }
 
   return (
-    <section className="min-h-[36rem] xl:h-full bg-grey-400">
+    <section className="min-h-[36rem] xl:h-full bg-grey-400 w-full">
       <div className="mx-auto grid h-full max-w-[77.5rem] lg:max-w-full translate-y-12 xl:translate-y-0 grid-cols-[65fr_35fr] xl:grid-cols-[60fr_40fr] lg:grid-cols-1 rounded-3xl xl:rounded-none bg-white px-12 lg:px-8 md:px-4 py-6 lg:py-2 shadow-lg">
         <div className="flex flex-col gap-6 min-w-0">
           <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-grey-400">

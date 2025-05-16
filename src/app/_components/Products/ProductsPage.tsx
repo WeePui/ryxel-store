@@ -73,7 +73,7 @@ export default async function ProductsPage({ searchParams }: Props) {
           totalResults={displayTotalProducts}
         />
 
-        <div className="overflow-x-hidden max-w-full">
+        <div className="overflow-x-hidden max-w-full lg:mb-4 mb-14">
           <CategoryFilter categories={categories} />
         </div>
         <div className="hidden lg:flex flex-col justify-between py-4 sm:px-3">
@@ -83,11 +83,14 @@ export default async function ProductsPage({ searchParams }: Props) {
               <SortSelector />
             </div>
             <div className="md:flex-[4]">
-              <FilterButton
-                brands={brands}
-                priceRanges={priceRanges}
-                specifications={specs}
-              />
+              <FilterButton>
+                <SideFilter
+                  brands={brands}
+                  priceRanges={priceRanges}
+                  specifications={specs}
+                  isMobile
+                />
+              </FilterButton>
             </div>
           </div>
         </div>

@@ -23,8 +23,15 @@ interface InputProps {
   bgColor?: string;
   maxLength?: number;
   className?: string;
+  variant?: keyof typeof variantClass;
   onBlur?: (e: React.FocusEvent<HTMLElement>) => void;
 }
+
+const variantClass = {
+  small: 'text-sm px-2.5 pt-3 pb-2 lg:px-2 lg:pt-2 lg:pb-1',
+  medium: 'text-base px-2.5 pt-4 pb-2.5 lg:px-2 lg:pt-3 lg:pb-2',
+  large: 'text-lg px-2.5 pt-4 pb-2.5 lg:px-2 lg:pt-3 lg:pb-2',
+};
 
 function Input({
   id,
@@ -43,6 +50,7 @@ function Input({
   bgColor = 'bg-white',
   maxLength,
   className = '',
+  variant = 'medium',
   onBlur,
 }: InputProps) {
   const inputRef = useRef<
@@ -82,12 +90,17 @@ function Input({
   }, [error]);
 
   useEffect(() => {
-    if (inputRef.current && inputRef.current.value !== '') {
-      inputRef.current.classList.add('border-primary-500');
-    } else {
-      inputRef.current?.classList.remove('border-primary-500');
+    if (inputRef.current) {
+      if (
+        (value !== undefined && value !== '') ||
+        (defaultValue !== undefined && inputRef.current.value !== '')
+      ) {
+        inputRef.current.classList.add('border-primary-500');
+      } else {
+        inputRef.current.classList.remove('border-primary-500');
+      }
     }
-  }, [defaultValue]);
+  }, [value, defaultValue]);
 
   if (type === 'select') {
     return (
@@ -96,9 +109,11 @@ function Input({
           name={name}
           id={id}
           ref={inputRef as React.RefObject<HTMLSelectElement>}
-          className={`peer block w-full appearance-none rounded-lg border-2 bg-transparent px-2.5 pb-2.5 pt-4 capitalize ${
+          className={`peer block w-full appearance-none rounded-lg border-2 bg-transparent ${
+            variantClass[variant]
+          } capitalize ${
             error
-              ? 'border-red-500 text-red-500'
+              ? '!border-red-500 text-red-500'
               : 'border-grey-300 text-gray-900'
           } ${
             animateError ? 'animate-shake' : ''
@@ -122,7 +137,7 @@ function Input({
         <label
           htmlFor={id}
           className={`absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:bg-gray-900 dark:text-gray-400 truncate peer-focus:dark:text-primary-300 ${
-            error
+            errorState
               ? 'text-red-500 peer-focus:text-red-500'
               : 'text-gray-500 peer-focus:text-primary-500'
           }`}
@@ -140,10 +155,12 @@ function Input({
           name={name}
           id={id}
           className={`${
-            error
-              ? 'border-red-500 text-red-500'
+            errorState
+              ? '!border-red-500 text-red-500'
               : 'border-grey-300 text-gray-900'
-          } peer block w-full resize-none appearance-none rounded-lg border-2 border-grey-300 bg-transparent px-2.5 pb-2.5 pt-4 focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${bgColor} min-h-28`}
+          } peer block w-full resize-none appearance-none rounded-lg border-2 border-grey-300 bg-transparent ${
+            variantClass[variant]
+          } focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${bgColor} min-h-28`}
           placeholder=" "
           disabled={disabled}
           defaultValue={defaultValue}
@@ -155,8 +172,8 @@ function Input({
         <label
           htmlFor={id}
           className={`${
-            error
-              ? 'border-red-500 text-red-500 peer-focus:text-red-500'
+            errorState
+              ? '!border-red-500 text-red-500 peer-focus:text-red-500'
               : 'border-grey-300 text-gray-500 peer-focus:text-primary-500'
           } absolute start-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-primary-300 truncate`}
         >
@@ -200,10 +217,12 @@ function Input({
         id={id}
         className={`${
           errorState
-            ? 'border-red-500 text-red-500'
-            : 'border-grey-300 text-gray-900'
+            ? '!border-red-500 !text-red-500'
+            : 'border-grey-300 !text-gray-900'
         } 
-        peer block w-full appearance-none rounded-lg border-2 border-grey-300 bg-transparent px-2.5 pb-2.5  lg:pt-3 lg:pb-1 pt-4 focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${
+        peer block w-full appearance-none rounded-lg border-2 border-grey-300 bg-transparent ${
+          variantClass[variant]
+        } focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500 ${
           disabled && 'cursor-not-allowed text-grey-300 !border-grey-300'
         } !${bgColor} ${animateError ? 'animate-shake' : ''}`}
         placeholder=" "

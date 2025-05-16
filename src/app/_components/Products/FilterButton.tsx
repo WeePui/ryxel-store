@@ -2,26 +2,14 @@
 
 import { FaFilter } from 'react-icons/fa';
 import { useState } from 'react';
-import SideFilter from '@components/Products/SideFilter';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaXmark } from 'react-icons/fa6';
 
 interface FilterButtonProps {
-  brands: Array<{ value: string; count: number }>;
-  priceRanges: Array<{ min: number; max?: number }>;
-  specifications: {
-    [key: string]: Array<{
-      value: string;
-      count: number;
-    }>;
-  };
+  children: React.ReactNode;
 }
 
-export default function FilterButton({
-  brands,
-  priceRanges,
-  specifications,
-}: FilterButtonProps) {
+export default function FilterButton({ children }: FilterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -57,12 +45,7 @@ export default function FilterButton({
                   <FaXmark />
                 </button>
               </div>
-              <SideFilter
-                brands={brands}
-                priceRanges={priceRanges}
-                specifications={specifications}
-                isMobile
-              />
+              {children}
             </motion.div>
           </motion.div>
         )}

@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 import Card from '../../UI/Card';
 import SearchBar from '../../Header/SearchBar';
 import {
@@ -16,6 +18,8 @@ import { mappingStock } from '@/app/_utils/mappingStock';
 import NavLink from '../../UI/NavLink';
 import { Product } from '@/app/_types/product';
 import formatMoney from '@/app/_utils/formatMoney';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Pagination from '../../UI/Pagination';
 
 // const data = [
 //   {
@@ -32,9 +36,36 @@ import formatMoney from '@/app/_utils/formatMoney';
 
 interface ProductsTableProps {
   products: Product[];
+  totalProducts: number;
+  resultsPerPage: number;
 }
 
-export default function ProductsTable({ products }: ProductsTableProps) {
+export default function ProductsTable({
+  products,
+  totalProducts,
+  resultsPerPage,
+}: ProductsTableProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const totalPages = Math.ceil(totalProducts / resultsPerPage);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    const page = Number(params.get('page')) || 1;
+
+    setCurrentPage(page);
+  }, [searchParams, products]);
+
+  const handleChangePage = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', page + '');
+
+    router.replace(`${pathname}?${params.toString()}`);
+    setCurrentPage(page);
+  };
+
   return (
     <Card
       title="Sản phẩm theo danh mục"
@@ -119,6 +150,13 @@ export default function ProductsTable({ products }: ProductsTableProps) {
           )}
         </TableBody>
       </Table>
+      <div className="flex justify-center mt-6">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handleChangePage}
+        />
+      </div>
     </Card>
   );
 }

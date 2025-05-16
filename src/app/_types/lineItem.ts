@@ -7,5 +7,6 @@ export interface LineItem {
   variant: string | Variant;
   quantity: number;
   unitPrice?: number;
+  subtotal?: number;
   review?: Review;
 }

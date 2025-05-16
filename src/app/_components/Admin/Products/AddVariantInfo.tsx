@@ -59,16 +59,15 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
     setVariants(updated);
   };
 
-  const handleImageChange = (
-    variantIndex: number,
-    imageIndex: number,
-    file: File
-  ) => {
+  const handleImageChange = (variantIndex: number, file: File) => {
     const updated = [...variants];
     const images = [...(updated[variantIndex].images || [])];
-    images[imageIndex] = file;
-    updated[variantIndex].images = images;
-    setVariants(updated);
+
+    if (images.length < 4) {
+      images.push(file);
+      updated[variantIndex].images = images;
+      setVariants(updated);
+    }
   };
 
   const handleSpecChange = (
@@ -171,42 +170,46 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
             Ảnh sản phẩm
           </p>
           <div className="grid grid-cols-4 gap-2">
-            {[0, 1, 2, 3].map((imgIdx) => (
-              <div
-                key={imgIdx}
-                className="relative aspect-square cursor-pointer border rounded overflow-hidden"
-                onClick={() => inputRefs.current[index]?.[imgIdx]?.click()}
-              >
-                <Image
-                  src={
-                    typeof variant.images?.[imgIdx] === 'string'
-                      ? (variant.images[imgIdx] as string)
-                      : variant.images?.[imgIdx] instanceof File
-                      ? URL.createObjectURL(variant.images[imgIdx] as File)
-                      : '/no-image-placeholder.jpg'
-                  }
-                  alt={`Ảnh ${imgIdx + 1}`}
-                  fill
-                  className="object-cover"
-                />
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  ref={(el) => {
-                    if (!inputRefs.current[index]) {
-                      inputRefs.current[index] = [];
+            {Array.from({ length: 4 }).map((_, imgIdx) => {
+              const image = variant.images?.[imgIdx];
+
+              return (
+                <div
+                  key={imgIdx}
+                  className="relative aspect-square cursor-pointer border rounded overflow-hidden"
+                  onClick={() => inputRefs.current[index]?.[imgIdx]?.click()}
+                >
+                  <Image
+                    src={
+                      typeof image === 'string'
+                        ? image
+                        : image instanceof File
+                        ? URL.createObjectURL(image)
+                        : '/no-image-placeholder.jpg'
                     }
-                    inputRefs.current[index][imgIdx] = el;
-                  }}
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      handleImageChange(index, imgIdx, e.target.files[0]);
-                    }
-                  }}
-                />
-              </div>
-            ))}
+                    alt={`Ảnh ${imgIdx + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    ref={(el) => {
+                      if (!inputRefs.current[index]) {
+                        inputRefs.current[index] = [];
+                      }
+                      inputRefs.current[index][imgIdx] = el;
+                    }}
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        handleImageChange(index, e.target.files[0]);
+                      }
+                    }}
+                  />
+                </div>
+              );
+            })}
           </div>
           <div className="flex justify-between items-center mt-4 sm:flex-col gap-2 sm:items-start mb-2">
             <p className="font-medium text-sm text-grey-300 pl-1">

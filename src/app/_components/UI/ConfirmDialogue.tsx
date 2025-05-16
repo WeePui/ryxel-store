@@ -5,6 +5,7 @@ interface ConfirmDialogueProps {
   message: string | JSX.Element;
   confirmText?: string;
   cancelText?: string;
+  children?: JSX.Element;
   onConfirm: () => void;
   onCancel?: () => void;
 }
@@ -15,10 +16,12 @@ function ConfirmDialogue({
   cancelText = 'Hủy bỏ',
   onConfirm,
   onCancel,
+  children,
 }: ConfirmDialogueProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-8">
       <p className="text-lg">{message}</p>
+      {children}
       <div className="flex gap-6 md:gap-4 flex-wrap justify-center">
         {onCancel && (
           <Button type="secondary" onClick={onCancel}>

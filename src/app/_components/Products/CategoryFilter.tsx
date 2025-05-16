@@ -28,7 +28,7 @@ function CategoryFilter({ categories }: CategoryFilterProps) {
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="mb-14 lg:mb-4 flex h-20 items-center rounded-lg bg-grey-100 overflow-x-auto w-full lg:scrollbar-hide sm:rounded-none">
+      <div className="flex h-20 items-center rounded-lg bg-grey-100 overflow-x-auto w-full lg:scrollbar-hide sm:rounded-none">
         <div className={`flex gap-2 px-5 md:px-2 flex-shrink-0`}>
           <Button
             type="filter"

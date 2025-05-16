@@ -18,7 +18,7 @@ export default function StockChart({ data }: StockChartProps) {
 
   return (
     <Card title="Tồn kho" className="flex flex-col gap-6 flex-grow pb-10">
-      <DonutChart data={chartData} />
+      <DonutChart data={chartData} isMoney={false} />
     </Card>
   );
 }

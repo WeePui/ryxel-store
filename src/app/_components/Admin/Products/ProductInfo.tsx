@@ -4,8 +4,18 @@ import Input from '../../UI/Input';
 import Image from 'next/image';
 import Button from '../../UI/Button';
 import Card from '../../UI/Card';
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import {
+  forwardRef,
+  useImperativeHandle,
+  useState,
+  useTransition,
+} from 'react';
 import { Product } from '@/app/_types/product';
+import { deleteProductAction } from '@/app/_libs/actions';
+import { toast } from 'react-toastify';
+import Modal from '../../UI/Modal';
+import TextConfirmDialogue from '../../UI/TextConfirmDialogue';
+import { useRouter } from 'next/navigation';
 
 interface ProductInfoProps {
   product: Product;
@@ -26,6 +36,9 @@ interface ProductInfoHandle {
 
 const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
   ({ product, categories, onSave }, ref) => {
+    const router = useRouter();
+    const [pending, startTransition] = useTransition();
+    const [confirmDelete, setConfirmDelete] = useState(false);
     const [name, setName] = useState(product.name);
     const [slug, setSlug] = useState(product.slug);
     const [brand, setBrand] = useState(product.brand);
@@ -50,6 +63,18 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
       }
     };
 
+    const handleDeleteProduct = () => {
+      startTransition(async () => {
+        const result = await deleteProductAction(product._id);
+        if (result.success) {
+          toast.success(`Product deleted successfully`);
+          router.replace('/admin/products');
+        } else {
+          toast.error(`Error deleting product: ${result.errors?.message}`);
+        }
+      });
+    };
+
     const handleReset = () => {
       setName(product.name);
       setSlug(product.slug);
@@ -62,7 +87,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
     return (
       <Card
         title="Thông tin sản phẩm"
-        className="w-full  h-fit max-w-7xl mx-auto"
+        className="w-full h-fit max-w-7xl mx-auto"
         titleAction={
           <div className="flex flex-col gap-2 text-sm font-medium text-grey-300">
             <span>
@@ -76,14 +101,14 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
           </div>
         }
       >
-        <div className="grid grid-cols-4 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+        <div className="grid grid-cols-4 xl:grid-cols-3 lg:grid-cols-4 md:flex md:flex-col gap-4">
           <Input
             type="text"
             defaultValue={product.name}
             id="name"
             name="name"
             label="Tên sản phẩm"
-            className="col-span-2"
+            className="col-span-2 sm:col-span-1"
             onChange={(e) => {
               const value = e.target.value.trim();
               if (value) {
@@ -97,7 +122,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             id="slug"
             name="slug"
             label="Slug"
-            className="col-span-2"
+            className="col-span-2 sm:col-span-1"
             onChange={(e) => {
               const value = e.target.value.trim();
               if (value) {
@@ -111,7 +136,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             id="brand"
             name="brand"
             label="Thương hiệu"
-            className="col-span-1 sm:col-span-full"
+            className="col-span-1"
             onChange={(e) => {
               const value = e.target.value.trim();
               if (value) {
@@ -125,7 +150,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             id="sold"
             name="sold"
             label="Đã bán"
-            className="col-span-1 sm:col-span-full"
+            className="col-span-1"
             disabled={true}
           />
           <Input
@@ -185,20 +210,49 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             type="file"
             onChange={handleImageChange}
           />
-          <div className="col-span-full flex items-center justify-end gap-4">
+          <div className="col-span-full flex items-center justify-end gap-4 sm:flex-col sm:col-span-1 md:self-center">
+            <Button
+              size="small"
+              type="danger"
+              className="whitespace-nowrap sm:w-full w-fit"
+              onClick={() => setConfirmDelete(true)}
+              disabled={pending}
+              loading={pending}
+            >
+              Xoá sản phẩm
+            </Button>
             <Button
               size="small"
               type="secondary"
               onClick={handleReset}
-              className=" w-fit"
+              className="whitespace-nowrap sm:w-full w-fit"
+              disabled={pending}
+              loading={pending}
             >
               Đặt lại
             </Button>
-            <Button size="small" onClick={onSave} className=" w-fit">
+            <Button
+              size="small"
+              onClick={onSave}
+              className="whitespace-nowrap sm:w-full w-fit"
+              disabled={pending}
+              loading={pending}
+            >
               Lưu thay đổi
             </Button>
           </div>
         </div>
+        {confirmDelete && (
+          <Modal onClose={() => setConfirmDelete(false)}>
+            <TextConfirmDialogue
+              onConfirm={handleDeleteProduct}
+              message="Nhập slug sản phẩm để xác nhận"
+              noticeText="Bạn có chắc chắn muốn xoá sản phẩm này không? Hành động này không thể hoàn tác."
+              confirmText={product.slug}
+              errorText="Nhập sai slug sản phẩm"
+            />
+          </Modal>
+        )}
       </Card>
     );
   }
