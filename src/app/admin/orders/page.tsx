@@ -84,13 +84,11 @@ export default async function Page({ searchParams }: PageProps) {
         <div className="lg:hidden sticky top-4 max-h-[calc(100vh-2rem)] h-fit shadow-md rounded-xl overflow-auto scrollbar-hide">
           <OrderFilter />
         </div>
-        <Card>
-          <OrderTable
-            data={orders}
-            totalResults={totalResults}
-            resultsPerPage={resultsPerPage}
-          />
-        </Card>
+        <OrderTable
+          data={orders}
+          totalResults={totalResults}
+          resultsPerPage={resultsPerPage}
+        />
       </div>
     </div>
   );

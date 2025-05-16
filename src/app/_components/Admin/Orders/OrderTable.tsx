@@ -19,6 +19,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Product } from '@/app/_types/product';
 import Pagination from '../../UI/Pagination';
 import { useEffect, useState } from 'react';
+import Card from '../../UI/Card';
+import SearchBar from '../../Header/SearchBar';
 
 interface OrderTableProps {
   data: Order[];
@@ -53,7 +55,15 @@ export default function OrderTable({
   };
 
   return (
-    <>
+    <Card
+      className="w-full"
+      title="Danh sách đơn hàng"
+      titleAction={
+        <div className="justify-self-end">
+          <SearchBar />
+        </div>
+      }
+    >
       {data && data.length > 0 ? (
         <div className="flex flex-col">
           <Table className="w-full">
@@ -161,6 +171,6 @@ export default function OrderTable({
           <p className="text-lg">Không có đơn hàng nào</p>
         </div>
       )}
-    </>
+    </Card>
   );
 }
