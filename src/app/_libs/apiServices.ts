@@ -1,6 +1,6 @@
-import { Address } from '../_types/address';
-import { LineItem } from '../_types/lineItem';
-import { Order } from '../_types/order';
+import { Address } from "../_types/address";
+import { LineItem } from "../_types/lineItem";
+import { Order } from "../_types/order";
 import {
   AddressFormInput,
   CategoryInput,
@@ -11,7 +11,7 @@ import {
   SignupInput,
   UpdatePasswordInput,
   UpdateProfileInput,
-} from '../_types/validateInput';
+} from "../_types/validateInput";
 
 const API_URL = process.env.API_URL;
 
@@ -25,7 +25,7 @@ export async function getProducts(filters: Filter = {}) {
   const response = await fetch(`${API_URL}/products?${query}`);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch products');
+    throw new Error("Failed to fetch products");
   }
 
   const data = await response.json();
@@ -37,7 +37,7 @@ export async function getProductById(id: string) {
   const response = await fetch(`${API_URL}/products/${id}`);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch product');
+    throw new Error("Failed to fetch product");
   }
 
   const { data } = await response.json();
@@ -49,7 +49,7 @@ export async function getProductBySlug(slug: string) {
   const response = await fetch(`${API_URL}/products/slug/${slug}`);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch product');
+    throw new Error("Failed to fetch product");
   }
 
   const { data } = await response.json();
@@ -59,12 +59,12 @@ export async function getProductBySlug(slug: string) {
 
 export async function login(loginInput: { email: string; password: string }) {
   const response = await fetch(`${API_URL}/users/login`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(loginInput),
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -74,12 +74,12 @@ export async function login(loginInput: { email: string; password: string }) {
 
 export async function signup(input: SignupInput) {
   const response = await fetch(`${API_URL}/users/signup`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(input),
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -89,12 +89,12 @@ export async function signup(input: SignupInput) {
 
 export async function sendOTP(token: { value: string }) {
   const response = await fetch(`${API_URL}/users/sendOTP`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -106,7 +106,7 @@ export async function logout() {
   const response = await fetch(`${API_URL}/users/logout`);
 
   if (!response.ok) {
-    throw new Error('Failed to log out');
+    throw new Error("Failed to log out");
   }
 
   const data = await response.json();
@@ -116,14 +116,14 @@ export async function logout() {
 
 export async function getProfile(token: { value: string }) {
   const response = await fetch(`${API_URL}/users/profile`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
-  if (!response.ok) throw new Error('Failed to fetch user');
+  if (!response.ok) throw new Error("Failed to fetch user");
 
   const data = await response.json();
 
@@ -136,9 +136,9 @@ export async function checkToken(token: { value: string }) {
   }
 
   const response = await fetch(`${API_URL}/users/verifyToken`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ token: token.value }),
   });
@@ -149,15 +149,15 @@ export async function checkToken(token: { value: string }) {
 
 export async function checkEmailAvailability(email: string) {
   const response = await fetch(`${API_URL}/users/checkEmailExists`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ email }),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to check email availability');
+    throw new Error("Failed to check email availability");
   }
 
   return { valid: true };
@@ -165,13 +165,13 @@ export async function checkEmailAvailability(email: string) {
 
 export async function verifyOTP(otp: string, token: { value: string }) {
   const response = await fetch(`${API_URL}/users/verifyOTP`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token.value}`,
     },
     body: JSON.stringify({ otp }),
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -181,9 +181,9 @@ export async function verifyOTP(otp: string, token: { value: string }) {
 
 export async function forgotPassword(email: string) {
   const response = await fetch(`${API_URL}/users/forgotPassword`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ email }),
   });
@@ -198,9 +198,9 @@ export async function resetPassword(
   resetToken: string
 ) {
   const response = await fetch(`${API_URL}/users/resetPassword/${resetToken}`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
   });
@@ -223,12 +223,12 @@ export async function updateProfile(
   }
 
   const response = await fetch(`${API_URL}/users/updateProfile`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
     body: form,
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -241,17 +241,17 @@ export async function updatePassword(
   token: { value: string }
 ) {
   const response = await fetch(`${API_URL}/users/updatePassword`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${token.value}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(input),
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update password');
+    throw new Error("Failed to update password");
   }
 
   const data = await response.json();
@@ -264,7 +264,7 @@ export async function getAddresses(token: { value: string }) {
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -277,13 +277,13 @@ export async function addAddress(
   token: { value: string }
 ) {
   const response = await fetch(`${API_URL}/addresses`, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token.value}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -293,15 +293,15 @@ export async function addAddress(
 
 export async function deleteAddress(id: string, token: { value: string }) {
   const response = await fetch(`${API_URL}/addresses/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete address');
+    throw new Error("Failed to delete address");
   }
 }
 
@@ -311,13 +311,13 @@ export async function updateAddress(
   token: { value: string }
 ) {
   const response = await fetch(`${API_URL}/addresses/${id}`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${token.value}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -327,11 +327,11 @@ export async function updateAddress(
 
 export async function setDefaultAddress(id: string, token: { value: string }) {
   const response = await fetch(`${API_URL}/addresses/${id}/default`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -344,7 +344,7 @@ export async function getCart(token: { value: string }) {
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -361,13 +361,13 @@ export async function addOrUpdateCartItem(
   const response = await fetch(
     `${API_URL}/cart/items/${productId}/${variantId}`,
     {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${token.value}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ quantity }),
-      credentials: 'include',
+      credentials: "include",
     }
   );
 
@@ -384,11 +384,11 @@ export async function removeCartItem(
   const response = await fetch(
     `${API_URL}/cart/items/${productId}/${variantId}`,
     {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
-      credentials: 'include',
+      credentials: "include",
     }
   );
 
@@ -403,13 +403,13 @@ export async function verifyDiscountCode(
   token: { value: string }
 ) {
   const response = await fetch(`${API_URL}/discounts/${code}`, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token.value}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ lineItems }),
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -422,13 +422,13 @@ export async function reauthenticate(
   token: { value: string }
 ) {
   const response = await fetch(`${API_URL}/users/reauthenticate`, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token.value}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ password }),
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -439,23 +439,23 @@ export async function reauthenticate(
 export async function createCheckoutSession(
   order: Order,
   token: { value: string },
-  method: 'Stripe' | 'ZaloPay'
+  method: "Stripe" | "ZaloPay"
 ) {
   const response = await fetch(
     `${API_URL}/payments/create${method}CheckoutSession`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token.value}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(order),
-      credentials: 'include',
+      credentials: "include",
     }
   );
 
   if (!response.ok) {
-    throw new Error('Failed to create checkout session');
+    throw new Error("Failed to create checkout session");
   }
 
   const result = await response.json();
@@ -473,22 +473,22 @@ export async function createOrder(
   token: { value: string }
 ) {
   const response = await fetch(`${API_URL}/orders`, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token.value}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
     const error = await response.json();
     if (
-      error.message === 'You have an unpaid order. Please complete the payment'
+      error.message === "You have an unpaid order. Please complete the payment"
     ) {
       return {
-        status: 'error',
+        status: "error",
         message: error.message,
       };
     }
@@ -506,19 +506,19 @@ export const checkUnpaidOrder = async (token: { value: string }) => {
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
     const error = await response.json();
-    if (error.message === 'No unpaid order found for this user') {
+    if (error.message === "No unpaid order found for this user") {
       return {
-        status: 'No unpaid order found',
+        status: "No unpaid order found",
         message: error.message,
       };
     }
 
-    throw new Error('Failed to check unpaid order');
+    throw new Error("Failed to check unpaid order");
   }
 
   const data = await response.json();
@@ -531,11 +531,11 @@ export async function getOrders(token: { value: string }, search: string) {
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch orders');
+    throw new Error("Failed to fetch orders");
   }
 
   const data = await response.json();
@@ -548,11 +548,11 @@ export async function getOrderById(id: string, token: { value: string }) {
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch order');
+    throw new Error("Failed to fetch order");
   }
 
   const data = await response.json();
@@ -571,9 +571,9 @@ export const getShippingFee = async (
   const response = await fetch(
     `http://localhost:8000/api/v1/orders/shippingFee?toWardCode=${address.ward.code}&toDistrictCode=${address.district.code}`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ lineItems }),
     }
@@ -582,7 +582,7 @@ export const getShippingFee = async (
   console.log(response);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch shipping fee');
+    throw new Error("Failed to fetch shipping fee");
   }
 
   const data = await response.json();
@@ -594,16 +594,16 @@ export const cancelOrder = async (id: string, token: { value: string }) => {
   const response = await fetch(
     `http://localhost:8000/api/v1/orders/${id}/cancel`,
     {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
-      credentials: 'include',
+      credentials: "include",
     }
   );
 
   if (!response.ok) {
-    throw new Error('Failed to cancel order');
+    throw new Error("Failed to cancel order");
   }
 
   const data = await response.json();
@@ -621,12 +621,12 @@ export const getOrderByOrderCode = async (
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
-      credentials: 'include',
+      credentials: "include",
     }
   );
 
   if (!response.ok) {
-    throw new Error('Failed to fetch order');
+    throw new Error("Failed to fetch order");
   }
 
   const data = await response.json();
@@ -647,23 +647,37 @@ export const createReviewsByOrder = async (
     formData.append(`reviews[${index}][rating]`, review.rating.toString());
     formData.append(`reviews[${index}][review]`, review.review);
 
-    // Gửi từng ảnh vào đúng index của sản phẩm
+    // Gửi từng ảnh vào đúng index của sản phẩm với tên file duy nhất để tránh trùng lặp
     review.images.forEach((file, imgIndex) => {
-      formData.append(`reviews[${index}][images][${imgIndex}]`, file);
+      // Tạo tên file duy nhất cho mỗi ảnh bao gồm product ID và variant ID
+      const uniqueFileName = `review_${index}_product_${review.productId}_variant_${review.variantId}_img_${imgIndex}`;
+      formData.append(
+        `reviews[${index}][images][${imgIndex}]`,
+        file,
+        uniqueFileName
+      );
     });
 
-    if (review.video) formData.append(`reviews[${index}][video]`, review.video);
+    if (review.video) {
+      // Tạo tên file duy nhất cho video
+      const uniqueVideoName = `review_${index}_product_${review.productId}_variant_${review.variantId}_video`;
+      formData.append(
+        `reviews[${index}][video]`,
+        review.video,
+        uniqueVideoName
+      );
+    }
   });
 
   const response = await fetch(
     `http://localhost:8000/api/v1/reviews/order/${orderId}`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
       body: formData,
-      credentials: 'include',
+      credentials: "include",
     }
   );
 
@@ -683,28 +697,50 @@ export const updateReviewsByOrder = async (
 ) => {
   const formData = new FormData();
 
-  reviews.forEach((review) => {
-    formData.append(`reviews[${review._id}][rating]`, review.rating.toString());
-    formData.append(`reviews[${review._id}][review]`, review.review);
+  // Add each review's data to formData with proper indexing
+  reviews.forEach((review, reviewIndex) => {
+    // Add basic review data
+    formData.append(`reviews[${reviewIndex}][_id]`, review._id);
+    formData.append(
+      `reviews[${reviewIndex}][rating]`,
+      review.rating.toString()
+    );
+    formData.append(`reviews[${reviewIndex}][review]`, review.review);
 
-    // Gửi từng ảnh vào đúng index của sản phẩm
+    // Handle images that are strings (existing images)
     review.images.forEach((file, imgIndex) => {
-      formData.append(`reviews[${review._id}][images][${imgIndex}]`, file);
+      if (typeof file === "string") {
+        formData.append(`reviews[${reviewIndex}][images][${imgIndex}]`, file);
+      }
     });
 
-    if (review.video)
-      formData.append(`reviews[${review._id}][video]`, review.video);
+    // Handle images that are Files (new uploads)
+    review.images.forEach((file) => {
+      if (file instanceof File) {
+        formData.append(`reviews[${reviewIndex}][images]`, file);
+      }
+    });
+
+    // Handle video if it's a string (existing video)
+    if (typeof review.video === "string" && review.video) {
+      formData.append(`reviews[${reviewIndex}][video]`, review.video);
+    }
+
+    // Handle video if it's a File (new upload)
+    if (review.video instanceof File) {
+      formData.append(`reviews[${reviewIndex}][video]`, review.video);
+    }
   });
 
   const response = await fetch(
     `http://localhost:8000/api/v1/reviews/order/${orderId}`,
     {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
       body: formData,
-      credentials: 'include',
+      credentials: "include",
     }
   );
 
@@ -719,15 +755,15 @@ export const updateReviewsByOrder = async (
 
 export const getWishlist = async (token: { value: string }) => {
   const response = await fetch(`http://localhost:8000/api/v1/wishlist`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch wishlist');
+    throw new Error("Failed to fetch wishlist");
   }
 
   const data = await response.json();
@@ -742,16 +778,16 @@ export const addProductToWishlist = async (
   const response = await fetch(
     `http://localhost:8000/api/v1/wishlist/${productId}`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
-      credentials: 'include',
+      credentials: "include",
     }
   );
 
   if (!response.ok) {
-    throw new Error('Failed to add product to wishlist');
+    throw new Error("Failed to add product to wishlist");
   }
 
   const data = await response.json();
@@ -765,7 +801,7 @@ export const getWishlistByShareCode = async (shareCode: string) => {
   );
 
   if (!response.ok) {
-    throw new Error('Failed to fetch wishlist');
+    throw new Error("Failed to fetch wishlist");
   }
 
   const data = await response.json();
@@ -780,16 +816,16 @@ export const removeProductFromWishlist = async (
   const response = await fetch(
     `http://localhost:8000/api/v1/wishlist/${productId}`,
     {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
-      credentials: 'include',
+      credentials: "include",
     }
   );
 
   if (!response.ok) {
-    throw new Error('Failed to remove product from wishlist');
+    throw new Error("Failed to remove product from wishlist");
   }
 
   const data = await response.json();
@@ -802,13 +838,13 @@ export const addMultipleItemsToCart = async (
   token: { value: string }
 ) => {
   const response = await fetch(`${API_URL}/cart/items`, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token.value}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ items }),
-    credentials: 'include',
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -822,7 +858,7 @@ export async function getFilterData(filters: Filter) {
   const response = await fetch(`${API_URL}/products/filters?${query}`);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch filter data');
+    throw new Error("Failed to fetch filter data");
   }
 
   const data = await response.json();
@@ -834,7 +870,7 @@ export async function getBestsellers() {
   const response = await fetch(`${API_URL}/products/top-5-bestsellers`);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch bestsellers');
+    throw new Error("Failed to fetch bestsellers");
   }
 
   const data = await response.json();
@@ -844,11 +880,11 @@ export async function getBestsellers() {
 
 export async function clearCartItems(token: { value: string }) {
   const response = await fetch(`${API_URL}/cart/items`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
   const data = await response.json();
   return data;
@@ -856,14 +892,14 @@ export async function clearCartItems(token: { value: string }) {
 
 export async function getDashboardStats(token: { value: string }) {
   const response = await fetch(`${API_URL}/admin/dashboard`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch dashboard stats');
+    throw new Error("Failed to fetch dashboard stats");
   }
 
   const data = await response.json();
@@ -873,14 +909,14 @@ export async function getDashboardStats(token: { value: string }) {
 
 export async function getRecentOrders(token: { value: string }) {
   const response = await fetch(`${API_URL}/admin/dashboard/recent-orders`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch recent orders');
+    throw new Error("Failed to fetch recent orders");
   }
 
   const data = await response.json();
@@ -895,7 +931,7 @@ export async function getCategories(token: { value: string }) {
     },
   });
   if (!response.ok) {
-    throw new Error('Failed to fetch categories');
+    throw new Error("Failed to fetch categories");
   }
   const { data } = await response.json();
   return data;
@@ -912,7 +948,7 @@ export async function getCategoryBySlug(
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch category');
+    throw new Error("Failed to fetch category");
   }
 
   const { data } = await response.json();
@@ -928,7 +964,7 @@ export const getStockData = async (token: { value: string }) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch stock date');
+    throw new Error("Failed to fetch stock date");
   }
 
   const data = await response.json();
@@ -944,7 +980,7 @@ export const getProductsSummary = async (token: { value: string }) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch products summary');
+    throw new Error("Failed to fetch products summary");
   }
 
   const data = await response.json();
@@ -958,7 +994,7 @@ export const getRecommendedProducts = async (productId: string) => {
   );
 
   if (!response.ok) {
-    throw new Error('Failed to fetch recommended products');
+    throw new Error("Failed to fetch recommended products");
   }
 
   const { data } = await response.json();
@@ -972,7 +1008,7 @@ export const getSimilarProducts = async (productId: string) => {
   );
 
   if (!response.ok) {
-    throw new Error('Failed to fetch similar products');
+    throw new Error("Failed to fetch similar products");
   }
 
   const { data } = await response.json();
@@ -984,7 +1020,7 @@ export const getClientCategories = async () => {
   const response = await fetch(`${API_URL}/categories/client`);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch categories');
+    throw new Error("Failed to fetch categories");
   }
 
   const { data } = await response.json();
@@ -1003,7 +1039,7 @@ export const getCategorySummary = async (
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch categories summary');
+    throw new Error("Failed to fetch categories summary");
   }
 
   const { data } = await response.json();
@@ -1016,16 +1052,16 @@ export const addCategory = async (
   token: { value: string }
 ) => {
   const response = await fetch(`${API_URL}/categories`, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
     body: formData,
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to add category');
+    throw new Error("Failed to add category");
   }
 
   const data = await response.json();
@@ -1046,16 +1082,16 @@ export const updateCategory = async (
   }
 
   const response = await fetch(`${API_URL}/categories/${id}`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
     body: formData,
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update category');
+    throw new Error("Failed to update category");
   }
 
   const data = await response.json();
@@ -1075,16 +1111,16 @@ export const createCategory = async (
   }
 
   const response = await fetch(`${API_URL}/categories`, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
     body: formData,
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to create category');
+    throw new Error("Failed to create category");
   }
 
   const data = await response.json();
@@ -1096,20 +1132,20 @@ export const addProduct = async (
   token: { value: string }
 ) => {
   const formData = new FormData();
-  formData.append('name', product.name);
-  formData.append('slug', product.slug);
-  formData.append('brand', product.brand);
-  formData.append('category', product.category);
-  formData.append('description', product.description);
+  formData.append("name", product.name);
+  formData.append("slug", product.slug);
+  formData.append("brand", product.brand);
+  formData.append("category", product.category);
+  formData.append("description", product.description);
 
   // Thêm ảnh cover nếu là file
   if (product.imageCover instanceof File) {
-    formData.append('imageCover', product.imageCover);
+    formData.append("imageCover", product.imageCover);
   }
 
   // Thêm variants (dữ liệu text)
   formData.append(
-    'variants',
+    "variants",
     JSON.stringify(
       product.variants.map((v) => ({
         ...v,
@@ -1127,19 +1163,19 @@ export const addProduct = async (
     });
   });
 
-  console.log('hello');
+  console.log("hello");
 
   const response = await fetch(`${API_URL}/products`, {
-    method: 'POST',
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
     body: formData,
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to add product');
+    throw new Error("Failed to add product");
   }
 
   const data = await response.json();
@@ -1153,17 +1189,17 @@ export const updateProduct = async (
 ) => {
   const formData = new FormData();
 
-  formData.append('name', product.name);
-  formData.append('slug', product.slug);
-  formData.append('brand', product.brand);
-  formData.append('category', product.category);
-  formData.append('description', product.description);
+  formData.append("name", product.name);
+  formData.append("slug", product.slug);
+  formData.append("brand", product.brand);
+  formData.append("category", product.category);
+  formData.append("description", product.description);
 
   // imageCover có thể là string (URL cũ) hoặc File mới
   if (product.imageCover instanceof File) {
-    formData.append('imageCover', product.imageCover);
+    formData.append("imageCover", product.imageCover);
   } else {
-    formData.append('imageCover', product.imageCover as string); // URL string
+    formData.append("imageCover", product.imageCover as string); // URL string
   }
 
   // Biến variants thành JSON (trừ images)
@@ -1172,7 +1208,7 @@ export const updateProduct = async (
     delete (rest as { images?: unknown }).images;
     return rest;
   });
-  formData.append('variants', JSON.stringify(variantsWithoutImages));
+  formData.append("variants", JSON.stringify(variantsWithoutImages));
 
   // Append ảnh variants (mỗi ảnh đặt tên cho rõ variant index + image index)
   product.variants.forEach((variant, variantIndex) => {
@@ -1189,16 +1225,16 @@ export const updateProduct = async (
   });
 
   const response = await fetch(`${API_URL}/products/${id}`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
     body: formData,
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update product');
+    throw new Error("Failed to update product");
   }
 
   const data = await response.json();
@@ -1210,15 +1246,15 @@ export const createShippingOrder = async (
   token: { value: string }
 ) => {
   const response = await fetch(`${API_URL}/orders/${orderId}/shipping-order`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to create shipping order');
+    throw new Error("Failed to create shipping order");
   }
 
   const data = await response.json();
@@ -1233,16 +1269,16 @@ export const updateOrderStatus = async (
   token: { value: string }
 ) => {
   const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token.value}`,
     },
     body: JSON.stringify({ status, adminNotes }),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update order status');
+    throw new Error("Failed to update order status");
   }
 
   const data = await response.json();
@@ -1255,15 +1291,15 @@ export const refundOrder = async (
   token: { value: string }
 ) => {
   const response = await fetch(`${API_URL}/orders/${orderId}/refund`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token.value}`,
     },
   });
 
   if (!response.ok) {
-    throw new Error('Refund not successful');
+    throw new Error("Refund not successful");
   }
 
   const data = await response.json();
@@ -1273,21 +1309,21 @@ export const refundOrder = async (
 
 export const downloadFile = async (url: string, token: { value: string }) => {
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token.value}`,
     },
   });
 
   if (!res.ok) {
-    throw new Error('Failed to download file');
+    throw new Error("Failed to download file");
   }
 
   const blob = await res.blob();
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = window.URL.createObjectURL(blob);
-  a.download = url.includes('pdf') ? 'order.pdf' : 'order.xlsx';
+  a.download = url.includes("pdf") ? "order.pdf" : "order.xlsx";
   a.click();
 };
 
@@ -1317,15 +1353,15 @@ export const getAdminOrders = async (
   const response = await fetch(
     `${API_URL}/orders/all-orders?${filterParams.toString()}`,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
-      credentials: 'include',
+      credentials: "include",
     }
   );
   if (!response.ok) {
-    throw new Error('Failed to fetch orders');
+    throw new Error("Failed to fetch orders");
   }
 
   const { data } = await response.json();
@@ -1334,14 +1370,14 @@ export const getAdminOrders = async (
 
 export const getOrderSummaryStats = async (authToken: string) => {
   const response = await fetch(`${API_URL}/admin/orders/summary`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch order summary stats');
+    throw new Error("Failed to fetch order summary stats");
   }
   const { data } = await response.json();
   return data;
@@ -1349,31 +1385,31 @@ export const getOrderSummaryStats = async (authToken: string) => {
 
 export const deleteProduct = async (id: string, token: { value: string }) => {
   const response = await fetch(`${API_URL}/products/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete product');
+    throw new Error("Failed to delete product");
   }
 
-  return { status: 'success', message: 'Product deleted successfully' };
+  return { status: "success", message: "Product deleted successfully" };
 };
 
 export const sendOrderViaEmail = async (orderId: string, authToken: string) => {
   const response = await fetch(`${API_URL}/orders/${orderId}/send-email`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
     },
   });
 
   if (!response.ok) {
-    throw new Error('Failed to send order email');
+    throw new Error("Failed to send order email");
   }
 
   const data = await response.json();
@@ -1382,31 +1418,31 @@ export const sendOrderViaEmail = async (orderId: string, authToken: string) => {
 
 export const deleteCategory = async (id: string, authToken: string) => {
   const response = await fetch(`${API_URL}/categories/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete category');
+    throw new Error("Failed to delete category");
   }
 
-  return { status: 'success', message: 'Category deleted successfully' };
+  return { status: "success", message: "Category deleted successfully" };
 };
 
 export const getDiscounts = async (authToken: string) => {
   const response = await fetch(`${API_URL}/discounts`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch discounts');
+    throw new Error("Failed to fetch discounts");
   }
 
   const { data } = await response.json();
@@ -1416,16 +1452,16 @@ export const getDiscounts = async (authToken: string) => {
 
 export const addDiscount = async (input: DiscountInput, authToken: string) => {
   const response = await fetch(`${API_URL}/discounts`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
     },
     body: JSON.stringify(input),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to add discount');
+    throw new Error("Failed to add discount");
   }
 
   const data = await response.json();
@@ -1438,16 +1474,16 @@ export const updateDiscount = async (
   authToken: string
 ) => {
   const response = await fetch(`${API_URL}/discounts/${id}`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
     },
     body: JSON.stringify(input),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update discount');
+    throw new Error("Failed to update discount");
   }
 
   const data = await response.json();
@@ -1456,16 +1492,16 @@ export const updateDiscount = async (
 
 export const deleteDiscount = async (id: string, authToken: string) => {
   const response = await fetch(`${API_URL}/discounts/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
-    credentials: 'include',
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete discount');
+    throw new Error("Failed to delete discount");
   }
 
-  return { status: 'success', message: 'Discount deleted successfully' };
+  return { status: "success", message: "Discount deleted successfully" };
 };

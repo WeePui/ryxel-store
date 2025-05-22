@@ -1,11 +1,12 @@
-import { Order } from '@/app/_types/order';
-import { useCallback, useState, useTransition } from 'react';
-import OrderReviewItem from './OrderReviewItem';
-import Spinner from '../UI/Spinner';
-import Button from '../UI/Button';
-import { ReviewUpdateInput } from '@/app/_types/validateInput';
-import { updateReviewsByOrderAction } from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
+import { Order } from "@/app/_types/order";
+import { useCallback, useState, useTransition } from "react";
+import OrderReviewItem from "./OrderReviewItem";
+import Spinner from "../UI/Spinner";
+import Button from "../UI/Button";
+import { ReviewUpdateInput } from "@/app/_types/validateInput";
+import { updateReviewsByOrderAction } from "@/app/_libs/actions";
+import { toast } from "react-toastify";
+import { Variant } from "@/app/_types/variant";
 
 interface FormUpdateReviewProps {
   order: Order;
@@ -18,10 +19,14 @@ export default function FormUpdateReview({
 }: FormUpdateReviewProps) {
   const [isPending, startTransition] = useTransition();
   const [isUpdating, setIsUpdating] = useState(false);
+
+  // Filter lineItems to only include those that have a review
+  const reviewedLineItems = order.lineItems.filter((item) => !!item.review);
+
   const [reviews, setReviews] = useState<Array<ReviewUpdateInput>>(
-    order.lineItems.map((item) => {
+    reviewedLineItems.map((item) => {
       return {
-        _id: item.review!._id,
+        _id: item.review!._id, // item.review is now guaranteed to exist
         rating: item.review!.rating,
         review: item.review!.review,
         images: item.review!.images || [],
@@ -31,9 +36,9 @@ export default function FormUpdateReview({
   );
 
   const handleReviewUpdate = useCallback(
-    (_id: string, review: ReviewUpdateInput) => {
+    (_id: string, reviewData: ReviewUpdateInput) => {
       setReviews((prev) =>
-        prev.map((r) => (r._id === _id ? { ...review, _id } : r))
+        prev.map((r) => (r._id === _id ? { ...reviewData, _id } : r))
       );
     },
     []
@@ -44,7 +49,7 @@ export default function FormUpdateReview({
     startTransition(async () => {
       await updateReviewsByOrderAction(order._id, reviews);
       closeModal();
-      toast.success('Cập nhật đánh giá thành công!');
+      toast.success("Cập nhật đánh giá thành công!");
     });
 
     console.log(reviews);
@@ -58,14 +63,17 @@ export default function FormUpdateReview({
     <form className="max-w-3xl w-[600px] md:max-w-full" onSubmit={handleSubmit}>
       <h1 className="font-title text-2xl mb-6">Đánh giá sản phẩm</h1>
       <div className="flex flex-col gap-6">
-        {order.lineItems.map((item, index) => (
+        {reviewedLineItems.map((item) => (
           <OrderReviewItem
-            key={index}
+            key={(item.variant as Variant)?._id || (item.variant as string)}
             lineItem={item}
-            reviewItem={item.review!}
+            reviewItem={item.review!} // item.review is now guaranteed to exist
             updatable={updatable}
-            onReviewUpdate={(review) => {
-              handleReviewUpdate(item.review!._id, review as ReviewUpdateInput);
+            onReviewUpdate={(reviewData) => {
+              handleReviewUpdate(
+                item.review!._id,
+                reviewData as unknown as ReviewUpdateInput
+              );
             }}
             setIsUpdating={setIsUpdating}
           />
@@ -76,7 +84,7 @@ export default function FormUpdateReview({
           <Button onClick={closeModal}>Xác nhận</Button>
         ) : (
           <Button role="submit" disabled={isPending}>
-            {isPending ? <Spinner /> : 'Gửi đánh giá'}
+            {isPending ? <Spinner /> : "Gửi đánh giá"}
           </Button>
         )}
       </div>
