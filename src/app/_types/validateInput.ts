@@ -76,3 +76,16 @@ export interface ProductInput {
   cost: string;
   variants: Variant[];
 }
+
+export interface DiscountInput {
+  code: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  maxUse: number;
+  minOrderValue: number;
+  discountPercentage: number;
+  discountMaxValue: number;
+  maxUsePerUser: number;
+  isActive: boolean;
+}

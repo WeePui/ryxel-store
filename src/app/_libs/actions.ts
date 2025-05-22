@@ -3,6 +3,7 @@
 import {
   validateAddressForm,
   validateCategoryForm,
+  validateDiscountForm,
   validateLoginForm,
   validateSignupForm,
   validateUpdatePasswordForm,
@@ -46,6 +47,11 @@ import {
   updateOrderStatus,
   refundOrder,
   deleteProduct,
+  sendOrderViaEmail,
+  deleteCategory,
+  addDiscount,
+  updateDiscount,
+  deleteDiscount,
 } from '@libs/apiServices';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -59,6 +65,7 @@ import {
   ReviewUpdateInput,
   CategoryInput,
   ProductInput,
+  DiscountInput,
 } from '../_types/validateInput';
 import { transformAddressFormData } from '../_helpers/transformAddressFormData';
 import { FormError } from '../_types/formError';
@@ -1332,6 +1339,243 @@ export const deleteProductAction = async (productId: string) => {
   const response = await deleteProduct(productId, token);
   if (response.status === 'success') {
     revalidatePath('/admin/products');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const sendOrderViaEmailAction = async (orderId: string) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+
+  const token = checkIsLogin.token!;
+  const response = await sendOrderViaEmail(orderId, token.value);
+  if (response.status === 'success') {
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export const deleteCategoryAction = async (categoryId: string) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+
+  const token = checkIsLogin.token!;
+  const response = await deleteCategory(categoryId, token.value);
+  if (response.status === 'success') {
+    revalidatePath('/admin/categories');
+    return {
+      success: true,
+    };
+  } else {
+    return {
+      errors: {
+        message: response.message,
+      },
+    };
+  }
+};
+
+export async function createDiscountAction(
+  prevState: { success?: boolean; errors?: FormError; input: DiscountInput },
+  formData: FormData
+): Promise<{ success?: boolean; errors?: FormError; input: DiscountInput }> {
+  try {
+    const code = formData.get('code')?.toString().toUpperCase() || '';
+    const name = formData.get('name')?.toString() || '';
+    const startDate = formData.get('startDate')?.toString() || '';
+    const endDate = formData.get('endDate')?.toString() || '';
+    const maxUse = parseInt(formData.get('maxUse')?.toString() || '0');
+    const minOrderValue = parseInt(
+      formData.get('minOrderValue')?.toString() || '0'
+    );
+    const discountPercentage = parseInt(
+      formData.get('discountPercentage')?.toString() || '0'
+    );
+    const discountMaxValue = parseInt(
+      formData.get('discountMaxValue')?.toString() || '0'
+    );
+    const maxUsePerUser = parseInt(
+      formData.get('maxUsePerUser')?.toString() || '0'
+    );
+    const isActive = formData.get('isActive') === 'on';
+
+    const discountData: DiscountInput = {
+      code,
+      name,
+      startDate,
+      endDate,
+      maxUse,
+      minOrderValue,
+      discountPercentage,
+      discountMaxValue,
+      maxUsePerUser,
+      isActive,
+    };
+
+    // Sử dụng validator
+    const validation = validateDiscountForm(discountData);
+
+    if (!validation.success) {
+      return {
+        ...prevState,
+        errors: validation.errors,
+        input: discountData,
+      };
+    }
+
+    // Gọi API để tạo discount
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return { ...checkIsLogin, input: discountData };
+
+    const token = checkIsLogin.token!;
+
+    const response = await addDiscount(discountData, token.value);
+
+    if (response.status !== 'success') {
+      return {
+        ...prevState,
+        errors: {
+          message: response.message,
+        },
+        input: discountData,
+      };
+    }
+
+    revalidatePath('/admin/vouchers');
+
+    return {
+      ...prevState,
+      success: true,
+      input: discountData,
+    };
+  } catch (error) {
+    console.error('Error creating discount:', error);
+
+    return {
+      ...prevState,
+      errors: { message: 'Có lỗi xảy ra khi tạo mã giảm giá' },
+      input: prevState.input,
+    };
+  }
+}
+
+export const updateDiscountAction = async (
+  prevState: { success?: boolean; errors?: FormError; input: DiscountInput },
+  formData: FormData
+): Promise<{
+  success?: boolean;
+  errors?: FormError;
+  input: DiscountInput;
+}> => {
+  try {
+    const id = formData.get('id')?.toString() || '';
+    const code = (
+      formData.get('code')?.toString() ||
+      prevState.input.code ||
+      ''
+    ).toUpperCase();
+    const name = formData.get('name')?.toString() || '';
+    const startDate = formData.get('startDate')?.toString() || '';
+    const endDate = formData.get('endDate')?.toString() || '';
+    const maxUse = parseInt(formData.get('maxUse')?.toString() || '0');
+    const minOrderValue = parseInt(
+      formData.get('minOrderValue')?.toString() || '0'
+    );
+    const discountPercentage = parseInt(
+      formData.get('discountPercentage')?.toString() || '0'
+    );
+    const discountMaxValue = parseInt(
+      formData.get('discountMaxValue')?.toString() || '0'
+    );
+    const maxUsePerUser = parseInt(
+      formData.get('maxUsePerUser')?.toString() || '0'
+    );
+    const isActive = formData.get('isActive') === 'on';
+
+    const discountData: DiscountInput = {
+      code,
+      name,
+      startDate,
+      endDate,
+      maxUse,
+      minOrderValue,
+      discountPercentage,
+      discountMaxValue,
+      maxUsePerUser,
+      isActive,
+    };
+
+    // Sử dụng validator - khi update không cần validate code
+    // (hoặc có thể kiểm tra nhẹ hơn vì code không thay đổi được)
+    const validation = validateDiscountForm(discountData);
+
+    if (!validation.success) {
+      return {
+        ...prevState,
+        errors: validation.errors,
+        input: discountData,
+      };
+    }
+
+    // Gọi API để cập nhật discount
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return { ...checkIsLogin, input: discountData };
+
+    const token = checkIsLogin.token!;
+
+    const response = await updateDiscount(id, discountData, token.value);
+
+    if (response.status !== 'success') {
+      return {
+        ...prevState,
+        errors: {
+          message: response.message,
+        },
+        input: discountData,
+      };
+    }
+
+    revalidatePath('/admin/vouchers');
+
+    return {
+      ...prevState,
+      success: true,
+      input: discountData,
+    };
+  } catch (error) {
+    console.error('Error updating discount:', error);
+
+    return {
+      ...prevState,
+      errors: { message: 'Có lỗi xảy ra khi cập nhật mã giảm giá' },
+      input: prevState.input,
+    };
+  }
+};
+
+export const deleteDiscountAction = async (discountId: string) => {
+  const checkIsLogin = await checkLogin();
+  if (!checkIsLogin.success) return checkIsLogin;
+
+  const token = checkIsLogin.token!;
+  const response = await deleteDiscount(discountId, token.value);
+  if (response.status === 'success') {
+    revalidatePath('/admin/vouchers');
     return {
       success: true,
     };

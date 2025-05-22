@@ -43,7 +43,7 @@ export default async function page({ params }: PageProps) {
       <div className="mb-12 text-center">
         <h1 className="text-2xl font-bold">RYXEL COMPANY</h1>
         <div className="text-xs text-grey-400">
-          <p>1 Võ Văn Ngân, Linh Trung, Thủ Đức, TP. Hồ Chí Minh</p>
+          <p>1 Võ Văn Ngân, Linh Chiểu, Thủ Đức, TP. Hồ Chí Minh</p>
           <p>(+84) 912 823 823 | bhtcag@gmail.com</p>
         </div>
       </div>

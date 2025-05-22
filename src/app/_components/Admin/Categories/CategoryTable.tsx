@@ -14,10 +14,13 @@ import Image from 'next/image';
 import { Category } from '@/app/_types/category';
 import Link from 'next/link';
 import Button from '../../UI/Button';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Modal from '../../UI/Modal';
 import AddCategoryForm from './AddCategoryForm';
 import { FaTrash } from 'react-icons/fa';
+import { deleteCategoryAction } from '@/app/_libs/actions';
+import { toast } from 'react-toastify';
+import TextConfirmDialogue from '../../UI/TextConfirmDialogue';
 
 interface CategoryOverviewProps {
   data: Array<
@@ -27,6 +30,18 @@ interface CategoryOverviewProps {
 
 export default function CategoryTable({ data }: CategoryOverviewProps) {
   const [openModal, setOpenModal] = useState(false);
+  const [pending, startTransition] = useTransition();
+
+  const handleDeleteCategory = async (categoryId: string) => {
+    startTransition(async () => {
+      const result = await deleteCategoryAction(categoryId);
+      if (result.success) {
+        toast.success('Xóa danh mục thành công!');
+      } else {
+        toast.error('Có lỗi xảy ra khi xóa danh mục.');
+      }
+    });
+  };
 
   return (
     <Card
@@ -56,53 +71,94 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
         </TableHeader>
         <TableBody>
           {data.map((category) => (
-            <TableBodyRow key={category._id}>
-              <TableBodyCell className="flex items-center gap-4 col-span-2">
-                <div className="w-16 relative aspect-square">
-                  <Image
-                    src={category.image || '/no-image-placeholder.jpg'}
-                    alt={category.name}
-                    fill
-                    className="object-cover rounded"
-                  />
-                </div>
-                <div className="text-lg font-semibold text-primary-default">
-                  {category.name}
-                </div>
-              </TableBodyCell>
-              <TableBodyCell
-                className="items-center flex md:flex-col md:items-start"
-                label="Slug"
-              >
-                {category.slug}
-              </TableBodyCell>
-              <TableBodyCell
-                className="items-center flex md:flex-col md:items-start"
-                label="Ngày tạo"
-              >
-                {new Date(category.createdAt).toLocaleDateString('vi-VN')}
-              </TableBodyCell>
-              <TableBodyCell
-                className="items-center flex justify-center md:items-start md:justify-start sm:flex-col sm:items-start gap-2"
-                label="Số lượng: "
-              >
-                {category.totalProducts ?? 0}
-              </TableBodyCell>
-              <TableBodyCell className="text-center flex flex-col gap-2 items-center justify-center">
-                <Link
-                  href={`/admin/categories/${category.slug}`}
-                  className="text-primary-400 hover:underline"
-                >
-                  Xem chi tiết
-                </Link>
-                <Button type="danger" size="small">
-                  <FaTrash />
-                </Button>
-              </TableBodyCell>
-            </TableBodyRow>
+            <TableRow
+              key={category._id}
+              category={category}
+              pending={pending}
+              onDelete={handleDeleteCategory}
+            />
           ))}
         </TableBody>
       </Table>
     </Card>
+  );
+}
+
+interface TableRowProps {
+  category: Category & {
+    revenue: number;
+    changeRate: number;
+    totalProducts?: number;
+  };
+  pending: boolean;
+  onDelete: (categoryId: string) => void;
+}
+
+function TableRow({ category, pending, onDelete }: TableRowProps) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  return (
+    <>
+      {confirmDelete && (
+        <Modal onClose={() => setConfirmDelete(false)}>
+          <TextConfirmDialogue
+            confirmText={category.slug}
+            onConfirm={() => onDelete(category._id)}
+            message="Nhập lại slug để xác nhận xóa danh mục này"
+            errorText="Không chính xác"
+          />
+        </Modal>
+      )}
+      <TableBodyRow key={category._id}>
+        <TableBodyCell className="flex items-center gap-4 col-span-2">
+          <div className="w-16 relative aspect-square">
+            <Image
+              src={category.image || '/no-image-placeholder.jpg'}
+              alt={category.name}
+              fill
+              className="object-cover rounded"
+            />
+          </div>
+          <div className="text-lg font-semibold text-primary-default">
+            {category.name}
+          </div>
+        </TableBodyCell>
+        <TableBodyCell
+          className="items-center flex md:flex-col md:items-start"
+          label="Slug"
+        >
+          {category.slug}
+        </TableBodyCell>
+        <TableBodyCell
+          className="items-center flex md:flex-col md:items-start"
+          label="Ngày tạo"
+        >
+          {new Date(category.createdAt).toLocaleDateString('vi-VN')}
+        </TableBodyCell>
+        <TableBodyCell
+          className="items-center flex justify-center md:items-start md:justify-start sm:flex-col sm:items-start gap-2"
+          label="Số lượng: "
+        >
+          {category.totalProducts ?? 0}
+        </TableBodyCell>
+        <TableBodyCell className="text-center flex flex-col gap-2 items-center justify-center">
+          <Link
+            href={`/admin/categories/${category.slug}`}
+            className="text-primary-400 hover:underline"
+          >
+            Xem chi tiết
+          </Link>
+          <Button
+            type="danger"
+            size="small"
+            loading={pending}
+            disabled={pending}
+            onClick={() => setConfirmDelete(true)}
+          >
+            <FaTrash />
+          </Button>
+        </TableBodyCell>
+      </TableBodyRow>
+    </>
   );
 }

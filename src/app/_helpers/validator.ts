@@ -4,6 +4,7 @@ import { checkEmailAvailability } from '@libs/apiServices';
 import {
   AddressFormInput,
   CategoryInput,
+  DiscountInput,
   LoginInput,
   SignupInput,
   UpdatePasswordInput,
@@ -321,6 +322,158 @@ export function validateCategoryForm(data: CategoryInput) {
     validation.success = false;
     validation.errors.description =
       descriptionValidation.error.format()._errors[0];
+  }
+
+  return validation;
+}
+
+export function validateDiscountForm(data: DiscountInput) {
+  const validation = {
+    success: true,
+    errors: {
+      code: '',
+      name: '',
+      startDate: '',
+      endDate: '',
+      maxUse: '',
+      minOrderValue: '',
+      discountPercentage: '',
+      discountMaxValue: '',
+      maxUsePerUser: '',
+    },
+  };
+
+  // Định nghĩa các schema
+  const codeSchema = z
+    .string()
+    .min(1, { message: 'Vui lòng nhập mã giảm giá' });
+
+  const nameSchema = z
+    .string()
+    .min(1, { message: 'Vui lòng nhập tên mã giảm giá' });
+
+  const startDateSchema = z
+    .string()
+    .min(1, { message: 'Vui lòng chọn ngày bắt đầu' });
+
+  const endDateSchema = z
+    .string()
+    .min(1, { message: 'Vui lòng chọn ngày kết thúc' })
+    .refine((date) => new Date(date) > new Date(), {
+      message: 'Ngày kết thúc phải trong tương lai',
+    });
+
+  const maxUseSchema = z
+    .number()
+    .min(1, { message: 'Số lượt sử dụng tối đa phải lớn hơn 0' });
+
+  const minOrderValueSchema = z
+    .number()
+    .min(0, { message: 'Giá trị đơn hàng tối thiểu không được âm' });
+
+  const discountPercentageSchema = z
+    .number()
+    .min(1, { message: 'Phần trăm giảm giá phải từ 1% đến 100%' })
+    .max(100, { message: 'Phần trăm giảm giá phải từ 1% đến 100%' });
+
+  const discountMaxValueSchema = z
+    .number()
+    .min(1, { message: 'Giá trị giảm giá tối đa phải lớn hơn 0' });
+
+  const maxUsePerUserSchema = z.number().min(1, {
+    message: 'Số lượt sử dụng tối đa cho mỗi người dùng phải lớn hơn 0',
+  });
+
+  // Kiểm tra startDate và endDate
+  const datesSchema = z
+    .object({
+      startDate: z.string(),
+      endDate: z.string(),
+    })
+    .refine((obj) => new Date(obj.startDate) < new Date(obj.endDate), {
+      message: 'Ngày kết thúc phải sau ngày bắt đầu',
+      path: ['endDate'],
+    });
+
+  // Validate từng trường
+  const codeValidation = codeSchema.safeParse(data.code);
+  if (!codeValidation.success) {
+    validation.success = false;
+    validation.errors.code = codeValidation.error.format()._errors[0];
+  }
+
+  const nameValidation = nameSchema.safeParse(data.name);
+  if (!nameValidation.success) {
+    validation.success = false;
+    validation.errors.name = nameValidation.error.format()._errors[0];
+  }
+
+  const startDateValidation = startDateSchema.safeParse(data.startDate);
+  if (!startDateValidation.success) {
+    validation.success = false;
+    validation.errors.startDate = startDateValidation.error.format()._errors[0];
+  }
+
+  const endDateValidation = endDateSchema.safeParse(data.endDate);
+  if (!endDateValidation.success) {
+    validation.success = false;
+    validation.errors.endDate = endDateValidation.error.format()._errors[0];
+  }
+
+  // Validate cặp ngày startDate và endDate
+  if (data.startDate && data.endDate) {
+    const datesValidation = datesSchema.safeParse({
+      startDate: data.startDate,
+      endDate: data.endDate,
+    });
+    if (!datesValidation.success) {
+      validation.success = false;
+      validation.errors.endDate =
+        datesValidation.error.format().endDate?._errors[0] ||
+        'Ngày không hợp lệ';
+    }
+  }
+
+  const maxUseValidation = maxUseSchema.safeParse(data.maxUse);
+  if (!maxUseValidation.success) {
+    validation.success = false;
+    validation.errors.maxUse = maxUseValidation.error.format()._errors[0];
+  }
+
+  const minOrderValueValidation = minOrderValueSchema.safeParse(
+    data.minOrderValue
+  );
+  if (!minOrderValueValidation.success) {
+    validation.success = false;
+    validation.errors.minOrderValue =
+      minOrderValueValidation.error.format()._errors[0];
+  }
+
+  const discountPercentageValidation = discountPercentageSchema.safeParse(
+    data.discountPercentage
+  );
+  if (!discountPercentageValidation.success) {
+    validation.success = false;
+    validation.errors.discountPercentage =
+      discountPercentageValidation.error.format()._errors[0];
+  }
+
+  const discountMaxValueValidation = discountMaxValueSchema.safeParse(
+    data.discountMaxValue
+  );
+  if (!discountMaxValueValidation.success) {
+    validation.success = false;
+    validation.errors.discountMaxValue =
+      discountMaxValueValidation.error.format()._errors[0];
+  }
+
+  const maxUsePerUserValidation = maxUsePerUserSchema.safeParse(
+    data.maxUsePerUser
+  );
+  if (!maxUsePerUserValidation.success) {
+    validation.success = false;
+    validation.errors.maxUsePerUser =
+      maxUsePerUserValidation.error.format()._errors[0];
   }
 
   return validation;

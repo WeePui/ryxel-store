@@ -4,6 +4,7 @@ import { Order } from '../_types/order';
 import {
   AddressFormInput,
   CategoryInput,
+  DiscountInput,
   ProductInput,
   ReviewInput,
   ReviewUpdateInput,
@@ -1360,4 +1361,111 @@ export const deleteProduct = async (id: string, token: { value: string }) => {
   }
 
   return { status: 'success', message: 'Product deleted successfully' };
+};
+
+export const sendOrderViaEmail = async (orderId: string, authToken: string) => {
+  const response = await fetch(`${API_URL}/orders/${orderId}/send-email`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send order email');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const deleteCategory = async (id: string, authToken: string) => {
+  const response = await fetch(`${API_URL}/categories/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete category');
+  }
+
+  return { status: 'success', message: 'Category deleted successfully' };
+};
+
+export const getDiscounts = async (authToken: string) => {
+  const response = await fetch(`${API_URL}/discounts`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch discounts');
+  }
+
+  const { data } = await response.json();
+
+  return data;
+};
+
+export const addDiscount = async (input: DiscountInput, authToken: string) => {
+  const response = await fetch(`${API_URL}/discounts`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to add discount');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const updateDiscount = async (
+  id: string,
+  input: DiscountInput,
+  authToken: string
+) => {
+  const response = await fetch(`${API_URL}/discounts/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update discount');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const deleteDiscount = async (id: string, authToken: string) => {
+  const response = await fetch(`${API_URL}/discounts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete discount');
+  }
+
+  return { status: 'success', message: 'Discount deleted successfully' };
 };

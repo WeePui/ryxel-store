@@ -3,7 +3,7 @@ function Loader() {
 
   return (
     <div className="text-md flex flex-col items-center justify-center md:justify-start md:py-6 text-primary-600 px-6">
-      <div className="loading-container text-primary-300">
+      <div className="loading-container text-primary-500">
         {letters.map((letter, index) => (
           <span
             key={index}

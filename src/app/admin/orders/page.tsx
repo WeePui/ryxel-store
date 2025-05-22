@@ -6,7 +6,6 @@ import OrderTable from '@/app/_components/Admin/Orders/OrderTable';
 import TopCityByOrder from '@/app/_components/Admin/Orders/TopCityByOrder';
 import FilterButton from '@/app/_components/Products/FilterButton';
 import SortSelector from '@/app/_components/Products/SortSelector';
-import Card from '@/app/_components/UI/Card';
 import { getAdminOrders, getOrderSummaryStats } from '@/app/_libs/apiServices';
 import { cookies } from 'next/headers';
 

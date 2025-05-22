@@ -11,7 +11,7 @@ import {
   FaThLarge,
   FaUsers,
 } from 'react-icons/fa';
-import { FaCircleChevronRight, FaGears } from 'react-icons/fa6';
+import { FaCircleChevronRight, FaGears, FaTicket } from 'react-icons/fa6';
 
 export default function AdminNav() {
   const { isOpen } = useToggleAdminSidebar();
@@ -54,6 +54,11 @@ export default function AdminNav() {
           icon={<FaLayerGroup />}
           label="Danh mục"
           href="/admin/categories"
+        />
+        <AdminNavItem
+          icon={<FaTicket />}
+          label="Khuyến mãi"
+          href="/admin/vouchers"
         />
       </section>
       <section

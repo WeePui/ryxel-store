@@ -75,7 +75,7 @@ function StockStatusDonutChart({
           </Pie>
           <Tooltip
             formatter={(value: number, name: string) => [
-              `${formatMoneyCompact(value)}`,
+              isMoney ? `${formatMoneyCompact(value)}` : value,
               name,
             ]}
           />
