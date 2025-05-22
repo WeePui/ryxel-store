@@ -1,13 +1,13 @@
-import Image from 'next/image';
-import { FaCamera, FaRegStar, FaStar, FaXmark } from 'react-icons/fa6';
-import Input from '../UI/Input';
-import { LineItem } from '@/app/_types/lineItem';
-import { useEffect, useMemo, useState } from 'react';
-import { ReviewInput, ReviewUpdateInput } from '@/app/_types/validateInput';
-import { toast } from 'react-toastify';
-import { Review } from '@/app/_types/review';
-import Button from '../UI/Button';
-import { Product } from '@/app/_types/product';
+import Image from "next/image";
+import { FaCamera, FaRegStar, FaStar, FaXmark } from "react-icons/fa6";
+import Input from "../UI/Input";
+import { LineItem } from "@/app/_types/lineItem";
+import { useEffect, useMemo, useState } from "react";
+import { ReviewInput, ReviewUpdateInput } from "@/app/_types/validateInput";
+import { toast } from "react-toastify";
+import { Review } from "@/app/_types/review";
+import Button from "../UI/Button";
+import { Product } from "@/app/_types/product";
 
 interface OrderReviewItemProps {
   lineItem: LineItem;
@@ -34,7 +34,7 @@ export default function OrderReviewItem({
     if (reviewItem) {
       return reviewItem.review;
     }
-    return '';
+    return "";
   });
   const [images, setImages] = useState<Array<File | string>>(() => {
     if (reviewItem) {
@@ -62,8 +62,17 @@ export default function OrderReviewItem({
       ),
     [lineItem]
   );
+  // Store product ID and variant ID in memoized values to prevent unnecessary re-renders
+  const productId = useMemo(
+    () => (lineItem.product as Product)._id,
+    [lineItem.product]
+  );
+  const variantId = useMemo(() => variant?._id, [variant]);
 
   useEffect(() => {
+    // Don't proceed if the variant is not available yet
+    if (!variant) return;
+
     if (reviewItem) {
       onReviewUpdate({
         rating,
@@ -80,17 +89,19 @@ export default function OrderReviewItem({
       review,
       images,
       video,
-      productId: (lineItem.product as Product)._id,
-      variantId: variant!._id,
+      productId,
+      variantId,
     } as ReviewInput);
   }, [
     rating,
     review,
     images,
     video,
-    (lineItem.product as Product)._id,
-    variant,
+    productId,
+    variantId,
     reviewItem,
+    variant,
+    onReviewUpdate,
   ]);
 
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,21 +110,21 @@ export default function OrderReviewItem({
       const file = files[0];
 
       if (file.size > 1024 * 1024 * 5) {
-        toast.error('Kích thước ảnh/video tối đa 5MB');
+        toast.error("Kích thước ảnh/video tối đa 5MB");
         return;
       }
 
-      if (video && file.type.includes('video')) {
-        toast.error('Chỉ được tải lên tối đa 1 video');
+      if (video && file.type.includes("video")) {
+        toast.error("Chỉ được tải lên tối đa 1 video");
         return;
       }
 
       if (images.length + files.length > 2) {
-        toast.error('Chỉ được tải lên tối đa 2 ảnh và video');
+        toast.error("Chỉ được tải lên tối đa 2 ảnh và video");
         return;
       }
 
-      if (file.type.includes('video')) {
+      if (file.type.includes("video")) {
         setVideo(() => file);
         return;
       }
@@ -168,7 +179,7 @@ export default function OrderReviewItem({
         <Input
           type="textarea"
           id="review"
-          label={reviewItem ? 'Nội dung' : 'Viết đánh giá (tối đa 500 ký tự)'}
+          label={reviewItem ? "Nội dung" : "Viết đánh giá (tối đa 500 ký tự)"}
           name="review"
           onChange={(e) => setReview(e.target.value)}
           value={review}
@@ -185,7 +196,7 @@ export default function OrderReviewItem({
             <div key={index} className={`relative aspect-square w-16 h-16`}>
               <div
                 className={`absolute right-0 border-2 translate-x-1/2 -translate-y-1/2 z-20 rounded-full bg-white p-[2px] ${
-                  !isAllowedToUpdate ? 'hidden' : ''
+                  !isAllowedToUpdate ? "hidden" : ""
                 } `}
               >
                 <FaXmark
@@ -199,7 +210,7 @@ export default function OrderReviewItem({
               </div>
               <Image
                 src={
-                  typeof image === 'string' ? image : URL.createObjectURL(image)
+                  typeof image === "string" ? image : URL.createObjectURL(image)
                 }
                 alt="review"
                 layout="fill"
@@ -212,7 +223,7 @@ export default function OrderReviewItem({
             <div className="relative aspect-square w-16 h-16">
               <div
                 className={`absolute right-0 border-2 translate-x-1/2 -translate-y-1/2 z-20 rounded-full bg-white p-[2px] ${
-                  !isAllowedToUpdate ? 'hidden' : ''
+                  !isAllowedToUpdate ? "hidden" : ""
                 } `}
               >
                 <FaXmark
@@ -223,10 +234,10 @@ export default function OrderReviewItem({
               <video
                 src={
                   video
-                    ? typeof video === 'string'
+                    ? typeof video === "string"
                       ? video
                       : URL.createObjectURL(video)
-                    : ''
+                    : ""
                 }
                 className="z-10 rounded-md object-cover w-full h-full"
                 controls={false}
@@ -237,13 +248,15 @@ export default function OrderReviewItem({
           {images.length < 2 || !video ? (
             <div
               className={`flex flex-col items-center justify-center gap-1 border-2 p-4 rounded-lg border-dashed cursor-pointer ${
-                !isAllowedToUpdate ? 'hidden' : ''
+                !isAllowedToUpdate ? "hidden" : ""
               }`}
               role="button"
               onClick={() =>
                 document
                   .getElementById(
-                    `file-input-${(lineItem.product as Product)._id}`
+                    `file-input-${(lineItem.product as Product)._id}-${
+                      lineItem.variant
+                    }`
                   )
                   ?.click()
               }
@@ -251,13 +264,15 @@ export default function OrderReviewItem({
               <FaCamera className="text-xl text-gray-500 hover:scale-110 transform transition-transform" />
               <p className="text-sm text-gray-400">
                 {images.length < 2 && !video
-                  ? 'Thêm ảnh hoặc video'
+                  ? "Thêm ảnh hoặc video"
                   : images.length < 2
-                  ? 'Thêm ảnh'
-                  : 'Thêm video'}
+                  ? "Thêm ảnh"
+                  : "Thêm video"}
               </p>
               <input
-                id={`file-input-${(lineItem.product as Product)._id}`}
+                id={`file-input-${(lineItem.product as Product)._id}-${
+                  lineItem.variant
+                }`}
                 type="file"
                 accept="image/*,video/*"
                 className="hidden"
@@ -269,14 +284,16 @@ export default function OrderReviewItem({
       ) : (
         isAllowedToUpdate && (
           <div className="flex flex-col gap-2">
-            <p>Thêm ảnh hoặc video</p>
+            <p>Thêm ảnh hoặc video</p>{" "}
             <div
               className="flex flex-col items-center justify-center gap-1 border-2 p-4 rounded-lg border-dashed cursor-pointer"
               role="button"
               onClick={() =>
                 document
                   .getElementById(
-                    `file-input-${(lineItem.product as Product)._id}`
+                    `file-input-${(lineItem.product as Product)._id}-${
+                      lineItem.variant
+                    }`
                   )
                   ?.click()
               }
@@ -284,7 +301,9 @@ export default function OrderReviewItem({
               <FaCamera className="text-xl text-gray-500 hover:scale-110 transform transition-transform" />
               <p className="text-sm text-gray-400">Thêm ảnh hoặc video</p>
               <input
-                id={`file-input-${(lineItem.product as Product)._id}`}
+                id={`file-input-${(lineItem.product as Product)._id}-${
+                  lineItem.variant
+                }`}
                 type="file"
                 accept="image/*,video/*"
                 className="hidden"
@@ -313,7 +332,7 @@ function StarRating({
     <div
       key={index}
       onClick={() => !disabled && onChangeRating(index + 1)}
-      className={`${!disabled ? 'cursor-pointer' : ''}`}
+      className={`${!disabled ? "cursor-pointer" : ""}`}
     >
       {index < rating ? <FaStar /> : <FaRegStar />}
     </div>
