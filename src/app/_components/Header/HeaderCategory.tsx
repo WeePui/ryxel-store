@@ -1,15 +1,14 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import NavLink from '../UI/NavLink';
-import { useRouter } from 'next/navigation';
+import Image from "next/image";
+import NavLink from "../UI/NavLink";
+import { useRouter } from "next/navigation";
 
 export default function HeaderCategory() {
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    const id = target.id;
+    const id = e.currentTarget.id;
     if (id) {
       router.push(`/products?category=${id}`);
     }
@@ -18,18 +17,19 @@ export default function HeaderCategory() {
   return (
     <div className="fixed left-0 p-4 bg-grey-50 w-full mx-auto z-10 shadow-md border-b border-primary-200 ">
       <div className="grid grid-cols-[60fr_40fr] divide-x divide-primary-200 max-w-7xl mx-auto">
-        <div className="p-6" onClick={handleClick}>
+        <div className="p-6">
           <h1 className="mb-4 text-xl">Mua sắm theo danh mục</h1>
           <div className="flex">
             <div className="grid grid-cols-3 gap-x-12 gap-y-6 justify-start w-fit">
               <div
                 className="flex flex-col gap-2 items-center w-fit group"
-                id="mouse"
+                id="Mouse"
                 role="button"
+                onClick={handleClick}
               >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
-                    src={'/categories/mouse-category.jpg'}
+                    src={"/categories/mouse-category.jpg"}
                     alt="Chuột Gaming"
                     className="object-cover"
                     fill
@@ -39,12 +39,13 @@ export default function HeaderCategory() {
               </div>
               <div
                 className="flex flex-col gap-2 items-center w-fit group"
-                id="keyboard"
+                id="Keyboard"
                 role="button"
+                onClick={handleClick}
               >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
-                    src={'/categories/keyboard-category.jpg'}
+                    src={"/categories/keyboard-category.jpg"}
                     alt="Bàn phím"
                     className="object-cover"
                     fill
@@ -55,11 +56,12 @@ export default function HeaderCategory() {
               <div
                 className="flex flex-col gap-2 items-center w-fit group"
                 role="button"
-                id="headphone"
+                id="Headphone"
+                onClick={handleClick}
               >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
-                    src={'/categories/headset-category.jpg'}
+                    src={"/categories/headset-category.jpg"}
                     alt="Tai nghe"
                     className="object-cover"
                     fill
@@ -70,11 +72,12 @@ export default function HeaderCategory() {
               <div
                 className="flex flex-col gap-2 items-center w-fit group"
                 role="button"
-                id="table"
+                id="Table"
+                onClick={handleClick}
               >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
-                    src={'/categories/table-category.jpg'}
+                    src={"/categories/table-category.jpg"}
                     alt="Bàn Gaming"
                     className="object-cover"
                     fill
@@ -85,11 +88,12 @@ export default function HeaderCategory() {
               <div
                 className="flex flex-col gap-2 items-center w-fit group"
                 role="button"
-                id="chair"
+                id="Chair"
+                onClick={handleClick}
               >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
-                    src={'/categories/chair-category.jpg'}
+                    src={"/categories/chair-category.jpg"}
                     alt="Ghế Gaming"
                     className="object-cover"
                     fill
@@ -100,11 +104,12 @@ export default function HeaderCategory() {
               <div
                 className="flex flex-col gap-2 items-center w-fit group"
                 role="button"
-                id="accessory"
+                id="Accessory"
+                onClick={handleClick}
               >
                 <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
                   <Image
-                    src={'/categories/accessory-category.jpg'}
+                    src={"/categories/accessory-category.jpg"}
                     alt="Phụ kiện"
                     className="object-cover"
                     fill

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import NavLink from '@/app/_components/UI/NavLink';
-import { useEffect, useRef, useState } from 'react';
-import HeaderCategory from './HeaderCategory';
+import NavLink from "@/app/_components/UI/NavLink";
+import { useEffect, useRef, useState } from "react";
+import HeaderCategory from "./HeaderCategory";
 
 function HeaderNav({
   isMobile,
@@ -18,16 +18,16 @@ function HeaderNav({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
     setIsTouchDevice(isTouch);
 
     const handleScroll = () => {
       setIsModalVisible(false);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -72,7 +72,7 @@ function HeaderNav({
               className="flex justify-between items-center py-2"
             >
               <span>Danh mục</span>
-              <span className="text-lg">{openCategory ? '−' : '+'}</span>
+              <span className="text-lg">{openCategory ? "−" : "+"}</span>
             </button>
 
             {openCategory && (
@@ -83,22 +83,22 @@ function HeaderNav({
                     Sản phẩm
                   </h3>
                   <div className="flex flex-col gap-2" onClick={onNavigate}>
-                    <NavLink href="/products?category=mouse">
+                    <NavLink href="/products?category=Mouse">
                       Chuột Gaming
                     </NavLink>
-                    <NavLink href="/products?category=keyboard">
+                    <NavLink href="/products?category=Keyboard">
                       Bàn phím
                     </NavLink>
-                    <NavLink href="/products?category=headset">
+                    <NavLink href="/products?category=Headset">
                       Tai nghe
                     </NavLink>
-                    <NavLink href="/products?category=table">
+                    <NavLink href="/products?category=Table">
                       Bàn Gaming
                     </NavLink>
-                    <NavLink href="/products?category=chair">
+                    <NavLink href="/products?category=Chair">
                       Ghế Gaming
                     </NavLink>
-                    <NavLink href="/products?category=accessory">
+                    <NavLink href="/products?category=Accessory">
                       Phụ kiện
                     </NavLink>
                   </div>

@@ -1,16 +1,31 @@
-'use client';
+"use client";
 
-import { Variant } from '@/app/_types/variant';
-import Card from '../../UI/Card';
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import Input from '../../UI/Input';
-import Image from 'next/image';
-import Button from '../../UI/Button';
-import { mappingSpecsName } from '@/app/_utils/mappingSpecs';
-import { FaTrash } from 'react-icons/fa6';
-import { toast } from 'react-toastify';
-import Modal from '../../UI/Modal';
-import TextConfirmDialogue from '../../UI/TextConfirmDialogue';
+import { Variant } from "@/app/_types/variant";
+import Card from "../../UI/Card";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import Input from "../../UI/Input";
+import Image from "next/image";
+import Button from "../../UI/Button";
+import { mappingSpecsName } from "@/app/_utils/mappingSpecs";
+import { FaTrash } from "react-icons/fa6";
+import { toast } from "react-toastify";
+import Modal from "../../UI/Modal";
+import TextConfirmDialogue from "../../UI/TextConfirmDialogue";
+
+// Helper function to format dates for input fields
+const formatDateForInput = (
+  dateValue: string | Date | undefined | null
+): string => {
+  if (!dateValue) return "";
+  try {
+    const date = new Date(dateValue);
+    if (isNaN(date.getTime())) return ""; // Invalid date
+    return date.toISOString().split("T")[0];
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "";
+  }
+};
 
 interface VariantInfoProps {
   variants: Variant[];
@@ -63,7 +78,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
     const handleImageChange = (index: number, file: File) => {
       const newImages = [...images];
 
-      const emptyIndex = newImages.findIndex((img) => !img || img === '');
+      const emptyIndex = newImages.findIndex((img) => !img || img === "");
 
       if (emptyIndex !== -1) {
         newImages[emptyIndex] = file;
@@ -91,11 +106,11 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
 
       // Create a compact array by removing the deleted image and shifting others up
       const filteredImages = images.filter(
-        (img, i) => i !== index && img !== ''
+        (img, i) => i !== index && img !== ""
       );
 
       // Create a new array of length 4, filled with remaining images followed by empty strings
-      const newImages: (string | File)[] = Array(4).fill('');
+      const newImages: (string | File)[] = Array(4).fill("");
 
       // Copy the filtered images to the beginning of the new array
       filteredImages.forEach((img, i) => {
@@ -183,16 +198,16 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
       // Gọi onSave
       onSave();
     };
-
     const handleChangeSaleOff = (
-      field: 'percentage' | 'startDate' | 'endDate',
+      field: "percentage" | "startDate" | "endDate",
       value: string
     ) => {
+      // For percentage, convert to number; for dates, keep as string
       const updatedVariant = {
         ...currentVariant,
         saleOff: {
           ...currentVariant.saleOff,
-          [field]: value,
+          [field]: field === "percentage" ? Number(value) : value,
         },
       };
       setCurrentVariant(updatedVariant);
@@ -259,7 +274,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                 className="whitespace-nowrap"
                 onClick={() => {
                   if (variantList.length <= 1) {
-                    toast.error('Sản phẩm phải có ít nhất một phân loại');
+                    toast.error("Sản phẩm phải có ít nhất một phân loại");
                     return;
                   }
 
@@ -278,7 +293,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           id="name"
           value={currentVariant.name}
           label="Tên phân loại"
-          onChange={(e) => handleFieldChange('name', e.target.value)}
+          onChange={(e) => handleFieldChange("name", e.target.value)}
         />
         <Input
           type="text"
@@ -287,71 +302,71 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           value={currentVariant.sku}
           label="SKU"
           className="col-span-2"
-          onChange={(e) => handleFieldChange('sku', e.target.value)}
+          onChange={(e) => handleFieldChange("sku", e.target.value)}
         />
         <Input
           type="text"
           name="price"
           id="price"
-          value={currentVariant.price + ''}
+          value={currentVariant.price + ""}
           label="Giá bán"
-          onChange={(e) => handleFieldChange('price', e.target.value)}
+          onChange={(e) => handleFieldChange("price", e.target.value)}
         />
         <Input
           type="text"
           name="cost"
           id="cost"
-          value={currentVariant.cost + ''}
+          value={currentVariant.cost + ""}
           label="Giá vốn"
-          onChange={(e) => handleFieldChange('cost', e.target.value)}
+          onChange={(e) => handleFieldChange("cost", e.target.value)}
         />
         <Input
           type="text"
           name="weight"
           id="weight"
-          value={currentVariant.weight + ''}
+          value={currentVariant.weight + ""}
           label="Trọng lượng"
-          onChange={(e) => handleFieldChange('weight', e.target.value)}
+          onChange={(e) => handleFieldChange("weight", e.target.value)}
         />
         <Input
           type="text"
           name="stock"
           id="stock"
-          value={currentVariant.stock + ''}
+          value={currentVariant.stock + ""}
           label="Tồn kho"
-          onChange={(e) => handleFieldChange('stock', e.target.value)}
+          onChange={(e) => handleFieldChange("stock", e.target.value)}
         />
         <Input
           type="text"
           name="sold"
           id="sold"
-          value={currentVariant.sold + ''}
+          value={currentVariant.sold + ""}
           label="Đã bán"
-          onChange={(e) => handleFieldChange('sold', e.target.value)}
+          onChange={(e) => handleFieldChange("sold", e.target.value)}
         />
         <div className="flex gap-4 col-span-full xl:flex-col lg:flex-row md:flex-col">
           <Input
             type="text"
             name="saleOffPercentage"
             id="saleOffPercentage"
-            value={currentVariant.saleOff?.percentage + ''}
-            onChange={(e) => handleChangeSaleOff('percentage', e.target.value)}
+            value={currentVariant.saleOff?.percentage + ""}
+            onChange={(e) => handleChangeSaleOff("percentage", e.target.value)}
             label="Giảm giá (%)"
-          />
+          />{" "}
           <Input
             type="date"
             name="saleOffStartDate"
             id="saleOffStartDate"
-            value={currentVariant.saleOff?.startDate || ''}
-            onChange={(e) => handleChangeSaleOff('startDate', e.target.value)}
+            value={formatDateForInput(currentVariant.saleOff?.startDate)}
+            onChange={(e) => handleChangeSaleOff("startDate", e.target.value)}
             label="Ngày bắt đầu giảm giá"
           />
           <Input
             type="date"
             name="saleOffEndDate"
             id="saleOffEndDate"
-            value={currentVariant.saleOff?.endDate || ''}
-            onChange={(e) => handleChangeSaleOff('endDate', e.target.value)}
+            value={formatDateForInput(currentVariant.saleOff?.endDate)}
+            onChange={(e) => handleChangeSaleOff("endDate", e.target.value)}
             label="Ngày kết thúc giảm giá"
           />
         </div>
@@ -362,7 +377,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           <Button
             size="small"
             onClick={() =>
-              setNewSpecs((prev) => [...prev, { key: '', value: '' }])
+              setNewSpecs((prev) => [...prev, { key: "", value: "" }])
             }
           >
             Thêm thông số
@@ -504,11 +519,11 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             >
               <Image
                 src={
-                  typeof images[index] === 'string' && images[index]
+                  typeof images[index] === "string" && images[index]
                     ? (images[index] as string)
                     : images[index] instanceof File
                     ? URL.createObjectURL(images[index])
-                    : '/no-image-placeholder.jpg rounded'
+                    : "/no-image-placeholder.jpg rounded"
                 }
                 alt={`Ảnh ${index + 1}`}
                 fill
@@ -516,7 +531,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               />
 
               {/* Delete button overlay - only show if there's an image */}
-              {images[index] && images[index] !== '' && (
+              {images[index] && images[index] !== "" && (
                 <div
                   className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full cursor-pointer hover:bg-red-600 z-10"
                   onClick={(e) => handleImageDelete(index, e)}
@@ -572,6 +587,6 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
   }
 );
 
-VariantInfo.displayName = 'VariantInfo';
+VariantInfo.displayName = "VariantInfo";
 
 export default VariantInfo;

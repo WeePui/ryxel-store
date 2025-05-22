@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { FaMouse } from 'react-icons/fa';
-import { FaChair, FaGears, FaHeadphones, FaKeyboard } from 'react-icons/fa6';
-import { PiDeskBold } from 'react-icons/pi';
+import { useRouter } from "next/navigation";
+import { FaMouse } from "react-icons/fa";
+import { FaChair, FaGears, FaHeadphones, FaKeyboard } from "react-icons/fa6";
+import { PiDeskBold } from "react-icons/pi";
 
 export default function HotCategoriesSection() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
           role="button"
-          onClick={() => router.push('/products?category=mouse')}
+          onClick={() => router.push("/products?category=Mouse")}
         >
           <FaMouse className="text-7xl" />
           <p className="text-lg font-semibold">Chuột Gaming</p>
@@ -25,7 +25,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
           role="button"
-          onClick={() => router.push('/products?category=keyboard')}
+          onClick={() => router.push("/products?category=Keyboard")}
         >
           <FaKeyboard className="text-7xl" />
           <p className="text-lg font-semibold">Bàn phím cơ</p>
@@ -33,7 +33,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
           role="button"
-          onClick={() => router.push('/products?category=headphone')}
+          onClick={() => router.push("/products?category=Headphone")}
         >
           <FaHeadphones className="text-7xl" />
           <p className="text-lg font-semibold">Tai nghe</p>
@@ -41,7 +41,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
           role="button"
-          onClick={() => router.push('/products?category=table')}
+          onClick={() => router.push("/products?category=Table")}
         >
           <PiDeskBold className="text-7xl" />
           <p className="text-lg font-semibold">Bàn</p>
@@ -49,7 +49,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
           role="button"
-          onClick={() => router.push('/products?category=chair')}
+          onClick={() => router.push("/products?category=Chair")}
         >
           <FaChair className="text-7xl" />
           <p className="text-lg font-semibold">Ghế</p>
@@ -57,7 +57,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
           role="button"
-          onClick={() => router.push('/products?category=accessory')}
+          onClick={() => router.push("/products?category=Accessory")}
         >
           <FaGears className="text-7xl" />
           <p className="text-lg font-semibold">Phụ kiện</p>
