@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import NavLink from '../UI/NavLink';
+import Image from "next/image";
+import NavLink from "../UI/NavLink";
 
-import SocialNavigation from './SocialNavigation';
-import PaymentMethods from '../UI/PaymentMethods';
-import { useState } from 'react';
-import { FaChevronCircleRight } from 'react-icons/fa';
+import SocialNavigation from "./SocialNavigation";
+import PaymentMethods from "../UI/PaymentMethods";
+import { useState } from "react";
+import { FaChevronCircleRight } from "react-icons/fa";
 
 interface FooterColumnProps {
   title: string;
@@ -20,7 +20,7 @@ function Footer() {
         <div className="justify-items-between grid grid-cols-4 lg:grid-cols-2 md:grid-cols-1 gap-x-10 px-12 md:px-2 lg:gap-8 lg:gap-y-2 py-12">
           <FooterColumn title="Ryxel Company">
             <li>
-              <NavLink type="footerNav" href="/about">
+              <NavLink type="footerNav" href="/about-us">
                 Về chúng tôi
               </NavLink>
             </li>
@@ -100,7 +100,7 @@ function FooterColumn({ title, children }: FooterColumnProps) {
         <h3 className="text-xl font-bold text-white">{title}</h3>
         <FaChevronCircleRight
           className={`ml-2 h-5 w-5 transform transition-transform hidden lg:block ${
-            isOpen ? 'rotate-90' : ''
+            isOpen ? "rotate-90" : ""
           }`}
         />
       </button>
@@ -111,8 +111,8 @@ function FooterColumn({ title, children }: FooterColumnProps) {
           transition-all duration-300 ease-in-out ml-4
           ${
             isOpen
-              ? 'lg:max-h-[500px] lg:opacity-100 lg:overflow-visible'
-              : 'lg:max-h-0 lg:opacity-0 lg:overflow-hidden'
+              ? "lg:max-h-[500px] lg:opacity-100 lg:overflow-visible"
+              : "lg:max-h-0 lg:opacity-0 lg:overflow-hidden"
           }
         `}
       >
