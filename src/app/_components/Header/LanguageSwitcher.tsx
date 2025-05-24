@@ -1,6 +1,20 @@
 "use client";
 
 import { useLanguage } from "@/app/_contexts/LanguageContext";
+import Image from "next/image";
+
+const LABELS = {
+  vi: {
+    text: "VI",
+    toggle: "Switch to English",
+    code: "vn",
+  },
+  en: {
+    text: "EN",
+    toggle: "Chuyển sang tiếng Việt",
+    code: "gb",
+  },
+};
 
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
@@ -12,19 +26,23 @@ export default function LanguageSwitcher() {
     <div className="flex items-center">
       <button
         onClick={toggleLanguage}
-        className={`flex h-8 w-8 items-center justify-center rounded-full border ${
+        className={`group flex h-9 items-center gap-2 rounded-full border px-3 ${
           language === "vi"
-            ? "border-primary-600 bg-primary-50 font-bold"
-            : "border-primary-400"
-        } font-medium text-primary-500 transition-colors hover:bg-primary-50`}
-        aria-label={
-          language === "vi" ? "Switch to English" : "Chuyển sang tiếng Việt"
-        }
-        title={
-          language === "vi" ? "Switch to English" : "Chuyển sang tiếng Việt"
-        }
+            ? "border-primary-600 bg-primary-50 text-primary-600"
+            : "border-primary-400 text-primary-500"
+        } font-medium transition-all duration-300 hover:bg-primary-100 hover:shadow-md`}
+        aria-label={LABELS[language].toggle}
+        title={LABELS[language].toggle}
       >
-        {language === "vi" ? "EN" : "VI"}
+        {" "}
+        <Image
+          src={`/flags/${LABELS[language].code}.png`}
+          alt={`${language === "vi" ? "Vietnamese" : "English"} flag`}
+          width={16}
+          height={16}
+          className="rounded-sm"
+        />
+        <span className="font-semibold">{LABELS[language].text}</span>
       </button>
     </div>
   );

@@ -37,11 +37,11 @@ export default function HeaderTranslated({
           <div className="lg:hidden">
             <SearchBar onHeader={true} />
           </div>
+          <LanguageSwitcher />
           <Suspense fallback={<Spinner />}>
             <HeaderCart cart={cart} />
           </Suspense>
           <div className="flex items-center gap-4">
-            <LanguageSwitcher />
             <Suspense fallback={<Spinner />}>
               <HeaderUser user={user} />
             </Suspense>
