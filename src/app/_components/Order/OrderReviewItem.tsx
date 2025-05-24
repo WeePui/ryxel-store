@@ -63,6 +63,9 @@ export default function OrderReviewItem({
     [lineItem]
   );
 
+  const productId = (lineItem.product as Product)._id;
+  const variantId = variant?._id;
+
   useEffect(() => {
     if (reviewItem) {
       onReviewUpdate({
@@ -80,19 +83,11 @@ export default function OrderReviewItem({
       review,
       images,
       video,
-      productId: (lineItem.product as Product)._id,
+      productId,
       variantId: variant!._id,
     } as ReviewInput);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    rating,
-    review,
-    images,
-    video,
-    (lineItem.product as Product)._id,
-    variant,
-    reviewItem,
-  ]);
+  }, [rating, review, images, video, productId, variantId, reviewItem]);
 
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -244,7 +239,9 @@ export default function OrderReviewItem({
               onClick={() =>
                 document
                   .getElementById(
-                    `file-input-${(lineItem.product as Product)._id}-${lineItem.variant}`
+                    `file-input-${(lineItem.product as Product)._id}-${
+                      lineItem.variant
+                    }`
                   )
                   ?.click()
               }
@@ -258,7 +255,9 @@ export default function OrderReviewItem({
                   : "Thêm video"}
               </p>
               <input
-                id={`file-input-${(lineItem.product as Product)._id}-${lineItem.variant}`}
+                id={`file-input-${(lineItem.product as Product)._id}-${
+                  lineItem.variant
+                }`}
                 type="file"
                 accept="image/*,video/*"
                 className="hidden"
@@ -277,7 +276,9 @@ export default function OrderReviewItem({
               onClick={() =>
                 document
                   .getElementById(
-                    `file-input-${(lineItem.product as Product)._id}-${lineItem.variant}`
+                    `file-input-${(lineItem.product as Product)._id}-${
+                      lineItem.variant
+                    }`
                   )
                   ?.click()
               }
@@ -285,7 +286,9 @@ export default function OrderReviewItem({
               <FaCamera className="text-xl text-gray-500 hover:scale-110 transform transition-transform" />
               <p className="text-sm text-gray-400">Thêm ảnh hoặc video</p>
               <input
-                id={`file-input-${(lineItem.product as Product)._id}-${lineItem.variant}`}
+                id={`file-input-${(lineItem.product as Product)._id}-${
+                  lineItem.variant
+                }`}
                 type="file"
                 accept="image/*,video/*"
                 className="hidden"
