@@ -9,6 +9,7 @@ import { cookies } from "next/headers";
 import { checkToken } from "../_libs/apiServices";
 import { redirect } from "next/navigation";
 import LanguageClientProvider from "../_components/UI/LanguageClientProvider";
+import ClientMainScreen from "../_components/UI/ClientMainScreen";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -57,7 +58,9 @@ export default async function RootLayout({
         <LanguageClientProvider>
           <Header />
           <ToastProvider>
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow">
+              <ClientMainScreen>{children}</ClientMainScreen>
+            </main>
           </ToastProvider>
           <Footer />
         </LanguageClientProvider>

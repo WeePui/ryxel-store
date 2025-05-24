@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 import {
   createContext,
   useCallback,
@@ -8,9 +8,9 @@ import {
   useEffect,
   useState,
   ReactNode,
-} from 'react';
-import { FaChevronRight, FaChevronLeft } from 'react-icons/fa6';
-import Button from '@components/UI/Button';
+} from "react";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
+import Button from "@components/UI/Button";
 
 interface Slide {
   image: string;
@@ -86,7 +86,7 @@ function SlideImage() {
   const context = useContext(HeroContext);
 
   if (!context) {
-    throw new Error('SlideImage must be used within a HeroContext.Provider');
+    throw new Error("SlideImage must be used within a HeroContext.Provider");
   }
 
   const { slides, currentSlide } = context;
@@ -100,8 +100,8 @@ function SlideImage() {
           alt={slide.title}
           className={`absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out ${
             currentSlide === index
-              ? 'scale-100 opacity-100'
-              : 'scale-125 opacity-0'
+              ? "scale-100 opacity-100"
+              : "scale-125 opacity-0"
           }`}
           fill
         />
@@ -114,25 +114,24 @@ function Slider() {
   const context = useContext(HeroContext);
 
   if (!context) {
-    throw new Error('Slider must be used within a HeroContext.Provider');
+    throw new Error("Slider must be used within a HeroContext.Provider");
   }
 
   const { slides, currentSlide } = context;
 
   return (
-    <div className="absolute z-20 flex max-w-[90%] flex-col items-center gap-6 text-center sm:gap-8 sm:max-w-xl xl:gap-10 px-2">
-      <p className="font-title text-xl xl:text-base  font-semibold text-primary-50">
+    <div className="absolute z-20 flex max-w-[90%] flex-col items-center gap-6 px-2 text-center xl:gap-10 sm:max-w-xl sm:gap-8">
+      <p className="font-title text-xl font-semibold text-primary-50 xl:text-base">
         {slides[currentSlide].subTitle}
       </p>
-      <p className="font-title text-5xl xl:text-2xl font-bold text-primary-50">
+      <p className="font-title text-5xl font-bold text-primary-50 xl:text-2xl">
         {slides[currentSlide].title}
       </p>
       <Button
-        type="primaryOnTheDark"
-        // className="inline-flex items-center justify-center rounded-lg bg-secondary-200 px-4 py-2 font-bold text-primary-400 shadow-lg transition-shadow hover:bg-transparent hover:text-secondary-100"
+        variant="primaryOnDark"
         href={slides[currentSlide].href}
         size="large"
-        className="px-4 py-2 text-sm sm:text-base xl:px-6 xl:py-3"
+        // className="px-4 py-2 text-sm xl:px-6 xl:py-3 sm:text-base"
       >
         {slides[currentSlide].slideButtonContent}
       </Button>
@@ -144,19 +143,19 @@ function Navigation() {
   const context = useContext(HeroContext);
 
   if (!context) {
-    throw new Error('Navigation must be used within a HeroContext.Provider');
+    throw new Error("Navigation must be used within a HeroContext.Provider");
   }
 
   const { slides, currentSlide, toSlide } = context;
 
   return (
-    <div className="absolute bottom-2 sm:bottom-4 z-20 flex gap-2 sm:gap-4">
+    <div className="absolute bottom-2 z-20 flex gap-2 sm:bottom-4 sm:gap-4">
       {slides.map((_, index) => (
         <button
           key={index}
           onClick={() => toSlide(index)}
           className={`h-3 w-3 rounded-full ${
-            currentSlide === index ? 'bg-primary-100' : 'bg-primary-400'
+            currentSlide === index ? "bg-primary-100" : "bg-primary-400"
           }`}
         />
       ))}

@@ -284,7 +284,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             {variantList.length > 1 && (
               <Button
                 size="small"
-                type="danger"
+                variant="danger"
                 className="whitespace-nowrap"
                 onClick={() => {
                   if (variantList.length <= 1) {
@@ -578,13 +578,13 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
         <div className="col-span-full flex items-center justify-end gap-4">
           <Button
             size="small"
-            type="secondary"
+            variant="secondary"
             onClick={handleReset}
             className="w-fit"
           >
             Đặt lại
           </Button>
-          <Button size="small" onClick={handleSave} className="w-fit">
+          <Button size="small" onClick={handleSave} fullWidth={false}>
             Lưu thay đổi
           </Button>
         </div>

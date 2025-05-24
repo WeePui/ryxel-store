@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { Category } from '@/app/_types/category';
-import { useRef } from 'react';
-import Button from '../../UI/Button';
-import AddProductInfo from './AddProductInfo';
-import AddVariantInfo from './AddVariantInfo';
-import { Variant } from '@/app/_types/variant';
-import { addProductAction } from '@/app/_libs/actions';
-import { ProductInput } from '@/app/_types/validateInput';
+import { Category } from "@/app/_types/category";
+import { useRef } from "react";
+import Button from "../../UI/Button";
+import AddProductInfo from "./AddProductInfo";
+import AddVariantInfo from "./AddVariantInfo";
+import { Variant } from "@/app/_types/variant";
+import { addProductAction } from "@/app/_libs/actions";
+import { ProductInput } from "@/app/_types/validateInput";
 
 interface FormAddProductProps {
   categories: Category[];
@@ -54,8 +54,8 @@ export default function FormAddProduct({ categories }: FormAddProductProps) {
     <form className="mb-6" onSubmit={handleSubmit}>
       <AddProductInfo categories={categoryOptions} ref={productInfoRef} />
       <AddVariantInfo ref={variantInfoRef} />
-      <div className="text-right mt-6">
-        <Button role="submit" className="w-fit">
+      <div className="mt-6 text-right">
+        <Button role="submit" fullWidth={false}>
           Thêm sản phẩm
         </Button>
       </div>

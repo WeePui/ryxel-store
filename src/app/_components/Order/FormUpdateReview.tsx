@@ -1,7 +1,6 @@
 import { Order } from "@/app/_types/order";
 import { useCallback, useState, useTransition } from "react";
 import OrderReviewItem from "./OrderReviewItem";
-import Spinner from "../UI/Spinner";
 import Button from "../UI/Button";
 import { ReviewUpdateInput } from "@/app/_types/validateInput";
 import { updateReviewsByOrderAction } from "@/app/_libs/actions";
@@ -32,16 +31,16 @@ export default function FormUpdateReview({
         images: item.review!.images || [],
         video: item.review!.video || null,
       };
-    })
+    }),
   );
 
   const handleReviewUpdate = useCallback(
     (_id: string, reviewData: ReviewUpdateInput) => {
       setReviews((prev) =>
-        prev.map((r) => (r._id === _id ? { ...reviewData, _id } : r))
+        prev.map((r) => (r._id === _id ? { ...reviewData, _id } : r)),
       );
     },
-    []
+    [],
   );
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -60,8 +59,8 @@ export default function FormUpdateReview({
     new Date(order.createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000;
 
   return (
-    <form className="max-w-3xl w-[600px] md:max-w-full" onSubmit={handleSubmit}>
-      <h1 className="font-title text-2xl mb-6">Đánh giá sản phẩm</h1>
+    <form className="w-[600px] max-w-3xl md:max-w-full" onSubmit={handleSubmit}>
+      <h1 className="mb-6 font-title text-2xl">Đánh giá sản phẩm</h1>
       <div className="flex flex-col gap-6">
         {reviewedLineItems.map((item) => (
           <OrderReviewItem
@@ -72,19 +71,19 @@ export default function FormUpdateReview({
             onReviewUpdate={(reviewData) => {
               handleReviewUpdate(
                 item.review!._id,
-                reviewData as unknown as ReviewUpdateInput
+                reviewData as unknown as ReviewUpdateInput,
               );
             }}
             setIsUpdating={setIsUpdating}
           />
         ))}
       </div>
-      <div className="flex justify-end mt-6">
+      <div className="mt-6 flex justify-end">
         {!isUpdating ? (
           <Button onClick={closeModal}>Xác nhận</Button>
         ) : (
-          <Button role="submit" disabled={isPending}>
-            {isPending ? <Spinner /> : "Gửi đánh giá"}
+          <Button role="submit" loading={isPending}>
+            Gửi đánh giá
           </Button>
         )}
       </div>

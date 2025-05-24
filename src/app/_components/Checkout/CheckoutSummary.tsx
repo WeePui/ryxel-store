@@ -1,16 +1,15 @@
-'use client';
+"use client";
 
-import { useActionState, useEffect, useState, useTransition } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import Button from '../UI/Button';
-import PaymentMethods from '../UI/PaymentMethods';
-import Spinner from '../UI/Spinner';
-import { verifyDiscountCodeAction } from '@/app/_libs/actions';
-import { FaCheck, FaXmark } from 'react-icons/fa6';
-import formatMoney from '@/app/_utils/formatMoney';
-import CheckoutButton from './CheckoutButton';
-import { Address } from '@/app/_types/address';
-import { getShippingFee } from '@/app/_libs/apiServices';
+import { useActionState, useEffect, useState, useTransition } from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import Button from "../UI/Button";
+import PaymentMethods from "../UI/PaymentMethods";
+import { verifyDiscountCodeAction } from "@/app/_libs/actions";
+import { FaCheck, FaXmark } from "react-icons/fa6";
+import formatMoney from "@/app/_utils/formatMoney";
+import CheckoutButton from "./CheckoutButton";
+import { Address } from "@/app/_types/address";
+import { getShippingFee } from "@/app/_libs/apiServices";
 
 interface CheckoutItem {
   product: string;
@@ -37,12 +36,12 @@ function CheckoutSummary({
 }: CheckoutSummaryProps) {
   const [discountState, action, isPending] = useActionState(
     verifyDiscountCodeAction,
-    { success: false, discountAmount: 0, code: code && '', errors: {} }
+    { success: false, discountAmount: 0, code: code && "", errors: {} },
   );
   const [isApplyVoucher, setIsApplyVoucher] = useState(false);
   const [loadingShippingFee, startTransition] = useTransition();
   const [shippingFee, setShippingFee] = useState<number>(0);
-  const [expectedDeliveryDate, setExpectedDeliveryDate] = useState<string>('');
+  const [expectedDeliveryDate, setExpectedDeliveryDate] = useState<string>("");
 
   useEffect(() => {
     if (address) {
@@ -60,7 +59,7 @@ function CheckoutSummary({
 
   return (
     <div className="sticky top-20 flex flex-col divide-y-2 divide-gray-300 rounded-xl bg-grey-100 px-4 font-semibold">
-      <div className="flex items-center justify-between py-4 flex-col gap-2">
+      <div className="flex flex-col items-center justify-between gap-2 py-4">
         <h2 className="text-2xl font-bold">Tóm tắt đơn hàng</h2>
         <p className="text-xs text-grey-400">
           *Lưu ý: bạn chỉ có thể huỷ đơn trong vòng 30 phút kể từ khi đặt hàng
@@ -79,7 +78,7 @@ function CheckoutSummary({
         </h3>
         <div
           className={`overflow-hidden transition-all duration-300 ${
-            isApplyVoucher ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            isApplyVoucher ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           {isApplyVoucher &&
@@ -103,7 +102,7 @@ function CheckoutSummary({
                     name="code"
                     placeholder="Voucher code"
                     className="w-full rounded-lg border-2 border-grey-300 bg-transparent p-4 text-lg font-semibold transition-all duration-300 focus:border-primary-default"
-                    defaultValue={discountState?.code || ''}
+                    defaultValue={discountState?.code || ""}
                     onChange={(e) => onCodeChange?.(e.target.value)}
                   />
                   <input
@@ -111,12 +110,8 @@ function CheckoutSummary({
                     type="hidden"
                     value={JSON.stringify(lineItems)}
                   />
-                  <Button role="submit" disabled={isPending}>
-                    {isPending ? (
-                      <Spinner />
-                    ) : (
-                      <span className="text-base">Dùng</span>
-                    )}
+                  <Button role="submit" loading={isPending}>
+                    Dùng
                   </Button>
                 </div>
               </form>
@@ -133,9 +128,9 @@ function CheckoutSummary({
             <h3>Phí vận chuyển</h3>
             <span>{formatMoney(shippingFee)}</span>
           </div>
-          <p className="text-xs text-gray-500 text-right">
-            *Dự kiến giao hàng:{' '}
-            {new Date(expectedDeliveryDate).toLocaleDateString('vi-VN')}
+          <p className="text-right text-xs text-gray-500">
+            *Dự kiến giao hàng:{" "}
+            {new Date(expectedDeliveryDate).toLocaleDateString("vi-VN")}
           </p>
         </div>
         {discountState?.success && (
@@ -150,7 +145,9 @@ function CheckoutSummary({
         <h3>Tổng thanh toán</h3>
         <span>
           {formatMoney(
-            subtotal - (discountState?.discountAmount || 0) + (shippingFee || 0)
+            subtotal -
+              (discountState?.discountAmount || 0) +
+              (shippingFee || 0),
           )}
         </span>
       </div>
@@ -158,9 +155,9 @@ function CheckoutSummary({
       <div className="flex w-full flex-col">
         <CheckoutButton
           lineItems={lineItems}
-          address={address?._id || ''}
-          paymentMethod={paymentMethod || ''}
-          code={discountState?.code || ''}
+          address={address?._id || ""}
+          paymentMethod={paymentMethod || ""}
+          code={discountState?.code || ""}
           loading={loadingShippingFee}
         />
         <div className="my-5 flex flex-col items-center text-xs">

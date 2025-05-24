@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { FaMapLocationDot } from 'react-icons/fa6';
-import ConfirmDialogue from '../UI/ConfirmDialogue';
-import Modal from '../UI/Modal';
-import { useRouter } from 'next/navigation';
-import FormAddAddress from '../Address/FormAddAddress';
-import Button from '../UI/Button';
-import CheckoutAddressList from './CheckoutAddressList';
-import { Address } from '@/app/_types/address';
+import { useEffect, useState } from "react";
+import { FaMapLocationDot } from "react-icons/fa6";
+import ConfirmDialogue from "../UI/ConfirmDialogue";
+import Modal from "../UI/Modal";
+import { useRouter } from "next/navigation";
+import FormAddAddress from "../Address/FormAddAddress";
+import Button from "../UI/Button";
+import CheckoutAddressList from "./CheckoutAddressList";
+import { Address } from "@/app/_types/address";
 
 interface SelectAddressProps {
   addresses: Address[];
@@ -41,11 +41,12 @@ function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
     } else {
       handleSelectAddress(defaultAddress);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addresses]);
 
   function handleCancelAddFirstAddress() {
     if (addresses.length === 0 && !isModalAddAddressVisible)
-      router.replace('/cart');
+      router.replace("/cart");
   }
 
   function handleSelectAddress(address: Address) {
@@ -74,7 +75,7 @@ function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
           {selectedAddress && (
             <>
               <div className="flex items-center gap-2">
-                <span className="font-semibold whitespace-nowrap">
+                <span className="whitespace-nowrap font-semibold">
                   {selectedAddress.fullname}
                 </span>
                 <span className="text-xl font-thin text-grey-default">
@@ -86,7 +87,7 @@ function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
               </div>
               <div className="pl-6 lg:pl-0">
                 <p className="text-grey-default">
-                  {selectedAddress.address}, {selectedAddress.ward?.name},{' '}
+                  {selectedAddress.address}, {selectedAddress.ward?.name},{" "}
                   {selectedAddress.district?.name}, {selectedAddress.city?.name}
                 </p>
                 {selectedAddress.isDefault && (
@@ -99,7 +100,7 @@ function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
           )}
           <div className="ml-10 lg:ml-0 lg:mt-4 lg:w-full">
             <Button
-              type="tertiary"
+              variant="tertiary"
               onClick={() => setIsModalSelectAddressVisible(true)}
             >
               Thay đổi

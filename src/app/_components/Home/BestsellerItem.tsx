@@ -12,7 +12,6 @@ import { useTransition } from "react";
 import { addOrUpdateCartItemAction } from "@/app/_libs/actions";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import Spinner from "../UI/Spinner";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface BestsellerItemProps {
@@ -69,21 +68,11 @@ export default function BestsellerItem({ item }: BestsellerItemProps) {
           <span className="text-sm text-gray-400">
             {language === "vi" ? `Đã bán: ${item.sold}` : `Sold: ${item.sold}`}
           </span>
-        </p>
+        </p>{" "}
         <div className="mt-auto flex pt-4">
           {" "}
-          <Button
-            onClick={handleAddToCart}
-            className="w-full"
-            disabled={pending}
-          >
-            {pending ? (
-              <Spinner />
-            ) : language === "vi" ? (
-              "Thêm vào giỏ hàng"
-            ) : (
-              "Add to Cart"
-            )}
+          <Button onClick={handleAddToCart} fullWidth loading={pending}>
+            {language === "vi" ? "Thêm vào giỏ hàng" : "Add to Cart"}
           </Button>
           <WishlistProvider>
             <div className="absolute right-2 top-2 z-10">

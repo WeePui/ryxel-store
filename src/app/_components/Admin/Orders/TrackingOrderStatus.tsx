@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { Order } from '@/app/_types/order';
-import Card from '../../UI/Card';
-import Button from '../../UI/Button';
-import { useTransition } from 'react';
-import { createShippingOrderAction } from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
-import TrackingTimeline from '../../UI/TrackingTimeline';
-import NavLink from '../../UI/NavLink';
-import { mappingShippingStatus } from '@/app/_utils/mappingShippingStatus';
+import { Order } from "@/app/_types/order";
+import Card from "../../UI/Card";
+import Button from "../../UI/Button";
+import { useTransition } from "react";
+import { createShippingOrderAction } from "@/app/_libs/actions";
+import { toast } from "react-toastify";
+import TrackingTimeline from "../../UI/TrackingTimeline";
+import NavLink from "../../UI/NavLink";
+import { mappingShippingStatus } from "@/app/_utils/mappingShippingStatus";
 
 interface TrackingOrderStatusProps {
   order: Order;
@@ -23,13 +23,13 @@ export default function TrackingOrderStatus({
     startTransition(async () => {
       const result = await createShippingOrderAction(
         order._id,
-        order.orderCode
+        order.orderCode,
       );
 
       if (result.success) {
-        toast.success('Tạo đơn vận chuyển thành công');
+        toast.success("Tạo đơn vận chuyển thành công");
       } else {
-        toast.error('Tạo đơn vận chuyển thất bại: ' + result.errors!.message);
+        toast.error("Tạo đơn vận chuyển thất bại: " + result.errors!.message);
       }
     });
   };
@@ -37,7 +37,7 @@ export default function TrackingOrderStatus({
   return (
     <Card title="Theo dõi đơn hàng">
       {order.shippingTracking?.ghnOrderCode ? (
-        <div className="flex xl:flex-col xl:gap-4 gap-10">
+        <div className="flex gap-10 xl:flex-col xl:gap-4">
           <div className="mt-4 flex flex-col gap-2">
             <p className="font-semibold">
               <span className="text-sm text-grey-500">Mã vận đơn: </span>
@@ -47,7 +47,7 @@ export default function TrackingOrderStatus({
             </p>
             <p className="font-semibold">
               <span className="text-sm text-grey-500">
-                Trạng thái hiện tại:{' '}
+                Trạng thái hiện tại:{" "}
               </span>
               <span className="text-lg">
                 {mappingShippingStatus(order.shippingTracking.trackingStatus)}
@@ -55,20 +55,20 @@ export default function TrackingOrderStatus({
             </p>
             <p className="font-semibold">
               <span className="text-sm text-grey-500">
-                Thời gian dự kiến giao hàng:{' '}
+                Thời gian dự kiến giao hàng:{" "}
               </span>
               <span className="text-lg">
                 {new Date(
-                  order.shippingTracking.expectedDeliveryDate!
-                )?.toLocaleDateString('vi-VN', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
+                  order.shippingTracking.expectedDeliveryDate!,
+                )?.toLocaleDateString("vi-VN", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
               </span>
             </p>
             <p className="font-semibold">
-              <span className="text-sm text-grey-500">Đơn vị vận chuyển: </span>{' '}
+              <span className="text-sm text-grey-500">Đơn vị vận chuyển: </span>{" "}
               <span className="text-lg">Giao Hàng Nhanh</span>
             </p>
             <p className="font-semibold">
@@ -83,8 +83,8 @@ export default function TrackingOrderStatus({
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center flex-col gap-4 mt-4">
-          <p className="text-grey-300 font-medium">
+        <div className="mt-4 flex flex-col items-center justify-center gap-4">
+          <p className="font-medium text-grey-300">
             Không có thông tin vận chuyển.
           </p>
           <Button
@@ -92,19 +92,19 @@ export default function TrackingOrderStatus({
             onClick={handleCreateShippingOrder}
             disabled={
               pending ||
-              order.status === 'cancelled' ||
-              order.status === 'refunded'
+              order.status === "cancelled" ||
+              order.status === "refunded"
             }
             loading={pending}
-            type={
-              order.status === 'cancelled' || order.status === 'refunded'
-                ? 'danger'
-                : 'primary'
+            variant={
+              order.status === "cancelled" || order.status === "refunded"
+                ? "danger"
+                : "primary"
             }
           >
-            {order.status === 'cancelled' || order.status === 'refunded'
-              ? 'Đơn hàng đã bị huỷ'
-              : 'Tạo đơn vận chuyển'}
+            {order.status === "cancelled" || order.status === "refunded"
+              ? "Đơn hàng đã bị huỷ"
+              : "Tạo đơn vận chuyển"}
           </Button>
         </div>
       )}

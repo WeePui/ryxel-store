@@ -31,21 +31,23 @@ function CategoryFilter({ categories }: CategoryFilterProps) {
       <div className="flex h-20 w-full items-center overflow-x-auto rounded-lg bg-grey-100 lg:scrollbar-hide sm:rounded-none">
         <div className={`flex flex-shrink-0 gap-2 px-5 md:px-2`}>
           <Button
-            type="filter"
+            variant="filter"
             onClick={() => handleFilter("")}
             active={!currentCategory}
+            rounded="pill"
           >
-            <span>Tất cả</span>
+            Tất cả
           </Button>
           {categories.map((category) => (
             <Button
               key={category.slug}
-              type="filter"
+              variant="filter"
               onClick={() => handleFilter(category.slug)}
               active={category.slug === currentCategory}
+              rounded="pill"
+              icon={categoryIcons[category.slug] || <MdCategory />}
             >
-              {categoryIcons[category.slug] || <MdCategory />}
-              <span>{categoryNames[category.slug] || category.name}</span>
+              {categoryNames[category.slug] || category.name}
             </Button>
           ))}
         </div>

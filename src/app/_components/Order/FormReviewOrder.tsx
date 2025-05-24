@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import { Order } from '@/app/_types/order';
-import OrderReviewItem from './OrderReviewItem';
-import { useCallback, useState, useTransition } from 'react';
-import { ReviewInput } from '@/app/_types/validateInput';
-import Button from '../UI/Button';
-import { createReviewsByOrderAction } from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
-import Spinner from '../UI/Spinner';
+import { Order } from "@/app/_types/order";
+import OrderReviewItem from "./OrderReviewItem";
+import { useCallback, useState, useTransition } from "react";
+import { ReviewInput } from "@/app/_types/validateInput";
+import Button from "../UI/Button";
+import { createReviewsByOrderAction } from "@/app/_libs/actions";
+import { toast } from "react-toastify";
 
 interface FormReviewOrderProps {
   order: Order;
@@ -29,7 +28,7 @@ export default function FormReviewOrder({
         return newReviews;
       });
     },
-    []
+    [],
   );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,7 +41,7 @@ export default function FormReviewOrder({
         return;
       }
 
-      toast.success('Đánh giá của bạn đã được chúng tôi ghi nhận!');
+      toast.success("Đánh giá của bạn đã được chúng tôi ghi nhận!");
       if (closeModal) {
         closeModal();
       }
@@ -50,8 +49,8 @@ export default function FormReviewOrder({
   };
 
   return (
-    <form className="max-w-3xl w-[600px] md:max-w-full" onSubmit={handleSubmit}>
-      <h1 className="font-title text-2xl mb-6">Đánh giá sản phẩm</h1>
+    <form className="w-[600px] max-w-3xl md:max-w-full" onSubmit={handleSubmit}>
+      <h1 className="mb-6 font-title text-2xl">Đánh giá sản phẩm</h1>
       <div className="flex flex-col gap-6">
         {order.lineItems.map((item, index) => (
           <OrderReviewItem
@@ -63,9 +62,9 @@ export default function FormReviewOrder({
           />
         ))}
       </div>
-      <div className="flex justify-end mt-6">
-        <Button role="submit" disabled={isPending}>
-          {isPending ? <Spinner /> : 'Gửi đánh giá'}
+      <div className="mt-6 flex justify-end">
+        <Button role="submit" loading={isPending} fullWidth>
+          Gửi đánh giá
         </Button>
       </div>
     </form>

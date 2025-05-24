@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useState, useTransition } from 'react';
-import Button from '../UI/Button';
-import { useRouter } from 'next/navigation';
+import { useState, useTransition } from "react";
+import Button from "../UI/Button";
+import { useRouter } from "next/navigation";
 import {
   addMultipleItemsToCartAction,
   cancelOrderAction,
-} from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
-import ConfirmDialogue from '../UI/ConfirmDialogue';
-import Modal from '../UI/Modal';
-import FormReviewOrder from '../Order/FormReviewOrder';
-import { Order } from '@/app/_types/order';
-import FormUpdateReview from '../Order/FormUpdateReview';
-import { FaCartPlus } from 'react-icons/fa6';
-import { Product } from '@/app/_types/product';
+} from "@/app/_libs/actions";
+import { toast } from "react-toastify";
+import ConfirmDialogue from "../UI/ConfirmDialogue";
+import Modal from "../UI/Modal";
+import FormReviewOrder from "../Order/FormReviewOrder";
+import { Order } from "@/app/_types/order";
+import FormUpdateReview from "../Order/FormUpdateReview";
+import { FaCartPlus } from "react-icons/fa6";
+import { Product } from "@/app/_types/product";
 
 interface OrderDetailsCTAProps {
   order: Order;
@@ -42,14 +42,14 @@ export default function OrderDetailsCTA({
   const [isPending, startTransition] = useTransition();
 
   const isCancellable =
-    orderStatus === 'unpaid' ||
-    (orderStatus === 'pending' &&
+    orderStatus === "unpaid" ||
+    (orderStatus === "pending" &&
       (currentTime.getTime() - orderTime.getTime()) / (1000 * 60) < 30);
   const isReviewable =
-    orderStatus === 'delivered' &&
+    orderStatus === "delivered" &&
     order.reviewCount === 0 &&
     currentTime.getTime() - orderTime.getTime() < 7 * 24 * 60 * 60 * 1000;
-  const isReviewViewable = orderStatus === 'delivered' && order.reviewCount > 0;
+  const isReviewViewable = orderStatus === "delivered" && order.reviewCount > 0;
 
   function handleBuyAgain() {
     router.push(`/checkout?buyAgain=1&orderCode=${orderCode}`);
@@ -63,7 +63,7 @@ export default function OrderDetailsCTA({
     startTransition(async () => {
       const result = await cancelOrderAction(orderId);
       if (result.success) {
-        toast.success('Đơn hàng đã được hủy thành công!');
+        toast.success("Đơn hàng đã được hủy thành công!");
       } else {
         toast.error(result?.errors?.message);
       }
@@ -81,13 +81,13 @@ export default function OrderDetailsCTA({
 
       const result = await addMultipleItemsToCartAction(lineItems);
       if (result.success) {
-        toast.success('Tất cả sản phẩm đã được thêm vào giỏ hàng.', {
+        toast.success("Tất cả sản phẩm đã được thêm vào giỏ hàng.", {
           icon: <FaCartPlus className="text-primary-500" />,
         });
 
-        router.push('/cart');
+        router.push("/cart");
       } else {
-        toast.error('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.', {
+        toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.", {
           icon: <FaCartPlus className="text-red-500" />,
         });
       }
@@ -96,18 +96,14 @@ export default function OrderDetailsCTA({
 
   return (
     <div className="flex items-center gap-4">
-      {orderStatus === 'unpaid' && (
-        <Button type="primary" onClick={handleCheckout} size="medium">
+      {orderStatus === "unpaid" && (
+        <Button onClick={handleCheckout} size="medium">
           Thanh toán
         </Button>
       )}
       {isReviewable && (
         <>
-          <Button
-            type="primary"
-            size="medium"
-            onClick={() => setIsModalOpen(true)}
-          >
+          <Button size="medium" onClick={() => setIsModalOpen(true)}>
             Đánh giá
           </Button>
           {isModalOpen && (
@@ -120,10 +116,9 @@ export default function OrderDetailsCTA({
           )}
         </>
       )}
-      {orderStatus === 'cancelled' || orderStatus === 'delivered' ? (
+      {orderStatus === "cancelled" || orderStatus === "delivered" ? (
         <>
           <Button
-            type="primary"
             onClick={() => {
               setBuyAgainDialogueOpen(true);
             }}
@@ -135,7 +130,7 @@ export default function OrderDetailsCTA({
             <Modal onClose={() => setBuyAgainDialogueOpen(false)}>
               <ConfirmDialogue
                 message={
-                  'Bạn muốn chuyển đến trang thanh toán hay thêm toàn bộ vào giỏ hàng?'
+                  "Bạn muốn chuyển đến trang thanh toán hay thêm toàn bộ vào giỏ hàng?"
                 }
                 confirmText="Chuyển đến thanh toán"
                 onConfirm={handleBuyAgain}
@@ -149,7 +144,7 @@ export default function OrderDetailsCTA({
       {isCancellable && (
         <>
           <Button
-            type="danger"
+            variant="danger"
             onClick={() => setIsDialogueOpen(true)}
             disabled={isPending}
             size="medium"
@@ -159,7 +154,7 @@ export default function OrderDetailsCTA({
           {isDialogueOpen && (
             <Modal onClose={() => setIsDialogueOpen(false)}>
               <ConfirmDialogue
-                message={'Bạn có chắc chắn muốn hủy đơn hàng này không?'}
+                message={"Bạn có chắc chắn muốn hủy đơn hàng này không?"}
                 onConfirm={handleCancelOrder}
                 onCancel={() => setIsDialogueOpen(false)}
               />
@@ -170,7 +165,7 @@ export default function OrderDetailsCTA({
       {isReviewViewable && (
         <>
           <Button
-            type="secondary"
+            variant="secondary"
             size="medium"
             onClick={() => setIsModalOpen(true)}
           >
@@ -188,7 +183,7 @@ export default function OrderDetailsCTA({
       )}
       {showDetailsButton && (
         <Button
-          type="secondary"
+          variant="secondary"
           onClick={() => router.push(`orders/${orderCode}`)}
           size="medium"
         >

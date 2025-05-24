@@ -1,6 +1,6 @@
-import Button from '@/app/_components/UI/Button';
-import Image from 'next/image';
-import React from 'react';
+import Button from "@/app/_components/UI/Button";
+import Image from "next/image";
+import React from "react";
 
 export default function Page() {
   return (
@@ -15,7 +15,7 @@ export default function Page() {
         <p>Khách hàng yêu dấu đang làm gì ở đây vậy?</p>
         <p>Hãy thử tìm kiếm gì đó trên thanh tìm kiếm </p>
         <p className="mb-4 mt-2">hoặc</p>
-        <Button type="primary" href="/">
+        <Button variant="primary" href="/">
           Trở về trang chủ
         </Button>
       </div>

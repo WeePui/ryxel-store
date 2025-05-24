@@ -9,6 +9,7 @@ import { getProfile } from "../_libs/apiServices";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { ToggleAdminSidebarProvider } from "../_contexts/ToggleAdminSidebarContext";
+import LanguageClientProvider from "../_components/UI/LanguageClientProvider";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -56,15 +57,17 @@ export default async function RootLayout({
           "flex min-h-screen overflow-x-hidden bg-grey-50 text-primary-default antialiased"
         }
       >
-        <ToastProvider>
-          <ToggleAdminSidebarProvider>
-            <AdminSidebar />
-            <div className="flex h-screen flex-1 flex-col overflow-hidden">
-              <AdminHeader user={user} />
-              <main className="flex-1 overflow-auto">{children}</main>
-            </div>
-          </ToggleAdminSidebarProvider>
-        </ToastProvider>
+        <LanguageClientProvider>
+          <ToastProvider>
+            <ToggleAdminSidebarProvider>
+              <AdminSidebar />
+              <div className="flex h-screen flex-1 flex-col overflow-hidden">
+                <AdminHeader user={user} />
+                <main className="flex-1 overflow-auto">{children}</main>
+              </div>
+            </ToggleAdminSidebarProvider>
+          </ToastProvider>
+        </LanguageClientProvider>
       </body>
     </html>
   );

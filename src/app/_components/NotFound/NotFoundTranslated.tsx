@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
 import Button from "../UI/Button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { FaHouse } from "react-icons/fa6";
 
 export default function NotFoundTranslated() {
   const { t } = useLanguage();
@@ -23,8 +23,10 @@ export default function NotFoundTranslated() {
         {t("notFound.title")}
       </h1>
       <p className="mb-4 text-xl text-primary-400">{t("notFound.subtitle")}</p>
-      <p className="mb-8 max-w-md text-gray-600">{t("notFound.description")}</p>
-      <Button onClick={() => router.push("/")} type="primary">
+      <p className="mb-8 max-w-md text-gray-600">
+        {t("notFound.description")}
+      </p>{" "}
+      <Button onClick={() => router.push("/")} size="large" icon={<FaHouse />}>
         {t("notFound.goHome")}
       </Button>
     </div>

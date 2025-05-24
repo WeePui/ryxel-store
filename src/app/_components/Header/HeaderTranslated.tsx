@@ -37,7 +37,9 @@ export default function HeaderTranslated({
           <div className="lg:hidden">
             <SearchBar onHeader={true} />
           </div>
-          <LanguageSwitcher />
+          <div className="sm:hidden">
+            <LanguageSwitcher />
+          </div>
           <Suspense fallback={<Spinner />}>
             <HeaderCart cart={cart} />
           </Suspense>

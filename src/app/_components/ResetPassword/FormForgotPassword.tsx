@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useActionState } from 'react';
-import Spinner from '@/app/_components/UI/Spinner';
-import { forgotPasswordAction } from '@libs/actions';
-import { FaCircleExclamation, FaCircleQuestion } from 'react-icons/fa6';
-import Input from '@/app/_components/UI/Input';
-import Button from '@/app/_components/UI/Button';
-import { hasFormError } from '@/app/_helpers/hasFormError';
+import { useActionState } from "react";
+import Spinner from "@/app/_components/UI/Spinner";
+import { forgotPasswordAction } from "@libs/actions";
+import { FaCircleExclamation, FaCircleQuestion } from "react-icons/fa6";
+import Input from "@/app/_components/UI/Input";
+import Button from "@/app/_components/UI/Button";
+import { hasFormError } from "@/app/_helpers/hasFormError";
 
 function FormForgotPassword() {
   const [state, action, isPending] = useActionState(forgotPasswordAction, {
     success: false,
-    errors: { message: '', email: '' },
+    errors: { message: "", email: "" },
   });
 
   if (isPending) return <Spinner />;
@@ -22,12 +22,12 @@ function FormForgotPassword() {
         <p className="flex flex-col items-center gap-2 text-sm text-grey-300">
           <span className="block">
             Chúng tôi đã gửi một e-mail tới địa chỉ e-mail mà bạn đã dùng để
-            đăng kí{' '}
+            đăng kí{" "}
           </span>
           Có một liên kết (URL) được đính kèm trong e-mail, xin vui lòng bấm vào
           liên kết đó để đặt lại mật khẩu.
         </p>
-        <div className="flex w-full max-w-xl flex-col gap-2 rounded-lg bg-white px-16 lg:px-8 py-12 shadow-sm">
+        <div className="flex w-full max-w-xl flex-col gap-2 rounded-lg bg-white px-16 py-12 shadow-sm lg:px-8">
           <h4 className="flex items-center gap-2 text-lg font-bold">
             <FaCircleQuestion /> Bạn không tìm thấy e-mail?
           </h4>
@@ -62,9 +62,9 @@ function FormForgotPassword() {
       </p>
       <form
         action={action}
-        className="flex w-full max-w-xl flex-col items-center gap-8 rounded-lg bg-white px-16 lg:px-8 py-12 shadow-sm"
+        className="flex w-full max-w-xl flex-col items-center gap-8 rounded-lg bg-white px-16 py-12 shadow-sm lg:px-8"
       >
-        {hasFormError('message', state.errors) && (
+        {hasFormError("message", state.errors) && (
           <p className="flex items-center gap-2 p-2 text-sm text-red-500">
             <FaCircleExclamation />
             {state.errors.message}
@@ -75,10 +75,10 @@ function FormForgotPassword() {
           name="email"
           type="email"
           label="Địa chỉ e-mail"
-          defaultValue={state?.errors.email || ''}
+          defaultValue={state?.errors.email || ""}
           error={!!state?.errors.email}
         />
-        <Button type="primary" role="submit" disabled={isPending}>
+        <Button role="submit" loading={isPending}>
           Tiếp theo
         </Button>
       </form>

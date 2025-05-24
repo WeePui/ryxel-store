@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { Product } from '@/app/_types/product';
-import formatMoney from '@/app/_utils/formatMoney';
-import Image from 'next/image';
-import React, { useState, useTransition } from 'react';
-import Button from '../UI/Button';
-import { FaCartShopping, FaTrash } from 'react-icons/fa6';
-import { useWishlist } from '@/app/_contexts/WishlistContext';
-import { addOrUpdateCartItemAction } from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-import Spinner from '../UI/Spinner';
-import { LineItem } from '@/app/_types/lineItem';
+import { Product } from "@/app/_types/product";
+import formatMoney from "@/app/_utils/formatMoney";
+import Image from "next/image";
+import React, { useState, useTransition } from "react";
+import Button from "../UI/Button";
+import { FaCartShopping, FaTrash } from "react-icons/fa6";
+import { useWishlist } from "@/app/_contexts/WishlistContext";
+import { addOrUpdateCartItemAction } from "@/app/_libs/actions";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import Spinner from "../UI/Spinner";
+import { LineItem } from "@/app/_types/lineItem";
 
 interface WishlistProductItemProps {
   item: Product;
@@ -33,18 +33,18 @@ export default function WishlistProductItem({
     startTransition(async () => {
       const result = await addOrUpdateCartItemAction(
         item._id,
-        selectedVariant._id,
-        1
+        selectedVariant._id!,
+        1,
       );
       if (result.success) {
-        toast.success('Sản phẩm đã được thêm vào giỏ hàng.', {
+        toast.success("Sản phẩm đã được thêm vào giỏ hàng.", {
           icon: <FaCartShopping className="text-primary-500" />,
         });
       }
       if (result.errors) {
         if (result.errors.user) {
-          toast.error('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
-          router.push('/login');
+          toast.error("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+          router.push("/login");
         } else toast.error(result.errors.message);
       }
     });
@@ -53,34 +53,34 @@ export default function WishlistProductItem({
   if (isMobile) {
     return (
       <div className="flex gap-4 rounded-lg border border-gray-200 p-4 sm:flex-col sm:gap-2">
-        <div className="relative aspect-square w-24 h-24 sm:w-full flex-shrink-0 rounded-md overflow-hidden border border-gray-300">
+        <div className="relative aspect-square h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-300 sm:w-full">
           <Image
-            src={selectedVariant.images[0]}
+            src={selectedVariant.images[0] as string}
             alt={item.name}
             fill
             className="object-cover sm:object-contain"
           />
         </div>
-        <div className="flex flex-col gap-2 flex-1">
-          <div className="flex justify-between items-center">
-            <span className="font-semibold text-sm">{item.name}</span>
+        <div className="flex flex-1 flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold">{item.name}</span>
             <FaTrash
               onClick={() => removeProductFromWishlist(item._id)}
-              className="text-gray-400 hover:text-red-500 cursor-pointer"
+              className="cursor-pointer text-gray-400 hover:text-red-500"
             />
           </div>
 
           <select
-            className="w-full border border-gray-300 rounded-md p-2 text-sm"
+            className="w-full rounded-md border border-gray-300 p-2 text-sm"
             onChange={(e) => {
               const selected = item.variants.find(
-                (variant) => variant._id === e.target.value
+                (variant) => variant._id === e.target.value,
               );
               if (selected) {
                 setSelectedVariant(() => selected);
                 onSelectVariant({
                   product: item._id,
-                  variant: selected._id,
+                  variant: selected._id!,
                   quantity: 1,
                 });
               }
@@ -93,13 +93,13 @@ export default function WishlistProductItem({
             ))}
           </select>
 
-          <div className="flex justify-between items-center mt-2">
+          <div className="mt-2 flex items-center justify-between">
             <span className="text-sm font-semibold">
-              <span className="text-gray-400 font-normal">Giá tiền: </span>
+              <span className="font-normal text-gray-400">Giá tiền: </span>
               {formatMoney(item.lowestPrice)}
             </span>
-            <Button size="small" disabled={isPending} onClick={handleAddToCart}>
-              {isPending ? <Spinner /> : 'Thêm giỏ hàng'}
+            <Button size="small" loading={isPending} onClick={handleAddToCart}>
+              Thêm giỏ hàng
             </Button>
           </div>
         </div>
@@ -111,37 +111,37 @@ export default function WishlistProductItem({
     <tr className="p-4">
       <td className="w-1 text-center">
         <div
-          className="flex justify-center items-center h-full"
+          className="flex h-full items-center justify-center"
           onClick={() => removeProductFromWishlist(item._id)}
         >
-          <FaTrash className="text-gray-400 hover:text-red-500 cursor-pointer" />
+          <FaTrash className="cursor-pointer text-gray-400 hover:text-red-500" />
         </div>
       </td>
-      <td className="py-4 px-2">
-        <div className="relative aspect-square w-20 h-20 rounded-md border-[1px] border-gray-200 overflow-hidden">
+      <td className="px-2 py-4">
+        <div className="relative aspect-square h-20 w-20 overflow-hidden rounded-md border-[1px] border-gray-200">
           <Image
-            src={selectedVariant.images[0]}
+            src={selectedVariant.images[0] as string}
             alt={item.name}
             fill
             className="object-cover"
           />
         </div>
       </td>
-      <td className="text-sm font-medium whitespace-normal break-words">
+      <td className="whitespace-normal break-words text-sm font-medium">
         <span>{item.name}</span>
       </td>
       <td>
         <select
-          className="w-full border border-gray-300 rounded-md p-2 text-sm"
+          className="w-full rounded-md border border-gray-300 p-2 text-sm"
           onChange={(e) => {
             const selected = item.variants.find(
-              (variant) => variant._id === e.target.value
+              (variant) => variant._id === e.target.value,
             );
             if (selected) {
               setSelectedVariant(() => selected);
               onSelectVariant({
                 product: item._id,
-                variant: selected._id,
+                variant: selected._id!,
                 quantity: 1,
               });
             }
@@ -159,7 +159,7 @@ export default function WishlistProductItem({
       </td>
       <td>
         <Button size="small" disabled={isPending} onClick={handleAddToCart}>
-          {isPending ? <Spinner /> : 'Thêm giỏ hàng'}
+          {isPending ? <Spinner /> : "Thêm giỏ hàng"}
         </Button>
       </td>
     </tr>

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useActionState } from 'react';
-import Spinner from '@/app/_components/UI/Spinner';
-import { resetPasswordAction } from '@libs/actions';
-import { FaCircleExclamation, FaRegCircleXmark } from 'react-icons/fa6';
-import Input from '../UI/Input';
-import Button from '../UI/Button';
+import { useActionState } from "react";
+import Spinner from "@/app/_components/UI/Spinner";
+import { resetPasswordAction } from "@libs/actions";
+import { FaCircleExclamation, FaRegCircleXmark } from "react-icons/fa6";
+import Input from "../UI/Input";
+import Button from "../UI/Button";
 
 interface FormResetPasswordProps {
   resetToken: string;
@@ -21,7 +21,7 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
 
   if (state?.success === false) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-white px-16 lg:px-8 py-12 text-grey-400 shadow-sm">
+      <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-white px-16 py-12 text-grey-400 shadow-sm lg:px-8">
         <FaRegCircleXmark className="text-5xl text-red-500" />
         <p>Token lấy lại mật khẩu của bạn không hợp lệ hoặc đã hết hạn.</p>
         <p className="mb-4">
@@ -39,7 +39,7 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
       </p>
       <form
         action={action}
-        className="flex w-full max-w-xl flex-col items-center gap-8 rounded-lg bg-white  px-16 lg:px-8 py-12 shadow-sm"
+        className="flex w-full max-w-xl flex-col items-center gap-8 rounded-lg bg-white px-16 py-12 shadow-sm lg:px-8"
       >
         <div className="w-full">
           {state?.errors?.password && (
@@ -65,7 +65,7 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
           error={!!state?.errors?.password}
         />
         <input type="hidden" name="resetToken" value={resetToken} />
-        <Button type="primary" role="submit" disabled={isPending}>
+        <Button role="submit" loading={isPending}>
           Cập nhật mật khẩu
         </Button>
       </form>

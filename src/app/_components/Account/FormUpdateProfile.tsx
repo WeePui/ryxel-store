@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useActionState, useEffect, useState, useTransition } from 'react';
-import Spinner from '@/app/_components/UI/Spinner';
-import { sendOTPAction, updateProfileAction } from '@libs/actions';
-import { FaArrowUpRightFromSquare, FaCircleInfo } from 'react-icons/fa6';
-import NavLink from '@/app/_components/UI/NavLink';
-import Button from '../UI/Button';
-import Image from 'next/image';
-import { toast } from 'react-toastify';
-import imageCompression from 'browser-image-compression';
-import Loader from '../UI/Loader';
-import { User } from '@/app/_types/user';
-import { useRouter } from 'next/navigation';
+import { useActionState, useEffect, useState, useTransition } from "react";
+import Spinner from "@/app/_components/UI/Spinner";
+import { sendOTPAction, updateProfileAction } from "@libs/actions";
+import { FaArrowUpRightFromSquare, FaCircleInfo } from "react-icons/fa6";
+import NavLink from "@/app/_components/UI/NavLink";
+import Button from "../UI/Button";
+import Image from "next/image";
+import { toast } from "react-toastify";
+import imageCompression from "browser-image-compression";
+import Loader from "../UI/Loader";
+import { User } from "@/app/_types/user";
+import { useRouter } from "next/navigation";
 
 interface FormUpdateProfileProps {
   user: User;
@@ -25,8 +25,8 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
     updateProfileActionWithPhoto,
     {
       success: false,
-      errors: { name: '', photo: '', message: '' },
-    }
+      errors: { name: "", photo: "", message: "" },
+    },
   );
   const [previewPhoto, setPreviewPhoto] = useState(user.photo.url);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,17 +34,17 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
 
   useEffect(() => {
     if (state.success) {
-      toast.success('Profile updated successfully');
-      router.push('/account/profile');
+      toast.success("Profile updated successfully");
+      router.push("/account/profile");
       return;
     }
     if (state.errors) {
-      if ('message' in state.errors && state.errors.message) {
+      if ("message" in state.errors && state.errors.message) {
         toast.error(state.errors.message);
       }
       return;
     }
-  }, [state.success, state.errors]);
+  }, [state.success, state.errors, router]);
 
   if (isPending) return <Loader />;
 
@@ -64,7 +64,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
         setPreviewPhoto(URL.createObjectURL(compressedFile));
         setPhoto(compressedFile);
       } catch {
-        toast.error('Failed to compress image');
+        toast.error("Failed to compress image");
       } finally {
         setIsLoading(false);
       }
@@ -75,8 +75,8 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
     startTransition(async () => {
       const result = await sendOTPAction({ counter: 0 });
       if (result.success) {
-        toast.success('OTP sent successfully');
-        router.push('/signup/verifyEmail');
+        toast.success("OTP sent successfully");
+        router.push("/signup/verifyEmail");
       } else {
         toast.error(result.errors!.message);
       }
@@ -84,14 +84,14 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
   };
 
   const handlePhotoClick = () => {
-    document.getElementById('photo')!.click();
+    document.getElementById("photo")!.click();
   };
 
   return (
     <form className="flex py-2 md:flex-col" action={action}>
       <div className="flex flex-[7] flex-col gap-4">
         <div className="grid grid-cols-1 gap-6">
-          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4 md:grid-cols-1 md:items-start md:gap-2">
             <label
               htmlFor="name"
               className="text-right text-grey-300 md:text-left"
@@ -106,7 +106,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               className="col-span-3 w-full rounded-lg border-2 border-grey-300 p-2"
             />
           </div>
-          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4 md:grid-cols-1 md:items-start md:gap-2">
             <label
               htmlFor="gender"
               className="text-right text-grey-300 md:text-left"
@@ -121,7 +121,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                   value="male"
                   id="male"
                   className="capitalize"
-                  defaultChecked={user?.gender === 'male'}
+                  defaultChecked={user?.gender === "male"}
                 />
                 <label htmlFor="male">Nam</label>
               </div>
@@ -132,7 +132,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                   value="female"
                   id="female"
                   className="capitalize"
-                  defaultChecked={user?.gender === 'female'}
+                  defaultChecked={user?.gender === "female"}
                 />
                 <label htmlFor="female">Nữ</label>
               </div>
@@ -143,13 +143,13 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                   value="other"
                   id="other"
                   className="capitalize"
-                  defaultChecked={user?.gender === 'other'}
+                  defaultChecked={user?.gender === "other"}
                 />
                 <label htmlFor="other">Khác</label>
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4 md:grid-cols-1 md:items-start md:gap-2">
             <label
               htmlFor="email"
               className="text-right text-grey-300 md:text-left"
@@ -157,7 +157,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               Email
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
-              <span>{user && user.email}</span>{' '}
+              <span>{user && user.email}</span>{" "}
               {!user.emailVerified && (
                 <NavLink href="#" hoverUnderline={false}>
                   <div
@@ -171,7 +171,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               )}
             </div>
           </div>
-          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4 md:grid-cols-1 md:items-start md:gap-2">
             <label
               htmlFor="phone"
               className="text-right text-grey-300 md:text-left"
@@ -200,7 +200,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
           {
             //TODO: Add birthday field if OAuth can't get user's birthday
           }
-          <div className="grid grid-cols-4 md:grid-cols-1 md:items-start md:gap-2 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4 md:grid-cols-1 md:items-start md:gap-2">
             <label
               htmlFor="dob"
               className="text-right text-grey-300 md:text-left"
@@ -209,10 +209,10 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
               {user?.dob ? (
-                new Date(user.dob).toLocaleDateString('vi-VN', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
+                new Date(user.dob).toLocaleDateString("vi-VN", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
                 })
               ) : (
                 <span className="text-xs">(Bạn vẫn chưa thêm ngày sinh)</span>
@@ -224,7 +224,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
           <div className="w-auto justify-self-center">
             <Button
               role="submit"
-              disabled={isLoading || isPending}
+              loading={isLoading || isPending}
               size="medium"
             >
               Cập nhật hồ sơ
@@ -261,16 +261,16 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
             <Button
               role="button"
               onClick={handlePhotoClick}
-              disabled={isLoading || isPending}
+              loading={isLoading || isPending}
               size="small"
               className="md:hidden"
             >
               Đổi ảnh đại diện
             </Button>
-            <span className="items-center gap-2 mt-2 text-md font-semibold text-grey-300 hidden md:flex">
+            <span className="text-md mt-2 hidden items-center gap-2 font-semibold text-grey-300 md:flex">
               <FaCircleInfo /> Bấm vào ảnh để thay đổi
             </span>
-            <span className="text-md md:text-xs text-gray-400">
+            <span className="text-md text-gray-400 md:text-xs">
               Định dạng: .JPEG, .JPG, .PNG
             </span>
           </div>

@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useActionState, useEffect } from 'react';
-import { createCheckoutSessionAction } from '@libs/actions';
-import Button from '@components/UI/Button';
-import Spinner from '../UI/Spinner';
-import { toast } from 'react-toastify';
-import { useSearchParams } from 'next/navigation';
-import errorMessages from '@/app/_utils/mappingErrorMessages';
+import { useActionState, useEffect } from "react";
+import { createCheckoutSessionAction } from "@libs/actions";
+import Button from "@components/UI/Button";
+import Spinner from "../UI/Spinner";
+import { toast } from "react-toastify";
+import { useSearchParams } from "next/navigation";
+import errorMessages from "@/app/_utils/mappingErrorMessages";
 
 interface LineItem {
   product: string;
@@ -31,11 +31,11 @@ function CheckoutButton({
 }: CheckoutButtonProps) {
   const [state, action, isPending] = useActionState(
     createCheckoutSessionAction,
-    undefined
+    undefined,
   );
   const searchParams = useSearchParams();
-  const processPayment = searchParams.get('processPayment');
-  const orderCode = searchParams.get('orderCode');
+  const processPayment = searchParams.get("processPayment");
+  const orderCode = searchParams.get("orderCode");
 
   useEffect(() => {
     if (state?.errors) {
@@ -45,19 +45,19 @@ function CheckoutButton({
 
   return (
     <form action={action} className="flex w-full flex-col">
-      <input type="hidden" name="code" value={code || ''} />
-      <input type="hidden" name="address" value={address || ''} />
-      <input type="hidden" name="paymentMethod" value={paymentMethod || ''} />
+      <input type="hidden" name="code" value={code || ""} />
+      <input type="hidden" name="address" value={address || ""} />
+      <input type="hidden" name="paymentMethod" value={paymentMethod || ""} />
       <input type="hidden" name="lineItems" value={JSON.stringify(lineItems)} />
       <input
         type="hidden"
         name="processPayment"
-        value={processPayment || '0'}
+        value={processPayment || "0"}
       />
-      <input type="hidden" name="orderCode" value={orderCode || ''} />
+      <input type="hidden" name="orderCode" value={orderCode || ""} />
       {/* Added processPayment */}
-      <Button role="submit" disabled={isPending}>
-        {isPending || loading ? <Spinner /> : 'Tiến hành thanh toán'}
+      <Button role="submit" loading={isPending || loading} size="large">
+        Tiến hành thanh toán
       </Button>
     </form>
   );

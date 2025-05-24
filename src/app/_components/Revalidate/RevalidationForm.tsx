@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
-import { useSearchParams } from 'next/navigation';
-import { useActionState } from 'react';
-import { reauthenticateAction } from '@libs/actions';
-import Input from '@components/UI/Input';
-import Button from '@components/UI/Button';
-import { FaCircleExclamation } from 'react-icons/fa6';
-import Spinner from '../UI/Spinner';
+import { useSearchParams } from "next/navigation";
+import { useActionState } from "react";
+import { reauthenticateAction } from "@libs/actions";
+import Input from "@components/UI/Input";
+import Button from "@components/UI/Button";
+import { FaCircleExclamation } from "react-icons/fa6";
 
 function RevalidationForm() {
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get('redirect') || '/';
+  const redirectUrl = searchParams.get("redirect") || "/";
   const [state, action, isPending] = useActionState(
     reauthenticateAction.bind(null, redirectUrl),
-    undefined
+    undefined,
   );
 
   return (
@@ -33,8 +32,8 @@ function RevalidationForm() {
           error={!!state?.errors?.password}
         />
       </div>
-      <Button role="submit" disabled={isPending}>
-        {isPending ? <Spinner /> : 'Xác nhận'}
+      <Button role="submit" loading={isPending}>
+        Xác nhận
       </Button>
     </form>
   );

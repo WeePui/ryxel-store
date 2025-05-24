@@ -156,9 +156,17 @@ function HeaderNav({
         </li>
         <li onClick={onNavigate}>
           <NavLink href="/blogs">{t("header.blogs")}</NavLink>
-        </li>
+        </li>{" "}
         <li onClick={onNavigate}>
           <NavLink href="/about-us">{t("header.aboutUs")}</NavLink>
+        </li>
+        <li onClick={onNavigate}>
+          <NavLink href="/button-test" className="flex items-center gap-1">
+            <span className="rounded bg-primary-100 px-1 py-0.5 font-mono text-xs">
+              DEV
+            </span>
+            <span>Button Test</span>
+          </NavLink>
         </li>
       </ul>
     </nav>
