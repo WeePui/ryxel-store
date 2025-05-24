@@ -1,6 +1,6 @@
-import { Suspense } from 'react';
-import ProductsPage from '../../_components/Products/ProductsPage';
-import Loader from '../../_components/UI/Loader';
+import { Suspense } from "react";
+import ProductsPage from "../../_components/Products/ProductsPage";
+import Loader from "../../_components/UI/Loader";
 
 export const revalidate = 1800;
 
@@ -16,7 +16,7 @@ async function Page({ searchParams }: Props) {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center mx-auto h-screen">
+        <div className="flex h-screen items-center justify-center">
           <Loader />
         </div>
       }

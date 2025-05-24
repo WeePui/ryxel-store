@@ -1,10 +1,10 @@
-import { Suspense } from 'react';
-import { Metadata } from 'next';
-import Loader from '../../_components/UI/Loader';
+import { Suspense } from "react";
+import { Metadata } from "next";
+import Loader from "../../_components/UI/Loader";
 
 export const metadata: Metadata = {
-  title: 'Products Page',
-  description: 'This is the products page',
+  title: "Products Page",
+  description: "This is the products page",
 };
 
 async function Layout({
@@ -22,7 +22,11 @@ async function Layout({
 
   return (
     <Suspense
-      fallback={<Loader />}
+      fallback={
+        <div className="flex h-screen items-center justify-center">
+          <Loader />
+        </div>
+      }
       // key={cacheKey}
     >
       {children}

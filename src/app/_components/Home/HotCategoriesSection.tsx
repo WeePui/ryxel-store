@@ -4,63 +4,78 @@ import { useRouter } from "next/navigation";
 import { FaMouse } from "react-icons/fa";
 import { FaChair, FaGears, FaHeadphones, FaKeyboard } from "react-icons/fa6";
 import { PiDeskBold } from "react-icons/pi";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 export default function HotCategoriesSection() {
   const router = useRouter();
+  const { language } = useLanguage();
 
   return (
-    <section className="max-w-7xl w-full mx-auto bg-[#fefefe] py-14  lg:mt-4 rounded-2xl shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] px-10 md:px-2 bg-gradient-to-b from-slate-100 to-white">
+    <section className="mx-auto w-full max-w-7xl rounded-2xl bg-[#fefefe] bg-gradient-to-b from-slate-100 to-white px-10 py-14 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] lg:mt-4 md:px-2">
       <p className="text-center font-title text-3xl font-semibold">
-        Danh mục nổi bật
+        {language === "vi" ? "Danh mục nổi bật" : "Featured Categories"}
       </p>
-      <div className="grid grid-cols-6 gap-4 mt-10 content-center lg:grid-cols-3 sm:grid-cols-2 sm:gap-2">
+      <div className="mt-10 grid grid-cols-6 content-center gap-4 lg:grid-cols-3 sm:grid-cols-2 sm:gap-2">
         <div
-          className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
+          className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=Mouse")}
+          onClick={() => router.push("/products?category=chuot")}
         >
+          {" "}
           <FaMouse className="text-7xl" />
-          <p className="text-lg font-semibold">Chuột Gaming</p>
+          <p className="text-center text-lg font-semibold">
+            {language === "vi" ? "Chuột Gaming" : "Gaming Mice"}
+          </p>
         </div>
         <div
-          className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
+          className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=Keyboard")}
+          onClick={() => router.push("/products?category=ban-phim")}
         >
           <FaKeyboard className="text-7xl" />
-          <p className="text-lg font-semibold">Bàn phím cơ</p>
+          <p className="text-center text-lg font-semibold">
+            {language === "vi" ? "Bàn phím cơ" : "Mechanical Keyboards"}
+          </p>
         </div>
         <div
-          className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
+          className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=Headphone")}
+          onClick={() => router.push("/products?category=tai-nghe")}
         >
           <FaHeadphones className="text-7xl" />
-          <p className="text-lg font-semibold">Tai nghe</p>
+          <p className="text-center text-lg font-semibold">
+            {language === "vi" ? "Tai nghe" : "Headphones"}
+          </p>
         </div>
         <div
-          className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
+          className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=Table")}
+          onClick={() => router.push("/products?category=ban")}
         >
           <PiDeskBold className="text-7xl" />
-          <p className="text-lg font-semibold">Bàn</p>
+          <p className="text-center text-lg font-semibold">
+            {language === "vi" ? "Bàn" : "Tables"}
+          </p>
         </div>
         <div
-          className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
+          className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=Chair")}
+          onClick={() => router.push("/products?category=ghe")}
         >
           <FaChair className="text-7xl" />
-          <p className="text-lg font-semibold">Ghế</p>
+          <p className="text-center text-lg font-semibold">
+            {language === "vi" ? "Ghế" : "Chairs"}
+          </p>
         </div>
         <div
-          className="flex flex-col items-center justify-center p-4 gap-4 bg-white/5 rounded-xl shadow hover:scale-105 transition-transform"
+          className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=Accessory")}
+          onClick={() => router.push("/products?category=phu-kien")}
         >
           <FaGears className="text-7xl" />
-          <p className="text-lg font-semibold">Phụ kiện</p>
+          <p className="text-center text-lg font-semibold">
+            {language === "vi" ? "Phụ kiện" : "Accessories"}
+          </p>
         </div>
       </div>
     </section>

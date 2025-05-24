@@ -1,17 +1,23 @@
-'use client';
+"use client";
 
-import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { FaSistrix } from 'react-icons/fa6';
+import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { FaSistrix } from "react-icons/fa6";
 
 interface SearchBarProps {
   onHeader?: boolean;
+  placeholder?: string;
 }
 
-function SearchBar({ onHeader = false }: SearchBarProps) {
-  const [keyword, setKeyword] = useState('');
+function SearchBar({
+  onHeader = false,
+  placeholder = "Tìm kiếm sản phẩm, danh mục & khác ...",
+}: SearchBarProps) {
+  const [keyword, setKeyword] = useState("");
+  const { t } = useLanguage();
   const pathname = usePathname();
-  const navigation = onHeader ? '/products' : pathname;
+  const navigation = onHeader ? "/products" : pathname;
   const router = useRouter();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -19,7 +25,7 @@ function SearchBar({ onHeader = false }: SearchBarProps) {
 
     if (keyword) {
       const params = new URLSearchParams();
-      params.set('search', keyword);
+      params.set("search", keyword);
 
       router.replace(`${navigation}?${params.toString()}`);
     }
@@ -31,8 +37,8 @@ function SearchBar({ onHeader = false }: SearchBarProps) {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          className="w-56 lg:w-full xl:w-[13.4rem] rounded-full border-2 border-gray-200 py-2 pl-10 pr-8 transition-all duration-500 focus:w-96 xl:focus:w-[13.4rem] focus:outline-none focus:ring-2 focus:ring-tertiary-400 md:focus:w-full"
-          placeholder="Tìm kiếm sản phẩm, danh mục & khác ..."
+          className="w-56 rounded-full border-2 border-gray-200 py-2 pl-10 pr-8 transition-all duration-500 focus:w-96 focus:outline-none focus:ring-2 focus:ring-tertiary-400 xl:w-[13.4rem] xl:focus:w-[13.4rem] lg:w-full md:focus:w-full"
+          placeholder={t("header.searchbar.searchPlaceholder") || placeholder}
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />

@@ -3,6 +3,7 @@
 import NavLink from "@/app/_components/UI/NavLink";
 import { useEffect, useRef, useState } from "react";
 import HeaderCategory from "./HeaderCategory";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 function HeaderNav({
   isMobile,
@@ -14,6 +15,7 @@ function HeaderNav({
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
+  const { t } = useLanguage();
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -44,10 +46,10 @@ function HeaderNav({
 
   return (
     <nav className="z-10 text-lg">
-      <ul className="flex lg:flex-col gap-8 xl:gap-5 text-primary-500">
+      <ul className="flex gap-8 text-primary-500 xl:gap-5 lg:flex-col">
         <li onClick={onNavigate}>
           <NavLink href="/products" onClick={onNavigate}>
-            Cửa hàng
+            {t("header.shop")}
           </NavLink>
         </li>
         {!isMobile && !isTouchDevice && (
@@ -56,9 +58,9 @@ function HeaderNav({
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <NavLink href="#">Danh mục</NavLink>
+              <NavLink href="#">{t("header.categories")}</NavLink>
               {isModalVisible && (
-                <div className="absolute left-0 top-full w-screen z-50">
+                <div className="absolute left-0 top-full z-50 w-screen">
                   <HeaderCategory />
                 </div>
               )}
@@ -69,36 +71,32 @@ function HeaderNav({
           <li className="flex flex-col">
             <button
               onClick={() => setOpenCategory(!openCategory)}
-              className="flex justify-between items-center py-2"
+              className="flex items-center justify-between py-2"
             >
-              <span>Danh mục</span>
+              <span>{t("header.categories")}</span>
               <span className="text-lg">{openCategory ? "−" : "+"}</span>
             </button>
 
             {openCategory && (
-              <div className="pl-4 flex flex-col gap-4">
+              <div className="flex flex-col gap-4 pl-4">
                 {/* Product Categories */}
                 <div>
-                  <h3 className="font-semibold mb-2 text-primary-700">
-                    Sản phẩm
+                  <h3 className="mb-2 font-semibold text-primary-700">
+                    {t("header.shop")}
                   </h3>
                   <div className="flex flex-col gap-2" onClick={onNavigate}>
-                    <NavLink href="/products?category=Mouse">
+                    <NavLink href="/products?category=chuot">
                       Chuột Gaming
                     </NavLink>
-                    <NavLink href="/products?category=Keyboard">
+                    <NavLink href="/products?category=ban-phim">
                       Bàn phím
                     </NavLink>
-                    <NavLink href="/products?category=Headset">
+                    <NavLink href="/products?category=tai-nghe">
                       Tai nghe
                     </NavLink>
-                    <NavLink href="/products?category=Table">
-                      Bàn Gaming
-                    </NavLink>
-                    <NavLink href="/products?category=Chair">
-                      Ghế Gaming
-                    </NavLink>
-                    <NavLink href="/products?category=Accessory">
+                    <NavLink href="/products?category=ban">Bàn Gaming</NavLink>
+                    <NavLink href="/products?category=ghe">Ghế Gaming</NavLink>
+                    <NavLink href="/products?category=phu-kien">
                       Phụ kiện
                     </NavLink>
                   </div>
@@ -106,7 +104,7 @@ function HeaderNav({
 
                 {/* Brands */}
                 <div>
-                  <h3 className="font-semibold mb-2 text-primary-700">
+                  <h3 className="mb-2 font-semibold text-primary-700">
                     Thương hiệu
                   </h3>
                   <div className="flex flex-col gap-2">
@@ -128,7 +126,7 @@ function HeaderNav({
 
                 {/* References */}
                 <div>
-                  <h3 className="font-semibold mb-2 text-primary-700">
+                  <h3 className="mb-2 font-semibold text-primary-700">
                     Tham khảo
                   </h3>
                   <div className="flex flex-col gap-2" onClick={onNavigate}>
@@ -154,10 +152,13 @@ function HeaderNav({
           </li>
         )}
         <li onClick={onNavigate}>
-          <NavLink href="/contact">Liên hệ</NavLink>
+          <NavLink href="/contact">{t("header.contact")}</NavLink>
         </li>
         <li onClick={onNavigate}>
-          <NavLink href="/blogs">Blog</NavLink>
+          <NavLink href="/blogs">{t("header.blogs")}</NavLink>
+        </li>
+        <li onClick={onNavigate}>
+          <NavLink href="/about-us">{t("header.aboutUs")}</NavLink>
         </li>
       </ul>
     </nav>

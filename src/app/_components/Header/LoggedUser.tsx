@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import SignoutButton from '@components/UI/SignoutButton';
 import { User } from '@/app/_types/user';
+import { useLanguage } from '@/app/_contexts/LanguageContext';
 
 interface LoggedUserProps {
   user: User;
@@ -12,7 +13,8 @@ interface LoggedUserProps {
 
 function LoggedUser({ user }: LoggedUserProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const { t } = useLanguage();
+  
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
@@ -49,14 +51,13 @@ function LoggedUser({ user }: LoggedUserProps) {
       </NavLink>
       {isModalVisible && (
         <div className="absolute right-0 z-20 mt-2 w-40 rounded-lg border border-gray-200 bg-white shadow-lg">
-          <ul className="px-6 py-4">
-            {user.role !== 'admin' && (
+          <ul className="px-6 py-4">            {user.role !== 'admin' && (
               <>
                 <li>
-                  <NavLink href="/account/profile">Hồ sơ</NavLink>
+                  <NavLink href="/account/profile">{t('header.profile')}</NavLink>
                 </li>
                 <li>
-                  <NavLink href="/account/orders">Đơn hàng</NavLink>
+                  <NavLink href="/account/orders">{t('header.orders')}</NavLink>
                 </li>
               </>
             )}
@@ -66,7 +67,7 @@ function LoggedUser({ user }: LoggedUserProps) {
                   className="text-red-500 hover:text-red-300"
                   type="submit"
                 >
-                  Đăng xuất
+                  {t('header.logout')}
                 </button>
               </SignoutButton>
             </li>
