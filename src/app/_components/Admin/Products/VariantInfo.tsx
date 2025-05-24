@@ -14,7 +14,7 @@ import TextConfirmDialogue from "../../UI/TextConfirmDialogue";
 
 // Helper function to format dates for input fields
 const formatDateForInput = (
-  dateValue: string | Date | undefined | null
+  dateValue: string | Date | undefined | null,
 ): string => {
   if (!dateValue) return "";
   try {
@@ -47,10 +47,10 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
 
     const [currentVariant, setCurrentVariant] = useState<Variant>(variants[0]);
     const [images, setImages] = useState<(string | File)[]>(
-      currentVariant.images?.slice(0, 4) || []
+      currentVariant.images?.slice(0, 4) || [],
     );
     const [newSpecs, setNewSpecs] = useState<{ key: string; value: string }[]>(
-      []
+      [],
     );
     const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -64,10 +64,10 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
     const handleVariantChange = (
       e: React.ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >
+      >,
     ) => {
       const selectedVariant = variants.find(
-        (variant) => variant._id === e.target.value
+        (variant) => variant._id === e.target.value,
       );
       if (selectedVariant) {
         setCurrentVariant(selectedVariant);
@@ -97,7 +97,9 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
       };
 
       setVariantList((prevList) =>
-        prevList.map((v) => (v._id === updatedVariant._id ? updatedVariant : v))
+        prevList.map((v) =>
+          v._id === updatedVariant._id ? updatedVariant : v,
+        ),
       );
     };
 
@@ -106,7 +108,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
 
       // Create a compact array by removing the deleted image and shifting others up
       const filteredImages = images.filter(
-        (img, i) => i !== index && img !== ""
+        (img, i) => i !== index && img !== "",
       );
 
       // Create a new array of length 4, filled with remaining images followed by empty strings
@@ -126,7 +128,9 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
       };
 
       setVariantList((prevList) =>
-        prevList.map((v) => (v._id === updatedVariant._id ? updatedVariant : v))
+        prevList.map((v) =>
+          v._id === updatedVariant._id ? updatedVariant : v,
+        ),
       );
     };
 
@@ -134,7 +138,9 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
       const updatedVariant = { ...currentVariant, [field]: value };
       setCurrentVariant(updatedVariant);
       setVariantList((prevList) =>
-        prevList.map((v) => (v._id === updatedVariant._id ? updatedVariant : v))
+        prevList.map((v) =>
+          v._id === updatedVariant._id ? updatedVariant : v,
+        ),
       );
     };
 
@@ -149,7 +155,9 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
       };
       setCurrentVariant(updatedVariant);
       setVariantList((prevList) =>
-        prevList.map((v) => (v._id === updatedVariant._id ? updatedVariant : v))
+        prevList.map((v) =>
+          v._id === updatedVariant._id ? updatedVariant : v,
+        ),
       );
     };
 
@@ -167,7 +175,9 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
 
       setCurrentVariant(updatedVariant);
       setVariantList((prevList) =>
-        prevList.map((v) => (v._id === updatedVariant._id ? updatedVariant : v))
+        prevList.map((v) =>
+          v._id === updatedVariant._id ? updatedVariant : v,
+        ),
       );
     };
 
@@ -186,7 +196,9 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
 
       // Cập nhật luôn variantList trực tiếp
       setVariantList((prevList) =>
-        prevList.map((v) => (v._id === updatedVariant._id ? updatedVariant : v))
+        prevList.map((v) =>
+          v._id === updatedVariant._id ? updatedVariant : v,
+        ),
       );
 
       // Đồng bộ currentVariant luôn (optional — cho UI cập nhật spec mới)
@@ -200,7 +212,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
     };
     const handleChangeSaleOff = (
       field: "percentage" | "startDate" | "endDate",
-      value: string
+      value: string,
     ) => {
       // For percentage, convert to number; for dates, keep as string
       const updatedVariant = {
@@ -212,14 +224,16 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
       };
       setCurrentVariant(updatedVariant);
       setVariantList((prevList) =>
-        prevList.map((v) => (v._id === updatedVariant._id ? updatedVariant : v))
+        prevList.map((v) =>
+          v._id === updatedVariant._id ? updatedVariant : v,
+        ),
       );
     };
 
     const handleDeleteVariant = () => {
       // Remove current variant from list
       const newVariantList = variantList.filter(
-        (v) => v._id !== currentVariant._id
+        (v) => v._id !== currentVariant._id,
       );
       setVariantList(newVariantList);
 
@@ -252,7 +266,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
     return (
       <Card
         title="Thông tin phân loại"
-        className="w-full grid grid-cols-4 xl:grid-cols-3 gap-4 h-fit"
+        className="grid h-fit w-full grid-cols-4 gap-4 xl:grid-cols-3"
         titleAction={
           <div className="flex items-center gap-2">
             <Input
@@ -270,7 +284,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             {variantList.length > 1 && (
               <Button
                 size="small"
-                type="danger"
+                variant="danger"
                 className="whitespace-nowrap"
                 onClick={() => {
                   if (variantList.length <= 1) {
@@ -344,12 +358,16 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           label="Đã bán"
           onChange={(e) => handleFieldChange("sold", e.target.value)}
         />
-        <div className="flex gap-4 col-span-full xl:flex-col lg:flex-row md:flex-col">
+        <div className="col-span-full flex gap-4 xl:flex-col lg:flex-row md:flex-col">
           <Input
             type="text"
             name="saleOffPercentage"
             id="saleOffPercentage"
-            value={currentVariant.saleOff?.percentage + ""}
+            value={
+              currentVariant.saleOff?.percentage
+                ? currentVariant.saleOff?.percentage + ""
+                : 0
+            }
             onChange={(e) => handleChangeSaleOff("percentage", e.target.value)}
             label="Giảm giá (%)"
           />{" "}
@@ -370,8 +388,8 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             label="Ngày kết thúc giảm giá"
           />
         </div>
-        <div className="col-span-full flex justify-between items-center mt-4">
-          <p className="font-medium text-sm text-grey-300 pl-2">
+        <div className="col-span-full mt-4 flex items-center justify-between">
+          <p className="pl-2 text-sm font-medium text-grey-300">
             Thông số kỹ thuật
           </p>
           <Button
@@ -387,8 +405,8 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           {Object.entries(currentVariant.specifications).map(
             ([key, value], index) => {
               return (
-                <div className="flex gap-2 items-center w-full" key={key}>
-                  <div className="flex flex-1 gap-2 md:flex-col xl:flex-col lg:flex-row md:relative md:mb-2">
+                <div className="flex w-full items-center gap-2" key={key}>
+                  <div className="flex flex-1 gap-2 xl:flex-col lg:flex-row md:relative md:mb-2 md:flex-col">
                     <Input
                       type="select"
                       name={`spec-key-${index}`}
@@ -402,9 +420,9 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                           disabled:
                             specKey !== key &&
                             Object.keys(currentVariant.specifications).includes(
-                              specKey
+                              specKey,
                             ),
-                        })
+                        }),
                       )}
                       className="w-1/3"
                       onChange={(e) =>
@@ -424,7 +442,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                     />
                     <button
                       type="button"
-                      className="self-center w-8 h-8 flex items-center justify-center rounded-full bg-red-500 text-white text-xs shrink-0 md:absolute md:top-0 md:right-0 md:w-6 md:h-6 md:translate-x-1/2 md:-translate-y-1/2"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center self-center rounded-full bg-red-500 text-xs text-white md:absolute md:right-0 md:top-0 md:h-6 md:w-6 md:-translate-y-1/2 md:translate-x-1/2"
                       onClick={() => {
                         const updatedSpecs = {
                           ...currentVariant.specifications,
@@ -437,8 +455,8 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                         setCurrentVariant(updatedVariant);
                         setVariantList((prevList) =>
                           prevList.map((v) =>
-                            v._id === updatedVariant._id ? updatedVariant : v
-                          )
+                            v._id === updatedVariant._id ? updatedVariant : v,
+                          ),
                         );
                       }}
                     >
@@ -447,7 +465,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                   </div>
                 </div>
               );
-            }
+            },
           )}
 
           {newSpecs.map((spec, index) => {
@@ -459,7 +477,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             ];
 
             return (
-              <div className="flex gap-2 items-center w-full" key={index}>
+              <div className="flex w-full items-center gap-2" key={index}>
                 <div className="flex flex-1 gap-2">
                   <Input
                     type="select"
@@ -473,7 +491,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                         label: specName,
                         disabled:
                           usedKeys.includes(specKey) && specKey !== spec.key,
-                      })
+                      }),
                     )}
                     className="w-1/3"
                     onChange={(e) => {
@@ -497,7 +515,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                   />
                   <button
                     type="button"
-                    className="self-center w-8 h-8 flex items-center justify-center rounded-full bg-red-500 text-white text-xs shrink-0"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center self-center rounded-full bg-red-500 text-xs text-white"
                     onClick={() => removeNewSpec(index)}
                   >
                     <FaTrash />
@@ -507,14 +525,14 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             );
           })}
         </div>
-        <p className="col-span-full font-medium text-sm text-grey-300 pl-2">
+        <p className="col-span-full pl-2 text-sm font-medium text-grey-300">
           Ảnh sản phẩm
         </p>
-        <div className="grid grid-cols-4 gap-4 col-span-full">
+        <div className="col-span-full grid grid-cols-4 gap-4">
           {[0, 1, 2, 3].map((index) => (
             <div
               key={index}
-              className="relative aspect-square cursor-pointer border rounded"
+              className="relative aspect-square cursor-pointer rounded border"
               onClick={() => inputRefs.current[index]?.click()}
             >
               <Image
@@ -522,8 +540,8 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                   typeof images[index] === "string" && images[index]
                     ? (images[index] as string)
                     : images[index] instanceof File
-                    ? URL.createObjectURL(images[index])
-                    : "/no-image-placeholder.jpg rounded"
+                      ? URL.createObjectURL(images[index])
+                      : "/no-image-placeholder.jpg rounded"
                 }
                 alt={`Ảnh ${index + 1}`}
                 fill
@@ -533,7 +551,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               {/* Delete button overlay - only show if there's an image */}
               {images[index] && images[index] !== "" && (
                 <div
-                  className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full cursor-pointer hover:bg-red-600 z-10"
+                  className="absolute right-0 top-0 z-10 flex h-6 w-6 -translate-y-1/2 translate-x-1/2 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
                   onClick={(e) => handleImageDelete(index, e)}
                 >
                   <FaTrash size={12} />
@@ -560,13 +578,13 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
         <div className="col-span-full flex items-center justify-end gap-4">
           <Button
             size="small"
-            type="secondary"
+            variant="secondary"
             onClick={handleReset}
-            className=" w-fit"
+            className="w-fit"
           >
             Đặt lại
           </Button>
-          <Button size="small" onClick={handleSave} className=" w-fit">
+          <Button size="small" onClick={handleSave} fullWidth={false}>
             Lưu thay đổi
           </Button>
         </div>
@@ -584,7 +602,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
         )}
       </Card>
     );
-  }
+  },
 );
 
 VariantInfo.displayName = "VariantInfo";

@@ -195,7 +195,7 @@ export async function forgotPassword(email: string) {
 
 export async function resetPassword(
   formData: { password: string; passwordConfirm: string },
-  resetToken: string
+  resetToken: string,
 ) {
   const response = await fetch(`${API_URL}/users/resetPassword/${resetToken}`, {
     method: "PATCH",
@@ -212,7 +212,7 @@ export async function resetPassword(
 
 export async function updateProfile(
   input: UpdateProfileInput,
-  token: { value: string }
+  token: { value: string },
 ) {
   const form = new FormData();
   for (const key of Object.keys(input) as (keyof UpdateProfileInput)[]) {
@@ -238,7 +238,7 @@ export async function updateProfile(
 
 export async function updatePassword(
   input: UpdatePasswordInput,
-  token: { value: string }
+  token: { value: string },
 ) {
   const response = await fetch(`${API_URL}/users/updatePassword`, {
     method: "PATCH",
@@ -274,7 +274,7 @@ export async function getAddresses(token: { value: string }) {
 
 export async function addAddress(
   formData: AddressFormInput,
-  token: { value: string }
+  token: { value: string },
 ) {
   const response = await fetch(`${API_URL}/addresses`, {
     method: "POST",
@@ -308,7 +308,7 @@ export async function deleteAddress(id: string, token: { value: string }) {
 export async function updateAddress(
   id: string,
   formData: { [key: string]: { code: string | number; name: string } | string },
-  token: { value: string }
+  token: { value: string },
 ) {
   const response = await fetch(`${API_URL}/addresses/${id}`, {
     method: "PATCH",
@@ -356,7 +356,7 @@ export async function addOrUpdateCartItem(
   productId: string,
   variantId: string,
   quantity: number,
-  token: { value: string }
+  token: { value: string },
 ) {
   const response = await fetch(
     `${API_URL}/cart/items/${productId}/${variantId}`,
@@ -368,7 +368,7 @@ export async function addOrUpdateCartItem(
       },
       body: JSON.stringify({ quantity }),
       credentials: "include",
-    }
+    },
   );
 
   const data = await response.json();
@@ -379,7 +379,7 @@ export async function addOrUpdateCartItem(
 export async function removeCartItem(
   productId: string,
   variantId: string,
-  token: { value: string }
+  token: { value: string },
 ) {
   const response = await fetch(
     `${API_URL}/cart/items/${productId}/${variantId}`,
@@ -389,7 +389,7 @@ export async function removeCartItem(
         Authorization: `Bearer ${token.value}`,
       },
       credentials: "include",
-    }
+    },
   );
 
   const data = await response.json();
@@ -400,7 +400,7 @@ export async function removeCartItem(
 export async function verifyDiscountCode(
   code: string,
   lineItems: LineItem[],
-  token: { value: string }
+  token: { value: string },
 ) {
   const response = await fetch(`${API_URL}/discounts/${code}`, {
     method: "POST",
@@ -419,7 +419,7 @@ export async function verifyDiscountCode(
 
 export async function reauthenticate(
   password: string,
-  token: { value: string }
+  token: { value: string },
 ) {
   const response = await fetch(`${API_URL}/users/reauthenticate`, {
     method: "POST",
@@ -439,7 +439,7 @@ export async function reauthenticate(
 export async function createCheckoutSession(
   order: Order,
   token: { value: string },
-  method: "Stripe" | "ZaloPay"
+  method: "Stripe" | "ZaloPay",
 ) {
   const response = await fetch(
     `${API_URL}/payments/create${method}CheckoutSession`,
@@ -451,7 +451,7 @@ export async function createCheckoutSession(
       },
       body: JSON.stringify(order),
       credentials: "include",
-    }
+    },
   );
 
   if (!response.ok) {
@@ -470,7 +470,7 @@ export async function createOrder(
     paymentMethod: string;
     lineItems: LineItem[];
   },
-  token: { value: string }
+  token: { value: string },
 ) {
   const response = await fetch(`${API_URL}/orders`, {
     method: "POST",
@@ -566,7 +566,7 @@ export const getShippingFee = async (
     product: string;
     variant: string;
     quantity: number;
-  }[]
+  }[],
 ) => {
   const response = await fetch(
     `http://localhost:8000/api/v1/orders/shippingFee?toWardCode=${address.ward.code}&toDistrictCode=${address.district.code}`,
@@ -576,7 +576,7 @@ export const getShippingFee = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ lineItems }),
-    }
+    },
   );
 
   console.log(response);
@@ -599,7 +599,7 @@ export const cancelOrder = async (id: string, token: { value: string }) => {
         Authorization: `Bearer ${token.value}`,
       },
       credentials: "include",
-    }
+    },
   );
 
   if (!response.ok) {
@@ -613,7 +613,7 @@ export const cancelOrder = async (id: string, token: { value: string }) => {
 
 export const getOrderByOrderCode = async (
   code: string,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const response = await fetch(
     `http://localhost:8000/api/v1/orders/orderCode/${code}`,
@@ -622,7 +622,7 @@ export const getOrderByOrderCode = async (
         Authorization: `Bearer ${token.value}`,
       },
       credentials: "include",
-    }
+    },
   );
 
   if (!response.ok) {
@@ -637,7 +637,7 @@ export const getOrderByOrderCode = async (
 export const createReviewsByOrder = async (
   reviews: ReviewInput[],
   orderId: string,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const formData = new FormData();
 
@@ -647,26 +647,12 @@ export const createReviewsByOrder = async (
     formData.append(`reviews[${index}][rating]`, review.rating.toString());
     formData.append(`reviews[${index}][review]`, review.review);
 
-    // Gửi từng ảnh vào đúng index của sản phẩm với tên file duy nhất để tránh trùng lặp
+    // Gửi từng ảnh vào đúng index của sản phẩm
     review.images.forEach((file, imgIndex) => {
-      // Tạo tên file duy nhất cho mỗi ảnh bao gồm product ID và variant ID
-      const uniqueFileName = `review_${index}_product_${review.productId}_variant_${review.variantId}_img_${imgIndex}`;
-      formData.append(
-        `reviews[${index}][images][${imgIndex}]`,
-        file,
-        uniqueFileName
-      );
+      formData.append(`reviews[${index}][images][${imgIndex}]`, file);
     });
 
-    if (review.video) {
-      // Tạo tên file duy nhất cho video
-      const uniqueVideoName = `review_${index}_product_${review.productId}_variant_${review.variantId}_video`;
-      formData.append(
-        `reviews[${index}][video]`,
-        review.video,
-        uniqueVideoName
-      );
-    }
+    if (review.video) formData.append(`reviews[${index}][video]`, review.video);
   });
 
   const response = await fetch(
@@ -678,7 +664,7 @@ export const createReviewsByOrder = async (
       },
       body: formData,
       credentials: "include",
-    }
+    },
   );
 
   if (!response.ok) {
@@ -693,43 +679,21 @@ export const createReviewsByOrder = async (
 export const updateReviewsByOrder = async (
   reviews: ReviewUpdateInput[],
   orderId: string,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const formData = new FormData();
 
-  // Add each review's data to formData with proper indexing
-  reviews.forEach((review, reviewIndex) => {
-    // Add basic review data
-    formData.append(`reviews[${reviewIndex}][_id]`, review._id);
-    formData.append(
-      `reviews[${reviewIndex}][rating]`,
-      review.rating.toString()
-    );
-    formData.append(`reviews[${reviewIndex}][review]`, review.review);
+  reviews.forEach((review) => {
+    formData.append(`reviews[${review._id}][rating]`, review.rating.toString());
+    formData.append(`reviews[${review._id}][review]`, review.review);
 
-    // Handle images that are strings (existing images)
+    // Gửi từng ảnh vào đúng index của sản phẩm
     review.images.forEach((file, imgIndex) => {
-      if (typeof file === "string") {
-        formData.append(`reviews[${reviewIndex}][images][${imgIndex}]`, file);
-      }
+      formData.append(`reviews[${review._id}][images][${imgIndex}]`, file);
     });
 
-    // Handle images that are Files (new uploads)
-    review.images.forEach((file) => {
-      if (file instanceof File) {
-        formData.append(`reviews[${reviewIndex}][images]`, file);
-      }
-    });
-
-    // Handle video if it's a string (existing video)
-    if (typeof review.video === "string" && review.video) {
-      formData.append(`reviews[${reviewIndex}][video]`, review.video);
-    }
-
-    // Handle video if it's a File (new upload)
-    if (review.video instanceof File) {
-      formData.append(`reviews[${reviewIndex}][video]`, review.video);
-    }
+    if (review.video)
+      formData.append(`reviews[${review._id}][video]`, review.video);
   });
 
   const response = await fetch(
@@ -741,7 +705,7 @@ export const updateReviewsByOrder = async (
       },
       body: formData,
       credentials: "include",
-    }
+    },
   );
 
   if (!response.ok) {
@@ -773,7 +737,7 @@ export const getWishlist = async (token: { value: string }) => {
 
 export const addProductToWishlist = async (
   productId: string,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const response = await fetch(
     `http://localhost:8000/api/v1/wishlist/${productId}`,
@@ -783,7 +747,7 @@ export const addProductToWishlist = async (
         Authorization: `Bearer ${token.value}`,
       },
       credentials: "include",
-    }
+    },
   );
 
   if (!response.ok) {
@@ -797,7 +761,7 @@ export const addProductToWishlist = async (
 
 export const getWishlistByShareCode = async (shareCode: string) => {
   const response = await fetch(
-    `http://localhost:8000/api/v1/wishlist/${shareCode}`
+    `http://localhost:8000/api/v1/wishlist/${shareCode}`,
   );
 
   if (!response.ok) {
@@ -811,7 +775,7 @@ export const getWishlistByShareCode = async (shareCode: string) => {
 
 export const removeProductFromWishlist = async (
   productId: string,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const response = await fetch(
     `http://localhost:8000/api/v1/wishlist/${productId}`,
@@ -821,7 +785,7 @@ export const removeProductFromWishlist = async (
         Authorization: `Bearer ${token.value}`,
       },
       credentials: "include",
-    }
+    },
   );
 
   if (!response.ok) {
@@ -835,7 +799,7 @@ export const removeProductFromWishlist = async (
 
 export const addMultipleItemsToCart = async (
   items: { productId: string; variantId: string; quantity: number }[],
-  token: { value: string }
+  token: { value: string },
 ) => {
   const response = await fetch(`${API_URL}/cart/items`, {
     method: "POST",
@@ -867,7 +831,9 @@ export async function getFilterData(filters: Filter) {
 }
 
 export async function getBestsellers() {
-  const response = await fetch(`${API_URL}/products/top-5-bestsellers`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/top-5-bestsellers`,
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch bestsellers");
@@ -939,7 +905,7 @@ export async function getCategories(token: { value: string }) {
 
 export async function getCategoryBySlug(
   slug: string,
-  token: { value: string }
+  token: { value: string },
 ) {
   const response = await fetch(`${API_URL}/categories/slug/${slug}`, {
     headers: {
@@ -990,7 +956,7 @@ export const getProductsSummary = async (token: { value: string }) => {
 
 export const getRecommendedProducts = async (productId: string) => {
   const response = await fetch(
-    `${API_URL}/products/cart-product-recommend/${productId}`
+    `${API_URL}/products/cart-product-recommend/${productId}`,
   );
 
   if (!response.ok) {
@@ -1004,7 +970,7 @@ export const getRecommendedProducts = async (productId: string) => {
 
 export const getSimilarProducts = async (productId: string) => {
   const response = await fetch(
-    `${API_URL}/products/similar-products/${productId}`
+    `${API_URL}/products/similar-products/${productId}`,
   );
 
   if (!response.ok) {
@@ -1030,7 +996,7 @@ export const getClientCategories = async () => {
 
 export const getCategorySummary = async (
   token: { value: string },
-  slug: string
+  slug: string,
 ) => {
   const response = await fetch(`${API_URL}/categories/slug/${slug}/summary`, {
     headers: {
@@ -1049,7 +1015,7 @@ export const getCategorySummary = async (
 
 export const addCategory = async (
   formData: FormData,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const response = await fetch(`${API_URL}/categories`, {
     method: "POST",
@@ -1071,7 +1037,7 @@ export const addCategory = async (
 export const updateCategory = async (
   input: CategoryInput,
   token: { value: string },
-  id: string
+  id: string,
 ) => {
   const formData = new FormData();
   for (const key of Object.keys(input) as (keyof CategoryInput)[]) {
@@ -1100,7 +1066,7 @@ export const updateCategory = async (
 
 export const createCategory = async (
   input: CategoryInput,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const formData = new FormData();
   for (const key of Object.keys(input) as (keyof CategoryInput)[]) {
@@ -1129,7 +1095,7 @@ export const createCategory = async (
 
 export const addProduct = async (
   product: ProductInput,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const formData = new FormData();
   formData.append("name", product.name);
@@ -1150,8 +1116,8 @@ export const addProduct = async (
       product.variants.map((v) => ({
         ...v,
         images: v.images.map((img) => (img instanceof File ? null : img)),
-      }))
-    )
+      })),
+    ),
   );
 
   // Thêm ảnh của từng variant (nếu có file)
@@ -1185,7 +1151,7 @@ export const addProduct = async (
 export const updateProduct = async (
   product: ProductInput,
   token: { value: string },
-  id: string
+  id: string,
 ) => {
   const formData = new FormData();
 
@@ -1218,7 +1184,7 @@ export const updateProduct = async (
       } else {
         formData.append(
           `variantImageUrls[${variantIndex}][${imageIndex}]`,
-          image
+          image,
         );
       }
     });
@@ -1243,7 +1209,7 @@ export const updateProduct = async (
 
 export const createShippingOrder = async (
   orderId: string,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const response = await fetch(`${API_URL}/orders/${orderId}/shipping-order`, {
     method: "PATCH",
@@ -1266,7 +1232,7 @@ export const updateOrderStatus = async (
   orderId: string,
   status: string,
   adminNotes: string,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
     method: "PATCH",
@@ -1288,7 +1254,7 @@ export const updateOrderStatus = async (
 
 export const refundOrder = async (
   orderId: string,
-  token: { value: string }
+  token: { value: string },
 ) => {
   const response = await fetch(`${API_URL}/orders/${orderId}/refund`, {
     method: "PATCH",
@@ -1338,14 +1304,14 @@ interface AdminOrdersFilter {
 
 export const getAdminOrders = async (
   authToken: string,
-  filter: AdminOrdersFilter
+  filter: AdminOrdersFilter,
 ) => {
   const filterParams = new URLSearchParams();
   for (const key in filter) {
     if (filter[key as keyof AdminOrdersFilter] !== undefined) {
       filterParams.append(
         key,
-        filter[key as keyof AdminOrdersFilter] as string
+        filter[key as keyof AdminOrdersFilter] as string,
       );
     }
   }
@@ -1358,7 +1324,7 @@ export const getAdminOrders = async (
         Authorization: `Bearer ${authToken}`,
       },
       credentials: "include",
-    }
+    },
   );
   if (!response.ok) {
     throw new Error("Failed to fetch orders");
@@ -1471,7 +1437,7 @@ export const addDiscount = async (input: DiscountInput, authToken: string) => {
 export const updateDiscount = async (
   id: string,
   input: DiscountInput,
-  authToken: string
+  authToken: string,
 ) => {
   const response = await fetch(`${API_URL}/discounts/${id}`, {
     method: "PATCH",

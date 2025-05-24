@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Card from '../../UI/Card';
+import Card from "../../UI/Card";
 import {
   Table,
   TableBody,
@@ -9,18 +9,18 @@ import {
   TableHeader,
   TableHeaderCell,
   TableHeaderRow,
-} from '../../UI/Table';
-import Image from 'next/image';
-import { Category } from '@/app/_types/category';
-import Link from 'next/link';
-import Button from '../../UI/Button';
-import { useState, useTransition } from 'react';
-import Modal from '../../UI/Modal';
-import AddCategoryForm from './AddCategoryForm';
-import { FaTrash } from 'react-icons/fa';
-import { deleteCategoryAction } from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
-import TextConfirmDialogue from '../../UI/TextConfirmDialogue';
+} from "../../UI/Table";
+import Image from "next/image";
+import { Category } from "@/app/_types/category";
+import Link from "next/link";
+import Button from "../../UI/Button";
+import { useState, useTransition } from "react";
+import Modal from "../../UI/Modal";
+import AddCategoryForm from "./AddCategoryForm";
+import { FaTrash } from "react-icons/fa";
+import { deleteCategoryAction } from "@/app/_libs/actions";
+import { toast } from "react-toastify";
+import TextConfirmDialogue from "../../UI/TextConfirmDialogue";
 
 interface CategoryOverviewProps {
   data: Array<
@@ -36,9 +36,9 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
     startTransition(async () => {
       const result = await deleteCategoryAction(categoryId);
       if (result.success) {
-        toast.success('Xóa danh mục thành công!');
+        toast.success("Xóa danh mục thành công!");
       } else {
-        toast.error('Có lỗi xảy ra khi xóa danh mục.');
+        toast.error("Có lỗi xảy ra khi xóa danh mục.");
       }
     });
   };
@@ -110,13 +110,13 @@ function TableRow({ category, pending, onDelete }: TableRowProps) {
         </Modal>
       )}
       <TableBodyRow key={category._id}>
-        <TableBodyCell className="flex items-center gap-4 col-span-2">
-          <div className="w-16 relative aspect-square">
+        <TableBodyCell className="col-span-2 flex items-center gap-4">
+          <div className="relative aspect-square w-16">
             <Image
-              src={category.image || '/no-image-placeholder.jpg'}
+              src={category.image || "/no-image-placeholder.jpg"}
               alt={category.name}
               fill
-              className="object-cover rounded"
+              className="rounded object-cover"
             />
           </div>
           <div className="text-lg font-semibold text-primary-default">
@@ -124,24 +124,24 @@ function TableRow({ category, pending, onDelete }: TableRowProps) {
           </div>
         </TableBodyCell>
         <TableBodyCell
-          className="items-center flex md:flex-col md:items-start"
+          className="flex items-center md:flex-col md:items-start"
           label="Slug"
         >
           {category.slug}
         </TableBodyCell>
         <TableBodyCell
-          className="items-center flex md:flex-col md:items-start"
+          className="flex items-center md:flex-col md:items-start"
           label="Ngày tạo"
         >
-          {new Date(category.createdAt).toLocaleDateString('vi-VN')}
+          {new Date(category.createdAt).toLocaleDateString("vi-VN")}
         </TableBodyCell>
         <TableBodyCell
-          className="items-center flex justify-center md:items-start md:justify-start sm:flex-col sm:items-start gap-2"
+          className="flex items-center justify-center gap-2 md:items-start md:justify-start sm:flex-col sm:items-start"
           label="Số lượng: "
         >
           {category.totalProducts ?? 0}
         </TableBodyCell>
-        <TableBodyCell className="text-center flex flex-col gap-2 items-center justify-center">
+        <TableBodyCell className="flex flex-col items-center justify-center gap-2 text-center">
           <Link
             href={`/admin/categories/${category.slug}`}
             className="text-primary-400 hover:underline"
@@ -149,14 +149,13 @@ function TableRow({ category, pending, onDelete }: TableRowProps) {
             Xem chi tiết
           </Link>
           <Button
-            type="danger"
+            variant="danger"
             size="small"
             loading={pending}
-            disabled={pending}
             onClick={() => setConfirmDelete(true)}
-          >
-            <FaTrash />
-          </Button>
+            icon={<FaTrash />}
+            iconOnly
+          />
         </TableBodyCell>
       </TableBodyRow>
     </>

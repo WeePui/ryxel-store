@@ -1,5 +1,5 @@
-import { JSX } from 'react';
-import Button from './Button';
+import { JSX } from "react";
+import Button from "./Button";
 
 interface ConfirmDialogueProps {
   message: string | JSX.Element;
@@ -12,8 +12,8 @@ interface ConfirmDialogueProps {
 
 function ConfirmDialogue({
   message,
-  confirmText = 'Xác nhận',
-  cancelText = 'Hủy bỏ',
+  confirmText = "Xác nhận",
+  cancelText = "Hủy bỏ",
   onConfirm,
   onCancel,
   children,
@@ -22,9 +22,9 @@ function ConfirmDialogue({
     <div className="flex flex-col items-center justify-center gap-8">
       <p className="text-lg">{message}</p>
       {children}
-      <div className="flex gap-6 md:gap-4 flex-wrap justify-center">
+      <div className="flex flex-wrap justify-center gap-6 md:gap-4">
         {onCancel && (
-          <Button type="secondary" onClick={onCancel}>
+          <Button variant="secondary" onClick={onCancel}>
             {cancelText}
           </Button>
         )}

@@ -1,20 +1,19 @@
-'use client';
+"use client";
 
-import { useActionState, useEffect, useState, useTransition } from 'react';
-import Input from '../../UI/Input';
-import Button from '../../UI/Button';
-import { toast } from 'react-toastify';
-import Spinner from '../../UI/Spinner';
-import { useRouter } from 'next/navigation';
-import AssistiveText from '../../UI/AssistiveText';
-import { FaInfo } from 'react-icons/fa';
+import { useActionState, useEffect, useState, useTransition } from "react";
+import Input from "../../UI/Input";
+import Button from "../../UI/Button";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import AssistiveText from "../../UI/AssistiveText";
+import { FaInfo } from "react-icons/fa";
 import {
   createDiscountAction,
   deleteDiscountAction,
   updateDiscountAction,
-} from '@/app/_libs/actions';
-import TextConfirmDialogue from '../../UI/TextConfirmDialogue';
-import Modal from '../../UI/Modal';
+} from "@/app/_libs/actions";
+import TextConfirmDialogue from "../../UI/TextConfirmDialogue";
+import Modal from "../../UI/Modal";
 
 interface Discount {
   _id?: string;
@@ -38,12 +37,12 @@ interface AddVoucherFormProps {
 const initialState = {
   success: undefined,
   input: {
-    code: '',
-    name: '',
-    startDate: new Date().toISOString().split('T')[0],
+    code: "",
+    name: "",
+    startDate: new Date().toISOString().split("T")[0],
     endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
       .toISOString()
-      .split('T')[0],
+      .split("T")[0],
     maxUse: 100,
     minOrderValue: 0,
     discountPercentage: 10,
@@ -56,7 +55,7 @@ const initialState = {
 export default function AddVoucherForm({ discount }: AddVoucherFormProps) {
   const [state, action, isPending] = useActionState(
     discount ? updateDiscountAction : createDiscountAction,
-    discount ? { success: undefined, input: { ...discount } } : initialState
+    discount ? { success: undefined, input: { ...discount } } : initialState,
   );
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pending, startTransition] = useTransition();
@@ -74,7 +73,7 @@ export default function AddVoucherForm({ discount }: AddVoucherFormProps) {
         const result = await deleteDiscountAction(discount._id!);
 
         if (result.success) {
-          toast.success('Xóa mã giảm giá thành công');
+          toast.success("Xóa mã giảm giá thành công");
           setConfirmOpen(false);
           router.refresh();
         } else {
@@ -88,15 +87,15 @@ export default function AddVoucherForm({ discount }: AddVoucherFormProps) {
     if (state?.success) {
       toast.success(
         discount
-          ? 'Cập nhật mã giảm giá thành công'
-          : 'Tạo mã giảm giá thành công'
+          ? "Cập nhật mã giảm giá thành công"
+          : "Tạo mã giảm giá thành công",
       );
-      router.push('/admin/vouchers');
+      router.push("/admin/vouchers");
     }
   }, [state?.success, router, discount]);
 
   return (
-    <form className="grid grid-cols-2 gap-6 mt-4" action={action}>
+    <form className="mt-4 grid grid-cols-2 gap-6" action={action}>
       {discount?._id && <input type="hidden" name="id" value={discount._id} />}
       <div className="col-span-1 md:col-span-full">
         {state?.errors?.code && (
@@ -145,7 +144,7 @@ export default function AddVoucherForm({ discount }: AddVoucherFormProps) {
         <Input
           label="Ngày bắt đầu"
           defaultValue={
-            new Date(state?.input.startDate).toISOString().split('T')[0]
+            new Date(state?.input.startDate).toISOString().split("T")[0]
           }
           id="startDate"
           name="startDate"
@@ -165,7 +164,7 @@ export default function AddVoucherForm({ discount }: AddVoucherFormProps) {
         <Input
           label="Ngày kết thúc"
           defaultValue={
-            new Date(state?.input.endDate).toISOString().split('T')[0]
+            new Date(state?.input.endDate).toISOString().split("T")[0]
           }
           id="endDate"
           name="endDate"
@@ -274,21 +273,20 @@ export default function AddVoucherForm({ discount }: AddVoucherFormProps) {
           disabled={isPending}
         />
       </div>
-      <div className="flex items-center justify-end gap-4 col-span-2">
+      <div className="col-span-2 flex items-center justify-end gap-4">
         {discount ? (
           <Button
             role="button"
             onClick={() => setConfirmOpen(true)}
             loading={pending}
-            disabled={pending}
-            type="danger"
+            variant="danger"
           >
             Xóa
           </Button>
         ) : null}
 
-        <Button disabled={isPending} role="submit">
-          {isPending ? <Spinner /> : discount ? 'Cập nhật' : 'Thêm mới'}
+        <Button loading={isPending} role="submit">
+          {discount ? "Cập nhật" : "Thêm mới"}
         </Button>
       </div>
       {confirmOpen && (

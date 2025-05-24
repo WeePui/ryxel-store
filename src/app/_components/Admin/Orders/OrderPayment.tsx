@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import { JSX, useState, useTransition } from 'react';
-import Card from '../../UI/Card';
-import { FaMoneyBill, FaCcStripe } from 'react-icons/fa';
-import { mappingPaymentMethod } from '@/app/_utils/mappingPaymentMethodText';
-import { SiZalo } from 'react-icons/si';
-import formatMoney from '@/app/_utils/formatMoney';
-import Button from '../../UI/Button';
-import { refundOrderAction } from '@/app/_libs/actions';
-import { useParams } from 'next/navigation';
-import { toast } from 'react-toastify';
-import Modal from '../../UI/Modal';
-import TextConfirmDialogue from '../../UI/TextConfirmDialogue';
+import { JSX, useState, useTransition } from "react";
+import Card from "../../UI/Card";
+import { FaMoneyBill, FaCcStripe } from "react-icons/fa";
+import { mappingPaymentMethod } from "@/app/_utils/mappingPaymentMethodText";
+import { SiZalo } from "react-icons/si";
+import formatMoney from "@/app/_utils/formatMoney";
+import Button from "../../UI/Button";
+import { refundOrderAction } from "@/app/_libs/actions";
+import { useParams } from "next/navigation";
+import { toast } from "react-toastify";
+import Modal from "../../UI/Modal";
+import TextConfirmDialogue from "../../UI/TextConfirmDialogue";
 
 const paymentIcon: { [key: string]: string | JSX.Element } = {
   cod: <FaMoneyBill />,
   stripe: <FaCcStripe />,
   zalopay: (
-    <div className="shadow-sm border rounded px-1 bg-white">
+    <div className="rounded border bg-white px-1 shadow-sm">
       <SiZalo />
     </div>
   ),
@@ -46,37 +46,37 @@ export default function OrderPayment({
       const result = await refundOrderAction(orderId, orderCode as string);
 
       if (result.success) {
-        toast.success('Hoàn tiền thành công');
+        toast.success("Hoàn tiền thành công");
       } else {
-        toast.error('Hoàn tiền thất bại: ' + result.errors!.message);
+        toast.error("Hoàn tiền thất bại: " + result.errors!.message);
       }
     });
   };
 
   return (
     <Card title="Thông tin thanh toán">
-      <div className="flex items-center gap-2 mt-4 font-semibold">
+      <div className="mt-4 flex items-center gap-2 font-semibold">
         <div className="text-xl">{paymentIcon[paymentMethod]}</div>
         <span>{paymentMethodMap.text}</span>
       </div>
       {checkout && (
         <>
-          <div className="text-gray-500 text-sm mt-2 flex flex-col gap-2">
+          <div className="mt-2 flex flex-col gap-2 text-sm text-gray-500">
             <span title={checkout.paymentId} className="break-words">
-              Payment ID:{' '}
+              Payment ID:{" "}
               <span className="font-mono">{checkout.paymentId}</span>
             </span>
             <span title={checkout.checkoutId} className="break-words">
-              Checkout ID:{' '}
+              Checkout ID:{" "}
               <span className="font-mono">{checkout.checkoutId}</span>
             </span>
             <span>Số tiền: {formatMoney(checkout.amount)}</span>
           </div>
           {refundable && (
-            <div className="flex items-center gap-2 justify-end">
+            <div className="flex items-center justify-end gap-2">
               <Button
                 size="small"
-                type="danger"
+                variant="danger"
                 loading={pending}
                 onClick={() => setConfirm(true)}
                 disabled={pending}

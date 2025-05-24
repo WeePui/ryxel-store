@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Button from '@components/UI/Button';
+import Button from "@components/UI/Button";
 
 interface ErrorProps {
   error: Error;
@@ -14,11 +14,11 @@ function Error({ error, reset }: ErrorProps) {
         <h1 className="text-3xl">Oopsie! Có gì không ổn rồi!</h1>
         <p>{error.message}</p>
         <div className="flex items-center gap-6">
-          <Button type="secondary" onClick={reset}>
+          <Button variant="secondary" onClick={reset}>
             Thử lại
           </Button>
           <span>hoặc</span>
-          <Button type="primary" href="/">
+          <Button variant="primary" href="/">
             Trở về Trang chủ
           </Button>
         </div>

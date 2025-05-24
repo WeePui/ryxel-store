@@ -1,16 +1,15 @@
-'use client';
+"use client";
 
-import { Category } from '@/app/_types/category';
-import React, { useActionState, useEffect, useState } from 'react';
-import Input from '../../UI/Input';
-import Image from 'next/image';
-import Button from '../../UI/Button';
-import { addCategoryAction, updateCategoryAction } from '@/app/_libs/actions';
-import AssistiveText from '../../UI/AssistiveText';
-import { FaInfo } from 'react-icons/fa';
-import { toast } from 'react-toastify';
-import Spinner from '../../UI/Spinner';
-import { useRouter } from 'next/navigation';
+import { Category } from "@/app/_types/category";
+import React, { useActionState, useEffect, useState } from "react";
+import Input from "../../UI/Input";
+import Image from "next/image";
+import Button from "../../UI/Button";
+import { addCategoryAction, updateCategoryAction } from "@/app/_libs/actions";
+import AssistiveText from "../../UI/AssistiveText";
+import { FaInfo } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface AddCategoryFormProps {
   category?: Category;
@@ -19,9 +18,9 @@ interface AddCategoryFormProps {
 const initialState = {
   success: undefined,
   input: {
-    name: '',
-    slug: '',
-    description: '',
+    name: "",
+    slug: "",
+    description: "",
     image: null,
   },
 };
@@ -31,10 +30,10 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
     category ? updateCategoryAction : addCategoryAction,
     category
       ? { success: undefined, input: { ...category }, slug: category.slug }
-      : initialState
+      : initialState,
   );
   const [categoryImage, setCategoryImage] = useState<string | File | null>(
-    state?.input.image || null
+    state?.input.image || null,
   );
   const router = useRouter();
 
@@ -44,13 +43,13 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
 
   useEffect(() => {
     if (state.success) {
-      toast.success('Cập nhật thành công.');
+      toast.success("Cập nhật thành công.");
 
       if (state.slug && state.slug !== category?.slug) {
         router.replace(`/admin/categories/${state.slug}`);
       }
     }
-  }, [state.success, state.slug]);
+  }, [state.success, state.slug, category?.slug, router]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -61,8 +60,8 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
   };
 
   return (
-    <form className="grid grid-cols-2 gap-6 mt-4" action={action}>
-      <input type="hidden" name="id" value={category?._id || ''} />
+    <form className="mt-4 grid grid-cols-2 gap-6" action={action}>
+      <input type="hidden" name="id" value={category?._id || ""} />
       <div className="col-span-1 md:col-span-full">
         {state?.errors?.name && (
           <AssistiveText
@@ -99,7 +98,7 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
           disabled={isPending}
         />
       </div>
-      <div className="col-start-1 col-span-2">
+      <div className="col-span-2 col-start-1">
         {state?.errors?.description && (
           <AssistiveText
             text={state?.errors?.description}
@@ -124,32 +123,32 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
           error={!!state?.errors?.image}
         />
       )}
-      <div className="col-span-2 flex items-center gap-6 justify-center">
+      <div className="col-span-2 flex items-center justify-center gap-6">
         <div className="relative aspect-video w-1/2">
           <Image
             src={
-              typeof categoryImage === 'string'
+              typeof categoryImage === "string"
                 ? categoryImage
                 : categoryImage instanceof File
-                ? URL.createObjectURL(categoryImage)
-                : '/no-image-placeholder.jpg'
+                  ? URL.createObjectURL(categoryImage)
+                  : "/no-image-placeholder.jpg"
             }
             alt="Uploaded category image"
             fill
-            className="object-cover rounded"
+            className="rounded object-cover"
           />
         </div>
 
         <div className="text-center">
           <Button
-            type="secondary"
+            variant="secondary"
             className="h-fit w-fit self-center"
             size="small"
-            onClick={() => document.getElementById('categoryImage')?.click()}
+            onClick={() => document.getElementById("categoryImage")?.click()}
           >
             Thay đổi ảnh
           </Button>
-          <p className="text-xs text-grey-200 mt-2">
+          <p className="mt-2 text-xs text-grey-200">
             Định dạng: JPEG, JPG, PNG
           </p>
         </div>
@@ -162,9 +161,9 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
         onChange={handleImageChange}
       />
       <input type="hidden" name="_id" value={category?._id} />
-      <div className="flex items-center justify-end gap-4 col-span-2">
-        <Button disabled={isPending} role="submit">
-          {isPending ? <Spinner /> : category ? 'Cập nhật' : 'Thêm mới'}
+      <div className="col-span-2 flex items-center justify-end gap-4">
+        <Button loading={isPending} role="submit">
+          {category ? "Cập nhật" : "Thêm mới"}
         </Button>
       </div>
     </form>

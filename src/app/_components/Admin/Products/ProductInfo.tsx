@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import Input from '../../UI/Input';
-import Image from 'next/image';
-import Button from '../../UI/Button';
-import Card from '../../UI/Card';
+import Input from "../../UI/Input";
+import Image from "next/image";
+import Button from "../../UI/Button";
+import Card from "../../UI/Card";
 import {
   forwardRef,
   useImperativeHandle,
   useState,
   useTransition,
-} from 'react';
-import { Product } from '@/app/_types/product';
-import { deleteProductAction } from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
-import Modal from '../../UI/Modal';
-import TextConfirmDialogue from '../../UI/TextConfirmDialogue';
-import { useRouter } from 'next/navigation';
+} from "react";
+import { Product } from "@/app/_types/product";
+import { deleteProductAction } from "@/app/_libs/actions";
+import { toast } from "react-toastify";
+import Modal from "../../UI/Modal";
+import TextConfirmDialogue from "../../UI/TextConfirmDialogue";
+import { useRouter } from "next/navigation";
 
 interface ProductInfoProps {
   product: Product;
@@ -45,7 +45,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
     const [category, setCategory] = useState(product.category._id);
     const [description, setDescription] = useState(product?.description);
     const [imageCover, setImageCover] = useState<string | File>(
-      product.imageCover
+      product.imageCover,
     );
 
     useImperativeHandle(ref, () => ({
@@ -68,7 +68,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
         const result = await deleteProductAction(product._id);
         if (result.success) {
           toast.success(`Product deleted successfully`);
-          router.replace('/admin/products');
+          router.replace("/admin/products");
         } else {
           toast.error(`Error deleting product: ${result.errors?.message}`);
         }
@@ -87,21 +87,21 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
     return (
       <Card
         title="Thông tin sản phẩm"
-        className="w-full h-fit max-w-7xl mx-auto"
+        className="mx-auto h-fit w-full max-w-7xl"
         titleAction={
           <div className="flex flex-col gap-2 text-sm font-medium text-grey-300">
             <span>
-              Ngày tạo:{' '}
-              {new Date(product!.createdAt).toLocaleDateString('vi-VN')}
+              Ngày tạo:{" "}
+              {new Date(product!.createdAt).toLocaleDateString("vi-VN")}
             </span>
             <span>
-              Cập nhật:{' '}
-              {new Date(product!.updatedAt).toLocaleDateString('vi-VN')}
+              Cập nhật:{" "}
+              {new Date(product!.updatedAt).toLocaleDateString("vi-VN")}
             </span>
           </div>
         }
       >
-        <div className="grid grid-cols-4 xl:grid-cols-3 lg:grid-cols-4 md:flex md:flex-col gap-4">
+        <div className="grid grid-cols-4 gap-4 xl:grid-cols-3 lg:grid-cols-4 md:flex md:flex-col">
           <Input
             type="text"
             defaultValue={product.name}
@@ -118,7 +118,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
           />
           <Input
             type="text"
-            defaultValue={product.slug + ''}
+            defaultValue={product.slug + ""}
             id="slug"
             name="slug"
             label="Slug"
@@ -177,29 +177,29 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             className="col-span-full"
             onChange={(e) => setDescription(e.target.value)}
           />
-          <div className="relative aspect-video w-full h-72 col-span-3">
+          <div className="relative col-span-3 aspect-video h-72 w-full">
             <Image
               src={
-                typeof imageCover === 'string'
+                typeof imageCover === "string"
                   ? imageCover
                   : imageCover instanceof File
-                  ? URL.createObjectURL(imageCover)
-                  : '/no-image-placeholder.jpg'
+                    ? URL.createObjectURL(imageCover)
+                    : "/no-image-placeholder.jpg"
               }
               fill
-              className="object-contain rounded"
-              alt={product?.name || 'Product Image'}
+              className="rounded object-contain"
+              alt={product?.name || "Product Image"}
             />
           </div>
           <div className="flex flex-col items-center justify-center">
             <Button
-              className="h-fit w-fit"
               size="small"
-              onClick={() => document.getElementById('imageCover')?.click()}
+              onClick={() => document.getElementById("imageCover")?.click()}
+              fullWidth={false}
             >
               Thay đổi ảnh
             </Button>
-            <p className="text-xs text-grey-200 mt-2">
+            <p className="mt-2 text-xs text-grey-200">
               Định dạng: JPEG, JPG, PNG
             </p>
           </div>
@@ -210,23 +210,21 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             type="file"
             onChange={handleImageChange}
           />
-          <div className="col-span-full flex items-center justify-end gap-4 sm:flex-col sm:col-span-1 md:self-center">
+          <div className="col-span-full flex items-center justify-end gap-4 md:self-center sm:col-span-1 sm:flex-col">
             <Button
               size="small"
-              type="danger"
-              className="whitespace-nowrap sm:w-full w-fit"
+              variant="danger"
+              className="w-fit whitespace-nowrap sm:w-full"
               onClick={() => setConfirmDelete(true)}
-              disabled={pending}
               loading={pending}
             >
               Xoá sản phẩm
             </Button>
             <Button
               size="small"
-              type="secondary"
+              variant="secondary"
               onClick={handleReset}
-              className="whitespace-nowrap sm:w-full w-fit"
-              disabled={pending}
+              className="w-fit whitespace-nowrap sm:w-full"
               loading={pending}
             >
               Đặt lại
@@ -234,8 +232,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             <Button
               size="small"
               onClick={onSave}
-              className="whitespace-nowrap sm:w-full w-fit"
-              disabled={pending}
+              className="w-fit whitespace-nowrap sm:w-full"
               loading={pending}
             >
               Lưu thay đổi
@@ -255,9 +252,9 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
         )}
       </Card>
     );
-  }
+  },
 );
 
-ProductInfo.displayName = 'ProductInfo';
+ProductInfo.displayName = "ProductInfo";
 
 export default ProductInfo;

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Card from '../../UI/Card';
-import Button from '../../UI/Button';
+import Card from "../../UI/Card";
+import Button from "../../UI/Button";
 import {
   Table,
   TableBody,
@@ -10,13 +10,13 @@ import {
   TableHeader,
   TableHeaderCell,
   TableHeaderRow,
-} from '../../UI/Table';
-import Image from 'next/image';
-import NavLink from '../../UI/NavLink';
-import { mappingStock } from '@/app/_utils/mappingStock';
-import { getTintedColor } from '@/app/_helpers/getTintedColor';
-import { Product } from '@/app/_types/product';
-import formatMoney from '@/app/_utils/formatMoney';
+} from "../../UI/Table";
+import Image from "next/image";
+import NavLink from "../../UI/NavLink";
+import { mappingStock } from "@/app/_utils/mappingStock";
+import { getTintedColor } from "@/app/_helpers/getTintedColor";
+import { Product } from "@/app/_types/product";
+import formatMoney from "@/app/_utils/formatMoney";
 
 // const data = [
 //   {
@@ -58,7 +58,7 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
               className="grid-cols-7 items-center"
               key={product._id}
             >
-              <TableBodyCell className="flex items-center gap-4 col-span-2">
+              <TableBodyCell className="col-span-2 flex items-center gap-4">
                 <div className="relative aspect-square w-16">
                   <Image
                     src={product.imageCover}
@@ -73,17 +73,17 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
                 {formatMoney(product.lowestPrice)}
               </TableBodyCell>
               <TableBodyCell label="Cập nhật">
-                {new Date(product.updatedAt).toLocaleDateString('vi-VN')}
+                {new Date(product.updatedAt).toLocaleDateString("vi-VN")}
               </TableBodyCell>
               <TableBodyCell
                 className="flex justify-center md:flex-col"
                 label="Tồn kho"
               >
                 <div
-                  className="py-1 px-2 text-xs w-fit rounded-full"
+                  className="w-fit rounded-full px-2 py-1 text-xs"
                   style={{
                     backgroundColor: getTintedColor(
-                      mappingStock(product.totalStock).color
+                      mappingStock(product.totalStock).color,
                     ),
                   }}
                 >
@@ -113,14 +113,14 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
 
 function ProductSearchBar() {
   return (
-    <div className="flex items-center gap-4 py-2 h-full">
+    <div className="flex h-full items-center gap-4 py-2">
       <input
         type="text"
         placeholder="Tìm kiếm sản phẩm..."
-        className="border border-gray-300 rounded-md px-4 py-2 w-full"
+        className="w-full rounded-md border border-gray-300 px-4 py-2"
       />
       <Button className="truncate" size="small">
-        <span>Tìm kiếm</span>
+        Tìm kiếm
       </Button>
     </div>
   );

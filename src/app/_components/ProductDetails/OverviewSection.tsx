@@ -1,20 +1,19 @@
-'use client';
+"use client";
 
-import Button from '@/app/_components/UI/Button';
-import Counter from '@components/UI/Counter';
-import { FaCartShopping, FaChevronRight, FaStar } from 'react-icons/fa6';
-import ImageCarousel from './ImageCarousel';
-import { useProductDetail } from '@/app/_contexts/ProductDetailContext';
-import { useState, useTransition } from 'react';
-import Spinner from '../UI/Spinner';
-import { addOrUpdateCartItemAction } from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
-import NavLink from '../UI/NavLink';
-import { useRouter } from 'next/navigation';
-import formatMoney from '@/app/_utils/formatMoney';
-import { Variant } from '@/app/_types/variant';
-import WishlistButton from '../Wistlist/WishlistButton';
-import { WishlistProvider } from '@/app/_contexts/WishlistContext';
+import Button from "@/app/_components/UI/Button";
+import Counter from "@components/UI/Counter";
+import { FaCartShopping, FaChevronRight, FaStar } from "react-icons/fa6";
+import ImageCarousel from "./ImageCarousel";
+import { useProductDetail } from "@/app/_contexts/ProductDetailContext";
+import { useState, useTransition } from "react";
+import { addOrUpdateCartItemAction } from "@/app/_libs/actions";
+import { toast } from "react-toastify";
+import NavLink from "../UI/NavLink";
+import { useRouter } from "next/navigation";
+import formatMoney from "@/app/_utils/formatMoney";
+import { Variant } from "@/app/_types/variant";
+import WishlistButton from "../Wistlist/WishlistButton";
+import { WishlistProvider } from "@/app/_contexts/WishlistContext";
 
 function OverviewSection() {
   const { currentVariant, setCurrentVariant, product } = useProductDetail();
@@ -31,24 +30,24 @@ function OverviewSection() {
       const result = await addOrUpdateCartItemAction(
         product._id,
         currentVariant._id!,
-        quantity
+        quantity,
       );
       if (result.success) {
-        toast.success('Sản phẩm đã được thêm vào giỏ hàng.');
+        toast.success("Sản phẩm đã được thêm vào giỏ hàng.");
       }
       if (result.errors) {
         if (result.errors.user) {
-          toast.error('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
-          router.push('/login');
+          toast.error("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+          router.push("/login");
         } else toast.error(result.errors.message);
       }
     });
   }
 
   return (
-    <section className="min-h-[36rem] xl:h-full bg-grey-400 w-full">
-      <div className="mx-auto grid h-full max-w-[77.5rem] lg:max-w-full translate-y-12 xl:translate-y-0 grid-cols-[65fr_35fr] xl:grid-cols-[60fr_40fr] lg:grid-cols-1 rounded-3xl xl:rounded-none bg-white px-12 lg:px-8 md:px-4 py-6 lg:py-2 shadow-lg">
-        <div className="flex flex-col gap-6 min-w-0">
+    <section className="min-h-[36rem] w-full bg-grey-400 xl:h-full">
+      <div className="mx-auto grid h-full max-w-[77.5rem] translate-y-12 grid-cols-[65fr_35fr] rounded-3xl bg-white px-12 py-6 shadow-lg xl:translate-y-0 xl:grid-cols-[60fr_40fr] xl:rounded-none lg:max-w-full lg:grid-cols-1 lg:px-8 lg:py-2 md:px-4">
+        <div className="flex min-w-0 flex-col gap-6">
           <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-grey-400">
             <NavLink href="/">
               <span className="text-grey-400 md:truncate">Trang chủ</span>
@@ -65,7 +64,7 @@ function OverviewSection() {
             alt={currentVariant.name}
           />
         </div>
-        <div className="py-8 lg:py-4 min-w-0">
+        <div className="min-w-0 py-8 lg:py-4">
           <div className="mb-6 lg:hidden">
             <span className="flex items-center text-sm text-grey-500">
               <span className="mr-2 text-2xl font-bold text-primary-default">
@@ -96,23 +95,23 @@ function OverviewSection() {
             </span>
           </div>
 
-          <p className="mb-6 lg:mb-2 text-xs text-grey-500">Chọn sản phẩm:</p>
+          <p className="mb-6 text-xs text-grey-500 lg:mb-2">Chọn sản phẩm:</p>
           <div className="mb-6 flex flex-wrap gap-2">
             {product.variants.map((variant) => (
               <Button
-                type="filter"
+                variant="filter"
                 key={variant._id}
                 onClick={handleVariantChange.bind(null, variant)}
                 active={currentVariant._id === variant._id}
-                className="font-semibold relative overflow-hidden"
+                className="relative overflow-hidden font-semibold"
               >
                 {variant.name}
                 {variant.stock <
                   Number(process.env.NEXT_PUBLIC_STOCK_LIMIT) && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-full h-full relative">
-                      <div className="absolute inset-0 bg-white/60 rounded-md" />
-                      <div className="absolute left-0 top-1/2 w-full rotate-45 h-[1px] bg-red-500 origin-center" />
+                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                    <div className="relative h-full w-full">
+                      <div className="absolute inset-0 rounded-md bg-white/60" />
+                      <div className="absolute left-0 top-1/2 h-[1px] w-full origin-center rotate-45 bg-red-500" />
                     </div>
                   </div>
                 )}
@@ -132,18 +131,12 @@ function OverviewSection() {
           <div className="mt-6 grid grid-cols-[30fr_70fr] items-center gap-4">
             <Counter value={quantity} onSetValue={setQuantity} />
             <Button
-              type="primaryLarge"
-              disabled={isPending}
+              size="large"
               onClick={handleAddToCart}
+              icon={<FaCartShopping />}
+              loading={isPending}
             >
-              {isPending ? (
-                <Spinner />
-              ) : (
-                <>
-                  <FaCartShopping />
-                  <span className="text-base">Thêm vào giỏ hàng</span>
-                </>
-              )}
+              Thêm vào giỏ hàng
             </Button>
           </div>
         </div>

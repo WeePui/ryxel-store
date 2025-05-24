@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { Product } from '@/app/_types/product';
-import formatMoney from '@/app/_utils/formatMoney';
-import Image from 'next/image';
-import Link from 'next/link';
-import Button from '../UI/Button';
-import { FaFire } from 'react-icons/fa6';
-import { WishlistProvider } from '@/app/_contexts/WishlistContext';
-import WishlistButton from '../Wistlist/WishlistButton';
-import { useTransition } from 'react';
-import { addOrUpdateCartItemAction } from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-import Spinner from '../UI/Spinner';
+import { Product } from "@/app/_types/product";
+import formatMoney from "@/app/_utils/formatMoney";
+import Image from "next/image";
+import Link from "next/link";
+import Button from "../UI/Button";
+import { FaFire } from "react-icons/fa6";
+import { WishlistProvider } from "@/app/_contexts/WishlistContext";
+import WishlistButton from "../Wistlist/WishlistButton";
+import { useTransition } from "react";
+import { addOrUpdateCartItemAction } from "@/app/_libs/actions";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface BestsellerItemProps {
   item: Product;
@@ -21,65 +21,68 @@ interface BestsellerItemProps {
 export default function BestsellerItem({ item }: BestsellerItemProps) {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
-
+  const { language } = useLanguage();
   const handleAddToCart = () => {
     startTransition(async () => {
-      const result = await addOrUpdateCartItemAction(
-        item._id,
-        item.variants[0]._id,
-        1
-      );
+      const variantId = item.variants[0]?._id || "";
+      const result = await addOrUpdateCartItemAction(item._id, variantId, 1);
       if (result.success) {
-        toast.success('Sản phẩm đã được thêm vào giỏ hàng.');
+        toast.success(
+          language === "vi"
+            ? "Sản phẩm đã được thêm vào giỏ hàng."
+            : "Product has been added to cart.",
+        );
       }
       if (result.errors) {
         if (result.errors.user) {
-          toast.error('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
-          router.push('/login');
+          toast.error(
+            language === "vi"
+              ? "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng."
+              : "You need to log in to add products to your cart.",
+          );
+          router.push("/login");
         } else toast.error(result.errors.message);
       }
     });
   };
 
   return (
-    <div className="min-w-[300px] bg-white/5 rounded-xl overflow-hidden shadow hover:shadow-lg hover:scale-[1.03] transition-all duration-300 relative">
-      <Image
-        src={item.imageCover}
-        alt={item.name}
-        width={300}
-        height={48}
-        className="object-cover transition-transform duration-300 hover:scale-105"
-      />
-
-      <div className="p-4">
+    <div className="relative flex h-full min-w-[300px] flex-col overflow-hidden rounded-xl bg-white/5 shadow transition-all duration-300 hover:scale-[1.03] hover:shadow-lg">
+      <div className="relative h-[300px]">
+        <Image
+          src={item.imageCover}
+          alt={item.name}
+          fill
+          className="object-contain transition-transform duration-300 hover:scale-105"
+        />
+      </div>
+      <div className="flex flex-1 flex-col p-4">
         <Link
           href={`/products/${item.slug}`}
-          className="font-bold text-lg line-clamp-2"
+          className="mb-2 line-clamp-2 text-lg font-bold"
         >
           {item.name}
-        </Link>
-        <p className="text-primary-500 mt-1 flex items-center gap-2">
+        </Link>{" "}
+        <p className="flex items-center gap-2 text-primary-500">
           <span>{formatMoney(item.lowestPrice)}</span> -
-          <span className="text-sm text-gray-400">Đã bán: {item.sold}</span>
-        </p>
-
-        <div className="mt-4 flex">
-          <Button
-            onClick={handleAddToCart}
-            className="w-full"
-            disabled={pending}
-          >
-            {pending ? <Spinner /> : 'Thêm vào giỏ hàng'}
+          <span className="text-sm text-gray-400">
+            {language === "vi" ? `Đã bán: ${item.sold}` : `Sold: ${item.sold}`}
+          </span>
+        </p>{" "}
+        <div className="mt-auto flex pt-4">
+          {" "}
+          <Button onClick={handleAddToCart} fullWidth loading={pending}>
+            {language === "vi" ? "Thêm vào giỏ hàng" : "Add to Cart"}
           </Button>
           <WishlistProvider>
-            <div className="absolute top-2 right-2 z-10">
+            <div className="absolute right-2 top-2 z-10">
               <WishlistButton productId={item._id} />
             </div>
           </WishlistProvider>
         </div>
-      </div>
-      <div className="absolute top-2 left-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-3 py-1 rounded-full font-bold animate-pulse flex items-center gap-1 shadow-orange-300 shadow-md">
-        <FaFire /> <span>Best Seller</span>
+      </div>{" "}
+      <div className="absolute left-2 top-2 flex animate-pulse items-center gap-1 rounded-full bg-gradient-to-r from-orange-500 to-red-500 px-3 py-1 text-xs font-bold text-white shadow-md shadow-orange-300">
+        <FaFire /> <span>{language === "vi" ? "Bán chạy" : "Best Seller"}</span>
       </div>
     </div>
   );

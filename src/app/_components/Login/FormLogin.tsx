@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
-import Button from '@/app/_components/UI/Button';
-import Input from '@/app/_components/UI/Input';
-import { useActionState } from 'react';
-import { loginAction } from '@libs/actions';
-import { FaCircleExclamation } from 'react-icons/fa6';
-import Spinner from '../UI/Spinner';
-import errorMessages from '@/app/_utils/mappingErrorMessages';
+import Button from "@/app/_components/UI/Button";
+import Input from "@/app/_components/UI/Input";
+import { useActionState } from "react";
+import { loginAction } from "@libs/actions";
+import { FaCircleExclamation } from "react-icons/fa6";
+import errorMessages from "@/app/_utils/mappingErrorMessages";
 
 function FormLogin() {
   const [state, action, isPending] = useActionState(loginAction, undefined);
 
   return (
-    <div className="mx-auto mt-14 lg:mt-4  flex w-full max-w-7xl flex-col items-center gap-10">
-      <div className="w-full max-w-lg gap-2 rounded-lg bg-white px-16 lg:px-8 py-8 shadow-sm">
+    <div className="mx-auto mt-14 flex w-full max-w-7xl flex-col items-center gap-10 lg:mt-4">
+      <div className="w-full max-w-lg gap-2 rounded-lg bg-white px-16 py-8 shadow-sm lg:px-8">
         <h3 className="mb-8 text-center text-lg font-extrabold text-primary-500">
           Đăng nhập bằng mật khẩu
         </h3>
@@ -51,8 +50,8 @@ function FormLogin() {
               error={!!state?.errors?.password}
             />
           </div>
-          <Button type="primary" disabled={isPending} role="submit">
-            {isPending ? <Spinner /> : 'Đăng nhập'}
+          <Button loading={isPending} role="submit">
+            Đăng nhập
           </Button>
         </form>
       </div>

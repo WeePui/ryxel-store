@@ -1,22 +1,16 @@
-import { FaCartShopping } from 'react-icons/fa6';
-import NavLink from '../UI/NavLink';
-import { checkToken, getCart } from '@/app/_libs/apiServices';
-import { cookies } from 'next/headers';
-import LoggedCart from './LoggedCart';
+"use client";
 
-async function HeaderCart() {
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+import { FaCartShopping } from "react-icons/fa6";
+import NavLink from "../UI/NavLink";
+import LoggedCart from "./LoggedCart";
+import { Cart } from "@/app/_types/cart";
 
-  if (!token)
-    return (
-      <NavLink href="/cart" hoverUnderline={false}>
-        <FaCartShopping className="text-xl" />
-      </NavLink>
-    );
+interface HeaderCartProps {
+  cart?: Cart;
+}
 
-  const { valid } = await checkToken(token);
-  if (!valid) {
+function HeaderCart({ cart }: HeaderCartProps) {
+  if (!cart || !cart.lineItems) {
     return (
       <NavLink href="/cart" hoverUnderline={false}>
         <FaCartShopping className="text-xl" />
@@ -24,19 +18,7 @@ async function HeaderCart() {
     );
   }
 
-  const { data } = await getCart(token);
-
-  if (!data)
-    return (
-      <NavLink href="/cart" hoverUnderline={false}>
-        <FaCartShopping className="text-xl" />
-      </NavLink>
-    );
-
-  const { cart } = data;
-
-  if (cart) return <>{cart.lineItems && <LoggedCart cart={cart} />}</>;
-  return null;
+  return <>{cart.lineItems && <LoggedCart cart={cart} />}</>;
 }
 
 export default HeaderCart;

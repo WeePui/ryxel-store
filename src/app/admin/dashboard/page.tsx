@@ -1,19 +1,20 @@
-import OrderSummary from '@/app/_components/Admin/Dashboard/OrderSummary';
-import RevenueCard from '@/app/_components/Admin/Dashboard/RevenueCard';
-import SalesByCategories from '@/app/_components/Admin/Dashboard/SalesByCategories';
-import StatCard from '@/app/_components/Admin/Dashboard/StatCard';
-import TopCustomers from '@/app/_components/Admin/Dashboard/TopCustomers';
-import TopSellingProducts from '@/app/_components/Admin/Dashboard/TopSellingProducts';
-import { getDashboardStats, getRecentOrders } from '@/app/_libs/apiServices';
-import { formatMoneyCompact } from '@/app/_utils/formatMoney';
-import { cookies } from 'next/headers';
-import { FaBoxes, FaDollarSign, FaReceipt, FaUser } from 'react-icons/fa';
+import OrderSummary from "@/app/_components/Admin/Dashboard/OrderSummary";
+import RevenueCard from "@/app/_components/Admin/Dashboard/RevenueCard";
+import SalesByCategories from "@/app/_components/Admin/Dashboard/SalesByCategories";
+import StatCard from "@/app/_components/Admin/Dashboard/StatCard";
+import TopCustomers from "@/app/_components/Admin/Dashboard/TopCustomers";
+import TopSellingProducts from "@/app/_components/Admin/Dashboard/TopSellingProducts";
+import { getDashboardStats, getRecentOrders } from "@/app/_libs/apiServices";
+import { formatMoneyCompact } from "@/app/_utils/formatMoney";
+import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
+import { FaBoxes, FaDollarSign, FaReceipt, FaUser } from "react-icons/fa";
 
 export default async function Page() {
   const cookieStore = await cookies();
-  const token = cookieStore.get('jwt')?.value || '';
+  const token = cookieStore.get("jwt")?.value || "";
   if (!token) {
-    throw new Error('No token found');
+    notFound();
   }
 
   const { data: dashboardStatsData } = await getDashboardStats({
@@ -24,8 +25,8 @@ export default async function Page() {
   });
 
   return (
-    <div className="grid grid-cols-4 xl:grid-cols-2 md:grid-cols-1 p-6 gap-6">
-      <div className="flex gap-4 col-span-4 w-full flex-wrap flex-shrink-0">
+    <div className="grid grid-cols-4 gap-6 p-6 xl:grid-cols-2 md:grid-cols-1">
+      <div className="col-span-4 flex w-full flex-shrink-0 flex-wrap gap-4">
         <StatCard
           title="Tổng doanh số"
           value={formatMoneyCompact(dashboardStatsData.sales.value)}
@@ -58,7 +59,7 @@ export default async function Page() {
       <div className="xl:col-span-4">
         <TopCustomers cookies={token} />
       </div>
-      <div className="col-span-2 xl:col-span-4 w-full overflow-x-auto">
+      <div className="col-span-2 w-full overflow-x-auto xl:col-span-4">
         <RevenueCard cookies={token} />
       </div>
       <div className="xl:col-span-4">

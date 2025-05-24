@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
-import { FaPlus } from 'react-icons/fa6';
-import Button from '@components/UI/Button';
-import Modal from '@components/UI/Modal';
-import { useState } from 'react';
-import FormAddAddress from '@components/Address/FormAddAddress';
+import { FaPlus } from "react-icons/fa6";
+import Button from "@components/UI/Button";
+import Modal from "@components/UI/Modal";
+import { useState } from "react";
+import FormAddAddress from "@components/Address/FormAddAddress";
 
 function AddAddress() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div>
-      <Button onClick={() => setIsOpen(true)} size="medium">
-        <FaPlus />
+      <Button onClick={() => setIsOpen(true)} size="small" icon={<FaPlus />}>
         Địa chỉ mới
       </Button>
       {isOpen && (

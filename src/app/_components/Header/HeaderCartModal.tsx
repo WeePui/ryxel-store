@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import NavLink from '../UI/NavLink';
-import Button from '../UI/Button';
-import formatMoney from '@/app/_utils/formatMoney';
-import { Cart } from '@/app/_types/cart';
-import { Product } from '@/app/_types/product';
+import Image from "next/image";
+import NavLink from "../UI/NavLink";
+import Button from "../UI/Button";
+import formatMoney from "@/app/_utils/formatMoney";
+import { Cart } from "@/app/_types/cart";
+import { Product } from "@/app/_types/product";
 
 interface HeaderCartModalProps {
   cart: Cart;
@@ -22,7 +22,7 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
               <li
                 key={item.variant as string}
                 className={`flex items-center ${
-                  index === 3 ? 'blurred-item' : ''
+                  index === 3 ? "blurred-item" : ""
                 }`}
               >
                 <NavLink href={`/products/${(item.product as Product).slug}`}>
@@ -38,7 +38,7 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
                       {(item.product as Product).name}
                     </p>
                     <p className="text-sm text-gray-500">
-                      {item.quantity} (sản phẩm) x{' '}
+                      {item.quantity} (sản phẩm) x{" "}
                       {formatMoney((item.product as Product).lowestPrice)}
                     </p>
                   </div>
@@ -54,7 +54,7 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
         <p className="text-sm text-gray-500">Giỏ hàng của bạn đang trống.</p>
       )}
       <div className="mt-4 flex justify-end">
-        <Button type="primary" href="/cart">
+        <Button href="/cart">
           <span className="text-xs">Xem giỏ hàng</span>
         </Button>
       </div>

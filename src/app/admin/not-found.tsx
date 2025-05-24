@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Button from '@components/UI/Button';
+import Image from "next/image";
+import Button from "@components/UI/Button";
 
 function NotFound() {
   return (
@@ -14,9 +14,7 @@ function NotFound() {
         <p>Khách hàng yêu dấu đang làm gì ở đây vậy?</p>
         <p>Hãy thử tìm kiếm gì đó trên thanh tìm kiếm </p>
         <p className="mb-4 mt-2">hoặc</p>
-        <Button type="primary" href="/admin/dashboard">
-          Trở về Dashboard
-        </Button>
+        <Button href="/admin/dashboard">Trở về Dashboard</Button>
       </div>
     </div>
   );

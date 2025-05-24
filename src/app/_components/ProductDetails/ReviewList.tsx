@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Review } from '@/app/_types/review';
-import React, { useEffect } from 'react';
-import ReviewItem from './ReviewItem';
-import Button from '../UI/Button';
+import { Review } from "@/app/_types/review";
+import React, { useEffect } from "react";
+import ReviewItem from "./ReviewItem";
+import Button from "../UI/Button";
 
 const REVIEWS_PER_PAGE = 5;
 
@@ -63,7 +63,7 @@ export default function ReviewList({
         )}
         {loadmore > REVIEWS_PER_PAGE && (
           <Button
-            type="secondary"
+            variant="secondary"
             onClick={() => setLoadmore(REVIEWS_PER_PAGE)}
             size="small"
           >

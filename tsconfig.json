@@ -29,7 +29,7 @@
       "@utils/*": ["./src/app/_utils/*"],
       "@public/*": ["./public/*"],
       "@helpers/*": ["./src/app/_helpers/*"],
-      "@context/*": ["./src/app/_contexts/*"],
+      "@contexts/*": ["./src/app/_contexts/*"],
       "@hooks/*": ["./src/app/_hooks/*"],
       "@types/*": ["./src/app/_types/*"],
       "@content/*": ["./src/content/*"]
