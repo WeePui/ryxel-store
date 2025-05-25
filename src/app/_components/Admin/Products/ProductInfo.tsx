@@ -145,7 +145,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             }}
           />
           <Input
-            type="text"
+            type="number"
             defaultValue={product.sold.toString()} // Assuming sold is a number
             id="sold"
             name="sold"

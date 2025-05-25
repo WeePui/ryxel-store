@@ -1,0 +1,41 @@
+/* Custom styling for number input spinners */
+.spinner-none::-webkit-outer-spin-button,
+.spinner-none::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.spinner-none[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Ensure consistent styling for number inputs */
+input[type="number"] {
+  appearance: textfield;
+}
+
+/* Shake animation for error state */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}

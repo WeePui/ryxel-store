@@ -1,31 +1,31 @@
-'use client';
+"use client";
 
-import Card from '../../UI/Card';
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import Input from '../../UI/Input';
-import Image from 'next/image';
-import { Variant } from '@/app/_types/variant';
-import { mappingSpecsName } from '@/app/_utils/mappingSpecs';
-import { FaTrash, FaPlus } from 'react-icons/fa6';
-import Button from '../../UI/Button';
+import Card from "../../UI/Card";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import Input from "../../UI/Input";
+import Image from "next/image";
+import { Variant } from "@/app/_types/variant";
+import { mappingSpecsName } from "@/app/_utils/mappingSpecs";
+import { FaTrash, FaPlus } from "react-icons/fa6";
+import Button from "../../UI/Button";
 
 interface VariantInfoHandle {
   getData: () => Variant[];
 }
 
 const emptyVariant = (): Variant => ({
-  name: '',
+  name: "",
   price: 0,
   weight: 0,
-  sku: '',
+  sku: "",
   stock: 0,
   sold: 0,
   cost: 0,
   specifications: {},
   images: [],
   saleOff: {
-    startDate: '',
-    endDate: '',
+    startDate: "",
+    endDate: "",
     percentage: 0,
   },
 });
@@ -43,16 +43,16 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
   const handleFieldChange = (
     index: number,
     field: keyof Variant,
-    value: string
+    value: string,
   ) => {
     const updated = [...variants];
     updated[index] = {
       ...updated[index],
       [field]:
-        field === 'price' ||
-        field === 'weight' ||
-        field === 'stock' ||
-        field === 'sold'
+        field === "price" ||
+        field === "weight" ||
+        field === "stock" ||
+        field === "sold"
           ? Number(value)
           : value,
     };
@@ -73,7 +73,7 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
   const handleSpecChange = (
     variantIndex: number,
     specKey: string,
-    value: string
+    value: string,
   ) => {
     const updated = [...variants];
     updated[variantIndex].specifications = {
@@ -91,18 +91,18 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
 
   return (
     <Card
-      className="w-full grid gap-6 sm:grid-cols-1 grid-cols-2 h-fit"
+      className="grid h-fit w-full grid-cols-2 gap-6 sm:grid-cols-1"
       title="Phân loại sản phẩm"
     >
       {variants.map((variant, index) => (
         <div
           key={index}
-          className="w-full border rounded p-4 relative bg-white flex flex-col gap-4"
+          className="relative flex w-full flex-col gap-4 rounded border bg-white p-4"
         >
           {variants.length > 1 && (
             <button
               type="button"
-              className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-red-500 text-white text-xs"
+              className="absolute right-0 top-0 flex h-8 w-8 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full bg-red-500 text-xs text-white"
               onClick={() => removeVariant(index)}
             >
               <FaTrash />
@@ -112,47 +112,47 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
             type="text"
             label="Tên phân loại"
             value={variant.name}
-            onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
+            onChange={(e) => handleFieldChange(index, "name", e.target.value)}
             id="variant-name"
             name="variant-name"
           />
-          <div className="flex md:flex-col gap-4">
+          <div className="flex gap-4 md:flex-col">
             <Input
-              type="text"
+              type="number"
               label="Giá bán"
               value={variant.price}
               onChange={(e) =>
-                handleFieldChange(index, 'price', e.target.value)
+                handleFieldChange(index, "price", e.target.value)
               }
               id="variant-price"
               name="variant-price"
             />
             <Input
-              type="text"
+              type="number"
               label="Giá vốn"
               value={variant.cost}
-              onChange={(e) => handleFieldChange(index, 'cost', e.target.value)}
+              onChange={(e) => handleFieldChange(index, "cost", e.target.value)}
               id="variant-cost"
               name="variant-cost"
             />
           </div>
-          <div className="flex md:flex-col gap-4">
+          <div className="flex gap-4 md:flex-col">
             <Input
-              type="text"
+              type="number"
               label="Tồn kho"
               value={variant.stock}
               onChange={(e) =>
-                handleFieldChange(index, 'stock', e.target.value)
+                handleFieldChange(index, "stock", e.target.value)
               }
               id="variant-stock"
               name="variant-stock"
             />
             <Input
-              type="text"
+              type="number"
               label="Trọng lượng (gram)"
               value={variant.weight}
               onChange={(e) =>
-                handleFieldChange(index, 'weight', e.target.value)
+                handleFieldChange(index, "weight", e.target.value)
               }
               id="variant-weight"
               name="variant-weight"
@@ -162,11 +162,11 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
             type="text"
             label="SKU"
             value={variant.sku}
-            onChange={(e) => handleFieldChange(index, 'sku', e.target.value)}
+            onChange={(e) => handleFieldChange(index, "sku", e.target.value)}
             id="variant-sku"
             name="variant-sku"
           />
-          <p className="font-medium text-sm text-grey-300 pl-1 mt-4">
+          <p className="mt-4 pl-1 text-sm font-medium text-grey-300">
             Ảnh sản phẩm
           </p>
           <div className="grid grid-cols-4 gap-2">
@@ -176,16 +176,16 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
               return (
                 <div
                   key={imgIdx}
-                  className="relative aspect-square cursor-pointer border rounded overflow-hidden"
+                  className="relative aspect-square cursor-pointer overflow-hidden rounded border"
                   onClick={() => inputRefs.current[index]?.[imgIdx]?.click()}
                 >
                   <Image
                     src={
-                      typeof image === 'string'
+                      typeof image === "string"
                         ? image
                         : image instanceof File
-                        ? URL.createObjectURL(image)
-                        : '/no-image-placeholder.jpg'
+                          ? URL.createObjectURL(image)
+                          : "/no-image-placeholder.jpg"
                     }
                     alt={`Ảnh ${imgIdx + 1}`}
                     fill
@@ -211,18 +211,18 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
               );
             })}
           </div>
-          <div className="flex justify-between items-center mt-4 sm:flex-col gap-2 sm:items-start mb-2">
-            <p className="font-medium text-sm text-grey-300 pl-1">
+          <div className="mb-2 mt-4 flex items-center justify-between gap-2 sm:flex-col sm:items-start">
+            <p className="pl-1 text-sm font-medium text-grey-300">
               Thông số kỹ thuật
             </p>
 
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <Button
                 size="small"
                 onClick={() => {
                   const updated = [...variants];
                   const specs = { ...(updated[index].specifications || {}) };
-                  specs[''] = ''; // Thêm spec rỗng
+                  specs[""] = ""; // Thêm spec rỗng
                   updated[index].specifications = specs;
                   setVariants(updated);
                 }}
@@ -234,7 +234,7 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
           {Object.entries(variant.specifications || {}).map(
             ([specKey, specValue], specIndex) => (
               <div
-                className="flex gap-2 items-center mb-2"
+                className="mb-2 flex items-center gap-2"
                 key={`${index}-${specKey}-${specIndex}`}
               >
                 <Input
@@ -284,14 +284,14 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
                   <FaTrash />
                 </button>
               </div>
-            )
+            ),
           )}
         </div>
       ))}
 
       <button
         type="button"
-        className="w-full aspect-video border-2 border-dashed rounded flex flex-col items-center justify-center text-grey-400 hover:bg-grey-50"
+        className="flex aspect-video w-full flex-col items-center justify-center rounded border-2 border-dashed text-grey-400 hover:bg-grey-50"
         onClick={() => setVariants((prev) => [...prev, emptyVariant()])}
       >
         <FaPlus className="mb-1" />
@@ -301,6 +301,6 @@ const AddVariantInfo = forwardRef<VariantInfoHandle>((_, ref) => {
   );
 });
 
-AddVariantInfo.displayName = 'AddVariantInfo';
+AddVariantInfo.displayName = "AddVariantInfo";
 
 export default AddVariantInfo;

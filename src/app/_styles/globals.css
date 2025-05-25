@@ -9,8 +9,8 @@ body {
 }
 
 @layer base {
-  input[type='number']::-webkit-inner-spin-button,
-  input[type='number']::-webkit-outer-spin-button {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
@@ -50,10 +50,6 @@ body {
     animation: jump 2s ease-in-out infinite;
     transform-origin: bottom;
     animation-fill-mode: both;
-  }
-
-  input[type='number'] {
-    border: 0;
   }
 
   .header-link:hover .absolute {

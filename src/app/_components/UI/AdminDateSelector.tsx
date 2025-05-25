@@ -70,7 +70,7 @@ export default function AdminDateSelector({
             setSelectedMonth(Number(e.target.value));
           }}
           value={selectedMonth}
-          variant="small"
+          size="small"
         />
       )}
       <Input
@@ -83,7 +83,7 @@ export default function AdminDateSelector({
           setSelectedYear(Number(e.target.value));
         }}
         value={selectedYear}
-        variant="small"
+        size="small"
       />
     </div>
   );

@@ -251,7 +251,12 @@ export async function updatePassword(
   });
 
   if (!response.ok) {
-    throw new Error("Failed to update password");
+    const error = await response.json();
+
+    return {
+      success: false,
+      message: await error.message,
+    };
   }
 
   const data = await response.json();

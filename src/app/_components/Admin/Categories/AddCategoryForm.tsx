@@ -23,6 +23,7 @@ const initialState = {
     description: "",
     image: null,
   },
+  errors: {},
 };
 
 export default function AddCategoryForm({ category }: AddCategoryFormProps) {
@@ -62,60 +63,40 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
   return (
     <form className="mt-4 grid grid-cols-2 gap-6" action={action}>
       <input type="hidden" name="id" value={category?._id || ""} />
-      <div className="col-span-1 md:col-span-full">
-        {state?.errors?.name && (
-          <AssistiveText
-            text={state?.errors?.name}
-            icon={<FaInfo />}
-            error={!!state?.errors?.name}
-          />
-        )}
-        <Input
-          label="Tên danh mục"
-          defaultValue={state?.input.name}
-          id="name"
-          disabled={isPending}
-          name="name"
-          type="text"
-          error={!!state?.errors?.name}
-        />
-      </div>
-      <div className="col-span-1 md:col-span-full">
-        {state?.errors?.slug && (
-          <AssistiveText
-            text={state?.errors?.slug}
-            icon={<FaInfo />}
-            error={!!state?.errors?.slug}
-          />
-        )}
-        <Input
-          label="Slug (không bắt buộc)"
-          defaultValue={state?.input.slug}
-          name="slug"
-          id="slug"
-          type="text"
-          error={!!state?.errors?.slug}
-          disabled={isPending}
-        />
-      </div>
-      <div className="col-span-2 col-start-1">
-        {state?.errors?.description && (
-          <AssistiveText
-            text={state?.errors?.description}
-            icon={<FaInfo />}
-            error={!!state?.errors?.description}
-          />
-        )}
-        <Input
-          label="Mô tả danh mục"
-          defaultValue={state?.input.description}
-          id="description"
-          name="description"
-          type="textarea"
-          error={!!state?.errors?.description}
-          disabled={isPending}
-        />
-      </div>
+      <Input
+        label="Tên danh mục"
+        defaultValue={state?.input.name}
+        id="name"
+        disabled={isPending}
+        name="name"
+        type="text"
+        error={!!state?.errors?.name}
+        errorMessage={state?.errors?.name}
+        className="sm:col-span-full"
+      />
+      <Input
+        label="Slug"
+        placeholder="Slug (không bắt buộc)"
+        defaultValue={state?.input.slug}
+        name="slug"
+        id="slug"
+        type="text"
+        error={!!state?.errors?.slug}
+        errorMessage={state?.errors?.slug}
+        disabled={isPending}
+        className="sm:col-span-full"
+      />
+      <Input
+        label="Mô tả danh mục"
+        defaultValue={state?.input.description}
+        id="description"
+        name="description"
+        type="textarea"
+        error={!!state?.errors?.description}
+        errorMessage={state?.errors?.description}
+        disabled={isPending}
+        className="col-span-full"
+      />
       {state?.errors?.image && (
         <AssistiveText
           text={state?.errors?.image}
@@ -162,7 +143,7 @@ export default function AddCategoryForm({ category }: AddCategoryFormProps) {
       />
       <input type="hidden" name="_id" value={category?._id} />
       <div className="col-span-2 flex items-center justify-end gap-4">
-        <Button loading={isPending} role="submit">
+        <Button loading={isPending} role="submit" fullWidth>
           {category ? "Cập nhật" : "Thêm mới"}
         </Button>
       </div>

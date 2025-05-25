@@ -5,7 +5,6 @@ import { useActionState } from "react";
 import { reauthenticateAction } from "@libs/actions";
 import Input from "@components/UI/Input";
 import Button from "@components/UI/Button";
-import { FaCircleExclamation } from "react-icons/fa6";
 
 function RevalidationForm() {
   const searchParams = useSearchParams();
@@ -17,21 +16,14 @@ function RevalidationForm() {
 
   return (
     <form className="flex w-full flex-col items-center gap-6" action={action}>
-      <div className="w-full">
-        {state?.errors?.password && (
-          <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-            <FaCircleExclamation />
-            {state?.errors?.password}
-          </p>
-        )}
-        <Input
-          name="password"
-          id="password"
-          label="Mật khẩu"
-          type="password"
-          error={!!state?.errors?.password}
-        />
-      </div>
+      <Input
+        name="password"
+        id="password"
+        label="Mật khẩu"
+        type="password"
+        error={!!state?.errors?.password}
+        errorMessage={state?.errors?.password}
+      />
       <Button role="submit" loading={isPending}>
         Xác nhận
       </Button>
