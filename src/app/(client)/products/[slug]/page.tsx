@@ -1,5 +1,3 @@
-import OverviewSection from "@components/ProductDetails/OverviewSection";
-import ProductDescription from "@/app/_components/ProductDetails/ProductDescription";
 import { ProductDetailProvider } from "@/app/_contexts/ProductDetailContext";
 
 import {
@@ -7,9 +5,8 @@ import {
   getRecommendedProducts,
   getSimilarProducts,
 } from "@/app/_libs/apiServices";
-import ProductReviewsSection from "@/app/_components/ProductDetails/ProductReviewsSection";
 import { Variant } from "@/app/_types/variant";
-import RecommendedProducts from "@/app/_components/ProductDetails/RecommendedProducts";
+import ProductDetailsPage from "@/app/_components/ProductDetails/ProductDetailsPage";
 
 async function ProductDetails({
   params,
@@ -37,16 +34,10 @@ async function ProductDetails({
 
   return (
     <ProductDetailProvider product={product}>
-      <OverviewSection />
-      <ProductDescription />
-      <RecommendedProducts
-        products={recommendedProducts}
-        title="products.boughtTogether"
-      />
-      <ProductReviewsSection reviews={reviews} />
-      <RecommendedProducts
-        products={similarProducts}
-        title="products.similarProducts"
+      <ProductDetailsPage
+        recommendedProducts={recommendedProducts}
+        similarProducts={similarProducts}
+        reviews={reviews}
       />
     </ProductDetailProvider>
   );

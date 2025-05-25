@@ -3,6 +3,7 @@
 import { useProductDetail } from "@/app/_contexts/ProductDetailContext";
 import { useState } from "react";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { motion } from "framer-motion";
 
 function ProductDescription() {
   const { currentVariant, product } = useProductDetail();
@@ -15,20 +16,40 @@ function ProductDescription() {
 
   return (
     <section className="mt-32 flex w-full justify-center bg-secondary-50 p-4 lg:mt-4">
-      <div className="flex w-full max-w-7xl justify-between lg:flex-col lg:gap-8 lg:p-0">
-        <div className="flex w-7/12 flex-col p-4 lg:w-full lg:p-0">
+      <motion.div
+        className="flex w-full max-w-7xl justify-between lg:flex-col lg:gap-8 lg:p-0"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <motion.div
+          className="flex w-7/12 flex-col p-4 lg:w-full lg:p-0"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
           <h2 className="text-2xl font-semibold text-primary-500">
             {t("products.description.title")}
           </h2>
           <div className="mt-4 text-primary-700">
             <p>{product.description}</p>
           </div>
-        </div>
-        <div className="w-5/12 p-4 lg:w-full lg:pt-0">
-          <h2 className="pl-4 text-2xl font-semibold text-primary-500 lg:pl-0">
+        </motion.div>
+        <motion.div
+          className="w-5/12 lg:w-full"
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+        >
+          <h2 className="text-2xl font-semibold text-primary-500">
             {t("products.description.specifications")}
           </h2>
-          <div className="relative mt-4 w-full overflow-hidden">
+          <motion.div
+            className="relative mt-4 w-full overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
             <div
               className={`w-full overflow-hidden rounded-xl border-2 border-primary-default text-left text-gray-700 ${
                 isExpanded ? "" : "max-h-40"
@@ -71,9 +92,9 @@ function ProductDescription() {
                 {t("products.description.showLess")}
               </button>
             )}
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

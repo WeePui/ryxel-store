@@ -2,14 +2,15 @@
 
 import Button from "@/app/_components/UI/Button";
 import Counter from "@components/UI/Counter";
-import { FaCartShopping, FaChevronRight, FaStar } from "react-icons/fa6";
+import { FaCartShopping, FaStar } from "react-icons/fa6";
 import ImageCarousel from "./ImageCarousel";
 import { useProductDetail } from "@/app/_contexts/ProductDetailContext";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { addOrUpdateCartItemAction } from "@/app/_libs/actions";
 import { toast } from "react-toastify";
-import NavLink from "../UI/NavLink";
 import { useRouter } from "next/navigation";
+import Breadcrumb from "../UI/Breadcrumb";
+import { motion } from "framer-motion";
 import formatMoney from "@/app/_utils/formatMoney";
 import { Variant } from "@/app/_types/variant";
 import WishlistButton from "../Wistlist/WishlistButton";
@@ -21,8 +22,13 @@ function OverviewSection() {
   const { currentVariant, setCurrentVariant, product } = useProductDetail();
   const [quantity, setQuantity] = useState(1);
   const [isPending, startTransition] = useTransition();
+  const [, setIsVisible] = useState(false);
   const router = useRouter();
   const { t, language } = useLanguage();
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   function handleVariantChange(variant: Variant) {
     setCurrentVariant(variant);
@@ -49,30 +55,41 @@ function OverviewSection() {
 
   return (
     <section className="min-h-[36rem] w-full bg-grey-400 xl:h-full">
+      {" "}
       <div className="mx-auto grid h-full max-w-[77.5rem] translate-y-12 grid-cols-[65fr_35fr] rounded-3xl bg-white px-12 py-6 shadow-lg xl:translate-y-0 xl:grid-cols-[60fr_40fr] xl:rounded-none lg:max-w-full lg:grid-cols-1 lg:px-8 lg:py-2 md:px-4">
         <div className="flex min-w-0 flex-col gap-6">
-          <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-grey-400">
-            <NavLink href="/">
-              <span className="text-grey-400 md:truncate">
-                {t("products.home")}
-              </span>
-            </NavLink>
-            <FaChevronRight className="text-xs" />
-            <NavLink href="/products">
-              <span className="text-grey-400 md:truncate">
-                {t("products.shop")}
-              </span>
-            </NavLink>
-            <FaChevronRight className="text-xs" />
-            <span className="text-primary-500 md:truncate">{product.name}</span>
-          </div>
-          <ImageCarousel
-            images={currentVariant.images as string[]}
-            alt={currentVariant.name}
-          />
-        </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Breadcrumb
+              className="mt-4"
+              items={[
+                { translateKey: "products.home", href: "/" },
+                { translateKey: "products.shop", href: "/products" },
+                { label: product.name },
+              ]}
+            />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <ImageCarousel
+              images={currentVariant.images as string[]}
+              alt={currentVariant.name}
+            />
+          </motion.div>
+        </div>{" "}
         <div className="min-w-0 py-8 lg:py-4">
-          <div className="mb-6 lg:hidden">
+          <motion.div
+            className="mb-6 lg:hidden"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <span className="flex items-center text-sm text-grey-500">
               <span className="mr-2 text-2xl font-bold text-primary-default">
                 &#10072;
@@ -81,13 +98,23 @@ function OverviewSection() {
                 ? categoryNamesMultilingual[product.category.name][language]
                 : product.category.name}
             </span>
-          </div>
-          <div className="mb-4">
+          </motion.div>
+          <motion.div
+            className="mb-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
             <h1 className="mb-1 font-title text-4xl font-bold lg:text-3xl">
               {product.name}
             </h1>
             <div className="mb-2 flex flex-wrap items-center gap-1">
-              <span className="flex items-center gap-[0.125rem]">
+              <motion.span
+                className="flex items-center gap-[0.125rem]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+              >
                 {[...Array(5)].map((_, i) => (
                   <FaStar
                     key={i}
@@ -96,64 +123,139 @@ function OverviewSection() {
                     }`}
                   />
                 ))}{" "}
-              </span>{" "}
-              <span className="ml-1 text-sm text-grey-500">
+              </motion.span>{" "}
+              <motion.span
+                className="ml-1 text-sm text-grey-500"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.5 }}
+              >
                 {product.rating} {t("products.reviews.ratings")}
-              </span>
+              </motion.span>
               {product.sold > 0 && (
-                <span className="ml-2 text-sm text-grey-500">
+                <motion.span
+                  className="ml-2 text-sm text-grey-500"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.6 }}
+                >
                   | {product.sold} {t("products.reviews.sold")}
-                </span>
+                </motion.span>
               )}
             </div>
-          </div>
-
-          <p className="mb-6 text-xs text-grey-500 lg:mb-2">
+          </motion.div>{" "}
+          <motion.p
+            className="mb-6 text-xs text-grey-500 lg:mb-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+          >
             {t("products.chooseProduct")}
-          </p>
-          <div className="mb-6 flex flex-wrap gap-2">
-            {product.variants.map((variant) => (
-              <Button
-                variant="filter"
+          </motion.p>
+          <motion.div
+            className="mb-6 flex flex-wrap gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
+            {product.variants.map((variant, index) => (
+              <motion.div
                 key={variant._id}
-                onClick={handleVariantChange.bind(null, variant)}
-                active={currentVariant._id === variant._id}
-                className="relative overflow-hidden font-semibold"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.4,
+                  delay: 0.9 + index * 0.1,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 24,
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {variant.name}
-                {variant.stock <
-                  Number(process.env.NEXT_PUBLIC_STOCK_LIMIT) && (
-                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                    <div className="relative h-full w-full">
-                      <div className="absolute inset-0 rounded-md bg-white/60" />
-                      <div className="absolute left-0 top-1/2 h-[1px] w-full origin-center rotate-45 bg-red-500" />
+                <Button
+                  variant="filter"
+                  onClick={handleVariantChange.bind(null, variant)}
+                  active={currentVariant._id === variant._id}
+                  className="relative overflow-hidden font-semibold"
+                >
+                  {variant.name}
+                  {variant.stock <
+                    Number(process.env.NEXT_PUBLIC_STOCK_LIMIT) && (
+                    <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                      <div className="relative h-full w-full">
+                        <div className="absolute inset-0 rounded-md bg-white/60" />
+                        <div className="absolute left-0 top-1/2 h-[1px] w-full origin-center rotate-45 bg-red-500" />
+                      </div>
                     </div>
-                  </div>
-                )}
-              </Button>
+                  )}
+                </Button>
+              </motion.div>
             ))}
-          </div>
-
-          <h2 className="flex items-center text-3xl font-bold text-grey-default">
-            <span>{formatMoney(currentVariant.price)}</span>
-            <div className="ml-auto">
+          </motion.div>{" "}
+          <motion.h2
+            className="flex items-center text-3xl font-bold text-grey-default"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.6,
+              delay: 1.1,
+              type: "spring",
+              stiffness: 300,
+              damping: 20,
+            }}
+          >
+            <motion.span
+              key={currentVariant.price}
+              initial={{ opacity: 0.6, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {formatMoney(currentVariant.price)}
+            </motion.span>
+            <motion.div
+              className="ml-auto"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 1.2 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <WishlistProvider>
                 <WishlistButton productId={product._id} />
               </WishlistProvider>
-            </div>
-          </h2>
-
-          <div className="mt-6 grid grid-cols-[30fr_70fr] items-center gap-4">
-            <Counter value={quantity} onSetValue={setQuantity} />
-            <Button
-              size="large"
-              onClick={handleAddToCart}
-              icon={<FaCartShopping />}
-              loading={isPending}
+            </motion.div>
+          </motion.h2>
+          <motion.div
+            className="mt-6 grid grid-cols-[30fr_70fr] items-center gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              delay: 1.3,
+              type: "spring",
+              stiffness: 250,
+              damping: 20,
+            }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="h-full"
             >
-              {t("products.addToCart")}
-            </Button>
-          </div>
+              <Counter value={quantity} onSetValue={setQuantity} />
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Button
+                size="large"
+                onClick={handleAddToCart}
+                icon={<FaCartShopping />}
+                loading={isPending}
+              >
+                {t("products.addToCart")}
+              </Button>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

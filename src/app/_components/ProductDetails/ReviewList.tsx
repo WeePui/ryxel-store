@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import ReviewItem from "./ReviewItem";
 import Button from "../UI/Button";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { motion } from "framer-motion";
 
 const REVIEWS_PER_PAGE = 5;
 
@@ -47,31 +48,60 @@ export default function ReviewList({
       ? reviews.filter((review) => review.rating === selectedRating)
       : reviews;
   if (filteredReviews.length === 0) {
-    return <p className="text-center">{t("products.reviews.noReviews")}</p>;
+    return (
+      <motion.p
+        className="text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {t("products.reviews.noReviews")}
+      </motion.p>
+    );
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <motion.div
+      className="flex flex-col gap-8"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
       {filteredReviews.slice(0, loadmore).map((review) => (
         <ReviewItem key={review._id} review={review} />
       ))}
       {/* <ReviewItem key={blindReview.user.name} review={blindReview} /> */}{" "}
-      <div className="flex justify-center gap-4">
+      <motion.div
+        className="flex justify-center gap-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.7, delay: 0.3 }}
+      >
         {loadmore < filteredReviews.length && (
-          <Button onClick={handleLoadmore} size="small">
-            {t("products.reviews.showMore")}
-          </Button>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button onClick={handleLoadmore} size="small">
+              {t("products.reviews.showMore")}
+            </Button>
+          </motion.div>
         )}
         {loadmore > REVIEWS_PER_PAGE && (
-          <Button
-            variant="secondary"
-            onClick={() => setLoadmore(REVIEWS_PER_PAGE)}
-            size="small"
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {t("products.reviews.showLess")}
-          </Button>
+            <Button
+              variant="secondary"
+              onClick={() => setLoadmore(REVIEWS_PER_PAGE)}
+              size="small"
+            >
+              {t("products.reviews.showLess")}
+            </Button>
+          </motion.div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

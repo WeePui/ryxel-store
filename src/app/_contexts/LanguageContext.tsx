@@ -193,8 +193,8 @@ const translations = {
           en: "Expansion",
         },
         description: {
-          vi: "Khai trương cửa hàng vật lý đầu tiên tại Quận 1, TP.HCM với đầy đủ các sản phẩm cao cấp.",
-          en: "Opened the first physical store in District 1, HCMC with a full range of premium products.",
+          vi: "Khai trương cửa hàng vật lý đầu tiên tại Thủ Đức, TP.HCM với đầy đủ các sản phẩm cao cấp.",
+          en: "Opened the first physical store in Thu Duc, HCMC with a full range of premium products.",
         },
       },
       m2024: {
