@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { JSX, useState } from 'react';
-import Card from '../../UI/Card';
-import { FaSignOutAlt, FaTruckLoading } from 'react-icons/fa';
-import { getTintedColor } from '@/app/_helpers/getTintedColor';
-import { FaCubes } from 'react-icons/fa6';
-import { Product } from '@/app/_types/product';
-import Modal from '../../UI/Modal';
+import { JSX, useState } from "react";
+import Card from "../../UI/Card";
+import { FaSignOutAlt, FaTruckLoading } from "react-icons/fa";
+import { getTintedColor } from "@/app/_helpers/getTintedColor";
+import { FaCubes } from "react-icons/fa6";
+import { Product } from "@/app/_types/product";
+import Modal from "../../UI/Modal";
 import {
   Table,
   TableBody,
@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableHeaderCell,
   TableHeaderRow,
-} from '../../UI/Table';
+} from "../../UI/Table";
 
 interface ProductsOverviewProps {
   totalStock: number;
@@ -41,34 +41,34 @@ export default function ProductsOverview({
         <ProductsStat
           textColor="#FFA500"
           label="Tổng sản phẩm"
-          bgColor={getTintedColor('#FFA500')}
+          bgColor={getTintedColor("#FFA500")}
           icon={<FaCubes />}
           value={totalStock}
         />
         <ProductsStat
           textColor="#FC2E20"
           label="Hết hàng"
-          bgColor={getTintedColor('#FC2E20')}
+          bgColor={getTintedColor("#FC2E20")}
           icon={<FaSignOutAlt />}
           value={totalOutStock}
         />
         <ProductsStat
           textColor="#25C0C0"
-          label="Sản phẩm mới (tuần)"
-          bgColor={getTintedColor('#25C0C0')}
+          label="Số lượng nhập (tuần)"
+          bgColor={getTintedColor("#25C0C0")}
           icon={<FaTruckLoading />}
           value={totalInStock}
         />
         <ProductsStat
           textColor="#25C0C0"
           label="Sản phẩm sắp hết hàng"
-          bgColor={getTintedColor('#25C0C0')}
+          bgColor={getTintedColor("#25C0C0")}
           icon={<FaTruckLoading />}
           value={
             <div
               role="button"
               onClick={() => setOpenModal(true)}
-              className="hover:underline cursor-pointer text-primary-500 text-sm hover:text-primary-600"
+              className="cursor-pointer text-sm text-primary-500 hover:text-primary-600 hover:underline"
             >
               Xem chi tiết
             </div>
@@ -77,7 +77,7 @@ export default function ProductsOverview({
       </ul>
       {openModal && (
         <Modal onClose={() => setOpenModal(false)}>
-          <div className="flex flex-col gap-4 p-4 w-full">
+          <div className="flex w-full flex-col gap-4 p-4">
             <h2 className="text-xl font-bold">Sản phẩm sắp hết hàng</h2>
             <Table className="w-full font-semibold text-primary-500">
               <TableHeader>
@@ -97,7 +97,7 @@ export default function ProductsOverview({
                     className="grid-cols-7 items-center"
                     key={product._id}
                   >
-                    <TableBodyCell className="flex items-center gap-4 col-span-3">
+                    <TableBodyCell className="col-span-3 flex items-center gap-4">
                       {product.name}
                     </TableBodyCell>
                     <TableBodyCell>{product.totalStock}</TableBodyCell>
@@ -131,31 +131,31 @@ function ProductsStat({
   changeRate,
 }: ProductsStatProps) {
   const isPositive = changeRate ? changeRate > 0 : false;
-  const changeRateClass = isPositive ? 'text-green-500' : 'text-red-500';
-  const changeRateIcon = isPositive ? '↑' : '↓';
+  const changeRateClass = isPositive ? "text-green-500" : "text-red-500";
+  const changeRateIcon = isPositive ? "↑" : "↓";
   const formattedChangeRate = changeRate
     ? `${(changeRate * 100).toFixed(2)}`
-    : '';
+    : "";
 
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex items-center gap-4">
       <div
-        className="h-12 w-12 rounded flex items-center justify-center text-lg"
+        className="flex h-12 w-12 items-center justify-center rounded text-lg"
         style={{ backgroundColor: bgColor, color: textColor }}
       >
         {icon}
       </div>
-      <div className="flex flex-col gap-1 ">
-        <span className="text-grey-200 text-sm">{label}</span>
+      <div className="flex flex-col gap-1">
+        <span className="text-sm text-grey-200">{label}</span>
         <div className="text-3xl font-bold">{value}</div>
         {changeRate && (
           <div
             className={`text-[10px] font-semibold ${changeRateClass} ${
-              isPositive ? 'bg-green-100' : 'bg-red-100'
-            } rounded-full px-2 py-1 flex items-center gap-1 w-fit`}
+              isPositive ? "bg-green-100" : "bg-red-100"
+            } flex w-fit items-center gap-1 rounded-full px-2 py-1`}
           >
             <span>
-              {isPositive ? '+' : '-'}
+              {isPositive ? "+" : "-"}
               {formattedChangeRate}% {changeRateIcon}
             </span>
           </div>

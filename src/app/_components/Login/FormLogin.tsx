@@ -4,7 +4,6 @@ import Button from "@/app/_components/UI/Button";
 import Input from "@/app/_components/UI/Input";
 import { useActionState } from "react";
 import { loginAction } from "@libs/actions";
-import { FaCircleExclamation } from "react-icons/fa6";
 import errorMessages from "@/app/_utils/mappingErrorMessages";
 
 function FormLogin() {
@@ -20,36 +19,22 @@ function FormLogin() {
           className="flex w-full flex-col items-center gap-6"
           action={action}
         >
-          <div className="w-full">
-            {state?.errors?.email && (
-              <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-                <FaCircleExclamation />
-                {errorMessages[state?.errors?.email] || state?.errors?.email}
-              </p>
-            )}
-            <Input
-              id="email"
-              type="email"
-              name="email"
-              label="Địa chỉ email"
-              error={!!state?.errors?.email}
-            />
-          </div>
-          <div className="w-full">
-            {state?.errors?.password && (
-              <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-                <FaCircleExclamation />
-                {state?.errors?.password}
-              </p>
-            )}
-            <Input
-              id="password"
-              type="password"
-              name="password"
-              label="Mật khẩu"
-              error={!!state?.errors?.password}
-            />
-          </div>
+          <Input
+            id="email"
+            type="email"
+            name="email"
+            label="Địa chỉ email"
+            error={!!state?.errors?.email}
+            errorMessage={state?.errors?.email}
+          />
+          <Input
+            id="password"
+            type="password"
+            name="password"
+            label="Mật khẩu"
+            error={!!state?.errors?.password}
+            errorMessage={errorMessages[state?.errors?.password as string]}
+          />
           <Button loading={isPending} role="submit">
             Đăng nhập
           </Button>

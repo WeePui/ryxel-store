@@ -58,9 +58,9 @@ export default function OrderReviewItem({
   const variant = useMemo(
     () =>
       (lineItem.product as Product).variants.find(
-        (variant) => variant._id === lineItem.variant
+        (variant) => variant._id === lineItem.variant,
       ),
-    [lineItem]
+    [lineItem],
   );
 
   const productId = (lineItem.product as Product)._id;
@@ -119,9 +119,9 @@ export default function OrderReviewItem({
   };
 
   return (
-    <div className="flex flex-col gap-4 bg-gray-50 shadow-md p-6 rounded-lg">
+    <div className="flex flex-col gap-4 rounded-lg bg-gray-50 p-6 shadow-md">
       <div className="flex items-center gap-1">
-        <div className="w-16 h-16 relative aspect-square">
+        <div className="relative aspect-square h-16 w-16">
           <Image
             src={(lineItem.product as Product).imageCover}
             alt={(lineItem.product as Product).name}
@@ -164,31 +164,32 @@ export default function OrderReviewItem({
         <Input
           type="textarea"
           id="review"
-          label={reviewItem ? "Nội dung" : "Viết đánh giá (tối đa 500 ký tự)"}
+          label="Nội dung"
+          placeholder="Viết đánh giá (tối đa 500 ký tự)"
           name="review"
           onChange={(e) => setReview(e.target.value)}
           value={review}
           maxLength={500}
           disabled={!isAllowedToUpdate}
         />
-        <span className="text-[10px] text-gray-400 ml-auto">
+        <span className="ml-auto text-[10px] text-gray-400">
           {review.length}/500
         </span>
       </div>
       {images.length > 0 || video ? (
         <div className="flex items-center gap-6">
           {images.map((image, index) => (
-            <div key={index} className={`relative aspect-square w-16 h-16`}>
+            <div key={index} className={`relative aspect-square h-16 w-16`}>
               <div
-                className={`absolute right-0 border-2 translate-x-1/2 -translate-y-1/2 z-20 rounded-full bg-white p-[2px] ${
+                className={`absolute right-0 z-20 -translate-y-1/2 translate-x-1/2 rounded-full border-2 bg-white p-[2px] ${
                   !isAllowedToUpdate ? "hidden" : ""
                 } `}
               >
                 <FaXmark
-                  className="text-red-500 text-xs cursor-pointer"
+                  className="cursor-pointer text-xs text-red-500"
                   onClick={() =>
                     setImages(
-                      (prev) => prev.filter((_, i) => i !== index) as File[]
+                      (prev) => prev.filter((_, i) => i !== index) as File[],
                     )
                   }
                 />
@@ -205,14 +206,14 @@ export default function OrderReviewItem({
             </div>
           ))}
           {video && (
-            <div className="relative aspect-square w-16 h-16">
+            <div className="relative aspect-square h-16 w-16">
               <div
-                className={`absolute right-0 border-2 translate-x-1/2 -translate-y-1/2 z-20 rounded-full bg-white p-[2px] ${
+                className={`absolute right-0 z-20 -translate-y-1/2 translate-x-1/2 rounded-full border-2 bg-white p-[2px] ${
                   !isAllowedToUpdate ? "hidden" : ""
                 } `}
               >
                 <FaXmark
-                  className="text-red-500 text-xs cursor-pointer"
+                  className="cursor-pointer text-xs text-red-500"
                   onClick={() => setVideo(null)}
                 />
               </div>
@@ -224,7 +225,7 @@ export default function OrderReviewItem({
                       : URL.createObjectURL(video)
                     : ""
                 }
-                className="z-10 rounded-md object-cover w-full h-full"
+                className="z-10 h-full w-full rounded-md object-cover"
                 controls={false}
                 muted
               />
@@ -232,7 +233,7 @@ export default function OrderReviewItem({
           )}
           {images.length < 2 || !video ? (
             <div
-              className={`flex flex-col items-center justify-center gap-1 border-2 p-4 rounded-lg border-dashed cursor-pointer ${
+              className={`flex cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed p-4 ${
                 !isAllowedToUpdate ? "hidden" : ""
               }`}
               role="button"
@@ -241,18 +242,18 @@ export default function OrderReviewItem({
                   .getElementById(
                     `file-input-${(lineItem.product as Product)._id}-${
                       lineItem.variant
-                    }`
+                    }`,
                   )
                   ?.click()
               }
             >
-              <FaCamera className="text-xl text-gray-500 hover:scale-110 transform transition-transform" />
+              <FaCamera className="transform text-xl text-gray-500 transition-transform hover:scale-110" />
               <p className="text-sm text-gray-400">
                 {images.length < 2 && !video
                   ? "Thêm ảnh hoặc video"
                   : images.length < 2
-                  ? "Thêm ảnh"
-                  : "Thêm video"}
+                    ? "Thêm ảnh"
+                    : "Thêm video"}
               </p>
               <input
                 id={`file-input-${(lineItem.product as Product)._id}-${
@@ -271,19 +272,19 @@ export default function OrderReviewItem({
           <div className="flex flex-col gap-2">
             <p>Thêm ảnh hoặc video</p>
             <div
-              className="flex flex-col items-center justify-center gap-1 border-2 p-4 rounded-lg border-dashed cursor-pointer"
+              className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed p-4"
               role="button"
               onClick={() =>
                 document
                   .getElementById(
                     `file-input-${(lineItem.product as Product)._id}-${
                       lineItem.variant
-                    }`
+                    }`,
                   )
                   ?.click()
               }
             >
-              <FaCamera className="text-xl text-gray-500 hover:scale-110 transform transition-transform" />
+              <FaCamera className="transform text-xl text-gray-500 transition-transform hover:scale-110" />
               <p className="text-sm text-gray-400">Thêm ảnh hoặc video</p>
               <input
                 id={`file-input-${(lineItem.product as Product)._id}-${
@@ -323,7 +324,7 @@ function StarRating({
     </div>
   ));
   return (
-    <div className="flex gap-2 text-yellow-500 text-3xl md:text-2xl">
+    <div className="flex gap-2 text-3xl text-yellow-500 md:text-2xl">
       {stars}
     </div>
   );

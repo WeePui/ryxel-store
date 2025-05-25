@@ -41,19 +41,14 @@ function FormSignup() {
         )}
 
         <div className="w-full">
-          {state?.errors?.name && (
-            <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-              <FaCircleExclamation />
-              {state?.errors?.name}
-            </p>
-          )}
           <Input
             id="name"
             type="text"
             name="name"
             label="Tên tài khoản"
             error={!!state?.errors?.name}
-            defaultValue={state?.inputData?.name || ""}
+            errorMessage={state?.errors?.name}
+            defaultValue={state?.inputData?.name}
             onChange={handleInputChange}
           />
           <p className="flex items-center gap-2 p-2 text-xs text-grey-300">
@@ -61,21 +56,15 @@ function FormSignup() {
             Thông tin này sẽ được thấy bởi mọi người
           </p>
         </div>
-
         <div className="w-full">
-          {state?.errors?.dob && (
-            <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-              <FaCircleExclamation />
-              {state?.errors?.dob}
-            </p>
-          )}
           <Input
             id="dob"
             type="date"
             name="dob"
             label="Ngày sinh"
             error={!!state?.errors?.dob}
-            defaultValue={state?.inputData?.dob || ""}
+            defaultValue={state?.inputData?.dob}
+            errorMessage={state?.errors?.dob}
             onChange={handleInputChange}
           />
           <p className="flex items-center gap-2 p-2 text-xs text-grey-300">
@@ -83,45 +72,32 @@ function FormSignup() {
             Lưu ý: Bạn sẽ không thể thay đổi ngày sinh sau này
           </p>
         </div>
-
-        <div className="w-full">
-          {state?.errors?.gender && (
-            <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-              <FaCircleExclamation />
-              {state?.errors?.gender}
-            </p>
-          )}
-          <Input
-            id="gender"
-            type="select"
-            name="gender"
-            label="Giới tính"
-            options={[
-              { label: "Nam", value: "male" },
-              { label: "Nữ", value: "female" },
-              { label: "Khác", value: "other" },
-            ]}
-            error={!!state?.errors?.gender}
-            onChange={handleInputChange}
-          />
-        </div>
+        <Input
+          id="gender"
+          type="select"
+          name="gender"
+          label="Giới tính"
+          options={[
+            { label: "Nam", value: "male" },
+            { label: "Nữ", value: "female" },
+            { label: "Khác", value: "other" },
+          ]}
+          error={!!state?.errors?.gender}
+          errorMessage={state?.errors?.gender}
+          onChange={handleInputChange}
+        />
 
         <hr className="my-1 w-full border-t border-grey-100" />
 
         <div className="w-full">
-          {state?.errors?.email && (
-            <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-              <FaCircleExclamation />
-              {state?.errors?.email}
-            </p>
-          )}
           <Input
             name="email"
             id="email"
             label="Địa chỉ email"
             type="email"
             error={!!state?.errors?.email}
-            defaultValue={state?.inputData?.email || ""}
+            defaultValue={state?.inputData?.email}
+            errorMessage={state?.errors?.email}
             onChange={handleInputChange}
           />
           <p className="flex items-center gap-2 p-2 text-xs text-grey-300">
@@ -130,39 +106,25 @@ function FormSignup() {
           </p>
         </div>
 
-        <div className="w-full">
-          {state?.errors?.password && (
-            <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-              <FaCircleExclamation />
-              {state?.errors?.password}
-            </p>
-          )}
-          <Input
-            id="password"
-            type="password"
-            name="password"
-            label="Mật khẩu"
-            error={!!state?.errors?.password}
-            onChange={handleInputChange}
-          />
-        </div>
+        <Input
+          id="password"
+          type="password"
+          name="password"
+          label="Mật khẩu"
+          error={!!state?.errors?.password}
+          errorMessage={state?.errors?.password}
+          onChange={handleInputChange}
+        />
 
-        <div className="w-full">
-          {state?.errors?.passwordConfirm && (
-            <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-              <FaCircleExclamation />
-              {state?.errors?.passwordConfirm}
-            </p>
-          )}
-          <Input
-            id="passwordConfirm"
-            type="password"
-            name="passwordConfirm"
-            label="Xác nhận mật khẩu"
-            error={!!state?.errors?.passwordConfirm}
-            onChange={handleInputChange}
-          />
-        </div>
+        <Input
+          id="passwordConfirm"
+          type="password"
+          name="passwordConfirm"
+          label="Xác nhận mật khẩu"
+          error={!!state?.errors?.passwordConfirm}
+          errorMessage={state?.errors?.passwordConfirm}
+          onChange={handleInputChange}
+        />
 
         <hr className="my-1 w-full border-t border-grey-100" />
 

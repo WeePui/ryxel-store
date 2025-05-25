@@ -75,8 +75,9 @@ function FormForgotPassword() {
           name="email"
           type="email"
           label="Địa chỉ e-mail"
-          defaultValue={state?.errors.email || ""}
+          defaultValue={state?.errors.email}
           error={!!state?.errors.email}
+          errorMessage={state?.errors.email}
         />
         <Button role="submit" loading={isPending}>
           Tiếp theo

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { FaMinus, FaPlus } from 'react-icons/fa6';
+import { useState } from "react";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 
 interface CounterProps {
   value?: number;
@@ -9,7 +9,7 @@ interface CounterProps {
 }
 
 function Counter({ value = 1, onSetValue }: CounterProps) {
-  const [count, setCount] = useState(value + '');
+  const [count, setCount] = useState(value + "");
 
   const normalize = (val: string | number) => {
     const num = Number(val);
@@ -22,19 +22,19 @@ function Counter({ value = 1, onSetValue }: CounterProps) {
 
   const handleBlur = () => {
     const normalized = normalize(count);
-    setCount(normalized + '');
+    setCount(normalized + "");
     onSetValue(normalized);
   };
 
   const handleDecrement = () => {
     const newValue = normalize(Number(count) - 1);
-    setCount(newValue + '');
+    setCount(newValue + "");
     onSetValue(newValue);
   };
 
   const handleIncrement = () => {
     const newValue = normalize(Number(count) + 1);
-    setCount(newValue + '');
+    setCount(newValue + "");
     onSetValue(newValue);
   };
 
@@ -54,7 +54,7 @@ function Counter({ value = 1, onSetValue }: CounterProps) {
         value={count}
         onChange={handleInputChange}
         onBlur={handleBlur}
-        className="h-full w-full flex-1 text-center focus:outline-none"
+        className="h-full w-full flex-1 border-none text-center focus:outline-none"
       />
       <button
         className="flex h-full flex-1 items-center justify-center hover:bg-grey-100 disabled:text-gray-300"

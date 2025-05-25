@@ -276,10 +276,8 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               name="currentVariant"
               label="Phân loại đang chọn"
               defaultValue={currentVariant._id}
-              onChange={(e) =>
-                handleVariantChange(e as React.ChangeEvent<HTMLSelectElement>)
-              }
-              variant="small"
+              onChange={(e) => handleVariantChange(e)}
+              size="small"
             />
             {variantList.length > 1 && (
               <Button
@@ -319,7 +317,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           onChange={(e) => handleFieldChange("sku", e.target.value)}
         />
         <Input
-          type="text"
+          type="number"
           name="price"
           id="price"
           value={currentVariant.price + ""}
@@ -327,7 +325,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           onChange={(e) => handleFieldChange("price", e.target.value)}
         />
         <Input
-          type="text"
+          type="number"
           name="cost"
           id="cost"
           value={currentVariant.cost + ""}
@@ -335,15 +333,15 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           onChange={(e) => handleFieldChange("cost", e.target.value)}
         />
         <Input
-          type="text"
+          type="number"
           name="weight"
           id="weight"
           value={currentVariant.weight + ""}
-          label="Trọng lượng"
+          label="Trọng lượng (gram)"
           onChange={(e) => handleFieldChange("weight", e.target.value)}
         />
         <Input
-          type="text"
+          type="number"
           name="stock"
           id="stock"
           value={currentVariant.stock + ""}
@@ -351,7 +349,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           onChange={(e) => handleFieldChange("stock", e.target.value)}
         />
         <Input
-          type="text"
+          type="number"
           name="sold"
           id="sold"
           value={currentVariant.sold + ""}
@@ -360,7 +358,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
         />
         <div className="col-span-full flex gap-4 xl:flex-col lg:flex-row md:flex-col">
           <Input
-            type="text"
+            type="number"
             name="saleOffPercentage"
             id="saleOffPercentage"
             value={

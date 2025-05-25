@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import Spinner from "@/app/_components/UI/Spinner";
 import { resetPasswordAction } from "@libs/actions";
-import { FaCircleExclamation, FaRegCircleXmark } from "react-icons/fa6";
+import { FaRegCircleXmark } from "react-icons/fa6";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
 
@@ -41,22 +41,14 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
         action={action}
         className="flex w-full max-w-xl flex-col items-center gap-8 rounded-lg bg-white px-16 py-12 shadow-sm lg:px-8"
       >
-        <div className="w-full">
-          {state?.errors?.password && (
-            <p className="flex items-center gap-2 p-2 text-xs text-red-500">
-              <FaCircleExclamation />
-              {state?.errors?.password}
-            </p>
-          )}
-          <Input
-            id="password"
-            type="password"
-            name="password"
-            label="Mật khẩu"
-            error={!!state?.errors?.password}
-          />
-        </div>
-
+        <Input
+          id="password"
+          type="password"
+          name="password"
+          label="Mật khẩu"
+          error={!!state?.errors?.password}
+          errorMessage={state?.errors?.password}
+        />
         <Input
           id="passwordConfirm"
           type="password"
