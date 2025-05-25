@@ -1,22 +1,23 @@
-'use client';
+"use client";
 
-import formatMoney from '@/app/_utils/formatMoney';
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import formatMoney from "@/app/_utils/formatMoney";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import React, {
   createContext,
   JSX,
   useContext,
   useEffect,
   useState,
-} from 'react';
+} from "react";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 import {
   FaRegCircleXmark,
   FaChevronDown,
   FaChevronUp,
   FaStar,
   FaRegStar,
-} from 'react-icons/fa6';
-import SpecsFilter from './SpecsFilter';
+} from "react-icons/fa6";
+import SpecsFilter from "./SpecsFilter";
 
 interface SideFilterProps {
   brands: Array<{ value: string; count?: number }>;
@@ -59,7 +60,7 @@ interface SideFilterContextType {
 }
 
 const SideFilterContext = createContext<SideFilterContextType | undefined>(
-  undefined
+  undefined,
 );
 
 const ratingOptions = [
@@ -115,6 +116,7 @@ function SideFilter({
   specifications,
   isMobile = false,
 }: SideFilterProps) {
+  const { t } = useLanguage();
   const brandOptions = brands.map((brand) => ({
     value: brand.value,
     label: brand.value,
@@ -143,13 +145,13 @@ function SideFilter({
   const router = useRouter();
 
   useEffect(() => {
-    const brand = searchParams.get('brand')?.split(',') || [];
+    const brand = searchParams.get("brand")?.split(",") || [];
     const price = {
-      min: Number(searchParams.get('price[gte]')) || 0,
-      max: Number(searchParams.get('price[lte]')) || undefined,
+      min: Number(searchParams.get("price[gte]")) || 0,
+      max: Number(searchParams.get("price[lte]")) || undefined,
     };
     const rating = {
-      min: Number(searchParams.get('rating[gte]')) || undefined,
+      min: Number(searchParams.get("rating[gte]")) || undefined,
       max: 5,
     };
 
@@ -164,35 +166,35 @@ function SideFilter({
     const params = new URLSearchParams(searchParams);
 
     if (filters.brand.length > 0) {
-      params.set('brand', filters.brand.join(','));
-      params.delete('page');
+      params.set("brand", filters.brand.join(","));
+      params.delete("page");
     } else {
-      params.delete('brand');
+      params.delete("brand");
     }
     if (filters.price.min) {
-      params.set('price[gte]', filters.price.min.toString());
-      params.delete('page');
+      params.set("price[gte]", filters.price.min.toString());
+      params.delete("page");
     }
     if (filters.price.max) {
-      params.set('price[lte]', filters.price.max.toString());
-      params.delete('page');
+      params.set("price[lte]", filters.price.max.toString());
+      params.delete("page");
     }
     if (filters.price.min === 0 && filters.price.max === undefined) {
-      params.delete('price[gte]');
-      params.delete('price[lte]');
+      params.delete("price[gte]");
+      params.delete("price[lte]");
     }
     if (filters.price.max === undefined) {
-      params.delete('price[lte]');
+      params.delete("price[lte]");
     }
     if (filters.rating.min) {
-      params.set('rating[gte]', filters.rating.min.toString());
-      params.delete('page');
+      params.set("rating[gte]", filters.rating.min.toString());
+      params.delete("page");
     }
-    if (typeof filters.rating.min === 'number') {
-      params.set('rating[gte]', filters.rating.min.toString());
-      params.delete('page');
+    if (typeof filters.rating.min === "number") {
+      params.set("rating[gte]", filters.rating.min.toString());
+      params.delete("page");
     } else {
-      params.delete('rating[gte]'); // Xóa param nếu không có rating
+      params.delete("rating[gte]"); // Xóa param nếu không có rating
     }
 
     router.replace(`${pathname}?${params.toString()}`);
@@ -203,19 +205,19 @@ function SideFilter({
 
     const currentFilters = { ...filters };
 
-    if (name === 'brand') {
+    if (name === "brand") {
       if (checked) {
         currentFilters.brand.push(value);
       } else {
         currentFilters.brand = currentFilters.brand.filter(
-          (brand) => brand !== value
+          (brand) => brand !== value,
         );
       }
-    } else if (name === 'price') {
-      const [min, max] = value.split('-').map(Number);
+    } else if (name === "price") {
+      const [min, max] = value.split("-").map(Number);
       currentFilters.price.min = min;
       currentFilters.price.max = max || undefined;
-    } else if (name === 'rating') {
+    } else if (name === "rating") {
       const newRating = checked ? Number(value) : undefined;
       // Nếu click vào rating đang được chọn -> bỏ chọn
       currentFilters.rating.min =
@@ -227,23 +229,23 @@ function SideFilter({
 
   function onClear() {
     const params = new URLSearchParams(searchParams);
-    params.delete('brand');
-    params.delete('price[gte]');
-    params.delete('price[lte]');
-    params.delete('rating[gte]');
-    params.delete('page');
-    params.delete('specs');
-    params.delete('sort');
-    params.delete('search');
-    params.delete('category');
+    params.delete("brand");
+    params.delete("price[gte]");
+    params.delete("price[lte]");
+    params.delete("rating[gte]");
+    params.delete("page");
+    params.delete("specs");
+    params.delete("sort");
+    params.delete("search");
+    params.delete("category");
 
     router.replace(`${pathname}?${params.toString()}`);
   }
 
   function handleSpecsChange(specName: string, value: string) {
     const params = new URLSearchParams(searchParams);
-    const specs = params.get('specs')
-      ? JSON.parse(params.get('specs') as string)
+    const specs = params.get("specs")
+      ? JSON.parse(params.get("specs") as string)
       : {};
 
     const currentSpecs = { ...specs };
@@ -254,10 +256,10 @@ function SideFilter({
     }
 
     if (Object.keys(currentSpecs).length === 0) {
-      params.delete('specs');
+      params.delete("specs");
     } else {
-      params.set('specs', JSON.stringify(currentSpecs));
-      params.delete('page');
+      params.set("specs", JSON.stringify(currentSpecs));
+      params.delete("page");
     }
     router.replace(`${pathname}?${params.toString()}`);
   }
@@ -266,28 +268,35 @@ function SideFilter({
     <SideFilterContext.Provider value={{ filters, setFilters, onChecked }}>
       <div
         className={`flex h-full flex-col gap-2 rounded-xl ${
-          isMobile ? 'bg-white' : 'bg-grey-100'
+          isMobile ? "bg-white" : "bg-grey-100"
         } px-4 pb-6`}
       >
+        {" "}
         <div className="flex items-center justify-between px-4 pb-2 pt-6">
-          <h3 className="text-xl font-bold text-primary-default">Bộ lọc</h3>
+          <h3 className="text-xl font-bold text-primary-default">
+            {t("products.filter.title")}
+          </h3>
           <button onClick={onClear} className="flex items-center gap-2">
             <FaRegCircleXmark />
-            Đặt lại
+            {t("products.filter.reset")}
           </button>
         </div>
         <div className="flex flex-col gap-2 overflow-auto rounded-xl bg-white p-4 scrollbar-hide">
-          <FilterItem filterName="brand" label="Hãng" options={brandOptions} />
+          <FilterItem
+            filterName="brand"
+            label={t("products.filter.brand")}
+            options={brandOptions}
+          />
           <hr className="my-1 border-t border-grey-200" />
           <FilterItem
             filterName="price"
-            label="Giá"
+            label={t("products.filter.price")}
             options={priceRangeOptions}
           />
           <hr className="my-1 border-t border-grey-200" />
           <FilterItem
             filterName="rating"
-            label="Đánh giá"
+            label={t("products.filter.rating")}
             options={ratingOptions}
           />
           <SpecsFilter
@@ -305,14 +314,14 @@ function FilterItem({ filterName, options, label }: FilterItemProps) {
   const context = useContext(SideFilterContext);
   const { filters, onChecked } = context!;
   const isChecked = (value: string | number) => {
-    if (filterName === 'brand') {
+    if (filterName === "brand") {
       return filters.brand.includes(value as string);
-    } else if (filterName === 'price') {
-      const [min, max] = (value as string).split('-').map(Number);
+    } else if (filterName === "price") {
+      const [min, max] = (value as string).split("-").map(Number);
       return (
         filters.price.min === min && (filters.price.max || undefined) === max
       );
-    } else if (filterName === 'rating') {
+    } else if (filterName === "rating") {
       return filters.rating.min === Number(value);
     }
     return false;
@@ -350,7 +359,7 @@ function FilterItem({ filterName, options, label }: FilterItemProps) {
                 {option.label}
               </div>
               <span className="ml-auto text-grey-400">
-                {option.count ? `(${option.count})` : ''}
+                {option.count ? `(${option.count})` : ""}
               </span>
             </label>
           ))}

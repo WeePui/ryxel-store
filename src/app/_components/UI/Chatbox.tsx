@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { FaPaperPlane } from "react-icons/fa6";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 export default function Chatbox() {
   const [messages, setMessages] = useState<
@@ -10,6 +11,7 @@ export default function Chatbox() {
   >([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const { t } = useLanguage();
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -43,10 +45,9 @@ export default function Chatbox() {
       setMessages((prev) => [...prev, { role: "bot", content: botReply }]);
     } catch (err) {
       console.error("Error fetching chatbot response:", err);
-
       setMessages((prev) => [
         ...prev,
-        { role: "bot", content: "Lỗi kết nối, vui lòng thử lại sau." },
+        { role: "bot", content: t("chatbot.errorConnection") },
       ]);
     }
 
@@ -56,7 +57,7 @@ export default function Chatbox() {
   return (
     <div className="mx-auto w-full max-w-md bg-white">
       <h2 className="mb-6 flex items-center gap-2 font-title text-2xl font-semibold">
-        Hỗ trợ tự động từ Ryxel Store
+        {t("chatbot.title")}
       </h2>
 
       <div className="mb-8 h-64 overflow-y-auto rounded">
@@ -77,10 +78,10 @@ export default function Chatbox() {
               {msg.content}
             </span>
           </div>
-        ))}
+        ))}{" "}
         {loading && (
           <p className="loading-container text-sm italic selection:text-gray-500">
-            Đang trả lời...
+            {t("chatbot.loading")}
           </p>
         )}
         <div ref={bottomRef} />
@@ -92,12 +93,13 @@ export default function Chatbox() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          placeholder="Nhập câu hỏi..."
+          placeholder={t("chatbot.placeholder")}
         />
         <Button
           onClick={sendMessage}
           loading={loading}
           icon={<FaPaperPlane />}
+          aria-label={t("chatbot.placeholder")}
         />
       </div>
     </div>

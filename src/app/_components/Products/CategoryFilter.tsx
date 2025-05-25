@@ -3,7 +3,9 @@
 import Button from "../UI/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MdCategory } from "react-icons/md";
-import { categoryIcons, categoryNames } from "@/app/_utils/mappingCategory";
+import { categoryIcons } from "@/app/_utils/mappingCategory";
+import { categoryNamesMultilingual } from "@/app/_utils/mappingCategoryMultilingual";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface CategoryFilterProps {
   categories: {
@@ -17,6 +19,7 @@ function CategoryFilter({ categories }: CategoryFilterProps) {
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get("category");
   const router = useRouter();
+  const { t, language } = useLanguage();
 
   const handleFilter = function (category: string) {
     if (!category) return router.replace("products");
@@ -36,7 +39,7 @@ function CategoryFilter({ categories }: CategoryFilterProps) {
             active={!currentCategory}
             rounded="pill"
           >
-            Tất cả
+            {t("products.filter.all")}
           </Button>
           {categories.map((category) => (
             <Button
@@ -45,9 +48,11 @@ function CategoryFilter({ categories }: CategoryFilterProps) {
               onClick={() => handleFilter(category.slug)}
               active={category.slug === currentCategory}
               rounded="pill"
-              icon={categoryIcons[category.slug] || <MdCategory />}
+              icon={categoryIcons[category.name] || <MdCategory />}
             >
-              {categoryNames[category.slug] || category.name}
+              {categoryNamesMultilingual[category.name]
+                ? categoryNamesMultilingual[category.name][language]
+                : category.name}
             </Button>
           ))}
         </div>

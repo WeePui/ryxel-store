@@ -1,16 +1,16 @@
-import CategoryFilter from '@components/Products/CategoryFilter';
-import SideFilter from '@components/Products/SideFilter';
+import CategoryFilter from "@components/Products/CategoryFilter";
+import SideFilter from "@components/Products/SideFilter";
 import {
   getClientCategories,
   getFilterData,
   getProducts,
-} from '@libs/apiServices';
-import ProductList from '@components/Products/ProductList';
-import NumResults from '@components/Products/NumResults';
-import { generatePriceRanges } from '@helpers/generatePriceRanges';
-import SortSelector from '@components/Products/SortSelector';
-import { Product } from '../../_types/product';
-import FilterButton from './FilterButton';
+} from "@libs/apiServices";
+import ProductList from "@components/Products/ProductList";
+import NumResults from "@components/Products/NumResults";
+import { generatePriceRanges } from "@helpers/generatePriceRanges";
+import SortSelector from "@components/Products/SortSelector";
+import { Product } from "../../_types/product";
+import FilterButton from "./FilterButton";
 
 interface Props {
   searchParams: Promise<{ [key: string]: string }>;
@@ -29,7 +29,7 @@ export default async function ProductsPage({ searchParams }: Props) {
       value: string;
       count: number;
     }>;
-  } = {}; // Changed from [] to {} to match the new structure
+  } = {};
   const filters = await searchParams;
 
   const { categories } = await getClientCategories();
@@ -58,27 +58,29 @@ export default async function ProductsPage({ searchParams }: Props) {
         acc.max = Math.max(acc.max, maxPrice);
         return acc;
       },
-      { min: Infinity, max: -Infinity }
+      { min: Infinity, max: -Infinity },
     );
     priceRanges = generatePriceRanges(priceRange.min, priceRange.max);
   } catch (error) {
-    console.error('Failed to fetch products:', error);
+    console.error("Failed to fetch products:", error);
   }
 
   return (
-    <div className="mx-auto max-w-7xl xl:max-w-full flex-1 xl:px-6 lg:px-3 sm:px-0">
+    <div className="mx-auto max-w-7xl flex-1 xl:max-w-full xl:px-6 lg:px-3 sm:px-0">
       <main className="mb-16">
         <NumResults
           results={displayResults}
           totalResults={displayTotalProducts}
         />
 
-        <div className="overflow-x-hidden max-w-full lg:mb-4 mb-14">
+        <div className="mb-14 max-w-full overflow-x-hidden lg:mb-4">
           <CategoryFilter categories={categories} />
         </div>
-        <div className="hidden lg:flex flex-col justify-between py-4 sm:px-3">
-          <p className="mb-2 pl-2 font-thin hidden md:block">Sắp xếp:</p>
-          <div className="hidden lg:flex gap-2 items-center">
+        <div className="hidden flex-col justify-between py-4 lg:flex sm:px-3">
+          <p className="mb-2 hidden pl-2 font-thin md:block">
+            {/* This will be rendered with client component */}
+          </p>
+          <div className="hidden items-center gap-2 lg:flex">
             <div className="flex-[6]">
               <SortSelector />
             </div>
@@ -97,8 +99,8 @@ export default async function ProductsPage({ searchParams }: Props) {
         <div className="lg:hidden">
           <SortSelector />
         </div>
-        <div className="grid grid-cols-[20fr_80fr] xl:grid-cols-[25fr_75fr] lg:grid-cols-1 gap-x-6 py-7 sm:px-3">
-          <div className="lg:hidden sticky top-4 max-h-[calc(100vh-2rem)] h-fit shadow-md rounded-xl overflow-auto scrollbar-hide">
+        <div className="grid grid-cols-[20fr_80fr] gap-x-6 py-7 xl:grid-cols-[25fr_75fr] lg:grid-cols-1 sm:px-3">
+          <div className="sticky top-4 h-fit max-h-[calc(100vh-2rem)] overflow-auto rounded-xl shadow-md scrollbar-hide lg:hidden">
             <SideFilter
               brands={brands}
               priceRanges={priceRanges}

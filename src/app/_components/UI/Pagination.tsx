@@ -1,4 +1,5 @@
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface PaginationProps {
   currentPage: number;
@@ -11,6 +12,7 @@ export default function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
+  const { t } = useLanguage();
   if (totalPages <= 1) return null; // No need to show pagination if there's only one page
 
   const handlePreviousPage = () => {
@@ -40,7 +42,7 @@ export default function Pagination({
 
     // Add ellipsis if needed before the current range
     if (currentPage - delta > 2) {
-      range.push('...');
+      range.push("...");
     }
 
     // Add pages around the current page
@@ -54,7 +56,7 @@ export default function Pagination({
 
     // Add ellipsis if needed after the current range
     if (currentPage + delta < totalPages - 1) {
-      range.push('...');
+      range.push("...");
     }
 
     // Always show the last page
@@ -68,44 +70,48 @@ export default function Pagination({
   const paginationRange = getPaginationRange();
 
   return (
-    <div className="flex items-center rounded-lg font-semibold bg-white-50 divide-x-2">
+    <div className="bg-white-50 flex items-center divide-x-2 rounded-lg font-semibold">
+      {" "}
       <button
-        className={`px-4 py-2 h-12 w-12 flex items-center justify-center ${
-          currentPage === 1 ? 'disabled' : ''
-        } bg-primary-500 hover:bg-gray-400 rounded-l-md`}
+        className={`flex h-12 w-12 items-center justify-center px-4 py-2 ${
+          currentPage === 1 ? "disabled" : ""
+        } rounded-l-md bg-primary-500 hover:bg-gray-400`}
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
+        aria-label={t("pagination.previous")}
       >
         <FaChevronLeft className="h-4 w-4 text-white" />
       </button>
       {paginationRange.map((page, index) =>
-        typeof page === 'number' ? (
+        typeof page === "number" ? (
           <button
             key={index}
-            className={`px-4 py-2 h-12 w-12 flex items-center justify-center ${
+            className={`flex h-12 w-12 items-center justify-center px-4 py-2 ${
               currentPage === page
-                ? 'bg-primary-default text-white'
-                : 'bg-gray-100 hover:bg-gray-200'
+                ? "bg-primary-default text-white"
+                : "bg-gray-100 hover:bg-gray-200"
             }`}
             onClick={() => handlePageChange(page)}
+            aria-label={t("pagination.page").replace("{page}", page.toString())}
           >
             {page}
           </button>
         ) : (
           <span
             key={index}
-            className="px-2 h-12 w-12 flex items-center justify-center text-gray-500"
+            className="flex h-12 w-12 items-center justify-center px-2 text-gray-500"
           >
             {page}
           </span>
-        )
-      )}
+        ),
+      )}{" "}
       <button
-        className={`px-4 py-2 h-12 w-12 flex items-center justify-center ${
-          currentPage === totalPages ? 'disabled' : ''
-        } bg-primary-default hover:bg-gray-400 rounded-r-md`}
+        className={`flex h-12 w-12 items-center justify-center px-4 py-2 ${
+          currentPage === totalPages ? "disabled" : ""
+        } rounded-r-md bg-primary-default hover:bg-gray-400`}
         onClick={handleNextPage}
         disabled={currentPage === totalPages}
+        aria-label={t("pagination.next")}
       >
         <FaChevronRight className="h-4 w-4 text-white" />
       </button>

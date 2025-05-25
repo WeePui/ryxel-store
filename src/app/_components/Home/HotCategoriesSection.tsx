@@ -19,7 +19,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=chuot")}
+          onClick={() => router.push("/products?category=Chuột")}
         >
           {" "}
           <FaMouse className="text-7xl" />
@@ -30,7 +30,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=ban-phim")}
+          onClick={() => router.push("/products?category=Bàn+phím")}
         >
           <FaKeyboard className="text-7xl" />
           <p className="text-center text-lg font-semibold">
@@ -40,7 +40,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=tai-nghe")}
+          onClick={() => router.push("/products?category=Tai+nghe")}
         >
           <FaHeadphones className="text-7xl" />
           <p className="text-center text-lg font-semibold">
@@ -50,7 +50,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=ban")}
+          onClick={() => router.push("/products?category=Bàn")}
         >
           <PiDeskBold className="text-7xl" />
           <p className="text-center text-lg font-semibold">
@@ -60,7 +60,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=ghe")}
+          onClick={() => router.push("/products?category=Ghế")}
         >
           <FaChair className="text-7xl" />
           <p className="text-center text-lg font-semibold">
@@ -70,7 +70,7 @@ export default function HotCategoriesSection() {
         <div
           className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 p-4 shadow transition-transform hover:scale-105"
           role="button"
-          onClick={() => router.push("/products?category=phu-kien")}
+          onClick={() => router.push("/products?category=Phụ+kiện")}
         >
           <FaGears className="text-7xl" />
           <p className="text-center text-lg font-semibold">

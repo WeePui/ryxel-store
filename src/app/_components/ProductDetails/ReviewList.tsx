@@ -4,6 +4,7 @@ import { Review } from "@/app/_types/review";
 import React, { useEffect } from "react";
 import ReviewItem from "./ReviewItem";
 import Button from "../UI/Button";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 const REVIEWS_PER_PAGE = 5;
 
@@ -32,6 +33,7 @@ export default function ReviewList({
   selectedRating,
 }: ReviewListProps) {
   const [loadmore, setLoadmore] = React.useState(REVIEWS_PER_PAGE);
+  const { t } = useLanguage();
   const handleLoadmore = () => {
     setLoadmore((prev) => prev + REVIEWS_PER_PAGE);
   };
@@ -44,9 +46,8 @@ export default function ReviewList({
     selectedRating > 0
       ? reviews.filter((review) => review.rating === selectedRating)
       : reviews;
-
   if (filteredReviews.length === 0) {
-    return <p className="text-center">Sản phẩm này chưa được đánh giá.</p>;
+    return <p className="text-center">{t("products.reviews.noReviews")}</p>;
   }
 
   return (
@@ -54,11 +55,11 @@ export default function ReviewList({
       {filteredReviews.slice(0, loadmore).map((review) => (
         <ReviewItem key={review._id} review={review} />
       ))}
-      {/* <ReviewItem key={blindReview.user.name} review={blindReview} /> */}
+      {/* <ReviewItem key={blindReview.user.name} review={blindReview} /> */}{" "}
       <div className="flex justify-center gap-4">
         {loadmore < filteredReviews.length && (
           <Button onClick={handleLoadmore} size="small">
-            Hiển thị thêm
+            {t("products.reviews.showMore")}
           </Button>
         )}
         {loadmore > REVIEWS_PER_PAGE && (
@@ -67,7 +68,7 @@ export default function ReviewList({
             onClick={() => setLoadmore(REVIEWS_PER_PAGE)}
             size="small"
           >
-            Thu gọn
+            {t("products.reviews.showLess")}
           </Button>
         )}
       </div>

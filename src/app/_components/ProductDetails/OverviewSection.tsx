@@ -14,12 +14,15 @@ import formatMoney from "@/app/_utils/formatMoney";
 import { Variant } from "@/app/_types/variant";
 import WishlistButton from "../Wistlist/WishlistButton";
 import { WishlistProvider } from "@/app/_contexts/WishlistContext";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { categoryNamesMultilingual } from "@/app/_utils/mappingCategoryMultilingual";
 
 function OverviewSection() {
   const { currentVariant, setCurrentVariant, product } = useProductDetail();
   const [quantity, setQuantity] = useState(1);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { t, language } = useLanguage();
 
   function handleVariantChange(variant: Variant) {
     setCurrentVariant(variant);
@@ -33,11 +36,11 @@ function OverviewSection() {
         quantity,
       );
       if (result.success) {
-        toast.success("Sản phẩm đã được thêm vào giỏ hàng.");
+        toast.success(t("products.successAddToCart"));
       }
       if (result.errors) {
         if (result.errors.user) {
-          toast.error("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+          toast.error(t("products.loginRequired"));
           router.push("/login");
         } else toast.error(result.errors.message);
       }
@@ -50,11 +53,15 @@ function OverviewSection() {
         <div className="flex min-w-0 flex-col gap-6">
           <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-grey-400">
             <NavLink href="/">
-              <span className="text-grey-400 md:truncate">Trang chủ</span>
+              <span className="text-grey-400 md:truncate">
+                {t("products.home")}
+              </span>
             </NavLink>
             <FaChevronRight className="text-xs" />
             <NavLink href="/products">
-              <span className="text-grey-400 md:truncate">Cửa hàng</span>
+              <span className="text-grey-400 md:truncate">
+                {t("products.shop")}
+              </span>
             </NavLink>
             <FaChevronRight className="text-xs" />
             <span className="text-primary-500 md:truncate">{product.name}</span>
@@ -70,32 +77,40 @@ function OverviewSection() {
               <span className="mr-2 text-2xl font-bold text-primary-default">
                 &#10072;
               </span>
-              <span className="capitalize">{product.category.name}</span>
+              {categoryNamesMultilingual[product.category.name]
+                ? categoryNamesMultilingual[product.category.name][language]
+                : product.category.name}
             </span>
           </div>
-
-          <h2 className="mb-4 font-title text-3xl font-bold text-grey-default">
-            {product.name}
-          </h2>
-
-          <div className="mb-8 lg:mb-4">
-            <span className="flex items-center">
-              <FaStar className="mr-2 text-xl text-yellow-500" />
-              <span className="mr-1 font-semibold">{product.rating}</span>
-              <span className="text-xs text-grey-500">
-                (với {product.ratingsQuantity} đánh giá)
-                <span className="ml-4 mr-2 text-grey-400">
-                  Đã bán: {product.sold}
-                </span>
-                |
-                <span className="ml-2 text-grey-400">
-                  Còn lại: {currentVariant.stock}
-                </span>
+          <div className="mb-4">
+            <h1 className="mb-1 font-title text-4xl font-bold lg:text-3xl">
+              {product.name}
+            </h1>
+            <div className="mb-2 flex flex-wrap items-center gap-1">
+              <span className="flex items-center gap-[0.125rem]">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar
+                    key={i}
+                    className={`${
+                      i < product.rating ? "text-yellow-500" : "text-grey-300"
+                    }`}
+                  />
+                ))}{" "}
+              </span>{" "}
+              <span className="ml-1 text-sm text-grey-500">
+                {product.rating} {t("products.reviews.ratings")}
               </span>
-            </span>
+              {product.sold > 0 && (
+                <span className="ml-2 text-sm text-grey-500">
+                  | {product.sold} {t("products.reviews.sold")}
+                </span>
+              )}
+            </div>
           </div>
 
-          <p className="mb-6 text-xs text-grey-500 lg:mb-2">Chọn sản phẩm:</p>
+          <p className="mb-6 text-xs text-grey-500 lg:mb-2">
+            {t("products.chooseProduct")}
+          </p>
           <div className="mb-6 flex flex-wrap gap-2">
             {product.variants.map((variant) => (
               <Button
@@ -136,7 +151,7 @@ function OverviewSection() {
               icon={<FaCartShopping />}
               loading={isPending}
             >
-              Thêm vào giỏ hàng
+              {t("products.addToCart")}
             </Button>
           </div>
         </div>
