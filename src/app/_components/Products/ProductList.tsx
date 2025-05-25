@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import ProductCard from '@components/Products/ProductCard';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Product } from '@/app/_types/product';
-import Pagination from '../UI/Pagination';
+import { useEffect, useState } from "react";
+import ProductCard from "@components/Products/ProductCard";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Product } from "@/app/_types/product";
+import Pagination from "../UI/Pagination";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface ProductListProps {
   products: Product[];
@@ -17,6 +18,7 @@ function ProductList({
   totalResults,
   resultsPerPage,
 }: ProductListProps) {
+  const { t } = useLanguage();
   const [currentPage, setCurrentPage] = useState(1);
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -25,7 +27,7 @@ function ProductList({
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    const page = Number(params.get('page')) || 1;
+    const page = Number(params.get("page")) || 1;
 
     setCurrentPage(page);
   }, [searchParams, products]);
@@ -33,15 +35,14 @@ function ProductList({
   if (products.length === 0) {
     return (
       <div className="flex h-full items-center justify-center py-8 text-lg font-semibold text-grey-400">
-        Không có sản phẩm nào phù hợp với bộ lọc của bạn. Vui lòng đặt lại bộ
-        lọc.
+        {t("products.noProducts")}
       </div>
     );
   }
 
   const handleChangePage = (page: number) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', page + '');
+    params.set("page", page + "");
 
     router.replace(`${pathname}?${params.toString()}`);
     setCurrentPage(page);
@@ -49,7 +50,7 @@ function ProductList({
 
   return (
     <div className="w-full">
-      <div className="mb-12 grid auto-rows-min grid-cols-4 xl:grid-cols-3 md:grid-cols-2 gap-x-8 gap-y-12 lg:gap-y-8 lg:gap-x-3">
+      <div className="mb-12 grid auto-rows-min grid-cols-4 gap-x-8 gap-y-12 xl:grid-cols-3 lg:gap-x-3 lg:gap-y-8 md:grid-cols-2">
         {products.length > 0 &&
           products.map((product) => (
             <ProductCard product={product} key={product._id} />

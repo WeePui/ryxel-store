@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { useRef, useState } from 'react';
-import Image from 'next/image';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
+import { useRef, useState } from "react";
+import Image from "next/image";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface ImageCarouselProps {
   images: string[];
@@ -10,8 +11,9 @@ interface ImageCarouselProps {
 }
 
 function ImageCarousel({ images, alt }: ImageCarouselProps) {
+  const { t } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [slideDirection, setSlideDirection] = useState('');
+  const [slideDirection, setSlideDirection] = useState("");
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [touchStartX, setTouchStartX] = useState(0);
@@ -20,27 +22,27 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
 
   const handleThumbnailClick = (clickedImage: string) => {
     const newIndex = images.indexOf(clickedImage);
-    setSlideDirection('');
+    setSlideDirection("");
     setTimeout(() => {
-      setSlideDirection(newIndex > currentIndex ? 'right' : 'left');
+      setSlideDirection(newIndex > currentIndex ? "right" : "left");
       setCurrentIndex(newIndex);
     }, 0);
   };
 
   const handleNextClick = () => {
     const newIndex = (currentIndex + 1) % images.length;
-    setSlideDirection('');
+    setSlideDirection("");
     setTimeout(() => {
-      setSlideDirection('right');
+      setSlideDirection("right");
       setCurrentIndex(newIndex);
     }, 0);
   };
 
   const handlePrevClick = () => {
     const newIndex = (currentIndex - 1 + images.length) % images.length;
-    setSlideDirection('');
+    setSlideDirection("");
     setTimeout(() => {
-      setSlideDirection('left');
+      setSlideDirection("left");
       setCurrentIndex(newIndex);
     }, 0);
   };
@@ -84,18 +86,18 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
 
   return (
     <div
-      className="flex flex-col items-center pr-10 lg:pr-0 w-full"
+      className="flex w-full flex-col items-center pr-10 lg:pr-0"
       ref={carouselRef}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative flex aspect-video h-96 lg:h-64 w-full min-w-0 flex-col overflow-hidden">
+      <div className="relative flex aspect-video h-96 w-full min-w-0 flex-col overflow-hidden lg:h-64">
         <div className="absolute inset-0 flex transition-transform duration-500">
           <div
-            className={`zoom-container relative ${isZoomed ? 'zoomed' : ''} ${
-              slideDirection === 'right' ? 'slide-right' : 'slide-left'
-            } aspect-video h-96 lg:h-64 w-full overflow-hidden`}
+            className={`zoom-container relative ${isZoomed ? "zoomed" : ""} ${
+              slideDirection === "right" ? "slide-right" : "slide-left"
+            } aspect-video h-96 w-full overflow-hidden lg:h-64`}
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -109,31 +111,39 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
               }}
               fill
             />
-          </div>
+          </div>{" "}
           <button
             className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-full transform rounded-full bg-primary-default p-3 text-white hover:bg-grey-200 hover:text-primary-400 lg:hidden"
             onClick={handlePrevClick}
+            aria-label={t("carousel.previous")}
           >
             <FaChevronLeft />
           </button>
           <button
             className="absolute right-0 top-1/2 -translate-x-full -translate-y-1/2 transform rounded-full bg-primary-default p-3 text-white hover:bg-grey-200 hover:text-primary-400 lg:hidden"
             onClick={handleNextClick}
+            aria-label={t("carousel.next")}
           >
             <FaChevronRight />
           </button>
         </div>
-      </div>
-      <div className="items-center flex gap-4 sm:gap-1 flex-wrap sm:justify-center">
+      </div>{" "}
+      <div className="flex flex-wrap items-center gap-4 sm:justify-center sm:gap-1">
         {images.map((image, index) => (
           <div
-            className={`group relative h-16 w-28 lg:h-12 lg:w-20 overflow-hidden rounded-2xl border-2 border-grey-100 transition-all duration-300 hover:scale-110`}
+            className={`group relative h-16 w-28 overflow-hidden rounded-2xl border-2 border-grey-100 transition-all duration-300 hover:scale-110 lg:h-12 lg:w-20`}
             key={image}
             onClick={() => handleThumbnailClick(image)}
+            aria-label={t("carousel.thumbnail").replace(
+              "{index}",
+              (index + 1).toString(),
+            )}
+            role="button"
+            tabIndex={0}
           >
             <Image
               src={image}
-              alt={`${alt} image ${index}`}
+              alt={`${alt} image ${index + 1}`}
               fill
               className="object-contain"
             />

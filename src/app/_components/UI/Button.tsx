@@ -48,7 +48,7 @@ const buttonVariants = cva(
         filter: [
           "bg-secondary-50 text-primary-default font-normal shadow-none",
           "border-2 border-primary-default",
-          "hover:bg-grey-50",
+          "hover:bg-grey-50 hover:text-primary-500",
         ],
         // Tertiary - Outlined button
         tertiary: [

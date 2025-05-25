@@ -1,9 +1,11 @@
-'use client';
+"use client";
 
-import { mappingSpecsName } from '@/app/_utils/mappingSpecs';
-import { useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
+import { mappingSpecsName } from "@/app/_utils/mappingSpecs";
+import { mappingSpecsNameMultilingual } from "@/app/_utils/mappingSpecsMultilingual";
+import { useSearchParams } from "next/navigation";
+import React, { useState } from "react";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 interface SpecsFilterProps {
   specifications: {
@@ -73,18 +75,18 @@ function SpecsFilterItem({
 }: SpecsFilterItemProps) {
   const [openFilter, setOpenFilter] = useState(false);
   const searchParams = useSearchParams();
+  const { language } = useLanguage();
 
   const handleSelectSpecs = (value: string) => {
     onSelectSpecs(filterName, value);
   };
 
   const isChecked = (value: string) => {
-    const params = searchParams.get('specs');
+    const params = searchParams.get("specs");
     if (!params) return false;
     const specs = JSON.parse(params);
     return specs[filterName]?.includes(value) || false;
   };
-
   return (
     <div>
       <div
@@ -92,7 +94,9 @@ function SpecsFilterItem({
         onClick={() => setOpenFilter((prev) => !prev)}
       >
         <h4 className="text-lg font-semibold capitalize text-primary-default">
-          {mappingSpecsName[label] || filterName}
+          {mappingSpecsNameMultilingual[label]?.[language] ||
+            mappingSpecsName[label] ||
+            filterName}
         </h4>
         <span className="text-grey-300">
           {openFilter ? <FaChevronUp /> : <FaChevronDown />}
@@ -117,7 +121,7 @@ function SpecsFilterItem({
                 {option.label}
               </div>
               <span className="ml-auto text-grey-400">
-                {option.count ? `(${option.count})` : ''}
+                {option.count ? `(${option.count})` : ""}
               </span>
             </label>
           ))}

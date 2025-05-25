@@ -5,6 +5,7 @@ import Modal from "./Modal";
 import Chatbox from "./Chatbox";
 import { FaHeadset } from "react-icons/fa6";
 import Button from "./Button";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface ChatboxProps {
   children: React.ReactNode;
@@ -12,6 +13,9 @@ interface ChatboxProps {
 
 export default function ClientMainScreen({ children }: ChatboxProps) {
   const [openChatbox, setOpenChatbox] = useState(false);
+  const { language } = useLanguage();
+
+  const buttonText = language === "vi" ? "Hỗ trợ" : "Support";
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -21,8 +25,9 @@ export default function ClientMainScreen({ children }: ChatboxProps) {
           size="small"
           onClick={() => setOpenChatbox(true)}
           rounded="pill"
+          icon={<FaHeadset className="text-lg" />}
         >
-          <FaHeadset className="text-lg" /> Hỗ trợ
+          {buttonText}
         </Button>
         {openChatbox && (
           <Modal onClose={() => setOpenChatbox(false)}>

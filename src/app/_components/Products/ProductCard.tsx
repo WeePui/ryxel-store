@@ -6,7 +6,8 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa6";
 import WishlistButton from "../Wistlist/WishlistButton";
 import { WishlistProvider } from "@/app/_contexts/WishlistContext";
-import { categoryNames } from "@/app/_utils/mappingCategory";
+import { categoryNamesMultilingual } from "@/app/_utils/mappingCategoryMultilingual";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 function ProductCard({
   product,
@@ -16,6 +17,7 @@ function ProductCard({
   size?: "default" | "compact";
 }) {
   const isCompact = size === "compact";
+  const { t, language } = useLanguage();
 
   function handleCardClick(e: React.MouseEvent) {
     if ((e.target as HTMLElement).closest("button")) {
@@ -44,27 +46,34 @@ function ProductCard({
         <div className="flex flex-col gap-2 overflow-hidden px-6 py-4 text-grey-400 lg:px-3">
           <p className="transform-none font-bold transition-colors duration-300 group-hover:text-primary-default">
             {product.name}
-          </p>
+          </p>{" "}
           <p className="flex items-center gap-1 text-xs">
             <span>{product.rating}</span>
             <FaStar className="text-base text-yellow-400" />
-            <span className="ml-1">(Đã bán {product.sold})</span>
+            <span className="ml-1">
+              ({product.sold} {t("products.reviews.sold")})
+            </span>
           </p>
         </div>
         <div className="mt-auto flex flex-col gap-2 px-6 py-4 text-grey-400 lg:px-3">
+          {" "}
           <p className="flex flex-wrap items-center gap-2 font-bold transition-colors duration-300 group-hover:text-primary-default">
             {formatMoney(product.lowestPrice)}
             {product.totalStock <
               Number(process.env.NEXT_PUBLIC_STOCK_LIMIT) && (
-              <span className="text-xs text-red-500">(Hết hàng)</span>
+              <span className="text-xs text-red-500">
+                ({t("products.outOfStock")})
+              </span>
             )}
-          </p>
+          </p>{" "}
           <div className="mt-auto flex items-center justify-between capitalize">
             <span className="flex items-center text-sm">
               <span className="mr-2 text-xl font-bold text-primary-400">
                 &#10072;
               </span>
-              {categoryNames[product.category.slug] || product.category.name}
+              {categoryNamesMultilingual[product.category.name]
+                ? categoryNamesMultilingual[product.category.name][language]
+                : product.category.name}
             </span>
             <WishlistProvider>
               <WishlistButton productId={product._id} size="small" />

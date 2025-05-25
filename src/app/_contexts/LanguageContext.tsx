@@ -530,6 +530,284 @@ const translations = {
       en: "Last Updated",
     },
   },
+  chatbot: {
+    title: {
+      vi: "Trợ lý Ryxel",
+      en: "Ryxel Assistant",
+    },
+    placeholder: {
+      vi: "Nhập câu hỏi...",
+      en: "Type your question...",
+    },
+    loading: {
+      vi: "Đang trả lời...",
+      en: "Replying...",
+    },
+    errorConnection: {
+      vi: "Lỗi kết nối, vui lòng thử lại sau.",
+      en: "Connection error, please try again later.",
+    },
+  },
+  products: {
+    title: {
+      vi: "Sản phẩm",
+      en: "Products",
+    },
+    outOfStock: {
+      vi: "Hết hàng",
+      en: "Out of stock",
+    },
+    noProducts: {
+      vi: "Không có sản phẩm nào phù hợp với bộ lọc của bạn. Vui lòng đặt lại bộ lọc.",
+      en: "No products match your filter criteria. Please reset the filters.",
+    },
+    sortBy: {
+      vi: "Sắp xếp:",
+      en: "Sort by:",
+    },
+    sortOptions: {
+      newest: {
+        vi: "Mới nhất",
+        en: "Newest",
+      },
+      priceHighToLow: {
+        vi: "Giá: cao đến thấp",
+        en: "Price: high to low",
+      },
+      priceLowToHigh: {
+        vi: "Giá: thấp đến cao",
+        en: "Price: low to high",
+      },
+      bestSelling: {
+        vi: "Bán chạy nhất",
+        en: "Best selling",
+      },
+      topRated: {
+        vi: "Đánh giá cao nhất",
+        en: "Top rated",
+      },
+    },
+    boughtTogether: {
+      vi: "Thường được mua chung",
+      en: "Frequently Bought Together",
+    },
+    similarProducts: {
+      vi: "Sản phẩm tương tự",
+      en: "Similar Products",
+    },
+    addToCart: {
+      vi: "Thêm vào giỏ hàng",
+      en: "Add to Cart",
+    },
+    chooseProduct: {
+      vi: "Chọn sản phẩm:",
+      en: "Select product:",
+    },
+    home: {
+      vi: "Trang chủ",
+      en: "Home",
+    },
+    shop: {
+      vi: "Cửa hàng",
+      en: "Shop",
+    },
+    successAddToCart: {
+      vi: "Sản phẩm đã được thêm vào giỏ hàng.",
+      en: "Product has been added to cart.",
+    },
+    loginRequired: {
+      vi: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.",
+      en: "You need to login to add products to your cart.",
+    },
+    reviews: {
+      title: {
+        vi: "Đánh giá sản phẩm",
+        en: "Product Reviews",
+      },
+      noReviews: {
+        vi: "Chưa có đánh giá nào",
+        en: "No reviews yet",
+      },
+      filterByRating: {
+        vi: "Lọc theo đánh giá",
+        en: "Filter by rating",
+      },
+      allRatings: {
+        vi: "Tất cả đánh giá",
+        en: "All ratings",
+      },
+      stars: {
+        vi: "sao",
+        en: "stars",
+      },
+      ratings: {
+        vi: "đánh giá",
+        en: "ratings",
+      },
+      sold: {
+        vi: "đã bán",
+        en: "sold",
+      },
+      classification: {
+        vi: "Phân loại",
+        en: "Type",
+      },
+      showMore: {
+        vi: "Hiển thị thêm",
+        en: "Show more",
+      },
+      showLess: {
+        vi: "Thu gọn",
+        en: "Show less",
+      },
+    },
+    description: {
+      title: {
+        vi: "Mô tả",
+        en: "Description",
+      },
+      specifications: {
+        vi: "Thông số kĩ thuật",
+        en: "Specifications",
+      },
+      showMore: {
+        vi: "Xem thêm",
+        en: "Show more",
+      },
+      showLess: {
+        vi: "Thu gọn",
+        en: "Show less",
+      },
+    },
+    searchResults: {
+      found: {
+        vi: "Tìm thấy {count} kết quả trong tổng số {total} sản phẩm",
+        en: "Found {count} results out of {total} products",
+      },
+    },
+    filter: {
+      title: {
+        vi: "Bộ lọc",
+        en: "Filter",
+      },
+      all: {
+        vi: "Tất cả",
+        en: "All",
+      },
+      brand: {
+        vi: "Thương hiệu",
+        en: "Brand",
+      },
+      price: {
+        vi: "Giá",
+        en: "Price",
+      },
+      rating: {
+        vi: "Đánh giá",
+        en: "Rating",
+      },
+      apply: {
+        vi: "Áp dụng",
+        en: "Apply",
+      },
+      reset: {
+        vi: "Đặt lại",
+        en: "Reset",
+      },
+    },
+    pagination: {
+      previous: {
+        vi: "Trang trước",
+        en: "Previous page",
+      },
+      next: {
+        vi: "Trang sau",
+        en: "Next page",
+      },
+      page: {
+        vi: "Đến trang {page}",
+        en: "Go to page {page}",
+      },
+    },
+    carousel: {
+      previous: {
+        vi: "Ảnh trước",
+        en: "Previous image",
+      },
+      next: {
+        vi: "Ảnh tiếp theo",
+        en: "Next image",
+      },
+      thumbnail: {
+        vi: "Hiển thị ảnh {index}",
+        en: "Show image {index}",
+      },
+    },
+  },
+  navigation: {
+    categories: {
+      title: {
+        vi: "Mua sắm theo danh mục",
+        en: "Shop by Category",
+      },
+      all: {
+        vi: "Tất cả",
+        en: "All",
+      },
+      gaming: {
+        mouse: {
+          vi: "Chuột Gaming",
+          en: "Gaming Mouse",
+        },
+        keyboard: {
+          vi: "Bàn phím",
+          en: "Keyboard",
+        },
+        headphone: {
+          vi: "Tai nghe",
+          en: "Headphones",
+        },
+        table: {
+          vi: "Bàn Gaming",
+          en: "Gaming Desk",
+        },
+        chair: {
+          vi: "Ghế Gaming",
+          en: "Gaming Chair",
+        },
+        accessory: {
+          vi: "Phụ kiện",
+          en: "Accessories",
+        },
+      },
+    },
+    reference: {
+      title: {
+        vi: "Tham khảo",
+        en: "Reference",
+      },
+      bestSellers: {
+        vi: "Sản phẩm bán chạy",
+        en: "Best Sellers",
+      },
+      spatialAudio: {
+        vi: "Apple Spatial Sound",
+        en: "Apple Spatial Sound",
+      },
+      durability: {
+        vi: "Bền bỉ tuyệt đối",
+        en: "Ultimate Durability",
+      },
+      sennheiserPartner: {
+        vi: "Đối tác chính hãng Sennheiser",
+        en: "Official Sennheiser Partner",
+      },
+      wireless: {
+        vi: "Trải nghiệm không dây",
+        en: "Wireless Experience",
+      },
+    },
+  },
   common: {
     // Common translations
   },
@@ -559,7 +837,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       }
     }
   }, []);
-
   // Save language preference to localStorage when it changes
   useEffect(() => {
     localStorage.setItem("language", language);

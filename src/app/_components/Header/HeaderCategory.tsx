@@ -3,9 +3,11 @@
 import Image from "next/image";
 import NavLink from "../UI/NavLink";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 export default function HeaderCategory() {
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const id = e.currentTarget.id;
@@ -15,110 +17,123 @@ export default function HeaderCategory() {
   };
 
   return (
-    <div className="fixed left-0 p-4 bg-grey-50 w-full mx-auto z-10 shadow-md border-b border-primary-200 ">
-      <div className="grid grid-cols-[60fr_40fr] divide-x divide-primary-200 max-w-7xl mx-auto">
+    <div className="fixed left-0 z-10 mx-auto w-full border-b border-primary-200 bg-grey-50 p-4 shadow-md">
+      <div className="mx-auto grid max-w-7xl grid-cols-[60fr_40fr] divide-x divide-primary-200">
+        {" "}
         <div className="p-6">
-          <h1 className="mb-4 text-xl">Mua sắm theo danh mục</h1>
+          <h1 className="mb-4 text-xl">{t("navigation.categories.title")}</h1>
           <div className="flex">
-            <div className="grid grid-cols-3 gap-x-12 gap-y-6 justify-start w-fit">
+            <div className="grid w-fit grid-cols-3 justify-start gap-x-12 gap-y-6">
               <div
-                className="flex flex-col gap-2 items-center w-fit group"
+                className="group flex w-fit flex-col items-center gap-2"
                 id="Mouse"
                 role="button"
                 onClick={handleClick}
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
+                <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
                   <Image
                     src={"/categories/mouse-category.jpg"}
-                    alt="Chuột Gaming"
+                    alt={t("navigation.categories.gaming.mouse")}
                     className="object-cover"
                     fill
                   />
                 </div>
-                <p className="text-base group-hover:underline">Chuột Gaming</p>
+                <p className="text-base group-hover:underline">
+                  {t("navigation.categories.gaming.mouse")}
+                </p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit group"
+                className="group flex w-fit flex-col items-center gap-2"
                 id="Keyboard"
                 role="button"
                 onClick={handleClick}
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
+                <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
                   <Image
                     src={"/categories/keyboard-category.jpg"}
-                    alt="Bàn phím"
+                    alt={t("navigation.categories.gaming.keyboard")}
                     className="object-cover"
                     fill
                   />
                 </div>
-                <p className="text-base group-hover:underline">Bàn phím</p>
+                <p className="text-base group-hover:underline">
+                  {t("navigation.categories.gaming.keyboard")}
+                </p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit group"
+                className="group flex w-fit flex-col items-center gap-2"
                 role="button"
                 id="Headphone"
                 onClick={handleClick}
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
+                <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
                   <Image
                     src={"/categories/headset-category.jpg"}
-                    alt="Tai nghe"
+                    alt={t("navigation.categories.gaming.headphone")}
                     className="object-cover"
                     fill
                   />
                 </div>
-                <p className="text-base group-hover:underline">Tai nghe</p>
+                <p className="text-base group-hover:underline">
+                  {t("navigation.categories.gaming.headphone")}
+                </p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit group"
+                className="group flex w-fit flex-col items-center gap-2"
                 role="button"
                 id="Table"
                 onClick={handleClick}
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
+                <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
                   <Image
                     src={"/categories/table-category.jpg"}
-                    alt="Bàn Gaming"
+                    alt={t("navigation.categories.gaming.table")}
                     className="object-cover"
                     fill
                   />
                 </div>
-                <p className="text-base group-hover:underline">Bàn Gaming</p>
+                <p className="text-base group-hover:underline">
+                  {t("navigation.categories.gaming.table")}
+                </p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit group"
+                className="group flex w-fit flex-col items-center gap-2"
                 role="button"
                 id="Chair"
                 onClick={handleClick}
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
+                <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
                   <Image
                     src={"/categories/chair-category.jpg"}
-                    alt="Ghế Gaming"
+                    alt={t("navigation.categories.gaming.chair")}
                     className="object-cover"
                     fill
                   />
                 </div>
-                <p className="text-base group-hover:underline">Ghế Gaming</p>
+                <p className="text-base group-hover:underline">
+                  {t("navigation.categories.gaming.chair")}
+                </p>
               </div>
               <div
-                className="flex flex-col gap-2 items-center w-fit group"
+                className="group flex w-fit flex-col items-center gap-2"
                 role="button"
                 id="Accessory"
                 onClick={handleClick}
               >
-                <div className="relative w-32 aspect-square rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300 group-hover:shadow-lg">
+                <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
                   <Image
                     src={"/categories/accessory-category.jpg"}
-                    alt="Phụ kiện"
+                    alt={t("navigation.categories.gaming.accessory")}
                     className="object-cover"
                     fill
                   />
                 </div>
-                <p className="text-base group-hover:underline">Phụ kiện</p>
+                <p className="text-base group-hover:underline">
+                  {t("navigation.categories.gaming.accessory")}
+                </p>
               </div>
             </div>
-            <div className="flex flex-col gap-2 w-fit ml-12">
+            <div className="ml-12 flex w-fit flex-col gap-2">
               <NavLink href="/products?brand=Logitech">
                 <span className="text-base">Logitech</span>
               </NavLink>
@@ -148,33 +163,44 @@ export default function HeaderCategory() {
               </NavLink>
             </div>
           </div>
-        </div>
+        </div>{" "}
         <div className="p-6 pl-12">
-          <h1 className="text-xl">Tham khảo</h1>
-          <div className="flex flex-col gap-2 mt-4">
+          <h1 className="text-xl">{t("navigation.reference.title")}</h1>
+          <div className="mt-4 flex flex-col gap-2">
             <NavLink href="/products?sort=-sold" type="mainNavInline">
-              <span className="text-base">Sản phẩm bán chạy</span>
+              <span className="text-base">
+                {t("navigation.reference.bestSellers")}
+              </span>
             </NavLink>
             <NavLink
               href={`/products?specs=%7B"sound"%3A"Apple+Spacial+Sound"%7D`}
               type="mainNavInline"
             >
-              <span className="text-base">Apple Spacial Sound</span>
+              {" "}
+              <span className="text-base">
+                {t("navigation.reference.spatialAudio")}
+              </span>
             </NavLink>
             <NavLink
               href={`/products?specs=%7B"material"%3A"Steel%2FFabric"%7D`}
               type="mainNavInline"
             >
-              <span className="text-base">Bền bỉ tuyệt đối</span>
+              <span className="text-base">
+                {t("navigation.reference.durability")}
+              </span>
             </NavLink>
             <NavLink href="/products?brand=Sennheiser" type="mainNavInline">
-              <span className="text-base">Đối tác chính hãng Sennheiser</span>
+              <span className="text-base">
+                {t("navigation.reference.sennheiserPartner")}
+              </span>
             </NavLink>
             <NavLink
               href={`/products?specs=%7B"connection"%3A"Wireless"%7D`}
               type="mainNavInline"
             >
-              <span className="text-base">Trải nghiệm không dây</span>
+              <span className="text-base">
+                {t("navigation.reference.wireless")}
+              </span>
             </NavLink>
           </div>
         </div>

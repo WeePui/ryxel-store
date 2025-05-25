@@ -36,7 +36,7 @@ export default function LanguageSwitcher() {
       >
         {" "}
         <Image
-          src={`/flags/${LABELS[language].code}.png`}
+          src={`/flags/${LABELS[language].code}.svg`}
           alt={`${language === "vi" ? "Vietnamese" : "English"} flag`}
           width={16}
           height={16}
