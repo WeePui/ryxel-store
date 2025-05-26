@@ -7,6 +7,7 @@ import TestimonialSection from "../Home/TestimonialSection";
 import NewReleasesSection from "../Home/NewReleasesSection";
 import FeaturesSection from "../Home/FeaturesSection";
 import { useLanguage } from "../../_contexts/LanguageContext";
+import { motion } from "framer-motion";
 
 const slidesContent = {
   vi: [
@@ -58,6 +59,55 @@ const slidesContent = {
   ],
 };
 
+// Định nghĩa các variant animation
+const fadeInVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
+
+const slideLeftVariants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
+
+const slideRightVariants = {
+  hidden: { opacity: 0, x: 50 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
+
+const scaleVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+    },
+  },
+};
+
 export default function HomePageContent() {
   const { language } = useLanguage();
   const slides = slidesContent[language] || slidesContent["vi"]; // Fallback to Vietnamese if language is undefined
@@ -67,11 +117,54 @@ export default function HomePageContent() {
       <section className="relative flex h-[calc(100dvh-4rem)] w-full items-center justify-center overflow-hidden bg-gray-800 xl:h-[60vh] sm:h-[70vh]">
         <HeroSlider slides={slides} />
       </section>
-      <HotCategoriesSection />
-      <NewReleasesSection />
-      <BestsellerSection />
-      <FeaturesSection />
-      <TestimonialSection />
+
+      {/* Apply framer-motion animations to each section */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={fadeInVariants}
+      >
+        <HotCategoriesSection />
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={slideLeftVariants}
+        className="w-full"
+      >
+        <NewReleasesSection />
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={slideRightVariants}
+      >
+        <BestsellerSection />
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={scaleVariants}
+      >
+        <FeaturesSection />
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={fadeInVariants}
+        className="w-full"
+      >
+        <TestimonialSection />
+      </motion.div>
     </>
   );
 }

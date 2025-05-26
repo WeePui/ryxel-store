@@ -144,13 +144,19 @@ export default function TestimonialSection() {
 
     return styles[offset.toString() as keyof typeof styles];
   };
-
   return (
     <section className="mx-auto w-full max-w-7xl overflow-x-hidden border-t bg-slate-50 px-4 py-16">
-      <p className="text-center font-title text-3xl font-bold">
-        Khách hàng nói gì về chúng tôi
-      </p>
-
+      <motion.p
+        className="text-center font-title text-3xl font-bold"
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        viewport={{ once: true }}
+      >
+        {language === "vi"
+          ? "Khách hàng nói gì về chúng tôi"
+          : "What our customers say about us"}
+      </motion.p>
       <div className="relative flex h-[24rem] items-end justify-center gap-4">
         {[-2, -1, 0, 1, 2].map((offset) => {
           const testimonial = getTestimonialAt(offset);
@@ -193,12 +199,17 @@ export default function TestimonialSection() {
             </motion.div>
           );
         })}
-      </div>
-
+      </div>{" "}
       {/* Dot Pagination */}
-      <div className="mt-12 flex justify-center gap-2">
+      <motion.div
+        className="mt-12 flex justify-center gap-2"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.3 }}
+        viewport={{ once: true }}
+      >
         {testimonials[language].map((_, i) => (
-          <button
+          <motion.button
             key={i}
             onClick={() => setActiveIndex(i)}
             className={`h-3 w-3 rounded-full transition-all duration-300 ${
@@ -206,10 +217,12 @@ export default function TestimonialSection() {
                 ? "scale-125 bg-primary-default"
                 : "bg-gray-300 hover:bg-gray-400"
             }`}
+            whileHover={{ scale: 1.3 }}
+            whileTap={{ scale: 0.9 }}
             aria-label={`Xem testimonial ${i + 1}`}
           />
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
