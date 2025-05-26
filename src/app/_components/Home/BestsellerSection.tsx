@@ -4,6 +4,7 @@ import { getBestsellers } from "@/app/_libs/apiServices";
 import React, { useEffect, useState } from "react";
 import BestsellerList from "./BestsellerList";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { motion } from "framer-motion";
 
 export default function BestsellerSection() {
   const { language } = useLanguage();
@@ -21,9 +22,11 @@ export default function BestsellerSection() {
         setBestsellers(data.products || []);
       } catch (err) {
         console.error("Error fetching bestsellers:", err);
-        setError(language === "vi" 
-          ? "Không thể tải sản phẩm bán chạy. Vui lòng thử lại sau." 
-          : "Could not load bestsellers. Please try again later.");
+        setError(
+          language === "vi"
+            ? "Không thể tải sản phẩm bán chạy. Vui lòng thử lại sau."
+            : "Could not load bestsellers. Please try again later.",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -33,23 +36,53 @@ export default function BestsellerSection() {
   }, [language]);
   return (
     <section className="mx-auto mb-12 flex w-full max-w-7xl flex-col items-center justify-center px-6 py-10 lg:mb-0">
-      <p className="mb-10 self-start font-title text-3xl font-semibold md:mb-2 md:text-2xl">
+      <motion.p
+        className="mb-10 self-start font-title text-3xl font-semibold md:mb-2 md:text-2xl"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+      >
         {language === "vi" ? "Sản phẩm bán chạy" : "Best Sellers"}
-      </p>
+      </motion.p>{" "}
       {isLoading ? (
-        <div className="flex h-60 items-center justify-center">
+        <motion.div
+          className="flex h-60 items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent"></div>
-        </div>
+        </motion.div>
       ) : error ? (
-        <div className="flex h-60 items-center justify-center text-red-500">
+        <motion.div
+          className="flex h-60 items-center justify-center text-red-500"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
           {error}
-        </div>
+        </motion.div>
       ) : bestsellers.length === 0 ? (
-        <div className="flex h-60 items-center justify-center text-gray-500">
-          {language === "vi" ? "Không có sản phẩm bán chạy" : "No bestsellers found"}
-        </div>
+        <motion.div
+          className="flex h-60 items-center justify-center text-gray-500"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          {language === "vi"
+            ? "Không có sản phẩm bán chạy"
+            : "No bestsellers found"}
+        </motion.div>
       ) : (
-        <BestsellerList products={bestsellers} />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <BestsellerList products={bestsellers} />
+        </motion.div>
       )}
     </section>
   );
