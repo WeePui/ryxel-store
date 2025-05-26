@@ -75,8 +75,7 @@ export default function ReviewOverview({
                 animate={{ scale: 1 }}
                 transition={{
                   duration: 0.3,
-                  delay:
-                    0.3 + (Math.ceil(product.rating) + i) * 0.1,
+                  delay: 0.3 + (Math.ceil(product.rating) + i) * 0.1,
                 }}
               >
                 <FaRegStar />

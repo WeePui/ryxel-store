@@ -2,15 +2,7 @@
 
 import Card from "../../UI/Card";
 import Button from "../../UI/Button";
-import {
-  Table,
-  TableBody,
-  TableBodyCell,
-  TableBodyRow,
-  TableHeader,
-  TableHeaderCell,
-  TableHeaderRow,
-} from "../../UI/Table";
+import { Table, TableColumn } from "../../UI/Table";
 import Image from "next/image";
 import NavLink from "../../UI/NavLink";
 import { mappingStock } from "@/app/_utils/mappingStock";
@@ -35,78 +27,95 @@ interface CategoryProductsProps {
 }
 
 export default function CategoryProducts({ products }: CategoryProductsProps) {
+  // Define columns for the enhanced Table component
+  const columns: TableColumn<Product>[] = [
+    {
+      title: "Sản phẩm",
+      dataIndex: "name",
+      key: "product",
+      render: (_, record) => (
+        <div className="flex items-center gap-4">
+          <div className="relative aspect-square w-16">
+            <Image
+              src={record.imageCover}
+              alt={record.name}
+              fill
+              className="rounded object-cover"
+            />
+          </div>
+          <p className="text-primary-500">{record.name}</p>
+        </div>
+      ),
+    },
+    {
+      title: "Giá tiền",
+      dataIndex: "lowestPrice",
+      key: "price",
+      render: (value) => formatMoney(value as number),
+    },
+    {
+      title: "Cập nhật",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (value) => new Date(value as string).toLocaleDateString("vi-VN"),
+    },
+    {
+      title: "Tồn kho",
+      dataIndex: "totalStock",
+      key: "stock",
+      render: (value) => (
+        <div className="flex w-full items-center justify-center">
+          <div
+            className="w-fit rounded-full px-2 py-1 text-xs"
+            style={{
+              backgroundColor: getTintedColor(
+                mappingStock(value as number).color,
+              ),
+            }}
+          >
+            <span style={{ color: mappingStock(value as number).color }}>
+              {mappingStock(value as number).text}
+            </span>
+          </div>
+        </div>
+      ),
+      align: "center",
+    },
+    {
+      title: "Đã bán",
+      dataIndex: "sold",
+      key: "sold",
+    },
+    {
+      title: "Thao tác",
+      dataIndex: "slug",
+      key: "actions",
+      render: (value) => (
+        <div className="flex items-center justify-center gap-2">
+          <NavLink
+            href={`/admin/products/${value as string}`}
+            className="truncate"
+          >
+            Xem chi tiết
+          </NavLink>
+        </div>
+      ),
+      align: "center",
+    },
+  ];
+
   return (
     <Card
       title="Sản phẩm theo danh mục"
       className="w-full"
       titleAction={<ProductSearchBar />}
     >
-      <Table className="w-full font-semibold text-primary-500">
-        <TableHeader>
-          <TableHeaderRow className="grid-cols-7">
-            <TableHeaderCell className="col-span-2">Sản phẩm</TableHeaderCell>
-            <TableHeaderCell>Giá tiền</TableHeaderCell>
-            <TableHeaderCell>Cập nhật</TableHeaderCell>
-            <TableHeaderCell className="text-center">Tồn kho</TableHeaderCell>
-            <TableHeaderCell>Đã bán</TableHeaderCell>
-            <TableHeaderCell className="text-center">Thao tác</TableHeaderCell>
-          </TableHeaderRow>
-        </TableHeader>
-        <TableBody>
-          {products.map((product) => (
-            <TableBodyRow
-              className="grid-cols-7 items-center"
-              key={product._id}
-            >
-              <TableBodyCell className="col-span-2 flex items-center gap-4">
-                <div className="relative aspect-square w-16">
-                  <Image
-                    src={product.imageCover}
-                    alt={product.name}
-                    fill
-                    className="rounded object-cover"
-                  />
-                </div>
-                <p className="text-primary-500">{product.name}</p>
-              </TableBodyCell>
-              <TableBodyCell label="Giá">
-                {formatMoney(product.lowestPrice)}
-              </TableBodyCell>
-              <TableBodyCell label="Cập nhật">
-                {new Date(product.updatedAt).toLocaleDateString("vi-VN")}
-              </TableBodyCell>
-              <TableBodyCell
-                className="flex justify-center md:flex-col"
-                label="Tồn kho"
-              >
-                <div
-                  className="w-fit rounded-full px-2 py-1 text-xs"
-                  style={{
-                    backgroundColor: getTintedColor(
-                      mappingStock(product.totalStock).color,
-                    ),
-                  }}
-                >
-                  <span
-                    style={{ color: mappingStock(product.totalStock).color }}
-                  >
-                    {mappingStock(product.totalStock).text}
-                  </span>
-                </div>
-              </TableBodyCell>
-              <TableBodyCell label="Đã bán">{product.sold}</TableBodyCell>
-              <TableBodyCell className="flex justify-center md:col-span-2">
-                <NavLink
-                  href={`/admin/products/${product.slug}`}
-                  className="truncate"
-                >
-                  Xem chi tiết
-                </NavLink>
-              </TableBodyCell>
-            </TableBodyRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Table
+        data={products}
+        columns={columns}
+        rowKey="_id"
+        className="w-full font-semibold text-primary-500"
+      />
     </Card>
   );
 }

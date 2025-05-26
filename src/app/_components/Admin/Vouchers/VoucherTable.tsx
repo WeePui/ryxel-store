@@ -1,23 +1,13 @@
-'use client';
+"use client";
 
-import {
-  Table,
-  TableHeader,
-  TableHeaderRow,
-  TableBodyCell,
-  TableBody,
-  TableBodyRow,
-  TableHeaderCell,
-} from '../../UI/Table';
-import formatMoney from '@/app/_utils/formatMoney';
-import Button from '../../UI/Button';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import Pagination from '../../UI/Pagination';
-import { useEffect, useState } from 'react';
-import Card from '../../UI/Card';
-import SearchBar from '../../Header/SearchBar';
-import Modal from '../../UI/Modal';
-import AddVoucherForm from './AddVoucherForm';
+import { Table, TableColumn } from "../../UI/Table";
+import Button from "../../UI/Button";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import Card from "../../UI/Card";
+import SearchBar from "../../Header/SearchBar";
+import Modal from "../../UI/Modal";
+import AddVoucherForm from "./AddVoucherForm";
 
 // Cập nhật interface để khớp với mô hình database
 interface Discount {
@@ -54,18 +44,17 @@ export default function VoucherTable({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const totalPages = Math.ceil(totalResults / resultsPerPage);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    const page = Number(params.get('page')) || 1;
+    const page = Number(params.get("page")) || 1;
 
     setCurrentPage(page);
   }, [searchParams, data]);
 
   const handleChangePage = (page: number) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', page + '');
+    params.set("page", page + "");
 
     router.replace(`${pathname}?${params.toString()}`);
     setCurrentPage(page);
@@ -83,15 +72,15 @@ export default function VoucherTable({
     const remainingUses = getRemainingUses(voucher);
 
     if (!voucher.isActive) {
-      return { text: 'Không kích hoạt', color: '#6B7280' }; // gray
+      return { text: "Không kích hoạt", color: "#6B7280" }; // gray
     } else if (now < startDate) {
-      return { text: 'Chưa bắt đầu', color: '#3B82F6' }; // blue
+      return { text: "Chưa bắt đầu", color: "#3B82F6" }; // blue
     } else if (now > endDate) {
-      return { text: 'Hết hạn', color: '#EF4444' }; // red
+      return { text: "Hết hạn", color: "#EF4444" }; // red
     } else if (remainingUses <= 0) {
-      return { text: 'Hết lượt', color: '#F59E0B' }; // amber
+      return { text: "Hết lượt", color: "#F59E0B" }; // amber
     } else {
-      return { text: 'Đang hoạt động', color: '#10B981' }; // green
+      return { text: "Đang hoạt động", color: "#10B981" }; // green
     }
   };
 
@@ -101,12 +90,73 @@ export default function VoucherTable({
     return `${voucher.discountPercentage}%`;
   };
 
+  // Define columns for the enhanced Table
+  const columns: TableColumn<Discount>[] = [
+    {
+      title: "Mã voucher",
+      dataIndex: "code",
+      key: "code",
+    },
+    {
+      title: "Tên",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Giá trị",
+      dataIndex: "discountPercentage",
+      key: "discountValue",
+      render: (_, record) => formatDiscountValue(record),
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (_, record) => {
+        const status = getStatusBadge(record);
+        return (
+          <div
+            className="flex w-fit items-center justify-center rounded-full p-1 px-2 text-xs font-semibold text-white"
+            style={{ backgroundColor: status.color }}
+          >
+            <span className="whitespace-nowrap">{status.text}</span>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Lượt còn",
+      dataIndex: "remainingUses",
+      key: "remainingUses",
+      render: (_, record) => getRemainingUses(record),
+    },
+    {
+      title: "Thời hạn",
+      dataIndex: "endDate",
+      key: "endDate",
+      render: (value) => new Date(value as string).toLocaleDateString("vi-VN"),
+    },
+    {
+      title: "Thao tác",
+      key: "actions",
+      dataIndex: "actions",
+      render: (_, record) => (
+        <div className="flex w-full items-center justify-center gap-2">
+          <Button size="small" onClick={() => setEditingVoucher(record)}>
+            Sửa
+          </Button>
+        </div>
+      ),
+      align: "center",
+    },
+  ];
+
   return (
     <Card
       className="w-full"
       title="Danh sách mã giảm giá"
       titleAction={
-        <div className="justify-self-end flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-self-end">
           <Button size="small" onClick={() => setOpenModal(true)}>
             Thêm mã giảm giá
           </Button>
@@ -121,120 +171,21 @@ export default function VoucherTable({
       )}
       {data && data.length > 0 ? (
         <div className="flex flex-col">
-          <Table className="w-full">
-            <TableHeader className="w-full">
-              <TableHeaderRow className="grid-cols-7">
-                <TableHeaderCell className="col-span-1">
-                  Mã voucher
-                </TableHeaderCell>
-                <TableHeaderCell className="col-span-2">Tên</TableHeaderCell>
-                <TableHeaderCell className="col-span-1">
-                  Giá trị
-                </TableHeaderCell>
-                <TableHeaderCell className="col-span-1 text-center">
-                  Trạng thái
-                </TableHeaderCell>
-                <TableHeaderCell className="col-span-1">
-                  Thời hạn
-                </TableHeaderCell>
-                <TableHeaderCell className="col-span-1 flex items-center justify-center">
-                  Thao tác
-                </TableHeaderCell>
-              </TableHeaderRow>
-            </TableHeader>
-            <TableBody>
-              {data.map((voucher) => (
-                <TableBodyRow
-                  key={voucher._id}
-                  className="hover:bg-gray-100 grid-cols-7"
-                >
-                  <TableBodyCell className="col-span-1 flex items-center gap-2 md:col-span-1 md:gap-4">
-                    <span className="font-bold">{voucher.code}</span>
-                  </TableBodyCell>
-                  <TableBodyCell
-                    className="col-span-2 flex items-center justify-between"
-                    label="Tên"
-                  >
-                    <div>
-                      <p>{voucher.name}</p>
-                      <p className="text-sm text-gray-500">
-                        Còn lại: {getRemainingUses(voucher)}/{voucher.maxUse}{' '}
-                        lượt
-                      </p>
-                    </div>
-                  </TableBodyCell>
-                  <TableBodyCell
-                    className="col-span-1 flex items-center justify-between"
-                    label="Giá trị"
-                  >
-                    <div>
-                      <p className="font-semibold">
-                        {formatDiscountValue(voucher)}
-                      </p>
-                      {voucher.minOrderValue > 0 && (
-                        <p className="text-xs text-gray-500">
-                          Tối thiểu: {formatMoney(voucher.minOrderValue)}
-                        </p>
-                      )}
-                      {voucher.discountMaxValue && (
-                        <p className="text-xs text-gray-500">
-                          Giảm tối đa: {formatMoney(voucher.discountMaxValue)}
-                        </p>
-                      )}
-                    </div>
-                  </TableBodyCell>
-                  <TableBodyCell
-                    className="col-span-1 flex items-center justify-center md:justify-between"
-                    label="Trạng thái"
-                  >
-                    {
-                      <div
-                        className="flex items-center justify-center w-28 rounded-full text-white font-semibold p-1 text-xs"
-                        style={{
-                          backgroundColor: getStatusBadge(voucher).color,
-                        }}
-                      >
-                        <span className="whitespace-nowrap">
-                          {getStatusBadge(voucher).text}
-                        </span>
-                      </div>
-                    }
-                  </TableBodyCell>
-                  <TableBodyCell
-                    className="col-span-1 flex flex-col items-start"
-                    label="Thời hạn"
-                  >
-                    <span className="text-sm">
-                      Từ:{' '}
-                      {new Date(voucher.startDate).toLocaleDateString('vi-VN')}
-                    </span>
-                    <span className="text-sm">
-                      Đến:{' '}
-                      {new Date(voucher.endDate).toLocaleDateString('vi-VN')}
-                    </span>
-                  </TableBodyCell>
-                  <TableBodyCell className="col-span-1 flex items-center justify-center">
-                    <Button
-                      size="small"
-                      onClick={() => setEditingVoucher(voucher)}
-                    >
-                      Chi tiết
-                    </Button>
-                  </TableBodyCell>
-                </TableBodyRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div className="flex justify-center mt-6">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handleChangePage}
-            />
-          </div>
+          <Table
+            data={data}
+            columns={columns}
+            rowKey="_id"
+            pagination={{
+              total: totalResults,
+              current: currentPage,
+              pageSize: resultsPerPage,
+              onChange: handleChangePage,
+            }}
+            className="w-full"
+          />
         </div>
       ) : (
-        <div className="flex items-center justify-center w-full h-96 text-gray-500">
+        <div className="flex h-96 w-full items-center justify-center text-gray-500">
           <p className="text-lg">Không có mã giảm giá nào</p>
         </div>
       )}

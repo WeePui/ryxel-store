@@ -105,7 +105,12 @@ export default function ReviewItem({ review }: ReviewItemProps) {
                       <source src={asset} type="video/mp4" />
                     </video>
                   ) : (
-                    <Image src={asset} alt="review" fill className="object-cover" />
+                    <Image
+                      src={asset}
+                      alt="review"
+                      fill
+                      className="object-cover"
+                    />
                   )}
                 </motion.div>
               );
@@ -113,10 +118,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
 
             {isOpen !== false && (
               <Modal onClose={() => setIsOpen(false)}>
-                <ZoomedAssetsList
-                  assets={reviewAssets}
-                  initialIndex={isOpen}
-                />
+                <ZoomedAssetsList assets={reviewAssets} initialIndex={isOpen} />
               </Modal>
             )}
           </motion.div>
