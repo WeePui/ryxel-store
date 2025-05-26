@@ -7,15 +7,8 @@ import { getTintedColor } from "@/app/_helpers/getTintedColor";
 import { FaCubes } from "react-icons/fa6";
 import { Product } from "@/app/_types/product";
 import Modal from "../../UI/Modal";
-import {
-  Table,
-  TableBody,
-  TableBodyCell,
-  TableBodyRow,
-  TableHeader,
-  TableHeaderCell,
-  TableHeaderRow,
-} from "../../UI/Table";
+import { Table, TableColumn } from "../../UI/Table";
+import Image from "next/image";
 
 interface ProductsOverviewProps {
   totalStock: number;
@@ -34,6 +27,44 @@ export default function ProductsOverview({
   predictions,
 }: ProductsOverviewProps) {
   const [openModal, setOpenModal] = useState(false);
+
+  // Define columns for the predictions table
+  const columns: TableColumn<{ product: Product; predictedDaysToOutOfStock: number }>[] = [
+    {
+      title: "Sản phẩm",
+      dataIndex: "product",
+      key: "product",
+      render: (_, record) => (
+        <div className="flex items-center gap-3">
+          <div className="relative aspect-square w-12 h-12">
+            <Image
+              src={record.product.imageCover}
+              alt={record.product.name}
+              fill
+              className="rounded object-cover"
+            />
+          </div>
+          <div className="line-clamp-2">{record.product.name}</div>
+        </div>
+      ),
+    },
+    {
+      title: "Tồn kho",
+      dataIndex: "product",
+      key: "stock",
+      render: (_, record) => record.product.totalStock,
+    },
+    {
+      title: "Thời gian còn lại (ngày)",
+      dataIndex: "predictedDaysToOutOfStock",
+      key: "days",
+      render: (value) => (
+        <span className={(value as number) < 7 ? "text-red-500 font-bold" : ""}>
+          {value as number}
+        </span>
+      ),
+    },
+  ];
 
   return (
     <Card className="w-full">
@@ -79,33 +110,12 @@ export default function ProductsOverview({
         <Modal onClose={() => setOpenModal(false)}>
           <div className="flex w-full flex-col gap-4 p-4">
             <h2 className="text-xl font-bold">Sản phẩm sắp hết hàng</h2>
-            <Table className="w-full font-semibold text-primary-500">
-              <TableHeader>
-                <TableHeaderRow className="grid-cols-7">
-                  <TableHeaderCell className="col-span-3">
-                    Sản phẩm
-                  </TableHeaderCell>
-                  <TableHeaderCell>Tồn kho</TableHeaderCell>
-                  <TableHeaderCell className="col-span-2">
-                    Thời gian còn lại (ngày)
-                  </TableHeaderCell>
-                </TableHeaderRow>
-              </TableHeader>
-              <TableBody>
-                {predictions.map(({ product, predictedDaysToOutOfStock }) => (
-                  <TableBodyRow
-                    className="grid-cols-7 items-center"
-                    key={product._id}
-                  >
-                    <TableBodyCell className="col-span-3 flex items-center gap-4">
-                      {product.name}
-                    </TableBodyCell>
-                    <TableBodyCell>{product.totalStock}</TableBodyCell>
-                    <TableBodyCell>{predictedDaysToOutOfStock}</TableBodyCell>
-                  </TableBodyRow>
-                ))}
-              </TableBody>
-            </Table>
+            <Table
+              data={predictions}
+              columns={columns}
+              rowKey={(record) => record.product._id}
+              className="w-full font-semibold text-primary-500"
+            />
           </div>
         </Modal>
       )}

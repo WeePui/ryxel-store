@@ -78,20 +78,14 @@ export default function ReviewList({
         transition={{ duration: 0.7, delay: 0.3 }}
       >
         {loadmore < filteredReviews.length && (
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button onClick={handleLoadmore} size="small">
               {t("products.reviews.showMore")}
             </Button>
           </motion.div>
         )}
         {loadmore > REVIEWS_PER_PAGE && (
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               variant="secondary"
               onClick={() => setLoadmore(REVIEWS_PER_PAGE)}

@@ -26,12 +26,15 @@ function ProductCard({
     }
   }
 
-  return (    <div
+  return (
+    <div
       className={`group relative origin-bottom transform rounded-xl border-[1px] border-gray-200 bg-white shadow-sm transition-all duration-300 hover:scale-105 ${
-        isCompact ? "w-[14rem] h-[320px]" : ""
+        isCompact ? "h-[320px] w-[14rem]" : ""
       }`}
       onClick={handleCardClick}
-    >      <Link href={`/products/${product.slug}`} className="flex h-full flex-col">
+    >
+      {" "}
+      <Link href={`/products/${product.slug}`} className="flex h-full flex-col">
         <div className="relative h-32 w-full">
           <Image
             src={product.imageCover}
@@ -42,7 +45,7 @@ function ProductCard({
           />
         </div>
         <div className="flex flex-col gap-2 overflow-hidden px-6 py-4 text-grey-400 lg:px-3">
-          <p className="transform-none font-bold transition-colors duration-300 group-hover:text-primary-default line-clamp-2">
+          <p className="line-clamp-2 transform-none font-bold transition-colors duration-300 group-hover:text-primary-default">
             {product.name}
           </p>{" "}
           <p className="flex items-center gap-1 text-xs">

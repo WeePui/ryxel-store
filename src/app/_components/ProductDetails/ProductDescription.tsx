@@ -74,7 +74,6 @@ function ProductDescription() {
               </table>
               {!isExpanded && (
                 <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-secondary-50 via-secondary-50/60 to-transparent">
-                  {" "}
                   <button
                     className="block w-full bg-transparent px-4 py-2 text-center font-medium text-primary-500 hover:underline"
                     onClick={toggleExpand}

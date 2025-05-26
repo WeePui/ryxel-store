@@ -1,15 +1,7 @@
 "use client";
 
 import Card from "../../UI/Card";
-import {
-  Table,
-  TableBody,
-  TableBodyCell,
-  TableBodyRow,
-  TableHeader,
-  TableHeaderCell,
-  TableHeaderRow,
-} from "../../UI/Table";
+import { Table, TableColumn } from "../../UI/Table";
 import Image from "next/image";
 import { Category } from "@/app/_types/category";
 import Link from "next/link";
@@ -31,6 +23,7 @@ interface CategoryOverviewProps {
 export default function CategoryTable({ data }: CategoryOverviewProps) {
   const [openModal, setOpenModal] = useState(false);
   const [pending, startTransition] = useTransition();
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   const handleDeleteCategory = async (categoryId: string) => {
     startTransition(async () => {
@@ -42,6 +35,74 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
       }
     });
   };
+
+  // Define columns for the enhanced Table component
+  const columns: TableColumn<
+    Category & { revenue: number; changeRate: number; totalProducts?: number }
+  >[] = [
+    {
+      title: "Tên danh mục",
+      dataIndex: "name",
+      key: "name",
+      render: (_, record) => (
+        <div className="col-span-2 flex items-center gap-4">
+          <div className="relative aspect-square w-16">
+            <Image
+              src={record.image || "/no-image-placeholder.jpg"}
+              alt={record.name}
+              fill
+              className="rounded object-cover"
+            />
+          </div>
+          <div className="text-lg font-semibold text-primary-default">
+            {record.name}
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Slug",
+      dataIndex: "slug",
+      key: "slug",
+    },
+    {
+      title: "Ngày tạo",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (value) => new Date(value as string).toLocaleDateString("vi-VN"),
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "totalProducts",
+      key: "totalProducts",
+      render: (value) => <span>{(value as number) ?? 0}</span>,
+      align: "center",
+    },
+    {
+      title: "Thao tác",
+      key: "actions",
+      dataIndex: "actions",
+      render: (_, record) => (
+        <div className="flex flex-col items-center justify-center gap-2 text-center">
+          <Link
+            href={`/admin/categories/${record.slug}`}
+            className="text-primary-400 hover:underline"
+          >
+            Xem chi tiết
+          </Link>
+          <Button
+            variant="danger"
+            size="small"
+            loading={pending}
+            onClick={() => setConfirmDelete(record._id)}
+            icon={<FaTrash />}
+            iconOnly
+          />
+        </div>
+      ),
+      align: "center",
+    },
+  ];
 
   return (
     <Card
@@ -57,107 +118,29 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
           <AddCategoryForm />
         </Modal>
       )}
-      <Table className="w-full font-semibold">
-        <TableHeader>
-          <TableHeaderRow>
-            <TableHeaderCell className="col-span-2">
-              Tên danh mục
-            </TableHeaderCell>
-            <TableHeaderCell>Slug</TableHeaderCell>
-            <TableHeaderCell>Ngày tạo</TableHeaderCell>
-            <TableHeaderCell className="text-center">Số lượng</TableHeaderCell>
-            <TableHeaderCell className="text-center">Thao tác</TableHeaderCell>
-          </TableHeaderRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((category) => (
-            <TableRow
-              key={category._id}
-              category={category}
-              pending={pending}
-              onDelete={handleDeleteCategory}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </Card>
-  );
-}
 
-interface TableRowProps {
-  category: Category & {
-    revenue: number;
-    changeRate: number;
-    totalProducts?: number;
-  };
-  pending: boolean;
-  onDelete: (categoryId: string) => void;
-}
+      <Table
+        data={data}
+        columns={columns}
+        rowKey="_id"
+        className="w-full font-semibold"
+      />
 
-function TableRow({ category, pending, onDelete }: TableRowProps) {
-  const [confirmDelete, setConfirmDelete] = useState(false);
-
-  return (
-    <>
       {confirmDelete && (
-        <Modal onClose={() => setConfirmDelete(false)}>
+        <Modal onClose={() => setConfirmDelete(null)}>
           <TextConfirmDialogue
-            confirmText={category.slug}
-            onConfirm={() => onDelete(category._id)}
+            confirmText={
+              data.find((cat) => cat._id === confirmDelete)?.slug || ""
+            }
+            onConfirm={() => {
+              handleDeleteCategory(confirmDelete);
+              setConfirmDelete(null);
+            }}
             message="Nhập lại slug để xác nhận xóa danh mục này"
             errorText="Không chính xác"
           />
         </Modal>
       )}
-      <TableBodyRow key={category._id}>
-        <TableBodyCell className="col-span-2 flex items-center gap-4">
-          <div className="relative aspect-square w-16">
-            <Image
-              src={category.image || "/no-image-placeholder.jpg"}
-              alt={category.name}
-              fill
-              className="rounded object-cover"
-            />
-          </div>
-          <div className="text-lg font-semibold text-primary-default">
-            {category.name}
-          </div>
-        </TableBodyCell>
-        <TableBodyCell
-          className="flex items-center md:flex-col md:items-start"
-          label="Slug"
-        >
-          {category.slug}
-        </TableBodyCell>
-        <TableBodyCell
-          className="flex items-center md:flex-col md:items-start"
-          label="Ngày tạo"
-        >
-          {new Date(category.createdAt).toLocaleDateString("vi-VN")}
-        </TableBodyCell>
-        <TableBodyCell
-          className="flex items-center justify-center gap-2 md:items-start md:justify-start sm:flex-col sm:items-start"
-          label="Số lượng: "
-        >
-          {category.totalProducts ?? 0}
-        </TableBodyCell>
-        <TableBodyCell className="flex flex-col items-center justify-center gap-2 text-center">
-          <Link
-            href={`/admin/categories/${category.slug}`}
-            className="text-primary-400 hover:underline"
-          >
-            Xem chi tiết
-          </Link>
-          <Button
-            variant="danger"
-            size="small"
-            loading={pending}
-            onClick={() => setConfirmDelete(true)}
-            icon={<FaTrash />}
-            iconOnly
-          />
-        </TableBodyCell>
-      </TableBodyRow>
-    </>
+    </Card>
   );
 }

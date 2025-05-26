@@ -25,7 +25,7 @@ function Modal({
   const ref = useOutsideClick<HTMLDivElement>(onClose, captureClick);
   return createPortal(
     <AnimatePresence>
-      <motion.div 
+      <motion.div
         className="fixed left-0 top-0 z-[100] h-screen w-full bg-grey-400 bg-opacity-30 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -43,11 +43,11 @@ function Modal({
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ 
-              duration: 0.4, 
+            transition={{
+              duration: 0.4,
               type: "spring",
               stiffness: 300,
-              damping: 25
+              damping: 25,
             }}
           >
             {showCloseButton && (
@@ -79,11 +79,11 @@ function Modal({
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ 
-              duration: 0.4, 
+            transition={{
+              duration: 0.4,
               type: "spring",
               stiffness: 300,
-              damping: 25
+              damping: 25,
             }}
           >
             {showCloseButton && (

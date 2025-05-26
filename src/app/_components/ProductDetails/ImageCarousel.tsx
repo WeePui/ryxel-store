@@ -97,8 +97,8 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
     >
       <div className="relative flex aspect-video h-96 w-full min-w-0 flex-col overflow-hidden lg:h-64">
         <AnimatePresence mode="wait">
-          <motion.div 
-            className="absolute inset-0 flex" 
+          <motion.div
+            className="absolute inset-0 flex"
             key={currentIndex}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -129,7 +129,11 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
               className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-full transform rounded-full bg-primary-default p-3 text-white hover:bg-grey-200 hover:text-primary-400 lg:hidden"
               onClick={handlePrevClick}
               aria-label={t("carousel.previous")}
-              whileHover={{ scale: 1.1, backgroundColor: "#f5f5f5", color: "#3a5697" }}
+              whileHover={{
+                scale: 1.1,
+                backgroundColor: "#f5f5f5",
+                color: "#3a5697",
+              }}
               whileTap={{ scale: 0.95 }}
             >
               <FaChevronLeft />
@@ -138,7 +142,11 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
               className="absolute right-0 top-1/2 -translate-x-full -translate-y-1/2 transform rounded-full bg-primary-default p-3 text-white hover:bg-grey-200 hover:text-primary-400 lg:hidden"
               onClick={handleNextClick}
               aria-label={t("carousel.next")}
-              whileHover={{ scale: 1.1, backgroundColor: "#f5f5f5", color: "#3a5697" }}
+              whileHover={{
+                scale: 1.1,
+                backgroundColor: "#f5f5f5",
+                color: "#3a5697",
+              }}
               whileTap={{ scale: 0.95 }}
             >
               <FaChevronRight />
@@ -146,8 +154,8 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
           </motion.div>
         </AnimatePresence>
       </div>
-      <motion.div 
-        className="flex flex-wrap items-center gap-4 sm:justify-center sm:gap-1 mt-4"
+      <motion.div
+        className="mt-4 flex flex-wrap items-center gap-4 sm:justify-center sm:gap-1"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -167,12 +175,12 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ 
-              duration: 0.3, 
+            transition={{
+              duration: 0.3,
               delay: index * 0.05,
               type: "spring",
               stiffness: 260,
-              damping: 20
+              damping: 20,
             }}
           >
             <Image
@@ -182,13 +190,14 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
               className="object-contain"
             />
             {image === mainImage && (
-              <motion.span 
+              <motion.span
                 className="absolute bottom-0 left-0 h-1 w-full bg-primary-500"
                 layoutId="selectedImage"
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               ></motion.span>
             )}
-            <span className="absolute bottom-0 left-0 h-1 w-full origin-bottom-left scale-y-0 bg-primary-500 transition-transform duration-500 group-hover:scale-y-100"></span>      </motion.div>
+            <span className="absolute bottom-0 left-0 h-1 w-full origin-bottom-left scale-y-0 bg-primary-500 transition-transform duration-500 group-hover:scale-y-100"></span>{" "}
+          </motion.div>
         ))}
       </motion.div>
     </motion.div>
