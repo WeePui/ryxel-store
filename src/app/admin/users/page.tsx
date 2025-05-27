@@ -19,6 +19,7 @@ export default async function Page() {
   }
 
   return (
+<<<<<<< Updated upstream
     <div className="grid grid-cols-4 xl:grid-cols-2 md:grid-cols-1 p-6 gap-6">
       <div className="col-span-1">
         <TopCustomersByProvince authToken={token} />
