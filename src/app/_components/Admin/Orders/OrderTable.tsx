@@ -43,7 +43,6 @@ export default function OrderTable({
     router.replace(`${pathname}?${params.toString()}`);
     setCurrentPage(page);
   };
-
   // Define the columns for the EnhancedTable
   const columns: TableColumn<Order>[] = [
     {
@@ -63,12 +62,15 @@ export default function OrderTable({
           <span className="font-bold">{order.orderCode}</span>
         </div>
       ),
+      csvRender: (_, order) => order.orderCode,
     },
     {
       title: "Phương thức thanh toán",
       dataIndex: "paymentMethod",
       key: "paymentMethod",
       render: (paymentMethod) =>
+        mappingPaymentMethodShortText[paymentMethod as string],
+      csvRender: (paymentMethod) =>
         mappingPaymentMethodShortText[paymentMethod as string],
     },
     {
@@ -89,6 +91,7 @@ export default function OrderTable({
           </div>
         </div>
       ),
+      csvRender: (status) => mappingOrderStatus(status as string).text,
       align: "center",
     },
     {
@@ -96,6 +99,7 @@ export default function OrderTable({
       dataIndex: "total",
       key: "total",
       render: (total) => formatMoney(total as number),
+      csvRender: (total) => formatMoney(total as number),
       sorter: (a, b) => a.total - b.total,
     },
     {
@@ -103,6 +107,8 @@ export default function OrderTable({
       dataIndex: "updatedAt",
       key: "updatedAt",
       render: (updatedAt) =>
+        new Date(updatedAt as string).toLocaleDateString("vi-VN"),
+      csvRender: (updatedAt) =>
         new Date(updatedAt as string).toLocaleDateString("vi-VN"),
       sorter: (a, b) =>
         new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(),
@@ -119,6 +125,7 @@ export default function OrderTable({
           Xem chi tiết
         </Button>
       ),
+      csvRender: () => "Xem chi tiết",
       align: "center",
     },
   ];
@@ -146,6 +153,7 @@ export default function OrderTable({
               onChange: handleChangePage,
               showTotal: (total) => `Tổng ${total} đơn hàng`,
             }}
+            exportFileName="danh-sach-don-hang.csv"
             scroll={{ x: "max-content" }}
           />
         </div>

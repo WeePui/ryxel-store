@@ -35,7 +35,6 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
       }
     });
   };
-
   // Define columns for the enhanced Table component
   const columns: TableColumn<
     Category & { revenue: number; changeRate: number; totalProducts?: number }
@@ -59,23 +58,28 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
           </div>
         </div>
       ),
+      csvRender: (_, record) => record.name,
     },
     {
       title: "Slug",
       dataIndex: "slug",
       key: "slug",
+      csvRender: (value) => value as string,
     },
     {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (value) => new Date(value as string).toLocaleDateString("vi-VN"),
+      csvRender: (value) =>
+        new Date(value as string).toLocaleDateString("vi-VN"),
     },
     {
       title: "Số lượng",
       dataIndex: "totalProducts",
       key: "totalProducts",
       render: (value) => <span>{(value as number) ?? 0}</span>,
+      csvRender: (value) => ((value as number) ?? 0).toString(),
       align: "center",
     },
     {
@@ -100,6 +104,7 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
           />
         </div>
       ),
+      csvRender: () => "Xem chi tiết / Xóa",
       align: "center",
     },
   ];
@@ -117,15 +122,14 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
         <Modal onClose={() => setOpenModal(false)}>
           <AddCategoryForm />
         </Modal>
-      )}
-
+      )}{" "}
       <Table
         data={data}
         columns={columns}
         rowKey="_id"
         className="w-full font-semibold"
+        exportFileName="danh-sach-danh-muc.csv"
       />
-
       {confirmDelete && (
         <Modal onClose={() => setConfirmDelete(null)}>
           <TextConfirmDialogue

@@ -86,13 +86,13 @@ const data = [
 
 export default function TopSellingProducts() {
   const [range, setRange] = useState("day");
-
   const columns: TableColumn<Product>[] = [
     {
       title: "STT",
       dataIndex: "_id", // Adding required dataIndex
       key: "index",
       render: (_, __, index) => <span className="font-bold">{index + 1}</span>,
+      csvRender: (_, __, index) => (index + 1).toString(),
     },
     {
       title: "Sản phẩm",
@@ -116,6 +116,8 @@ export default function TopSellingProducts() {
           </div>
         </div>
       ),
+      csvRender: (_, record) =>
+        `${record.name} - ${record.variant.name} (${record.variant.sku})`,
     },
     {
       title: "Lượt bán",
@@ -124,6 +126,7 @@ export default function TopSellingProducts() {
       render: (_, record) => (
         <span className="font-bold">{record.variant.sold}</span>
       ),
+      csvRender: (_, record) => record.variant.sold.toString(),
     },
     {
       title: "Tồn kho",
@@ -146,6 +149,7 @@ export default function TopSellingProducts() {
           </div>
         </div>
       ),
+      csvRender: (_, record) => mappingStock(record.variant.stock).text,
       align: "center",
     },
   ];
@@ -163,7 +167,13 @@ export default function TopSellingProducts() {
         />
       }
     >
-      <Table data={data} columns={columns} rowKey="_id" className="w-full" />
+      <Table
+        data={data}
+        columns={columns}
+        rowKey="_id"
+        className="w-full"
+        exportFileName="san-pham-ban-chay.csv"
+      />
     </Card>
   );
 }

@@ -46,18 +46,22 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
           <p className="text-primary-500">{record.name}</p>
         </div>
       ),
+      csvRender: (_, record) => record.name,
     },
     {
       title: "Giá tiền",
       dataIndex: "lowestPrice",
       key: "price",
       render: (value) => formatMoney(value as number),
+      csvRender: (value) => (value as number).toLocaleString("vi-VN") + " VND",
     },
     {
       title: "Cập nhật",
       dataIndex: "updatedAt",
       key: "updatedAt",
       render: (value) => new Date(value as string).toLocaleDateString("vi-VN"),
+      csvRender: (value) =>
+        new Date(value as string).toLocaleDateString("vi-VN"),
     },
     {
       title: "Tồn kho",
@@ -79,12 +83,14 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
           </div>
         </div>
       ),
+      csvRender: (value) => mappingStock(value as number).text,
       align: "center",
     },
     {
       title: "Đã bán",
       dataIndex: "sold",
       key: "sold",
+      csvRender: (value) => (value as number).toString(),
     },
     {
       title: "Thao tác",
@@ -100,6 +106,7 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
           </NavLink>
         </div>
       ),
+      csvRender: () => "Xem chi tiết",
       align: "center",
     },
   ];
@@ -110,11 +117,13 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
       className="w-full"
       titleAction={<ProductSearchBar />}
     >
+      {" "}
       <Table
         data={products}
         columns={columns}
         rowKey="_id"
         className="w-full font-semibold text-primary-500"
+        exportFileName="san-pham-theo-danh-muc.csv"
       />
     </Card>
   );

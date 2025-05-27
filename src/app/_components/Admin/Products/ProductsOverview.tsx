@@ -27,16 +27,18 @@ export default function ProductsOverview({
   predictions,
 }: ProductsOverviewProps) {
   const [openModal, setOpenModal] = useState(false);
-
   // Define columns for the predictions table
-  const columns: TableColumn<{ product: Product; predictedDaysToOutOfStock: number }>[] = [
+  const columns: TableColumn<{
+    product: Product;
+    predictedDaysToOutOfStock: number;
+  }>[] = [
     {
       title: "Sản phẩm",
       dataIndex: "product",
       key: "product",
       render: (_, record) => (
         <div className="flex items-center gap-3">
-          <div className="relative aspect-square w-12 h-12">
+          <div className="relative aspect-square h-12 w-12">
             <Image
               src={record.product.imageCover}
               alt={record.product.name}
@@ -47,22 +49,25 @@ export default function ProductsOverview({
           <div className="line-clamp-2">{record.product.name}</div>
         </div>
       ),
+      csvRender: (_, record) => record.product.name,
     },
     {
       title: "Tồn kho",
       dataIndex: "product",
       key: "stock",
       render: (_, record) => record.product.totalStock,
+      csvRender: (_, record) => record.product.totalStock.toString(),
     },
     {
       title: "Thời gian còn lại (ngày)",
       dataIndex: "predictedDaysToOutOfStock",
       key: "days",
       render: (value) => (
-        <span className={(value as number) < 7 ? "text-red-500 font-bold" : ""}>
+        <span className={(value as number) < 7 ? "font-bold text-red-500" : ""}>
           {value as number}
         </span>
       ),
+      csvRender: (value) => (value as number).toString(),
     },
   ];
 
@@ -109,12 +114,13 @@ export default function ProductsOverview({
       {openModal && (
         <Modal onClose={() => setOpenModal(false)}>
           <div className="flex w-full flex-col gap-4 p-4">
-            <h2 className="text-xl font-bold">Sản phẩm sắp hết hàng</h2>
+            <h2 className="text-xl font-bold">Sản phẩm sắp hết hàng</h2>{" "}
             <Table
               data={predictions}
               columns={columns}
               rowKey={(record) => record.product._id}
               className="w-full font-semibold text-primary-500"
+              exportFileName="san-pham-sap-het-hang.csv"
             />
           </div>
         </Modal>

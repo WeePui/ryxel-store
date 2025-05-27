@@ -42,7 +42,6 @@ export default function ProductsTable({
     router.replace(`${pathname}?${params.toString()}`);
     setCurrentPage(page);
   };
-
   // Define columns for the enhanced Table component
   const columns: TableColumn<Product>[] = [
     {
@@ -62,18 +61,22 @@ export default function ProductsTable({
           <p className="line-clamp-3 text-primary-500">{record.name}</p>
         </div>
       ),
+      csvRender: (_, record) => record.name,
     },
     {
       title: "Giá tiền",
       dataIndex: "lowestPrice",
       key: "price",
       render: (value) => formatMoney(value as number),
+      csvRender: (value) => formatMoney(value as number),
     },
     {
       title: "Cập nhật",
       dataIndex: "updatedAt",
       key: "updatedAt",
       render: (value) => new Date(value as string).toLocaleDateString("vi-VN"),
+      csvRender: (value) =>
+        new Date(value as string).toLocaleDateString("vi-VN"),
     },
     {
       title: "Tồn kho",
@@ -93,6 +96,7 @@ export default function ProductsTable({
           </span>
         </div>
       ),
+      csvRender: (value) => mappingStock(value as number).text,
     },
     {
       title: "Đã bán",
@@ -113,6 +117,7 @@ export default function ProductsTable({
           </NavLink>
         </div>
       ),
+      csvRender: () => "Xem chi tiết",
       align: "center",
     },
   ];
@@ -139,6 +144,7 @@ export default function ProductsTable({
               pageSize: resultsPerPage,
               onChange: handleChangePage,
             }}
+            exportFileName="danh-sach-san-pham.csv"
             className="w-full font-semibold text-primary-500"
           />
         </div>
