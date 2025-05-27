@@ -1476,3 +1476,47 @@ export const deleteDiscount = async (id: string, authToken: string) => {
 
   return { status: "success", message: "Discount deleted successfully" };
 };
+
+interface UserFilter {
+  search?: string;
+  role?: string;
+  emailVerified?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
+}
+
+export const getAllUsers = async (
+  authToken: string,
+  filter: UserFilter = {},
+) => {
+  const filterParams = new URLSearchParams();
+
+  for (const key in filter) {
+    if (filter[key as keyof UserFilter] !== undefined) {
+      filterParams.append(key, filter[key as keyof UserFilter] as string);
+    }
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?${filterParams.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      credentials: "include",
+    },
+  );
+
+  console.log(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?${filterParams.toString()}`,
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch users");
+  }
+
+  const { data } = await response.json();
+  return data;
+};

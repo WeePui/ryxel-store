@@ -89,7 +89,6 @@ export default function VoucherTable({
     // Server always uses percentage model
     return `${voucher.discountPercentage}%`;
   };
-
   // Define columns for the enhanced Table
   const columns: TableColumn<Discount>[] = [
     {
@@ -107,6 +106,7 @@ export default function VoucherTable({
       dataIndex: "discountPercentage",
       key: "discountValue",
       render: (_, record) => formatDiscountValue(record),
+      csvRender: (_, record) => formatDiscountValue(record),
     },
     {
       title: "Trạng thái",
@@ -123,18 +123,22 @@ export default function VoucherTable({
           </div>
         );
       },
+      csvRender: (_, record) => getStatusBadge(record).text,
     },
     {
       title: "Lượt còn",
       dataIndex: "remainingUses",
       key: "remainingUses",
       render: (_, record) => getRemainingUses(record),
+      csvRender: (_, record) => getRemainingUses(record).toString(),
     },
     {
       title: "Thời hạn",
       dataIndex: "endDate",
       key: "endDate",
       render: (value) => new Date(value as string).toLocaleDateString("vi-VN"),
+      csvRender: (value) =>
+        new Date(value as string).toLocaleDateString("vi-VN"),
     },
     {
       title: "Thao tác",
@@ -147,6 +151,7 @@ export default function VoucherTable({
           </Button>
         </div>
       ),
+      csvRender: () => "Sửa",
       align: "center",
     },
   ];
@@ -171,6 +176,7 @@ export default function VoucherTable({
       )}
       {data && data.length > 0 ? (
         <div className="flex flex-col">
+          {" "}
           <Table
             data={data}
             columns={columns}
@@ -182,6 +188,7 @@ export default function VoucherTable({
               onChange: handleChangePage,
             }}
             className="w-full"
+            exportFileName="danh-sach-ma-giam-gia.csv"
           />
         </div>
       ) : (

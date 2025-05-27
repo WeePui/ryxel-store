@@ -23,6 +23,8 @@ export interface TableColumn<T extends object> {
   responsive?: ("xxl" | "xl" | "lg" | "md" | "sm" | "xs")[];
   fixed?: "left" | "right" | boolean;
   ellipsis?: boolean;
+  // For CSV export - function to extract plain text from complex render functions
+  csvRender?: (value: unknown, record: T, index: number) => string;
 }
 
 export interface TableProps<T extends object> {
@@ -47,6 +49,9 @@ export interface TableProps<T extends object> {
       };
   summary?: (data: readonly T[]) => React.ReactNode;
   onRow?: (record: T, index?: number) => React.HTMLAttributes<HTMLElement>;
+  // For CSV export - all data instead of just current page
+  exportData?: T[];
+  exportFileName?: string;
 }
 
 export function Table<T extends object>({
@@ -71,6 +76,8 @@ export function Table<T extends object>({
   sticky = false,
   summary,
   onRow,
+  exportData,
+  exportFileName = "table-data.csv",
 }: TableProps<T>) {
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
     columns.map((col) => (col.key as string) || (col.dataIndex as string)),
@@ -114,34 +121,78 @@ export function Table<T extends object>({
         : undefined;
     }, obj as unknown);
   };
-
   // Export to CSV
   const exportToCSV = () => {
-    if (data.length === 0) return;
+    // Use exportData if provided (all data), otherwise use current page data
+    const dataToExport = exportData || data;
+    if (dataToExport.length === 0) return;
 
-    const headers = columns.map((col) => col.title).join(",");
-    const csvRows = data.map((row) => {
-      return columns
+    // Filter columns to only include visible ones for export
+    const visibleColumnsToExport = columns.filter((column) => {
+      const columnKey = (column.key as string) || (column.dataIndex as string);
+      return visibleColumns.includes(columnKey);
+    });
+
+    const headers = visibleColumnsToExport.map((col) => col.title).join(",");
+    const csvRows = dataToExport.map((row, index) => {
+      return visibleColumnsToExport
         .map((col) => {
           const dataIndex = col.dataIndex as string;
-          const value = dataIndex.includes(".")
-            ? getNestedValue(row, dataIndex)
-            : row[dataIndex as keyof T];
-          return `"${value !== undefined && value !== null ? String(value).replace(/"/g, '""') : ""}"`;
+          let value: unknown;
+
+          // Get the raw value
+          if (dataIndex.includes(".")) {
+            value = getNestedValue(row, dataIndex);
+          } else {
+            value = row[dataIndex as keyof T];
+          } // Use csvRender if provided for plain text extraction
+          if (col.csvRender) {
+            value = col.csvRender(value, row, index);
+          } else if (
+            col.render &&
+            typeof value !== "string" &&
+            typeof value !== "number"
+          ) {
+            // For complex render functions without csvRender, try to extract meaningful text
+            if (
+              dataIndex === "name" &&
+              typeof row === "object" &&
+              row !== null
+            ) {
+              // For user/product name fields that might have complex renders
+              const recordWithName = row as Record<string, unknown>;
+              value = recordWithName.name || recordWithName.title || value;
+            } else {
+              // Default fallback for complex renders
+              value = String(value);
+            }
+          }
+
+          // Clean and escape the value for CSV
+          const stringValue =
+            value !== undefined && value !== null ? String(value) : "";
+          return `"${stringValue.replace(/"/g, '""')}"`;
         })
         .join(",");
     });
 
     const csvString = [headers, ...csvRows].join("\n");
-    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+
+    // Add UTF-8 BOM for Vietnamese character support
+    const BOM = "\uFEFF";
+    const blob = new Blob([BOM + csvString], {
+      type: "text/csv;charset=utf-8;",
+    });
+
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", "table-data.csv");
+    link.setAttribute("download", exportFileName);
     link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Column visibility menu items
@@ -263,15 +314,21 @@ export function Table<T extends object>({
             color: #666;
           }
         }
-      `}</style>
+      `}</style>{" "}
       <div className="mb-4 flex flex-wrap justify-between gap-2">
-        <Tooltip title="Xuất dữ liệu dạng CSV">
+        <Tooltip
+          title={
+            exportData
+              ? "Xuất tất cả dữ liệu dạng CSV"
+              : "Xuất dữ liệu trang hiện tại dạng CSV"
+          }
+        >
           <Button
             onClick={exportToCSV}
             icon={<DownloadOutlined />}
-            disabled={data.length === 0}
+            disabled={(exportData || data).length === 0}
           >
-            Xuất CSV
+            {exportData ? `Xuất CSV (${exportData.length})` : "Xuất CSV"}
           </Button>
         </Tooltip>
         <Dropdown
