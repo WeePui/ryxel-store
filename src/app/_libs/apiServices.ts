@@ -1473,7 +1473,6 @@ export const deleteDiscount = async (id: string, authToken: string) => {
   if (!response.ok) {
     throw new Error("Failed to delete discount");
   }
-
   return { status: "success", message: "Discount deleted successfully" };
 };
 
@@ -1509,14 +1508,129 @@ export const getAllUsers = async (
     },
   );
 
-  console.log(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users?${filterParams.toString()}`,
-  );
-
   if (!response.ok) {
     throw new Error("Failed to fetch users");
   }
 
   const { data } = await response.json();
+  return data;
+};
+
+interface UserFilter {
+  search?: string;
+  role?: string;
+  emailVerified?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
+}
+
+// Get user analytics data
+export const getUserAnalytics = async (userId: string, authToken: string) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${userId}/analytics`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      credentials: "include",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user analytics");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Get user order history
+export const getUserOrderHistory = async (
+  userId: string,
+  authToken: string,
+  filters: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    sort?: string;
+  } = {},
+) => {
+  const filterParams = new URLSearchParams();
+  for (const key in filters) {
+    if (filters[key as keyof typeof filters] !== undefined) {
+      filterParams.append(key, filters[key as keyof typeof filters] as string);
+    }
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${userId}/orders?${filterParams.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      credentials: "include",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user order history");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Update user status (email verification, active status, role)
+export const updateUserStatus = async (
+  userId: string,
+  statusData: {
+    emailVerified?: boolean;
+    active?: boolean;
+    role?: string;
+  },
+  authToken: string,
+) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${userId}/status`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify(statusData),
+      credentials: "include",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to update user status");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Get individual user by ID
+export const getUserById = async (userId: string, authToken: string) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${userId}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      credentials: "include",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user");
+  }
+
+  const data = await response.json();
   return data;
 };
