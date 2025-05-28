@@ -6,12 +6,14 @@ import { resetPasswordAction } from "@libs/actions";
 import { FaRegCircleXmark } from "react-icons/fa6";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface FormResetPasswordProps {
   resetToken: string;
 }
 
 function FormResetPassword({ resetToken }: FormResetPasswordProps) {
+  const { t } = useLanguage();
   const [state, action, isPending] = useActionState(resetPasswordAction, {
     success: undefined,
     errors: {},
@@ -23,11 +25,11 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-white px-16 py-12 text-grey-400 shadow-sm lg:px-8">
         <FaRegCircleXmark className="text-5xl text-red-500" />
-        <p>Token lấy lại mật khẩu của bạn không hợp lệ hoặc đã hết hạn.</p>
-        <p className="mb-4">
-          Bạn có thể thử lại bằng cách bấm vào nút Quên mật khẩu bên dưới.
-        </p>
-        <Button href="/forgot-password">Quên mật khẩu</Button>
+        <p>{t("auth.resetPassword.invalidToken")}</p>
+        <p className="mb-4">{t("auth.resetPassword.tryAgain")}</p>
+        <Button href="/forgot-password">
+          {t("auth.forgotPassword.title")}
+        </Button>
       </div>
     );
   }
@@ -35,7 +37,7 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
   return (
     <>
       <p className="text-sm text-grey-300">
-        Xin hãy điền vào mật khẩu mới cho tài khoản của bạn.
+        {t("auth.resetPassword.subtitle")}
       </p>
       <form
         action={action}
@@ -45,7 +47,8 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
           id="password"
           type="password"
           name="password"
-          label="Mật khẩu"
+          label={t("auth.form.newPassword.label")}
+          placeholder={t("auth.form.newPassword.placeholder")}
           error={!!state?.errors?.password}
           errorMessage={state?.errors?.password}
         />
@@ -53,12 +56,13 @@ function FormResetPassword({ resetToken }: FormResetPasswordProps) {
           id="passwordConfirm"
           type="password"
           name="passwordConfirm"
-          label="Xác nhận mật khẩu"
+          label={t("auth.form.confirmPassword.label")}
+          placeholder={t("auth.form.confirmPassword.placeholder")}
           error={!!state?.errors?.password}
         />
         <input type="hidden" name="resetToken" value={resetToken} />
         <Button role="submit" loading={isPending}>
-          Cập nhật mật khẩu
+          {t("auth.resetPassword.submit")}
         </Button>
       </form>
     </>

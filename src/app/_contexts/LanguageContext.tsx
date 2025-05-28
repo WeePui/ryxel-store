@@ -619,6 +619,120 @@ const translations = {
       vi: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.",
       en: "You need to login to add products to your cart.",
     },
+    filter: {
+      title: {
+        vi: "Bộ lọc",
+        en: "Filter",
+      },
+      all: {
+        vi: "Tất cả",
+        en: "All",
+      },
+      brand: {
+        vi: "Thương hiệu",
+        en: "Brand",
+      },
+      price: {
+        vi: "Giá",
+        en: "Price",
+      },
+      rating: {
+        vi: "Đánh giá",
+        en: "Rating",
+      },
+      apply: {
+        vi: "Áp dụng",
+        en: "Apply",
+      },
+      reset: {
+        vi: "Đặt lại",
+        en: "Reset",
+      },
+    },
+    reviews: {
+      sold: {
+        vi: "đã bán",
+        en: "sold",
+      },
+      ratings: {
+        vi: "đánh giá",
+        en: "ratings",
+      },
+      classification: {
+        vi: "Phân loại",
+        en: "Type",
+      },
+      showMore: {
+        vi: "Hiển thị thêm",
+        en: "Show more",
+      },
+      showLess: {
+        vi: "Thu gọn",
+        en: "Show less",
+      },
+      noReviews: {
+        vi: "Chưa có đánh giá nào",
+        en: "No reviews yet",
+      },
+      filterByRating: {
+        vi: "Lọc theo đánh giá",
+        en: "Filter by rating",
+      },
+      allRatings: {
+        vi: "Tất cả đánh giá",
+        en: "All ratings",
+      },
+      stars: {
+        vi: "sao",
+        en: "stars",
+      },
+      title: {
+        vi: "Đánh giá sản phẩm",
+        en: "Product Reviews",
+      },
+      loadError: {
+        vi: "Không thể tải đánh giá sản phẩm. Vui lòng thử lại sau.",
+        en: "Could not load product reviews. Please try again later.",
+      },
+      notFound: {
+        vi: "Không có đánh giá nào cho sản phẩm này",
+        en: "No reviews found for this product",
+      },
+    },
+    description: {
+      title: {
+        vi: "Mô tả",
+        en: "Description",
+      },
+      specifications: {
+        vi: "Thông số kĩ thuật",
+        en: "Specifications",
+      },
+      showMore: {
+        vi: "Xem thêm",
+        en: "Show more",
+      },
+      showLess: {
+        vi: "Thu gọn",
+        en: "Show less",
+      },
+    },
+  },
+  home: {
+    bestsellers: {
+      title: {
+        vi: "Sản phẩm bán chạy",
+        en: "Best Sellers",
+      },
+      loadError: {
+        vi: "Không thể tải sản phẩm bán chạy. Vui lòng thử lại sau.",
+        en: "Could not load bestsellers. Please try again later.",
+      },
+      notFound: {
+        vi: "Không có sản phẩm bán chạy",
+        en: "No bestsellers found",
+      },
+    },
     reviews: {
       title: {
         vi: "Đánh giá sản phẩm",
@@ -808,8 +922,502 @@ const translations = {
       },
     },
   },
+  cart: {
+    title: {
+      vi: "Giỏ hàng",
+      en: "Cart",
+    },
+    home: {
+      vi: "Trang chủ",
+      en: "Home",
+    },
+    shop: {
+      vi: "Cửa hàng",
+      en: "Shop",
+    },
+    emptyCart: {
+      title: {
+        vi: "Vẫn chưa có gì trong giỏ hàng của bạn.",
+        en: "Your cart is still empty.",
+      },
+      subtitle: {
+        vi: "Cửa hàng của chúng tôi đang có những điều tuyệt vời đang chờ đợi bạn.",
+        en: "Our store has amazing things waiting for you.",
+      },
+    },
+    selectAll: {
+      vi: "Chọn tất cả",
+      en: "Select All",
+    },
+    clearAll: {
+      vi: "Xoá tất cả",
+      en: "Clear All",
+    },
+    selectProduct: {
+      vi: "Chọn sản phẩm",
+      en: "Select Product",
+    },
+    variant: {
+      vi: "Phân loại",
+      en: "Variant",
+    },
+    quantity: {
+      vi: "Số lượng",
+      en: "Quantity",
+    },
+    outOfStock: {
+      vi: "Hết hàng",
+      en: "Out of Stock",
+    },
+    remove: {
+      vi: "Xoá bỏ",
+      en: "Remove",
+    },
+    noSelectableItems: {
+      vi: "Giỏ hàng của bạn không có sản phẩm nào còn hàng",
+      en: "Your cart has no products in stock",
+    },
+    orderSummary: {
+      title: {
+        vi: "Tóm tắt đơn hàng",
+        en: "Order Summary",
+      },
+      total: {
+        vi: "Tổng thanh toán",
+        en: "Total Payment",
+      },
+      selectedItems: {
+        vi: "Sản phẩm đã chọn",
+        en: "Selected Products",
+      },
+      proceedCheckout: {
+        vi: "Tiến hành đặt hàng",
+        en: "Proceed to Checkout",
+      },
+      paymentMethods: {
+        vi: "Phương thức thanh toán",
+        en: "Payment Methods",
+      },
+    },
+    confirmations: {
+      confirmText: {
+        vi: "Xác nhận",
+        en: "Confirm",
+      },
+      cancel: {
+        vi: "Huỷ bỏ",
+        en: "Cancel",
+      },
+      remove: {
+        vi: "Xoá",
+        en: "Remove",
+      },
+      clearCart: {
+        vi: "Bạn có chắc chắn muốn xoá giỏ hàng?",
+        en: "Are you sure you want to clear the cart?",
+      },
+      removeItem: {
+        vi: "Bạn có chắc muốn xoá {productName} ra khỏi giỏ hàng?",
+        en: "Are you sure you want to remove {productName} from the cart?",
+      },
+    },
+    messages: {
+      noProductsSelected: {
+        vi: "Bạn chưa chọn sản phẩm nào để thanh toán!",
+        en: "You haven't selected any products to checkout!",
+      },
+      clearCartSuccess: {
+        vi: "Xoá giỏ hàng thành công!",
+        en: "Cart cleared successfully!",
+      },
+    },
+    errors: {
+      unpaidOrder: {
+        vi: "Bạn có đơn hàng chưa thanh toán để có thể tiếp tục đặt hàng vui lòng thanh toán hoặc huỷ đơn hàng.",
+        en: "You have an unpaid order. To continue ordering, please pay or cancel the order.",
+      },
+      verifiedNeeded: {
+        vi: "Bạn cần xác thực tài khoản của mình để tiếp tục.",
+        en: "You need to verify your account to continue.",
+      },
+    },
+  },
   common: {
     // Common translations
+  },
+  auth: {
+    login: {
+      title: {
+        vi: "Tài khoản Ryxel",
+        en: "Ryxel Account",
+      },
+      forgotPassword: {
+        vi: "Quên mật khẩu?",
+        en: "Forgot password?",
+      },
+      noAccount: {
+        vi: "Bạn chưa có tài khoản?",
+        en: "Don't have an account?",
+      },
+      createAccount: {
+        vi: "Tạo tài khoản",
+        en: "Create account",
+      },
+    },
+    signup: {
+      title: {
+        vi: "Chỉ một tài khoản cho mọi dịch vụ của Ryxel Store",
+        en: "One account for all Ryxel Store services",
+      },
+      alreadyHaveAccount: {
+        vi: "Đã có tài khoản?",
+        en: "Already have an account?",
+      },
+      login: {
+        vi: "Đi tới Đăng nhập",
+        en: "Go to Login",
+      },
+      termsAgreement: {
+        vi: "Khi bạn chọn vào ô này đồng nghĩa rằng bạn đồng ý với Quy chế hoạt động và Chính sách bảo mật của chúng tôi.",
+        en: "By checking this box, you agree to our Terms of Service and Privacy Policy.",
+      },
+      publicInfo: {
+        vi: "Thông tin này sẽ được thấy bởi mọi người",
+        en: "This information will be visible to everyone",
+      },
+      dob: {
+        vi: "Ngày sinh",
+        en: "Date of birth",
+      },
+      dobWarning: {
+        vi: "Lưu ý: Bạn sẽ không thể thay đổi ngày sinh sau này",
+        en: "Note: You won't be able to change your date of birth later",
+      },
+      gender: {
+        vi: "Giới tính",
+        en: "Gender",
+      },
+      male: {
+        vi: "Nam",
+        en: "Male",
+      },
+      female: {
+        vi: "Nữ",
+        en: "Female",
+      },
+      other: {
+        vi: "Khác",
+        en: "Other",
+      },
+      emailAccount: {
+        vi: "Đây sẽ là tài khoản Ryxel Store của bạn",
+        en: "This will be your Ryxel Store account",
+      },
+    },
+    forgotPassword: {
+      title: {
+        vi: "Đặt lại mật khẩu",
+        en: "Reset Password",
+      },
+      subtitle: {
+        vi: "Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu",
+        en: "Enter your email to receive password reset instructions",
+      },
+      backToLogin: {
+        vi: "Trở lại đăng nhập",
+        en: "Back to login",
+      },
+      sendInstructions: {
+        vi: "Tiếp theo",
+        en: "Next",
+      },
+      enterEmail: {
+        vi: "Xin hãy điền vào địa chỉ e-mail mà bạn đã dùng để đăng kí, sau đó bấm vào nút Tiếp theo.",
+        en: "Please enter the email address you used to register, then click the Next button.",
+      },
+      instructions: {
+        vi: "Một e-mail có chứa liên kết (URL) lấy lại mật khẩu sẽ được gửi đến bạn.",
+        en: "An email containing a password reset link (URL) will be sent to you.",
+      },
+      emailSent: {
+        vi: "Chúng tôi đã gửi một e-mail tới địa chỉ e-mail mà bạn đã dùng để đăng kí",
+        en: "We've sent an email to the address you used to register",
+      },
+      clickLink: {
+        vi: "Có một liên kết (URL) được đính kèm trong e-mail, xin vui lòng bấm vào liên kết đó để đặt lại mật khẩu.",
+        en: "There is a link (URL) attached in the email, please click on that link to reset your password.",
+      },
+      noEmail: {
+        vi: "Bạn không tìm thấy e-mail?",
+        en: "Can't find the email?",
+      },
+      pleaseCheck: {
+        vi: "Xin hãy chắc chắn rằng bạn đã kiểm tra các điều sau:",
+        en: "Please make sure you have checked the following:",
+      },
+      checkPoints: {
+        correctEmail: {
+          vi: "E-mail có đang được gửi đến đúng địa chỉ e-mail của bạn.",
+          en: "The email is being sent to the correct email address.",
+        },
+        spamFolder: {
+          vi: "E-mail không nằm trong thư mục spam/rác.",
+          en: "The email is not in the spam/junk folder.",
+        },
+        noFilters: {
+          vi: "Không có bộ lọc e-mail nào nhắm đến các e-mail được gửi từ @ryxel.com.",
+          en: "There are no email filters targeting emails sent from @ryxel.com.",
+        },
+        registeredEmail: {
+          vi: "E-mail được sử dụng là e-mail đã dùng để đăng kí tài khoản Ryxel Store.",
+          en: "The email used is the email used to register for the Ryxel Store account.",
+        },
+      },
+    },
+    resetPassword: {
+      title: {
+        vi: "Đặt lại mật khẩu",
+        en: "Reset Password",
+      },
+      subtitle: {
+        vi: "Xin hãy điền vào mật khẩu mới cho tài khoản của bạn.",
+        en: "Please enter a new password for your account.",
+      },
+      submit: {
+        vi: "Cập nhật mật khẩu",
+        en: "Update password",
+      },
+      success: {
+        vi: "Mật khẩu đã được đặt lại thành công!",
+        en: "Password has been reset successfully!",
+      },
+      invalidToken: {
+        vi: "Token lấy lại mật khẩu của bạn không hợp lệ hoặc đã hết hạn.",
+        en: "Your password reset token is invalid or has expired.",
+      },
+      tryAgain: {
+        vi: "Bạn có thể thử lại bằng cách bấm vào nút Quên mật khẩu bên dưới.",
+        en: "You can try again by clicking the Forgot Password button below.",
+      },
+    },
+    verifyEmail: {
+      title: {
+        vi: "Xác thực email",
+        en: "Verify Email",
+      },
+      almostDone: {
+        vi: "Chỉ một chút nữa",
+        en: "Almost Done",
+      },
+      sentOTP: {
+        vi: "Chúng tôi đã gửi e-mail có chứa OTP tới địa chỉ e-mail của bạn. Xin lưu ý OTP chỉ có tác dụng trong 10 phút.",
+        en: "We've sent an email containing an OTP to your email address. Please note that the OTP is only valid for 10 minutes.",
+      },
+      enterBelow: {
+        vi: "Xin hãy nhập OTP dưới đây:",
+        en: "Please enter the OTP below:",
+      },
+      loginSuccessNote: {
+        vi: "Bạn đã đăng nhập thành công. Nhưng bạn sẽ không thể tiến hành đặt hàng nếu chưa xác nhận tài khoản.",
+        en: "You have logged in successfully. However, you will not be able to proceed with placing orders until you verify your account.",
+      },
+      confirmButton: {
+        vi: "Xác nhận",
+        en: "Confirm",
+      },
+      resendOTP: {
+        vi: "Gửi lại OTP",
+        en: "Resend OTP",
+      },
+      resendIn: {
+        vi: "Gửi lại OTP trong",
+        en: "Resend OTP in",
+      },
+      seconds: {
+        vi: "giây",
+        en: "seconds",
+      },
+      sending: {
+        vi: "Đang gửi ...",
+        en: "Sending ...",
+      },
+      checking: {
+        vi: "Đang xác thực email của bạn...",
+        en: "Verifying your email...",
+      },
+      success: {
+        vi: "Email đã được xác thực thành công!",
+        en: "Email verified successfully!",
+      },
+      error: {
+        vi: "Xác thực email thất bại.",
+        en: "Email verification failed.",
+      },
+      expired: {
+        vi: "Liên kết xác thực đã hết hạn.",
+        en: "Verification link has expired.",
+      },
+      backToLogin: {
+        vi: "Trở lại đăng nhập",
+        en: "Back to login",
+      },
+    },
+    reauthenticate: {
+      title: {
+        vi: "Xác thực lại",
+        en: "Re-authenticate",
+      },
+      subtitle: {
+        vi: "Vui lòng nhập mật khẩu của bạn để tiếp tục",
+        en: "Please enter your password to continue",
+      },
+      submit: {
+        vi: "Xác thực",
+        en: "Authenticate",
+      },
+    },
+    form: {
+      email: {
+        label: {
+          vi: "Email",
+          en: "Email",
+        },
+        placeholder: {
+          vi: "Nhập email của bạn",
+          en: "Enter your email",
+        },
+      },
+      password: {
+        label: {
+          vi: "Mật khẩu",
+          en: "Password",
+        },
+        placeholder: {
+          vi: "Nhập mật khẩu của bạn",
+          en: "Enter your password",
+        },
+      },
+      fullName: {
+        label: {
+          vi: "Họ và tên",
+          en: "Full name",
+        },
+        placeholder: {
+          vi: "Nhập họ và tên của bạn",
+          en: "Enter your full name",
+        },
+      },
+      confirmPassword: {
+        label: {
+          vi: "Xác nhận mật khẩu",
+          en: "Confirm password",
+        },
+        placeholder: {
+          vi: "Nhập lại mật khẩu của bạn",
+          en: "Re-enter your password",
+        },
+      },
+      phone: {
+        label: {
+          vi: "Số điện thoại",
+          en: "Phone number",
+        },
+        placeholder: {
+          vi: "Nhập số điện thoại của bạn",
+          en: "Enter your phone number",
+        },
+      },
+      currentPassword: {
+        label: {
+          vi: "Mật khẩu hiện tại",
+          en: "Current password",
+        },
+        placeholder: {
+          vi: "Nhập mật khẩu hiện tại của bạn",
+          en: "Enter your current password",
+        },
+      },
+      newPassword: {
+        label: {
+          vi: "Mật khẩu mới",
+          en: "New password",
+        },
+        placeholder: {
+          vi: "Nhập mật khẩu mới của bạn",
+          en: "Enter your new password",
+        },
+      },
+      submit: {
+        login: {
+          vi: "Đăng nhập",
+          en: "Login",
+        },
+        signup: {
+          vi: "Đăng ký",
+          en: "Sign up",
+        },
+      },
+    },
+  },
+  account: {
+    profile: {
+      title: {
+        vi: "Hồ sơ của tôi",
+        en: "My Profile",
+      },
+      personalInfo: {
+        vi: "Thông tin cá nhân",
+        en: "Personal Information",
+      },
+      updateInfo: {
+        vi: "Cập nhật thông tin",
+        en: "Update Information",
+      },
+    },
+    updatePassword: {
+      title: {
+        vi: "Thay đổi mật khẩu",
+        en: "Change Password",
+      },
+      success: {
+        vi: "Mật khẩu đã được cập nhật thành công!",
+        en: "Password updated successfully!",
+      },
+    },
+    wishlist: {
+      title: {
+        vi: "Danh sách yêu thích",
+        en: "Wishlist",
+      },
+      empty: {
+        vi: "Danh sách yêu thích của bạn trống.",
+        en: "Your wishlist is empty.",
+      },
+      addProducts: {
+        vi: "Thêm sản phẩm yêu thích",
+        en: "Add favorite products",
+      },
+    },
+  },
+  checkout: {
+    title: {
+      vi: "Thanh toán",
+      en: "Checkout",
+    },
+    steps: {
+      shipping: {
+        vi: "Thông tin giao hàng",
+        en: "Shipping Information",
+      },
+      payment: {
+        vi: "Phương thức thanh toán",
+        en: "Payment Method",
+      },
+      confirm: {
+        vi: "Xác nhận đơn hàng",
+        en: "Order Confirmation",
+      },
+    },
   },
 };
 

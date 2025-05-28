@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
 
-export default function AboutUsTranslated() {
+export default function AboutUs() {
   const { t } = useLanguage();
   const [, setIsVisible] = useState(false);
 

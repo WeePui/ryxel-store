@@ -1,17 +1,18 @@
-'use client';
+"use client";
 
-import CartItem from './CartItem';
-import { useEffect, useMemo, useState, useTransition } from 'react';
-import ConfirmDialogue from '../UI/ConfirmDialogue';
-import Modal from '../UI/Modal';
-import { LineItem } from '@/app/_types/lineItem';
-import { WishlistProvider } from '@/app/_contexts/WishlistContext';
-import NavLink from '../UI/NavLink';
-import { Product } from '@/app/_types/product';
-import Loader from '../UI/Loader';
-import { clearCartItemsAction } from '@/app/_libs/actions';
-import { toast } from 'react-toastify';
-import { FaCircleInfo } from 'react-icons/fa6';
+import CartItem from "./CartItem";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import ConfirmDialogue from "../UI/ConfirmDialogue";
+import Modal from "../UI/Modal";
+import { LineItem } from "@/app/_types/lineItem";
+import { WishlistProvider } from "@/app/_contexts/WishlistContext";
+import NavLink from "../UI/NavLink";
+import { Product } from "@/app/_types/product";
+import Loader from "../UI/Loader";
+import { clearCartItemsAction } from "@/app/_libs/actions";
+import { toast } from "react-toastify";
+import { FaCircleInfo } from "react-icons/fa6";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface CartItemsListProps {
   items: LineItem[];
@@ -20,7 +21,7 @@ interface CartItemsListProps {
     items: {
       product: string;
       variant: string;
-    }[]
+    }[],
   ) => void;
 }
 
@@ -29,6 +30,7 @@ function CartItemsList({
   error,
   onChangeLineItems,
 }: CartItemsListProps) {
+  const { t } = useLanguage();
   const [isOpened, setIsOpened] = useState(false);
   const [isClearCartConfirmDialogue, setIsClearCartConfirmDialogue] =
     useState(false);
@@ -43,7 +45,7 @@ function CartItemsList({
     .filter(
       (item) =>
         ((item.product as Product).variants.find((v) => v._id === item.variant)
-          ?.stock ?? 0) > 0
+          ?.stock ?? 0) > 0,
     )
     .map((item) => ({
       product: (item.product as Product)._id as string,
@@ -57,10 +59,10 @@ function CartItemsList({
   const sortedItems = useMemo(() => {
     return [...items].sort((a, b) => {
       const variantA = (a.product as Product).variants.find(
-        (v) => v._id === a.variant
+        (v) => v._id === a.variant,
       );
       const variantB = (b.product as Product).variants.find(
-        (v) => v._id === b.variant
+        (v) => v._id === b.variant,
       );
 
       const stockA = variantA ? variantA.stock : 0;
@@ -69,22 +71,20 @@ function CartItemsList({
       return stockB - stockA; // stock giảm dần
     });
   }, [items]);
-
   const errorDetails = useMemo(
     () =>
-      error === 'unpaidOrder'
+      error === "unpaidOrder"
         ? {
-            text: 'unpaidOrder',
-            message:
-              'Bạn có đơn hàng chưa thanh toán để có thể tiếp tục đặt hàng vui lòng thanh toán hoặc huỷ đơn hàng.',
+            text: "unpaidOrder",
+            message: t("cart.errors.unpaidOrder"),
           }
-        : error === 'verifiedNeeded'
-        ? {
-            text: 'verifiedNeeded',
-            message: 'Bạn cần xác thực tài khoản của mình để tiếp tục.',
-          }
-        : null,
-    [error]
+        : error === "verifiedNeeded"
+          ? {
+              text: "verifiedNeeded",
+              message: t("cart.errors.verifiedNeeded"),
+            }
+          : null,
+    [error, t],
   );
 
   useEffect(() => {
@@ -96,24 +96,24 @@ function CartItemsList({
   const toggleSelectItem = (productId: string, variantId: string) => {
     setSelectedItems((prev) =>
       prev.some(
-        (item) => item.product === productId && item.variant === variantId
+        (item) => item.product === productId && item.variant === variantId,
       )
         ? prev.filter(
             (item) =>
-              !(item.product === productId && item.variant === variantId)
+              !(item.product === productId && item.variant === variantId),
           )
-        : [...prev, { product: productId, variant: variantId }]
+        : [...prev, { product: productId, variant: variantId }],
     );
 
     onChangeLineItems(
       selectedItems.some(
-        (item) => item.product === productId && item.variant === variantId
+        (item) => item.product === productId && item.variant === variantId,
       )
         ? selectedItems.filter(
             (item) =>
-              !(item.product === productId && item.variant === variantId)
+              !(item.product === productId && item.variant === variantId),
           )
-        : [...selectedItems, { product: productId, variant: variantId }]
+        : [...selectedItems, { product: productId, variant: variantId }],
     );
   };
 
@@ -122,8 +122,8 @@ function CartItemsList({
       .filter(
         (item) =>
           ((item.product as Product).variants.find(
-            (v) => v._id === item.variant
-          )?.stock ?? 0) > 0
+            (v) => v._id === item.variant,
+          )?.stock ?? 0) > 0,
       )
       .map((item) => ({
         product: (item.product as Product)._id as string,
@@ -142,11 +142,11 @@ function CartItemsList({
   const onConfirm = () => {
     setIsOpened(false);
 
-    if (errorDetails?.text === 'unpaidOrder') {
-      window.location.href = '/account/orders';
+    if (errorDetails?.text === "unpaidOrder") {
+      window.location.href = "/account/orders";
       return;
-    } else if (errorDetails?.text === 'verifiedNeeded') {
-      window.location.href = '/account/profile';
+    } else if (errorDetails?.text === "verifiedNeeded") {
+      window.location.href = "/account/profile";
       return;
     }
   };
@@ -154,12 +154,11 @@ function CartItemsList({
   const handleClearCart = () => {
     setSelectedItems([]);
     onChangeLineItems([]);
-
     startTransition(async () => {
       const result = await clearCartItemsAction();
 
       if (!result.success) toast.error(result.errors!.message);
-      else toast.success('Xoá giỏ hàng thành công!');
+      else toast.success(t("cart.messages.clearCartSuccess"));
     });
   };
 
@@ -169,8 +168,8 @@ function CartItemsList({
         <Modal onClose={() => setIsOpened(false)}>
           <ConfirmDialogue
             onConfirm={onConfirm}
-            confirmText="Xác nhận"
-            message={errorDetails?.message || ''}
+            confirmText={t("cart.confirmations.confirmText")}
+            message={errorDetails?.message || ""}
           />
         </Modal>
       )}
@@ -179,10 +178,10 @@ function CartItemsList({
         <Modal onClose={() => setIsClearCartConfirmDialogue(false)}>
           <ConfirmDialogue
             onConfirm={() => setIsClearCartConfirmDialogue(false)}
-            confirmText="Huỷ bỏ"
-            cancelText="Xoá"
+            confirmText={t("cart.confirmations.cancel")}
+            cancelText={t("cart.confirmations.remove")}
             onCancel={handleClearCart}
-            message="Bạn có chắc chắn muốn xoá giỏ hàng?"
+            message={t("cart.confirmations.clearCart")}
           />
         </Modal>
       )}
@@ -192,9 +191,10 @@ function CartItemsList({
       ) : (
         <ul className="flex flex-col divide-y divide-gray-200">
           <div className="mb-4">
+            {" "}
             {selectableItems.length === 0 && (
-              <p className="text-xs text-gray-400 mb-2 flex items-center gap-2 ml-2">
-                <FaCircleInfo /> Giỏ hàng của bạn không có sản phẩm nào còn hàng
+              <p className="mb-2 ml-2 flex items-center gap-2 text-xs text-gray-400">
+                <FaCircleInfo /> {t("cart.noSelectableItems")}
               </p>
             )}
             <div className="flex justify-between px-2">
@@ -202,33 +202,32 @@ function CartItemsList({
                 <input
                   id="select-all"
                   type="checkbox"
-                  className="w-7 h-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300 disabled:bg-grey-100 disabled:cursor-not-allowed disabled:border-grey-200"
+                  className="h-7 w-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300 disabled:cursor-not-allowed disabled:border-grey-200 disabled:bg-grey-100"
                   checked={isAllSelected}
                   onChange={toggleSelectAll}
                   disabled={selectableItems.length === 0}
-                />
+                />{" "}
                 <label htmlFor="select-all" className="font-medium">
-                  Chọn tất cả
+                  {t("cart.selectAll")}
                 </label>
-              </div>
-
+              </div>{" "}
               <NavLink
                 href="#"
                 onClick={() => setIsClearCartConfirmDialogue(true)}
               >
-                Xoá tất cả
+                {t("cart.clearAll")}
               </NavLink>
             </div>
-          </div>
+          </div>{" "}
           {sortedItems.map((item) => (
-            <li key={item.variant as string} className="py-8 flex">
+            <li key={item.variant as string} className="flex py-8">
               <CartItem
                 item={item}
                 onChangeLineItems={toggleSelectItem}
                 selected={selectedItems.some(
                   (selected) =>
                     selected.product === (item.product as Product)._id &&
-                    selected.variant === item.variant
+                    selected.variant === item.variant,
                 )}
               />
             </li>
