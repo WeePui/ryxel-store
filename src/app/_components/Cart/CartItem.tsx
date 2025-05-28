@@ -1,22 +1,23 @@
-'use client';
+"use client";
 
-import { useState, useTransition } from 'react';
-import Image from 'next/image';
-import NavLink from '../UI/NavLink';
-import Counter from '../UI/Counter';
-import { FaRegTrashCan } from 'react-icons/fa6';
+import { useState, useTransition } from "react";
+import Image from "next/image";
+import NavLink from "../UI/NavLink";
+import Counter from "../UI/Counter";
+import { FaRegTrashCan } from "react-icons/fa6";
 import {
   addOrUpdateCartItemAction,
   removeCartItemAction,
-} from '@/app/_libs/actions';
-import ConfirmDialogue from '../UI/ConfirmDialogue';
-import Modal from '../UI/Modal';
-import formatMoney from '@/app/_utils/formatMoney';
-import Loader from '../UI/Loader';
-import { toast } from 'react-toastify';
-import { LineItem } from '@/app/_types/lineItem';
-import WishlistButton from '../Wistlist/WishlistButton';
-import { Product } from '@/app/_types/product';
+} from "@/app/_libs/actions";
+import ConfirmDialogue from "../UI/ConfirmDialogue";
+import Modal from "../UI/Modal";
+import formatMoney from "@/app/_utils/formatMoney";
+import Loader from "../UI/Loader";
+import { toast } from "react-toastify";
+import { LineItem } from "@/app/_types/lineItem";
+import WishlistButton from "../Wistlist/WishlistButton";
+import { Product } from "@/app/_types/product";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface CartItemProps {
   item: LineItem;
@@ -25,12 +26,13 @@ interface CartItemProps {
 }
 
 function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
+  const { t } = useLanguage();
   const [isPending, startTransition] = useTransition();
   const [openConfirm, setOpenConfirm] = useState(false);
   const { product, variant, quantity } = item;
 
   const itemVariant = (product as Product).variants.find(
-    (v) => v._id === variant
+    (v) => v._id === variant,
   )!;
   const image = itemVariant.images[0];
 
@@ -39,7 +41,7 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
       const result = await addOrUpdateCartItemAction(
         (product as Product)._id,
         variant as string,
-        value
+        value,
       );
 
       if (result.errors) {
@@ -52,7 +54,7 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
     startTransition(async () => {
       const result = await removeCartItemAction(
         (product as Product)._id,
-        variant as string
+        variant as string,
       );
 
       if (result.errors) {
@@ -75,23 +77,23 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
             <input
               id="select-item"
               type="checkbox"
-              className="w-7 h-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300 disabled:bg-grey-100 disabled:cursor-not-allowed disabled:border-grey-200"
+              className="h-7 w-7 rounded-md checked:bg-primary-default checked:hover:bg-primary-300 disabled:cursor-not-allowed disabled:border-grey-200 disabled:bg-grey-100"
               checked={selected}
               onChange={() => {
                 onChangeLineItems(
                   (item.product as Product)._id,
-                  variant as string
+                  variant as string,
                 );
               }}
               disabled={
                 itemVariant.stock < Number(process.env.NEXT_PUBLIC_STOCK_LIMIT)
               }
             />
-            <label className="hidden md:block">Chọn sản phẩm</label>
+            <label className="hidden md:block">{t("cart.selectProduct")}</label>
           </div>
-          <div className="flex xl:flex-col gap-4 md:gap-0 w-full">
+          <div className="flex w-full gap-4 xl:flex-col md:gap-0">
             <div className="flex items-center gap-4">
-              <div className="relative flex-[3] h-28 w-44 overflow-hidden rounded-xl border-2 border-grey-100 bg-white">
+              <div className="relative h-28 w-44 flex-[3] overflow-hidden rounded-xl border-2 border-grey-100 bg-white">
                 <Image
                   src={image as string}
                   alt={(product as Product).name}
@@ -108,9 +110,10 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
                     {(product as Product).name}
                   </NavLink>
                 </p>
-                <div className="flex items-center justify-between mb-4">
-                  <p className="text-grey-200 text-sm">
-                    Phân loại: {itemVariant.name}
+                <div className="mb-4 flex items-center justify-between">
+                  {" "}
+                  <p className="text-sm text-grey-200">
+                    {t("cart.variant")}: {itemVariant.name}
                   </p>
                   <div className="hidden sm:block">
                     <WishlistButton
@@ -125,12 +128,13 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-12 lg:gap-4 ml-auto xl:ml-2 sm:mr-0">
+            <div className="ml-auto flex items-center gap-12 xl:ml-2 lg:gap-4 sm:mr-0">
               {(item.product as Product).totalStock >
               Number(process.env.NEXT_PUBLIC_STOCK_LIMIT) ? (
                 <div className="flex h-[4.6rem] w-28 flex-col gap-2 xl:flex-[3] md:justify-center">
+                  {" "}
                   <span className="text-sm text-grey-300 md:hidden">
-                    Số lượng
+                    {t("cart.quantity")}
                   </span>
                   <div className="xl:w-44 md:w-full">
                     <Counter
@@ -140,11 +144,11 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
                   </div>
                 </div>
               ) : (
-                <div className="text-red-500 text-sm font-bold whitespace-nowrap border-2 border-red-500 rounded-full px-2 py-1 text-center xl:flex-[3] md:justify-center max-w-fit">
-                  Hết hàng
+                <div className="max-w-fit whitespace-nowrap rounded-full border-2 border-red-500 px-2 py-1 text-center text-sm font-bold text-red-500 xl:flex-[3] md:justify-center">
+                  {t("cart.outOfStock")}
                 </div>
               )}
-              <div className="flex h-[4.6rem] flex-col items-center justify-between gap-2 md:justify-center xl:flex-[7] xl:items-end">
+              <div className="flex h-[4.6rem] flex-col items-center justify-between gap-2 xl:flex-[7] xl:items-end md:justify-center">
                 <p className="text-lg font-bold">
                   {formatMoney(itemVariant.price * quantity)}
                 </p>
@@ -153,21 +157,21 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
                   disabled={isPending}
                   onClick={() => setOpenConfirm(true)}
                 >
-                  <FaRegTrashCan /> Xoá bỏ
+                  <FaRegTrashCan /> {t("cart.remove")}
                 </button>
                 {openConfirm && (
                   <Modal
                     onClose={() => setOpenConfirm(false)}
                     showCloseButton={false}
                   >
+                    {" "}
                     <ConfirmDialogue
                       message={
                         <span>
-                          Bạn có chắc muốn xoá{' '}
-                          <span className="font-semibold text-primary-500">
-                            {(product as Product).name}
-                          </span>{' '}
-                          ra khỏi giỏ hàng?
+                          {t("cart.confirmations.removeItem").replace(
+                            "{productName}",
+                            (product as Product).name,
+                          )}
                         </span>
                       }
                       onConfirm={handleRemoveItem}

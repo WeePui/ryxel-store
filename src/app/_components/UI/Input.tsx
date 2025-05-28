@@ -156,6 +156,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const [displayedPlaceholder, setDisplayedPlaceholder] =
       useState(placeholder);
 
+    // Update displayed placeholder when the placeholder prop changes (language switching)
+    useEffect(() => {
+      setDisplayedPlaceholder(placeholder);
+    }, [placeholder]);
+
     // Determine the proper variant based on current state
     const variant = disabled
       ? "disabled"

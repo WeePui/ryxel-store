@@ -53,9 +53,8 @@ export default function Chatbox() {
 
     setLoading(false);
   };
-
   return (
-    <div className="mx-auto w-full max-w-md bg-white">
+    <div className="w-full">
       <h2 className="mb-6 flex items-center gap-2 font-title text-2xl font-semibold">
         {t("chatbot.title")}
       </h2>

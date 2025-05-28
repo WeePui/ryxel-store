@@ -28,17 +28,17 @@ export default function MobileMenu() {
         <FaBars />
       </button>{" "}
       {menuOpen && (
-        <div className="fixed top-0 z-40 flex h-full animate-slide-in-reverse flex-col gap-6 overflow-y-auto bg-white p-6 shadow-lg lg:right-0 lg:w-7/12 md:left-0 md:w-full md:animate-slide-in">
+        <div className="animate-slide-in lg:animate-slide-in-reverse md:animate-slide-in fixed top-0 z-40 h-full w-full bg-white p-6 shadow-lg lg:right-0 lg:w-7/12 md:left-0 md:w-full">
           <button
             onClick={() => setMenuOpen(false)}
-            className="text-primary sticky top-0 z-10 self-end bg-white text-3xl"
-            aria-label="Đóng menu"
+            className="text-primary self-end text-3xl"
+            aria-label={t("header.closeMenu")}
           >
             <FaXmark />
           </button>
-          <SearchBar />{" "}
-          <div className="flex-1 px-6 py-4">
-            <Navigation isMobile={true} onNavigate={() => setMenuOpen(false)} />{" "}
+          <SearchBar />
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <Navigation isMobile={true} onNavigate={() => setMenuOpen(false)} />
             <div className="mt-8 flex items-center gap-2">
               <span className="text-primary-500">{t("header.language")}:</span>
               <LanguageSwitcher />

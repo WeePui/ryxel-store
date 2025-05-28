@@ -5,11 +5,12 @@ import { signupAction } from "@libs/actions";
 import Input from "@components/UI/Input";
 import Button from "@components/UI/Button";
 import { FaCircleInfo, FaCircleExclamation } from "react-icons/fa6";
-import Link from "next/link";
 import { FormError } from "@/app/_types/formError";
 import { SignupInput } from "@/app/_types/validateInput";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 function FormSignup() {
+  const { t } = useLanguage();
   const [state, action, isPending] = useActionState(signupAction, {
     success: false,
     inputData: {} as SignupInput,
@@ -33,7 +34,7 @@ function FormSignup() {
   return (
     <div className="w-full max-w-xl gap-2 rounded-lg bg-white px-16 py-8 shadow-sm lg:px-8">
       <h3 className="mb-8 text-center text-primary-500">
-        Chỉ một tài khoản cho mọi dịch vụ của Ryxel Store
+        {t("auth.signup.title")}
       </h3>
       <form className="flex w-full flex-col items-center gap-6" action={action}>
         {state?.errors?.message && (
@@ -45,7 +46,8 @@ function FormSignup() {
             id="name"
             type="text"
             name="name"
-            label="Tên tài khoản"
+            label={t("auth.form.fullName.label")}
+            placeholder={t("auth.form.fullName.placeholder")}
             error={!!state?.errors?.name}
             errorMessage={state?.errors?.name}
             defaultValue={state?.inputData?.name}
@@ -53,7 +55,7 @@ function FormSignup() {
           />
           <p className="flex items-center gap-2 p-2 text-xs text-grey-300">
             <FaCircleInfo />
-            Thông tin này sẽ được thấy bởi mọi người
+            {t("auth.signup.publicInfo")}
           </p>
         </div>
         <div className="w-full">
@@ -61,7 +63,7 @@ function FormSignup() {
             id="dob"
             type="date"
             name="dob"
-            label="Ngày sinh"
+            label={t("auth.signup.dob")}
             error={!!state?.errors?.dob}
             defaultValue={state?.inputData?.dob}
             errorMessage={state?.errors?.dob}
@@ -69,18 +71,18 @@ function FormSignup() {
           />
           <p className="flex items-center gap-2 p-2 text-xs text-grey-300">
             <FaCircleInfo />
-            Lưu ý: Bạn sẽ không thể thay đổi ngày sinh sau này
+            {t("auth.signup.dobWarning")}
           </p>
         </div>
         <Input
           id="gender"
           type="select"
           name="gender"
-          label="Giới tính"
+          label={t("auth.signup.gender")}
           options={[
-            { label: "Nam", value: "male" },
-            { label: "Nữ", value: "female" },
-            { label: "Khác", value: "other" },
+            { label: t("auth.signup.male"), value: "male" },
+            { label: t("auth.signup.female"), value: "female" },
+            { label: t("auth.signup.other"), value: "other" },
           ]}
           error={!!state?.errors?.gender}
           errorMessage={state?.errors?.gender}
@@ -93,7 +95,8 @@ function FormSignup() {
           <Input
             name="email"
             id="email"
-            label="Địa chỉ email"
+            label={t("auth.form.email.label")}
+            placeholder={t("auth.form.email.placeholder")}
             type="email"
             error={!!state?.errors?.email}
             defaultValue={state?.inputData?.email}
@@ -102,7 +105,7 @@ function FormSignup() {
           />
           <p className="flex items-center gap-2 p-2 text-xs text-grey-300">
             <FaCircleInfo />
-            Đây sẽ là tài khoản Ryxel Store của bạn
+            {t("auth.signup.emailAccount")}
           </p>
         </div>
 
@@ -110,7 +113,8 @@ function FormSignup() {
           id="password"
           type="password"
           name="password"
-          label="Mật khẩu"
+          label={t("auth.form.password.label")}
+          placeholder={t("auth.form.password.placeholder")}
           error={!!state?.errors?.password}
           errorMessage={state?.errors?.password}
           onChange={handleInputChange}
@@ -120,7 +124,8 @@ function FormSignup() {
           id="passwordConfirm"
           type="password"
           name="passwordConfirm"
-          label="Xác nhận mật khẩu"
+          label={t("auth.form.confirmPassword.label")}
+          placeholder={t("auth.form.confirmPassword.placeholder")}
           error={!!state?.errors?.passwordConfirm}
           errorMessage={state?.errors?.passwordConfirm}
           onChange={handleInputChange}
@@ -143,22 +148,7 @@ function FormSignup() {
               className="mr-2 h-5 w-5 rounded-md border border-grey-300 checked:bg-primary-500 focus:ring-1 focus:ring-primary-500 focus:ring-offset-primary-500"
             />
             <p className="text-sm text-grey-300">
-              Khi bạn chọn vào ô này đồng nghĩa rằng bạn đồng ý với{" "}
-              <Link
-                href="/terms-of-service"
-                className="gap-2 font-normal text-primary-400 transition-colors duration-300 hover:text-grey-300"
-              >
-                Quy chế hoạt động
-              </Link>{" "}
-              và{" "}
-              <Link
-                href="/privacy-policy"
-                className="gap-2 font-normal text-primary-400 transition-colors duration-300 hover:text-grey-300"
-                target="_blank"
-              >
-                Chính sách bảo mật
-              </Link>{" "}
-              của chúng tôi.
+              {t("auth.signup.termsAgreement")}
             </p>
           </div>
         </div>
@@ -166,7 +156,7 @@ function FormSignup() {
         <hr className="my-1 w-full border-t border-grey-100" />
 
         <Button loading={isPending} role="submit">
-          Đăng ký
+          {t("auth.form.submit.signup")}
         </Button>
       </form>
     </div>

@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useActionState, useState } from 'react';
-import { sendOTPAction } from '@libs/actions';
+import { useEffect, useActionState, useState } from "react";
+import { sendOTPAction } from "@libs/actions";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface ResendOTPProps {
   maxAttempts?: number;
@@ -9,6 +10,7 @@ interface ResendOTPProps {
 }
 
 function ResendOTP({ delay = 60 }: ResendOTPProps) {
+  const { t } = useLanguage();
   const [state, action, isPending] = useActionState(sendOTPAction, {
     counter: 0,
   });
@@ -36,15 +38,15 @@ function ResendOTP({ delay = 60 }: ResendOTPProps) {
         disabled={timer > 0 || isPending}
         className={`text-sm font-medium ${
           timer > 0
-            ? 'cursor-not-allowed text-gray-400'
-            : 'text-primary-500 hover:text-primary-700'
+            ? "cursor-not-allowed text-gray-400"
+            : "text-primary-500 hover:text-primary-700"
         }`}
       >
         {timer > 0
-          ? `Gửi lại OTP trong ${timer} giây`
+          ? `${t("auth.verifyEmail.resendIn")} ${timer} ${t("auth.verifyEmail.seconds")}`
           : isPending
-          ? 'Đang gửi ...'
-          : 'Gửi lại OTP'}
+            ? t("auth.verifyEmail.sending")
+            : t("auth.verifyEmail.resendOTP")}
       </button>
       {state.errors && (
         <p className="mt-2 text-sm text-red-500">{state.errors.message}</p>

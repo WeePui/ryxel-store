@@ -143,11 +143,10 @@ export default function HomePageContent() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
         variants={slideRightVariants}
+        className="max-w-full"
       >
         <BestsellerSection />
-      </motion.div>
-
-      <motion.div
+      </motion.div>      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}

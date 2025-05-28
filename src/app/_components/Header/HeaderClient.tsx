@@ -18,7 +18,10 @@ interface HeaderClientProps {
   user?: User;
 }
 
-export default function HeaderClient({ cart, user }: HeaderClientProps) {
+export default function HeaderClient({
+  cart,
+  user,
+}: HeaderClientProps) {
   // const { t } = useLanguage();
 
   return (

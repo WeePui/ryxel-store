@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
-import AboutUsTranslated from "@/app/_components/AboutUs/AboutUsTranslated";
+import AboutUs from "@/app/_components/AboutUs/AboutUs";
 
-export default function AboutUs() {
+export default function Page() {
   const [, setIsVisible] = useState(false);
   const { t } = useLanguage();
 
@@ -50,7 +50,7 @@ export default function AboutUs() {
       </div>
 
       {/* Main content using AboutUsTranslated component */}
-      <AboutUsTranslated />
+      <AboutUs />
     </div>
   );
 }

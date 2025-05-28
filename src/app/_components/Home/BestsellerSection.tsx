@@ -80,6 +80,7 @@ export default function BestsellerSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
+          className="max-w-full"
         >
           <BestsellerList products={bestsellers} />
         </motion.div>

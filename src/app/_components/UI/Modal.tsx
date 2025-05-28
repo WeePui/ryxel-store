@@ -26,7 +26,7 @@ function Modal({
   return createPortal(
     <AnimatePresence>
       <motion.div
-        className="fixed left-0 top-0 z-[100] h-screen w-full bg-grey-400 bg-opacity-30 backdrop-blur-sm"
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-grey-400 bg-opacity-30 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -34,11 +34,11 @@ function Modal({
       >
         {closeOnOutsideClick ? (
           <motion.div
-            className={`fixed left-1/2 top-1/2 max-h-[90vh] max-w-full -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl scrollbar-hide md:w-full ${
+            className={`relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl scrollbar-hide ${
               transparent
                 ? "bg-transparent-400 shadow-none"
                 : "bg-white shadow-lg"
-            } px-12 py-16`}
+            } px-12 py-16 mx-4`}
             ref={ref}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -53,7 +53,7 @@ function Modal({
             {showCloseButton && (
               <motion.button
                 onClick={onClose}
-                className="absolute right-8 top-5 translate-x-3 rounded-sm border-none bg-none p-2"
+                className="absolute right-4 top-4 rounded-sm border-none bg-none p-2 hover:bg-gray-100"
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.2 }}
@@ -71,11 +71,11 @@ function Modal({
           </motion.div>
         ) : (
           <motion.div
-            className={`fixed left-1/2 top-1/2 max-h-[90vh] max-w-full -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl md:w-full ${
+            className={`relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl ${
               transparent
                 ? "bg-transparent-400 shadow-none"
                 : "bg-white shadow-lg"
-            } px-12 py-16 scrollbar-hide`}
+            } px-12 py-16 mx-4 scrollbar-hide`}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
@@ -89,7 +89,7 @@ function Modal({
             {showCloseButton && (
               <motion.button
                 onClick={onClose}
-                className="absolute right-8 top-5 translate-x-3 rounded-sm border-none bg-none p-2"
+                className="absolute right-4 top-4 rounded-sm border-none bg-none p-2 hover:bg-gray-100"
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.2 }}
