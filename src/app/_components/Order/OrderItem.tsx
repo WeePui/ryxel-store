@@ -1,11 +1,11 @@
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
-import NavLink from '../UI/NavLink';
-import formatMoney from '@/app/_utils/formatMoney';
-import { LineItem } from '@/app/_types/lineItem';
-import { Variant } from '@/app/_types/variant';
-import { Product } from '@/app/_types/product';
+import NavLink from "../UI/NavLink";
+import formatMoney from "@/app/_utils/formatMoney";
+import { LineItem } from "@/app/_types/lineItem";
+import { Variant } from "@/app/_types/variant";
+import { Product } from "@/app/_types/product";
 
 interface OrderItemProps {
   item: LineItem;
@@ -13,17 +13,17 @@ interface OrderItemProps {
 
 export default function OrderItem({ item }: OrderItemProps) {
   const itemVariant = (item.product as Product).variants.find(
-    (variant: Variant) => variant._id === item.variant
+    (variant: Variant) => variant._id === item.variant,
   );
   const subtotal = item.unitPrice! * item.quantity;
 
   return (
-    <div className="flex justify-between sm:justify-between gap-8 sm:gap-2 w-full pt-4 sm:flex-col">
+    <div className="flex w-full justify-between gap-8 pt-4 sm:flex-col sm:justify-between sm:gap-2">
       <div className="flex gap-4 sm:flex-col sm:gap-2">
-        <div className="relative h-24 w-36 sm:w-full flex-shrink-0 overflow-hidden rounded-xl border-2 border-grey-100 bg-white">
+        <div className="relative h-24 w-36 flex-shrink-0 overflow-hidden rounded-xl border-2 border-grey-100 bg-white sm:w-full">
           <Image
             src={
-              (itemVariant?.images[0] as string) || '/product-placeholder.jpg'
+              (itemVariant?.images[0] as string) || "/product-placeholder.jpg"
             }
             alt={itemVariant!.name!}
             className="absolute object-contain"
@@ -38,15 +38,15 @@ export default function OrderItem({ item }: OrderItemProps) {
             >
               {(item.product as Product).name}
             </NavLink>
-          </p>{' '}
+          </p>
           <p className="text-sm text-grey-300">
             Phân loại: {itemVariant?.name}
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-12 sm:justify-between lg:flex-col lg:gap-2 sm:flex-row lg:items-start lg:justify-center">
+      <div className="flex items-center gap-12 lg:flex-col lg:items-start lg:justify-center lg:gap-2 sm:flex-row sm:justify-between">
         <p className="inline-flex items-center gap-2 whitespace-nowrap text-sm text-grey-300">
-          Số lượng:{' '}
+          Số lượng:{" "}
           <span className="text-base font-semibold text-primary-default">
             {item.quantity}
           </span>
