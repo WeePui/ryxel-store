@@ -1,6 +1,6 @@
-import { Category } from './category';
-import { Review } from './review';
-import { Variant } from './variant';
+import { Category } from "./category";
+import { Review } from "./review";
+import { Variant } from "./variant";
 
 export interface Product {
   _id: string;
@@ -9,6 +9,7 @@ export interface Product {
   description: string;
   variants: Variant[];
   lowestPrice: number;
+  percentageSaleOff: number;
   brand: string;
   sold: number;
   rating: number;

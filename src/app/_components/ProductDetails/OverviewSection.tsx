@@ -17,6 +17,7 @@ import WishlistButton from "../Wistlist/WishlistButton";
 import { WishlistProvider } from "@/app/_contexts/WishlistContext";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
 import { categoryNamesMultilingual } from "@/app/_utils/mappingCategoryMultilingual";
+import { isSaleOfferActive } from "@/app/_utils/saleValidation";
 
 function OverviewSection() {
   const { currentVariant, setCurrentVariant, product } = useProductDetail();
@@ -205,14 +206,42 @@ function OverviewSection() {
               damping: 20,
             }}
           >
-            <motion.span
-              key={currentVariant.price}
-              initial={{ opacity: 0.6, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {formatMoney(currentVariant.price)}
-            </motion.span>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <motion.span
+                  key={currentVariant.finalPrice || currentVariant.price}
+                  initial={{ opacity: 0.6, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {formatMoney(
+                    currentVariant.finalPrice || currentVariant.price,
+                  )}
+                </motion.span>{" "}
+                {isSaleOfferActive(currentVariant.saleOff) &&
+                  currentVariant.saleOff && (
+                    <motion.span
+                      className="rounded-full bg-red-500 px-2 py-1 text-sm font-bold text-white"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, delay: 0.1 }}
+                    >
+                      -{currentVariant.saleOff.percentage}%
+                    </motion.span>
+                  )}
+              </div>
+              {currentVariant.finalPrice &&
+                currentVariant.finalPrice < currentVariant.price && (
+                  <motion.span
+                    className="text-sm text-gray-400 line-through"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.2 }}
+                  >
+                    {formatMoney(currentVariant.price)}
+                  </motion.span>
+                )}
+            </div>
             <motion.div
               className="ml-auto"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -251,6 +280,7 @@ function OverviewSection() {
                 onClick={handleAddToCart}
                 icon={<FaCartShopping />}
                 loading={isPending}
+                fullWidth
               >
                 {t("products.addToCart")}
               </Button>

@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { checkToken, getCart } from "../../_libs/apiServices";
 import { Metadata } from "next";
-import CartSummary from "@/app/_components/Cart/CartSummary";
+import CartPageClient from "../../_components/Cart/CartPageClient";
 
 export const metadata: Metadata = {
   title: "Cart Page",
@@ -33,7 +33,7 @@ async function Page({ searchParams }: PageProps) {
     }
   }
 
-  return <CartSummary items={items} error={error} />;
+  return <CartPageClient items={items} error={error} />;
 }
 
 export default Page;

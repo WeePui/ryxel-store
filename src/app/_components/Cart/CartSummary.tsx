@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import CartItemsList from './CartItemsList';
-import OrderSummary from './OrderSummary';
-import { LineItem } from '@/app/_types/lineItem';
-import { Product } from '@/app/_types/product';
+import { useState } from "react";
+import CartItemsList from "./CartItemsList";
+import OrderSummary from "./OrderSummary";
+import { LineItem } from "@/app/_types/lineItem";
+import { Product } from "@/app/_types/product";
 
 interface CartSummaryProps {
   items: LineItem[];
@@ -19,22 +19,20 @@ export default function CartSummary({ items, error }: CartSummaryProps) {
     }[]
   >([]);
 
-  console.log(selectedItems);
-
   const lineItems = selectedItems.map((item) => {
     const foundItem = items.find(
       (i) =>
         (i.product as Product)._id === item.product &&
-        i.variant === item.variant
+        i.variant === item.variant,
     );
     return foundItem || null;
   });
   const subtotal = lineItems.reduce((acc, item) => {
     if (item) {
-      const price =
-        (item.product as Product).variants.find(
-          (variant) => variant._id === item.variant
-        )?.price || 0;
+      const variant = (item.product as Product).variants.find(
+        (variant) => variant._id === item.variant,
+      );
+      const price = variant?.finalPrice || variant?.price || 0;
       return acc + price * item.quantity;
     }
     return acc;
