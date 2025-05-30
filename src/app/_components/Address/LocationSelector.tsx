@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 // Giả sử data được import từ file JSON hoặc fetch từ API
-import locationData from '@public/cities_data.json';
-import Input from '../UI/Input';
-import { Address } from '@/app/_types/address';
+import locationData from "@public/cities_data.json";
+import Input from "../UI/Input";
+import { Address } from "@/app/_types/address";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface LocationSelectorProps {
   address?: Address;
@@ -29,15 +30,16 @@ interface Ward {
 }
 
 function LocationSelector({ address }: LocationSelectorProps) {
+  const { t } = useLanguage();
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [districts, setDistricts] = useState<District[]>([]);
   const [wards, setWards] = useState<Ward[]>([]);
 
   const [selectedProvince, setSelectedProvince] = useState<Province | null>(
-    null
+    null,
   );
   const [selectedDistrict, setSelectedDistrict] = useState<District | null>(
-    null
+    null,
   );
   const [selectedWard, setSelectedWard] = useState<Ward | null>(null);
 
@@ -90,93 +92,92 @@ function LocationSelector({ address }: LocationSelectorProps) {
   const handleProvinceChange = (
     e: React.ChangeEvent<
       HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     const selectedCode = parseInt(e.target.value, 10);
     const selected = provinces.find((p) => p.code === selectedCode);
     setSelectedProvince(
-      selected ? { code: selected.code, name: selected.name } : null
+      selected ? { code: selected.code, name: selected.name } : null,
     );
   };
 
   const handleDistrictChange = (
     e: React.ChangeEvent<
       HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     const selectedCode = parseInt(e.target.value, 10);
     const selected = districts.find((d) => d.code === selectedCode);
     setSelectedDistrict(
-      selected ? { code: selected.code, name: selected.name } : null
+      selected ? { code: selected.code, name: selected.name } : null,
     );
   };
 
   const handleWardChange = (
     e: React.ChangeEvent<
       HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     const selectedCode = e.target.value;
     const selected = wards.find((w) => w.code === selectedCode);
     setSelectedWard(
-      selected ? { code: selected.code, name: selected.name } : null
+      selected ? { code: selected.code, name: selected.name } : null,
     );
   };
-
   return (
     <div className="flex w-full items-center gap-2 sm:flex-col sm:gap-4">
       <Input
         type="select"
-        label="Province/City"
-        optionPlaceholder="Chọn tỉnh/thành phố"
+        label={t("account.addresses.location.provinceLabel")}
+        optionPlaceholder={t("account.addresses.location.provincePlaceholder")}
         name="cityCode"
         id="cityCode"
         options={provinces.map((province) => ({
           label: province.name,
           value: province.code, // Dùng code làm value
         }))}
-        value={selectedProvince?.code || ''} // Dùng code làm giá trị
+        value={selectedProvince?.code || ""} // Dùng code làm giá trị
         onChange={handleProvinceChange}
       />
       <input
         type="hidden"
         name="cityName"
-        value={selectedProvince?.name || ''}
+        value={selectedProvince?.name || ""}
       />
       <Input
         type="select"
-        label="Quận/Huyện"
-        optionPlaceholder="Chọn quận/huyện"
+        label={t("account.addresses.location.districtLabel")}
+        optionPlaceholder={t("account.addresses.location.districtPlaceholder")}
         name="districtCode"
         id="districtCode"
         options={districts.map((district) => ({
           label: district.name,
           value: district.code,
         }))}
-        value={selectedDistrict?.code || ''}
+        value={selectedDistrict?.code || ""}
         onChange={handleDistrictChange}
         disabled={!districts.length}
       />
       <input
         type="hidden"
         name="districtName"
-        value={selectedDistrict?.name || ''}
+        value={selectedDistrict?.name || ""}
       />
       <Input
         type="select"
-        label="Phường/Xã"
-        optionPlaceholder="Chọn phường/xã"
+        label={t("account.addresses.location.wardLabel")}
+        optionPlaceholder={t("account.addresses.location.wardPlaceholder")}
         name="wardCode"
         id="wardCode"
         options={wards.map((ward) => ({
           label: ward.name,
           value: ward.code,
         }))}
-        value={selectedWard?.code || ''}
+        value={selectedWard?.code || ""}
         onChange={handleWardChange}
         disabled={!wards.length}
       />
-      <input type="hidden" name="wardName" value={selectedWard?.name || ''} />
+      <input type="hidden" name="wardName" value={selectedWard?.name || ""} />
     </div>
   );
 }

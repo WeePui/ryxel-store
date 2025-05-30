@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { FaCamera, FaRegStar, FaStar, FaXmark } from "react-icons/fa6";
 import Input from "../UI/Input";
@@ -8,6 +10,7 @@ import { toast } from "react-toastify";
 import { Review } from "@/app/_types/review";
 import Button from "../UI/Button";
 import { Product } from "@/app/_types/product";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface OrderReviewItemProps {
   lineItem: LineItem;
@@ -24,6 +27,7 @@ export default function OrderReviewItem({
   onReviewUpdate,
   setIsUpdating,
 }: OrderReviewItemProps) {
+  const { t } = useLanguage();
   const [rating, setRating] = useState(() => {
     if (reviewItem) {
       return reviewItem.rating;
@@ -93,19 +97,18 @@ export default function OrderReviewItem({
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-
       if (file.size > 1024 * 1024 * 5) {
-        toast.error("Kích thước ảnh/video tối đa 5MB");
+        toast.error(t("account.orderReview.fileSizeLimit"));
         return;
       }
 
       if (video && file.type.includes("video")) {
-        toast.error("Chỉ được tải lên tối đa 1 video");
+        toast.error(t("account.orderReview.videoLimit"));
         return;
       }
 
       if (images.length + files.length > 2) {
-        toast.error("Chỉ được tải lên tối đa 2 ảnh và video");
+        toast.error(t("account.orderReview.imageVideoLimit"));
         return;
       }
 
@@ -133,7 +136,9 @@ export default function OrderReviewItem({
           <h2 className="font-title text-lg">
             {(lineItem.product as Product).name}
           </h2>
-          <p className="text-sm text-gray-400">Phân loại: {variant!.name}</p>
+          <p className="text-sm text-gray-400">
+            {t("account.orderReview.variant")} {variant!.name}
+          </p>
         </div>
         {updatable && !isAllowedToUpdate && (
           <div className="ml-auto flex items-center gap-2">
@@ -144,28 +149,30 @@ export default function OrderReviewItem({
                 setIsUpdating?.(true);
               }}
             >
-              Sửa
+              {t("account.orderReview.edit")}
             </Button>
           </div>
         )}
       </div>
       <div className="flex items-center gap-4 sm:flex-col sm:items-start sm:gap-2">
-        <p>Chất lượng sản phẩm: </p>
+        <p>{t("account.orderReview.productQuality")} </p>
         <StarRating
           rating={rating}
           onChangeRating={setRating}
           disabled={!isAllowedToUpdate}
         />
         {isAllowedToUpdate && (
-          <p className="text-xs text-gray-500">(bấm chọn để đánh giá)</p>
+          <p className="text-xs text-gray-500">
+            {t("account.orderReview.clickToRate")}
+          </p>
         )}
       </div>
       <div className="flex flex-col gap-1">
         <Input
           type="textarea"
           id="review"
-          label="Nội dung"
-          placeholder="Viết đánh giá (tối đa 500 ký tự)"
+          label={t("account.orderReview.content")}
+          placeholder={t("account.orderReview.placeholder")}
           name="review"
           onChange={(e) => setReview(e.target.value)}
           value={review}
@@ -247,13 +254,13 @@ export default function OrderReviewItem({
                   ?.click()
               }
             >
-              <FaCamera className="transform text-xl text-gray-500 transition-transform hover:scale-110" />
+              <FaCamera className="transform text-xl text-gray-500 transition-transform hover:scale-110" />{" "}
               <p className="text-sm text-gray-400">
                 {images.length < 2 && !video
-                  ? "Thêm ảnh hoặc video"
+                  ? t("account.orderReview.addPhotoVideo")
                   : images.length < 2
-                    ? "Thêm ảnh"
-                    : "Thêm video"}
+                    ? t("account.orderReview.addPhoto")
+                    : t("account.orderReview.addVideo")}
               </p>
               <input
                 id={`file-input-${(lineItem.product as Product)._id}-${
@@ -270,7 +277,7 @@ export default function OrderReviewItem({
       ) : (
         isAllowedToUpdate && (
           <div className="flex flex-col gap-2">
-            <p>Thêm ảnh hoặc video</p>
+            <p>{t("account.orderReview.addPhotoVideo")}</p>
             <div
               className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed p-4"
               role="button"
@@ -285,7 +292,9 @@ export default function OrderReviewItem({
               }
             >
               <FaCamera className="transform text-xl text-gray-500 transition-transform hover:scale-110" />
-              <p className="text-sm text-gray-400">Thêm ảnh hoặc video</p>
+              <p className="text-sm text-gray-400">
+                {t("account.orderReview.addPhotoVideo")}
+              </p>
               <input
                 id={`file-input-${(lineItem.product as Product)._id}-${
                   lineItem.variant

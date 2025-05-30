@@ -7,8 +7,10 @@ import Input from "@/app/_components/UI/Input";
 import { updatePasswordAction } from "@libs/actions";
 import { hasFormError } from "@/app/_helpers/hasFormError";
 import Loader from "../UI/Loader";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 function FormUpdatePassword() {
+  const { t } = useLanguage();
   const [state, action, isPending] = useActionState(updatePasswordAction, {
     success: false,
     errors: {},
@@ -37,7 +39,7 @@ function FormUpdatePassword() {
         name="passwordCurrent"
         id="passwordCurrent"
         type="password"
-        label="Mật khẩu hiện tại"
+        label={t("account.profile.currentPassword")}
         error={
           hasFormError("passwordCurrent", state.errors) ||
           !!state?.errors?.message
@@ -48,7 +50,7 @@ function FormUpdatePassword() {
         name="password"
         id="password"
         type="password"
-        label="Mật khẩu mới"
+        label={t("account.profile.newPassword")}
         error={hasFormError("password", state.errors)}
         errorMessage={state?.errors?.password}
       />
@@ -56,14 +58,13 @@ function FormUpdatePassword() {
         name="passwordConfirm"
         id="passwordConfirm"
         type="password"
-        label="Xác nhận mật khẩu"
+        label={t("account.profile.confirmPassword")}
         error={hasFormError("passwordConfirm", state.errors)}
         errorMessage={state?.errors?.passwordConfirm}
       />
-
       <div className="mt-6 flex justify-center">
         <Button role="submit" size="medium">
-          Đổi mật khẩu
+          {t("account.profile.changePassword")}
         </Button>
       </div>
     </form>

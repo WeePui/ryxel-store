@@ -1,16 +1,29 @@
-import Image from 'next/image';
-import { JSX } from 'react';
+import Image from "next/image";
+import { JSX } from "react";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
+// This mapping is kept for backward compatibility
 export const mappingPaymentMethodText: { [key: string]: string } = {
-  cod: 'Thanh toán khi nhận hàng',
-  zalopay: 'Thanh toán qua ZaloPay',
-  stripe: 'Thanh toán qua Stripe (thẻ tín dụng)',
+  cod: "Thanh toán khi nhận hàng",
+  zalopay: "Thanh toán qua ZaloPay",
+  stripe: "Thanh toán qua Stripe (thẻ tín dụng)",
 };
 
+// Use this hook for internationalized payment method text
+export function usePaymentMethodText() {
+  const { t } = useLanguage();
+
+  return {
+    getPaymentMethodText: (method: string) => {
+      return t(`paymentMethods.${method}`);
+    },
+  };
+}
+
 export const mappingPaymentMethodShortText: { [key: string]: string } = {
-  cod: 'COD',
-  zalopay: 'ZaloPay',
-  stripe: 'Stripe',
+  cod: "COD",
+  zalopay: "ZaloPay",
+  stripe: "Stripe",
 };
 
 export const mappingPaymentMethodIcon: { [key: string]: JSX.Element } = {

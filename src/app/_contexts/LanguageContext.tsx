@@ -11,6 +11,10 @@ interface LanguageContextType {
 }
 
 const translations = {
+  language: {
+    vi: "vi",
+    en: "en",
+  },
   header: {
     shop: {
       vi: "Cửa hàng",
@@ -965,6 +969,10 @@ const translations = {
       vi: "Số lượng",
       en: "Quantity",
     },
+    price: {
+      vi: "Đơn giá",
+      en: "Price",
+    },
     outOfStock: {
       vi: "Hết hàng",
       en: "Out of Stock",
@@ -985,6 +993,18 @@ const translations = {
       total: {
         vi: "Tổng thanh toán",
         en: "Total Payment",
+      },
+      subtotal: {
+        vi: "Tổng tiền hàng",
+        en: "Merchandise Subtotal",
+      },
+      discount: {
+        vi: "Giảm giá",
+        en: "Discount",
+      },
+      shippingFee: {
+        vi: "Phí vận chuyển",
+        en: "Shipping Fee",
       },
       selectedItems: {
         vi: "Sản phẩm đã chọn",
@@ -1043,7 +1063,14 @@ const translations = {
     },
   },
   common: {
-    // Common translations
+    loading: {
+      vi: "Đang tải...",
+      en: "Loading...",
+    },
+    error: {
+      vi: "Đã xảy ra lỗi",
+      en: "An error occurred",
+    },
   },
   auth: {
     login: {
@@ -1360,10 +1387,48 @@ const translations = {
     },
   },
   account: {
+    navigation: {
+      profile: {
+        vi: "Hồ sơ",
+        en: "Profile",
+      },
+      orders: {
+        vi: "Đơn hàng",
+        en: "Orders",
+      },
+      addresses: {
+        vi: "Địa chỉ giao hàng",
+        en: "Shipping Addresses",
+      },
+      updatePassword: {
+        vi: "Đổi mật khẩu",
+        en: "Change Password",
+      },
+      wishlist: {
+        vi: "Danh sách yêu thích",
+        en: "Wishlist",
+      },
+      logout: {
+        vi: "Đăng xuất",
+        en: "Logout",
+      },
+      showMenu: {
+        vi: "Hiện menu",
+        en: "Show menu",
+      },
+      hideMenu: {
+        vi: "Ẩn menu",
+        en: "Hide menu",
+      },
+    },
     profile: {
       title: {
         vi: "Hồ sơ của tôi",
         en: "My Profile",
+      },
+      description: {
+        vi: "Quản lí thông tin hồ sơ của bạn để tăng tính bảo mật.",
+        en: "Manage your profile information to enhance security.",
       },
       personalInfo: {
         vi: "Thông tin cá nhân",
@@ -1373,11 +1438,409 @@ const translations = {
         vi: "Cập nhật thông tin",
         en: "Update Information",
       },
+      updateProfile: {
+        vi: "Cập nhật hồ sơ",
+        en: "Update Profile",
+      },
+      gender: {
+        vi: "Giới tính",
+        en: "Gender",
+      },
+      male: {
+        vi: "Nam",
+        en: "Male",
+      },
+      female: {
+        vi: "Nữ",
+        en: "Female",
+      },
+      other: {
+        vi: "Khác",
+        en: "Other",
+      },
+      phone: {
+        vi: "Số điện thoại",
+        en: "Phone Number",
+      },
+      birthday: {
+        vi: "Sinh nhật",
+        en: "Birthday",
+      },
+      noPhone: {
+        vi: "(Bạn vẫn chưa thêm số điện thoại)",
+        en: "(You haven't added a phone number yet)",
+      },
+      noBirthday: {
+        vi: "(Bạn vẫn chưa thêm ngày sinh)",
+        en: "(You haven't added your birthday yet)",
+      },
+      verify: {
+        vi: "Xác thực",
+        en: "Verify",
+      },
+      change: {
+        vi: "Thay đổi",
+        en: "Change",
+      },
+      email: {
+        vi: "Email",
+        en: "Email",
+      },
+      phoneNotAdded: {
+        vi: "(Bạn vẫn chưa thêm số điện thoại)",
+        en: "(You haven't added a phone number yet)",
+      },
+      birthdayNotAdded: {
+        vi: "(Bạn vẫn chưa thêm ngày sinh)",
+        en: "(You haven't added your birthday yet)",
+      },
+      changeAvatar: {
+        vi: "Đổi ảnh đại diện",
+        en: "Change Avatar",
+      },
+      clickToChange: {
+        vi: "Bấm vào ảnh để thay đổi",
+        en: "Click on the image to change",
+      },
+      imageFormat: {
+        vi: "Định dạng: .JPEG, .JPG, .PNG",
+        en: "Format: .JPEG, .JPG, .PNG",
+      },
+      currentPassword: {
+        vi: "Mật khẩu hiện tại",
+        en: "Current Password",
+      },
+      newPassword: {
+        vi: "Mật khẩu mới",
+        en: "New Password",
+      },
+      confirmPassword: {
+        vi: "Xác nhận mật khẩu",
+        en: "Confirm Password",
+      },
+      changePassword: {
+        vi: "Đổi mật khẩu",
+        en: "Change Password",
+      },
+    },
+    orders: {
+      title: {
+        vi: "Đơn hàng",
+        en: "Orders",
+      },
+      description: {
+        vi: "Quản lí thông tin đơn hàng của bạn.",
+        en: "Manage your order information.",
+      },
+      orderDetails: {
+        vi: "Chi tiết đơn hàng",
+        en: "Order Details",
+      },
+      backToOrders: {
+        vi: "Quay lại",
+        en: "Back",
+      },
+      searchPlaceholder: {
+        vi: "Tìm kiếm bằng tên sản phẩm, mã đơn hàng, ...",
+        en: "Search by product name, order code, ...",
+      },
+      notFound: {
+        vi: "Không tìm thấy đơn hàng",
+        en: "Order not found",
+      },
+      variant: {
+        vi: "Phân loại",
+        en: "Variant",
+      },
+      quantity: {
+        vi: "Số lượng",
+        en: "Quantity",
+      },
+      subtotal: {
+        vi: "Thành tiền",
+        en: "Subtotal",
+      },
+      status: {
+        unpaid: {
+          vi: "Chưa thanh toán",
+          en: "Unpaid",
+        },
+        pending: {
+          vi: "Chờ xác nhận",
+          en: "Pending",
+        },
+        processing: {
+          vi: "Đang xử lý",
+          en: "Processing",
+        },
+        shipped: {
+          vi: "Đã vận chuyển",
+          en: "Shipped",
+        },
+        delivered: {
+          vi: "Đã giao",
+          en: "Delivered",
+        },
+        cancelled: {
+          vi: "Đã hủy",
+          en: "Cancelled",
+        },
+        refunded: {
+          vi: "Đã hoàn tiền",
+          en: "Refunded",
+        },
+      },
+      card: {
+        total: {
+          vi: "Tổng tiền",
+          en: "Total",
+        },
+        collapse: {
+          vi: "Thu gọn",
+          en: "Collapse",
+        },
+        showMore: {
+          vi: "Xem thêm {count} sản phẩm khác",
+          en: "Show {count} more products",
+        },
+      },
+      actions: {
+        payment: {
+          vi: "Thanh toán",
+          en: "Pay now",
+        },
+        review: {
+          vi: "Đánh giá",
+          en: "Review",
+        },
+        viewReview: {
+          vi: "Xem đánh giá",
+          en: "View review",
+        },
+        buyAgain: {
+          vi: "Mua lại",
+          en: "Buy again",
+        },
+        cancel: {
+          vi: "Hủy đơn hàng",
+          en: "Cancel order",
+        },
+        detail: {
+          vi: "Xem chi tiết",
+          en: "View details",
+        },
+        addToCart: {
+          vi: "Thêm vào giỏ hàng",
+          en: "Add to cart",
+        },
+      },
+      confirmCancel: {
+        vi: "Bạn có chắc chắn muốn hủy đơn hàng này không?",
+        en: "Are you sure you want to cancel this order?",
+      },
+      buyAgainChoice: {
+        vi: "Bạn muốn chuyển đến trang thanh toán hay thêm toàn bộ vào giỏ hàng?",
+        en: "Would you like to go to checkout or add all items to cart?",
+      },
+      buyAgainCheckout: {
+        vi: "Chuyển đến thanh toán",
+        en: "Go to checkout",
+      },
+      buyAgainAddToCart: {
+        vi: "Thêm vào giỏ hàng",
+        en: "Add to cart",
+      },
+      messages: {
+        cancelSuccess: {
+          vi: "Đơn hàng đã được hủy thành công!",
+          en: "Order cancelled successfully!",
+        },
+        addedToCartSuccess: {
+          vi: "Tất cả sản phẩm đã được thêm vào giỏ hàng.",
+          en: "All items have been added to your cart.",
+        },
+        addedToCartError: {
+          vi: "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.",
+          en: "An error occurred while adding products to your cart.",
+        },
+      },
+    },
+    orderDetails: {
+      title: {
+        vi: "Chi tiết đơn hàng #{orderId}",
+        en: "Order Details #{orderId}",
+      },
+      products: {
+        vi: "Sản phẩm trong đơn hàng",
+        en: "Products in Order",
+      },
+      totalItems: {
+        vi: "Tổng số sản phẩm: {count}",
+        en: "Total Items: {count}",
+      },
+      orderInfo: {
+        vi: "Thông tin đơn hàng",
+        en: "Order Information",
+      },
+      orderDate: {
+        vi: "Ngày đặt hàng",
+        en: "Order Date",
+      },
+      orderStatus: {
+        vi: "Trạng thái đơn hàng",
+        en: "Order Status",
+      },
+      shippingAddress: {
+        vi: "Địa chỉ giao hàng",
+        en: "Shipping Address",
+      },
+      paymentMethod: {
+        vi: "Phương thức thanh toán",
+        en: "Payment Method",
+      },
+      itemsOrdered: {
+        vi: "Sản phẩm đã đặt",
+        en: "Items Ordered",
+      },
+      totalAmount: {
+        vi: "Tổng tiền thanh toán",
+        en: "Total Amount",
+      },
+      paymentMethods: {
+        cod: {
+          vi: "Thanh toán khi nhận hàng",
+          en: "Cash on Delivery",
+        },
+        stripe: {
+          vi: "Thanh toán qua Stripe",
+          en: "Stripe Payment",
+        },
+        zalopay: {
+          vi: "Thanh toán qua ZaloPay",
+          en: "ZaloPay Payment",
+        },
+      },
+    },
+    addresses: {
+      title: {
+        vi: "Địa chỉ giao hàng",
+        en: "Shipping Addresses",
+      },
+      addressList: {
+        vi: "Địa chỉ",
+        en: "Addresses",
+      },
+      defaultLabel: {
+        vi: "Mặc định",
+        en: "Default",
+      },
+      update: {
+        vi: "Cập nhật",
+        en: "Update",
+      },
+      delete: {
+        vi: "Xoá",
+        en: "Delete",
+      },
+      setDefault: {
+        vi: "Đặt mặc định",
+        en: "Set as Default",
+      },
+      confirmDelete: {
+        vi: "Bạn chắc muốn xoá địa chỉ giao hàng này?",
+        en: "Are you sure you want to delete this shipping address?",
+      },
+      addNew: {
+        vi: "Địa chỉ mới",
+        en: "New Address",
+      },
+      updateTitle: {
+        vi: "Cập nhật địa chỉ",
+        en: "Update Address",
+      },
+      form: {
+        fullname: {
+          vi: "Họ và tên",
+          en: "Full Name",
+        },
+        phoneNumber: {
+          vi: "Số điện thoại",
+          en: "Phone Number",
+        },
+        address: {
+          vi: "Địa chỉ (số nhà & tên đường)",
+          en: "Address (house number & street)",
+        },
+        addressDetail: {
+          vi: "Địa chỉ chi tiết (tuỳ chọn)",
+          en: "Detailed address (optional)",
+        },
+        setDefaultLabel: {
+          vi: "Đặt mặc định",
+          en: "Set as default",
+        },
+        addButton: {
+          vi: "Thêm",
+          en: "Add",
+        },
+        updateButton: {
+          vi: "Cập nhật",
+          en: "Update",
+        },
+      },
+      location: {
+        provinceLabel: {
+          vi: "Tỉnh/Thành phố",
+          en: "Province/City",
+        },
+        provincePlaceholder: {
+          vi: "Chọn tỉnh/thành phố",
+          en: "Select province/city",
+        },
+        districtLabel: {
+          vi: "Quận/Huyện",
+          en: "District",
+        },
+        districtPlaceholder: {
+          vi: "Chọn quận/huyện",
+          en: "Select district",
+        },
+        wardLabel: {
+          vi: "Phường/Xã",
+          en: "Ward/Commune",
+        },
+        wardPlaceholder: {
+          vi: "Chọn phường/xã",
+          en: "Select ward/commune",
+        },
+      },
+      success: {
+        added: {
+          vi: "Thêm địa chỉ thành công",
+          en: "Address added successfully",
+        },
+        updated: {
+          vi: "Cập nhật địa chỉ thành công",
+          en: "Address updated successfully",
+        },
+        deleted: {
+          vi: "Xoá địa chỉ thành công",
+          en: "Address deleted successfully",
+        },
+        setDefault: {
+          vi: "Đặt địa chỉ mặc định thành công",
+          en: "Address set as default successfully",
+        },
+      },
     },
     updatePassword: {
       title: {
         vi: "Thay đổi mật khẩu",
         en: "Change Password",
+      },
+      description: {
+        vi: "Nhằm bảo mật tài khoản, TUYỆT ĐỐI không chia sẻ mật khẩu với bất kì ai",
+        en: "For account security, NEVER share your password with anyone",
       },
       success: {
         vi: "Mật khẩu đã được cập nhật thành công!",
@@ -1389,18 +1852,80 @@ const translations = {
         vi: "Danh sách yêu thích",
         en: "Wishlist",
       },
+      description: {
+        vi: "Quản lí danh sách yêu thích của bạn để dễ dàng theo dõi và mua sắm.",
+        en: "Manage your wishlist for easy tracking and shopping.",
+      },
       empty: {
-        vi: "Danh sách yêu thích của bạn trống.",
-        en: "Your wishlist is empty.",
+        vi: "Không có sản phẩm nào trong danh sách của bạn.",
+        en: "No products in your wishlist.",
       },
       addProducts: {
         vi: "Thêm sản phẩm yêu thích",
         en: "Add favorite products",
       },
+      addToCart: {
+        vi: "Thêm giỏ hàng",
+        en: "Add to Cart",
+      },
+    },
+    orderReview: {
+      variant: {
+        vi: "Phân loại:",
+        en: "Variant:",
+      },
+      productQuality: {
+        vi: "Chất lượng sản phẩm:",
+        en: "Product Quality:",
+      },
+      clickToRate: {
+        vi: "(bấm chọn để đánh giá)",
+        en: "(click to rate)",
+      },
+      content: {
+        vi: "Nội dung",
+        en: "Content",
+      },
+      placeholder: {
+        vi: "Viết đánh giá (tối đa 500 ký tự)",
+        en: "Write a review (max 500 characters)",
+      },
+      edit: {
+        vi: "Sửa",
+        en: "Edit",
+      },
+      addPhotoVideo: {
+        vi: "Thêm ảnh hoặc video",
+        en: "Add photo or video",
+      },
+      addPhoto: {
+        vi: "Thêm ảnh",
+        en: "Add photo",
+      },
+      addVideo: {
+        vi: "Thêm video",
+        en: "Add video",
+      },
+      fileSizeLimit: {
+        vi: "Kích thước ảnh/video tối đa 5MB",
+        en: "Max file size 5MB",
+      },
+      videoLimit: {
+        vi: "Chỉ được tải lên tối đa 1 video",
+        en: "Maximum 1 video allowed",
+      },
+      imageVideoLimit: {
+        vi: "Chỉ được tải lên tối đa 2 ảnh và video",
+        en: "Maximum 2 images and videos allowed",
+      },
     },
   },
   checkout: {
     title: {
+      vi: "Đặt hàng",
+      en: "Checkout",
+    },
+    pageTitle: {
       vi: "Thanh toán",
       en: "Checkout",
     },
@@ -1416,6 +1941,122 @@ const translations = {
       confirm: {
         vi: "Xác nhận đơn hàng",
         en: "Order Confirmation",
+      },
+    },
+    addressList: {
+      title: {
+        vi: "Danh sách địa chỉ",
+        en: "Address List",
+      },
+      selectAddress: {
+        vi: "Chọn địa chỉ",
+        en: "Select Address",
+      },
+    },
+    selectAddress: {
+      title: {
+        vi: "Địa chỉ nhận hàng",
+        en: "Shipping Address",
+      },
+      change: {
+        vi: "Thay đổi",
+        en: "Change",
+      },
+      confirmDialog: {
+        vi: "Bạn chưa có địa chỉ giao hàng nào được thêm. Bạn có muốn thêm địa chỉ mới?",
+        en: "You don't have any shipping addresses added. Would you like to add a new address?",
+      },
+    },
+    item: {
+      subtotal: {
+        vi: "Thành tiền",
+        en: "Subtotal",
+      },
+    },
+    summary: {
+      paymentMethod: {
+        vi: "Phương thức thanh toán",
+        en: "Payment method",
+      },
+    },
+  },
+  orders: {
+    status: {
+      all: {
+        vi: "Tất cả",
+        en: "All",
+      },
+      unpaid: {
+        vi: "Chưa thanh toán",
+        en: "Unpaid",
+      },
+      pending: {
+        vi: "Chờ xác nhận",
+        en: "Pending",
+      },
+      processing: {
+        vi: "Đang xử lí",
+        en: "Processing",
+      },
+      shipped: {
+        vi: "Đang giao",
+        en: "Shipped",
+      },
+      delivered: {
+        vi: "Đã giao",
+        en: "Delivered",
+      },
+      cancelled: {
+        vi: "Đã hủy",
+        en: "Cancelled",
+      },
+    },
+    card: {
+      total: {
+        vi: "Tổng tiền",
+        en: "Total",
+      },
+      collapse: {
+        vi: "Thu gọn",
+        en: "Collapse",
+      },
+      showMore: {
+        vi: "Xem thêm {count} sản phẩm",
+        en: "Show {count} more products",
+      },
+    },
+    dashboard: {
+      empty: {
+        vi: "Không có đơn hàng nào phù hợp với bộ lọc",
+        en: "No orders match your filter",
+      },
+    },
+    review: {
+      title: {
+        vi: "Đánh giá sản phẩm",
+        en: "Review Products",
+      },
+      submitButton: {
+        vi: "Gửi đánh giá",
+        en: "Submit Review",
+      },
+      updateButton: {
+        vi: "Cập nhật đánh giá",
+        en: "Update Review",
+      },
+      confirmButton: {
+        vi: "Xác nhận",
+        en: "Confirm",
+      },
+      success: {
+        message: {
+          vi: "Đánh giá của bạn đã được gửi thành công!",
+          en: "Your review has been submitted successfully!",
+        },
+        update: {
+          vi: "Đánh giá của bạn đã được cập nhật thành công!",
+          en: "Your review has been updated successfully!",
+        },
       },
     },
   },

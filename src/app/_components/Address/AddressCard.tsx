@@ -11,12 +11,14 @@ import {
 import { toast } from "react-toastify";
 import FormUpdateAddress from "./FormUpdateAddress";
 import { Address } from "@/app/_types/address";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface AddressCardProps {
   address: Address;
 }
 
 function AddressCard({ address }: AddressCardProps) {
+  const { t } = useLanguage();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
 
@@ -24,7 +26,7 @@ function AddressCard({ address }: AddressCardProps) {
     const result = await deleteAddressAction(address._id);
 
     if (result.success) {
-      toast.success("Address deleted successfully");
+      toast.success(t("account.addresses.success.deleted"));
       setOpenDeleteModal(false);
     } else {
       toast.error(result?.errors?.message);
@@ -35,7 +37,7 @@ function AddressCard({ address }: AddressCardProps) {
     const result = await setDefaultAddressAction(address._id);
 
     if (result.success) {
-      toast.success("Address set as default successfully");
+      toast.success(t("account.addresses.success.setDefault"));
     } else {
       toast.error(result?.errors?.message);
     }
@@ -55,7 +57,7 @@ function AddressCard({ address }: AddressCardProps) {
         </p>
         {address.isDefault && (
           <span className="mt-2 inline-block rounded-xl border-2 border-primary-default px-2 text-center lg:text-sm">
-            Mặc định
+            {t("account.addresses.defaultLabel")}
           </span>
         )}
       </div>
@@ -65,7 +67,7 @@ function AddressCard({ address }: AddressCardProps) {
             className="truncate text-primary-default"
             onClick={() => setOpenEditModal(true)}
           >
-            Cập nhật
+            {t("account.addresses.update")}
           </button>
           {openEditModal && (
             <Modal onClose={() => setOpenEditModal(false)}>
@@ -80,7 +82,7 @@ function AddressCard({ address }: AddressCardProps) {
               className="text-red-500 lg:mr-4"
               onClick={() => setOpenDeleteModal(true)}
             >
-              Xoá
+              {t("account.addresses.delete")}
             </button>
           )}
           {openDeleteModal && (
@@ -91,7 +93,7 @@ function AddressCard({ address }: AddressCardProps) {
               <ConfirmDialogue
                 onCancel={() => setOpenDeleteModal(false)}
                 onConfirm={handleDeleteAddress}
-                message="Bạn chắc muốn xoá địa chỉ giao hàng này?"
+                message={t("account.addresses.confirmDelete")}
               />
             </Modal>
           )}
@@ -102,7 +104,9 @@ function AddressCard({ address }: AddressCardProps) {
           onClick={handleSetDefaultAddress}
           size="small"
         >
-          <span className="whitespace-nowrap">Đặt mặc định</span>
+          <span className="whitespace-nowrap">
+            {t("account.addresses.setDefault")}
+          </span>
         </Button>
       </div>
     </div>
