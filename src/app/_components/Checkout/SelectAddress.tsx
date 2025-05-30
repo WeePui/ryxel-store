@@ -9,6 +9,7 @@ import FormAddAddress from "../Address/FormAddAddress";
 import Button from "../UI/Button";
 import CheckoutAddressList from "./CheckoutAddressList";
 import { Address } from "@/app/_types/address";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface SelectAddressProps {
   addresses: Address[];
@@ -16,6 +17,7 @@ interface SelectAddressProps {
 }
 
 function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
+  const { t } = useLanguage();
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [isModalAddAddressVisible, setIsModalAddAddressVisible] =
     useState(false);
@@ -59,7 +61,7 @@ function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
       {isModalConfirmAddFirstAddressVisible && (
         <Modal onClose={handleCancelAddFirstAddress}>
           <ConfirmDialogue
-            message="Bạn chưa có địa chỉ giao hàng nào được thêm. Bạn có muốn thêm địa chỉ mới?"
+            message={t("checkout.selectAddress.confirmDialog")}
             onCancel={handleCancelAddFirstAddress}
             onConfirm={() => setIsModalAddAddressVisible(true)}
           />
@@ -69,7 +71,7 @@ function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
       <div className="flex w-full flex-col gap-6 rounded-xl bg-white p-8 shadow-md">
         <h2 className="flex items-center text-xl font-bold">
           <FaMapLocationDot />
-          <span className="ml-2">Địa chỉ nhận hàng</span>
+          <span className="ml-2">{t("checkout.selectAddress.title")}</span>
         </h2>
         <div className="flex items-center gap-2 lg:flex-col lg:items-start">
           {selectedAddress && (
@@ -92,7 +94,7 @@ function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
                 </p>
                 {selectedAddress.isDefault && (
                   <span className="mt-2 inline-block w-auto rounded-xl border-2 border-primary-default px-2 text-center lg:text-sm">
-                    Mặc định
+                    {t("account.addresses.defaultLabel")}
                   </span>
                 )}
               </div>
@@ -103,7 +105,7 @@ function SelectAddress({ addresses, onSelect }: SelectAddressProps) {
               variant="tertiary"
               onClick={() => setIsModalSelectAddressVisible(true)}
             >
-              Thay đổi
+              {t("checkout.selectAddress.change")}
             </Button>
           </div>
         </div>

@@ -1,40 +1,54 @@
+"use client";
+
 import AccountPage from '@/app/_components/Account/AccountPage';
 import WishlistProductList from '@/app/_components/Wistlist/WishlistProductList';
 import { getWishlistAction } from '@/app/_libs/actions';
-import React from 'react';
+import  { useEffect, useState } from 'react';
+import { useLanguage } from '@/app/_contexts/LanguageContext';
+import { Wishlist } from '@/app/_types/wishlist';
 
-const description =
-  'Quản lí danh sách yêu thích của bạn để dễ dàng theo dõi và mua sắm.';
+export default function WishlistPage() {
+  const { t } = useLanguage();
+  const [wishlist, setWishlist] = useState<Wishlist | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export const metadata = {
-  title: 'Danh sách yêu thích',
-  description,
-};
+  useEffect(() => {
+    async function fetchWishlist() {
+      try {
+        const { wishlist } = await getWishlistAction();
+        setWishlist(wishlist);
+      } catch (error) {
+        console.error('Error fetching wishlist:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchWishlist();
+  }, []);
 
-export default async function page() {
-  const { wishlist } = await getWishlistAction();
-
-  if (!wishlist) {
+  if (loading) {
     return (
-      <AccountPage title="Danh sách yêu thích" description={description}>
-        <div className="flex h-full items-center justify-center py-8 text-lg font-semibold text-grey-400">
-          Không có sản phẩm nào trong danh sách của bạn.
+      <AccountPage titleKey="account.wishlist.title" descriptionKey="account.wishlist.description">
+        <div className="flex h-full items-center justify-center py-8">
+          Loading...
         </div>
       </AccountPage>
     );
   }
-  if (wishlist.products.length === 0) {
+
+  if (!wishlist || wishlist.products.length === 0) {
     return (
-      <AccountPage title="Danh sách yêu thích" description={description}>
+      <AccountPage titleKey="account.wishlist.title" descriptionKey="account.wishlist.description">
         <div className="flex h-full items-center justify-center py-8 text-lg font-semibold text-grey-400">
-          Không có sản phẩm nào trong danh sách của bạn.
+          {t('account.wishlist.empty')}
         </div>
       </AccountPage>
     );
   }
 
   return (
-    <AccountPage title="Danh sách yêu thích" description={description}>
+    <AccountPage titleKey="account.wishlist.title" descriptionKey="account.wishlist.description">
       <WishlistProductList items={wishlist.products} />
     </AccountPage>
   );

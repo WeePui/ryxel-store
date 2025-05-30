@@ -15,6 +15,7 @@ import { Order } from "@/app/_types/order";
 import FormUpdateReview from "../Order/FormUpdateReview";
 import { FaCartPlus } from "react-icons/fa6";
 import { Product } from "@/app/_types/product";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface OrderDetailsCTAProps {
   order: Order;
@@ -58,12 +59,11 @@ export default function OrderDetailsCTA({
   function handleCheckout() {
     router.push(`/checkout?processPayment=1&orderCode=${orderCode}`);
   }
-
   function handleCancelOrder() {
     startTransition(async () => {
       const result = await cancelOrderAction(orderId);
       if (result.success) {
-        toast.success("Đơn hàng đã được hủy thành công!");
+        toast.success(t("account.orders.messages.cancelSuccess"));
       } else {
         toast.error(result?.errors?.message);
       }
@@ -81,30 +81,31 @@ export default function OrderDetailsCTA({
 
       const result = await addMultipleItemsToCartAction(lineItems);
       if (result.success) {
-        toast.success("Tất cả sản phẩm đã được thêm vào giỏ hàng.", {
+        toast.success(t("account.orders.messages.addedToCartSuccess"), {
           icon: <FaCartPlus className="text-primary-500" />,
         });
 
         router.push("/cart");
       } else {
-        toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.", {
+        toast.error(t("account.orders.messages.addedToCartError"), {
           icon: <FaCartPlus className="text-red-500" />,
         });
       }
     });
   }
+  const { t } = useLanguage();
 
   return (
     <div className="flex items-center gap-4">
       {orderStatus === "unpaid" && (
         <Button onClick={handleCheckout} size="medium">
-          Thanh toán
+          {t("account.orders.actions.payment")}
         </Button>
       )}
       {isReviewable && (
         <>
           <Button size="medium" onClick={() => setIsModalOpen(true)}>
-            Đánh giá
+            {t("account.orders.actions.review")}
           </Button>
           {isModalOpen && (
             <Modal onClose={() => setIsModalOpen(false)}>
@@ -124,17 +125,15 @@ export default function OrderDetailsCTA({
             }}
             size="medium"
           >
-            Mua lại
+            {t("account.orders.actions.buyAgain")}
           </Button>
           {buyAgainDialogueOpen && (
             <Modal onClose={() => setBuyAgainDialogueOpen(false)}>
               <ConfirmDialogue
-                message={
-                  "Bạn muốn chuyển đến trang thanh toán hay thêm toàn bộ vào giỏ hàng?"
-                }
-                confirmText="Chuyển đến thanh toán"
+                message={t("account.orders.buyAgainChoice")}
+                confirmText={t("account.orders.buyAgainCheckout")}
                 onConfirm={handleBuyAgain}
-                cancelText="Thêm vào giỏ hàng"
+                cancelText={t("account.orders.buyAgainAddToCart")}
                 onCancel={handleAddToCart}
               />
             </Modal>
@@ -149,12 +148,12 @@ export default function OrderDetailsCTA({
             disabled={isPending}
             size="medium"
           >
-            Hủy đơn hàng
+            {t("account.orders.actions.cancel")}
           </Button>
           {isDialogueOpen && (
             <Modal onClose={() => setIsDialogueOpen(false)}>
               <ConfirmDialogue
-                message={"Bạn có chắc chắn muốn hủy đơn hàng này không?"}
+                message={t("account.orders.confirmCancel")}
                 onConfirm={handleCancelOrder}
                 onCancel={() => setIsDialogueOpen(false)}
               />
@@ -169,7 +168,7 @@ export default function OrderDetailsCTA({
             size="medium"
             onClick={() => setIsModalOpen(true)}
           >
-            Xem đánh giá
+            {t("account.orders.actions.viewReview")}
           </Button>
           {isModalOpen && (
             <Modal onClose={() => setIsModalOpen(false)}>
@@ -187,7 +186,7 @@ export default function OrderDetailsCTA({
           onClick={() => router.push(`orders/${orderCode}`)}
           size="medium"
         >
-          Xem chi tiết
+          {t("account.orders.actions.detail")}
         </Button>
       )}
     </div>

@@ -1,17 +1,19 @@
-import Image from "next/image";
-import React from "react";
+"use client";
 
+import Image from "next/image";
 import NavLink from "../UI/NavLink";
 import formatMoney from "@/app/_utils/formatMoney";
 import { LineItem } from "@/app/_types/lineItem";
 import { Variant } from "@/app/_types/variant";
 import { Product } from "@/app/_types/product";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface OrderItemProps {
   item: LineItem;
 }
 
 export default function OrderItem({ item }: OrderItemProps) {
+  const { t } = useLanguage();
   const itemVariant = (item.product as Product).variants.find(
     (variant: Variant) => variant._id === item.variant,
   );
@@ -40,19 +42,21 @@ export default function OrderItem({ item }: OrderItemProps) {
             </NavLink>
           </p>
           <p className="text-sm text-grey-300">
-            Phân loại: {itemVariant?.name}
+            {t("account.orders.variant")}: {itemVariant?.name}
           </p>
         </div>
       </div>
       <div className="flex items-center gap-12 lg:flex-col lg:items-start lg:justify-center lg:gap-2 sm:flex-row sm:justify-between">
         <p className="inline-flex items-center gap-2 whitespace-nowrap text-sm text-grey-300">
-          Số lượng:{" "}
+          {t("account.orders.quantity")}:{" "}
           <span className="text-base font-semibold text-primary-default">
             {item.quantity}
           </span>
         </p>
         <div className="font-semibold">
-          <p className="text-sm font-normal text-grey-300">Thành tiền:</p>
+          <p className="text-sm font-normal text-grey-300">
+            {t("account.orders.subtotal")}:
+          </p>
           {formatMoney(subtotal)}
         </div>
       </div>

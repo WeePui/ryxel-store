@@ -1,5 +1,6 @@
 import { JSX } from "react";
 import Button from "./Button";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface ConfirmDialogueProps {
   message: string | JSX.Element;
@@ -12,12 +13,16 @@ interface ConfirmDialogueProps {
 
 function ConfirmDialogue({
   message,
-  confirmText = "Xác nhận",
-  cancelText = "Hủy bỏ",
+  confirmText,
+  cancelText,
   onConfirm,
   onCancel,
   children,
 }: ConfirmDialogueProps) {
+  const { t } = useLanguage();
+  const defaultConfirmText = t("confirmDialogue.confirm");
+  const defaultCancelText = t("confirmDialogue.cancel");
+
   return (
     <div className="flex flex-col items-center justify-center gap-8">
       <p className="text-lg">{message}</p>
@@ -25,12 +30,14 @@ function ConfirmDialogue({
       <div className="flex flex-wrap justify-center gap-6 md:gap-4">
         {onCancel && (
           <Button variant="secondary" onClick={onCancel}>
-            {cancelText}
+            {cancelText || defaultCancelText}
           </Button>
         )}
 
         <div className="md:order-first">
-          <Button onClick={onConfirm}>{confirmText}</Button>
+          <Button onClick={onConfirm}>
+            {confirmText || defaultConfirmText}
+          </Button>
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
-import AccountPage from '@/app/_components/Account/AccountPage';
-import FormUpdatePassword from '@/app/_components/Account/FormUpdatePassword';
+import AccountPage from "@/app/_components/Account/AccountPage";
+import FormUpdatePassword from "@/app/_components/Account/FormUpdatePassword";
 
 function Page() {
   return (
     <AccountPage
-      title="Đổi mật khẩu"
-      description="Nhằm bảo mật tài khoản, TUYỆT ĐỐI không chia sẻ mật khẩu với bất kì ai"
+      titleKey="account.updatePassword.title"
+      descriptionKey="account.updatePassword.description"
     >
       <div className="flex justify-center">
         <FormUpdatePassword />

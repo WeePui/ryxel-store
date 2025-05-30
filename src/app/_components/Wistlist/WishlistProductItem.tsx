@@ -3,7 +3,7 @@
 import { Product } from "@/app/_types/product";
 import formatMoney from "@/app/_utils/formatMoney";
 import Image from "next/image";
-import React, { useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import Button from "../UI/Button";
 import { FaCartShopping, FaTrash } from "react-icons/fa6";
 import { useWishlist } from "@/app/_contexts/WishlistContext";
@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Spinner from "../UI/Spinner";
 import { LineItem } from "@/app/_types/lineItem";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface WishlistProductItemProps {
   item: Product;
@@ -24,6 +25,7 @@ export default function WishlistProductItem({
   onSelectVariant,
   isMobile = false,
 }: WishlistProductItemProps) {
+  const { t } = useLanguage();
   const [isPending, startTransition] = useTransition();
   const [selectedVariant, setSelectedVariant] = useState(item.variants[0]);
   const { removeProductFromWishlist } = useWishlist();
@@ -159,7 +161,7 @@ export default function WishlistProductItem({
       </td>
       <td>
         <Button size="small" disabled={isPending} onClick={handleAddToCart}>
-          {isPending ? <Spinner /> : "Thêm giỏ hàng"}
+          {isPending ? <Spinner /> : t("account.wishlist.addToCart")}
         </Button>
       </td>
     </tr>

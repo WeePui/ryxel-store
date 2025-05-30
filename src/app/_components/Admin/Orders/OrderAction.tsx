@@ -1,7 +1,7 @@
 "use client";
 
-import Card from "../UI/Card";
-import Button from "../UI/Button";
+import Card from "../../UI/Card";
+import Button from "../../UI/Button";
 import { Order } from "@/app/_types/order";
 import { downloadFile } from "@/app/_libs/apiServices";
 import { useState, useTransition } from "react";

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   FaAddressCard,
@@ -7,64 +7,66 @@ import {
   FaLock,
   FaDoorOpen,
   FaHeart,
-} from 'react-icons/fa6';
-import NavLink from '../UI/NavLink';
-import SignoutButton from '../UI/SignoutButton';
-import { usePathname } from 'next/navigation';
+} from "react-icons/fa6";
+import NavLink from "../UI/NavLink";
+import SignoutButton from "../UI/SignoutButton";
+import { usePathname } from "next/navigation";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 function SideNavList() {
   const pathName = usePathname();
+  const { t } = useLanguage();
 
   return (
-    <ul className="mt-10 lg:mt-6 flex flex-col gap-4 lg:gap-2 text-lg lg:text-base lg:font-semibold text-primary-500">
+    <ul className="mt-10 flex flex-col gap-4 text-lg text-primary-500 lg:mt-6 lg:gap-2 lg:text-base lg:font-semibold">
       <li>
         <NavLink
           type="sideNav"
           href="/account/profile"
-          active={pathName.includes('/profile')}
+          active={pathName.includes("/profile")}
         >
           <FaAddressCard className="text" />
-          Hồ sơ
+          {t("account.navigation.profile")}
         </NavLink>
       </li>
       <li>
         <NavLink
           type="sideNav"
           href="/account/orders"
-          active={pathName.includes('/orders')}
+          active={pathName.includes("/orders")}
         >
           <FaBagShopping />
-          Đơn hàng
+          {t("account.navigation.orders")}
         </NavLink>
       </li>
       <li className="">
         <NavLink
           type="sideNav"
           href="/account/addresses"
-          active={pathName.includes('/addresses')}
+          active={pathName.includes("/addresses")}
         >
           <FaTruckFast />
-          Địa chỉ giao hàng
+          {t("account.navigation.addresses")}
         </NavLink>
       </li>
       <li>
         <NavLink
           type="sideNav"
           href="/account/updatePassword"
-          active={pathName.includes('/updatePassword')}
+          active={pathName.includes("/updatePassword")}
         >
           <FaLock />
-          Đổi mật khẩu
+          {t("account.navigation.updatePassword")}
         </NavLink>
       </li>
       <li className="---mt-8">
         <NavLink
           type="sideNav"
           href="/account/wishlist"
-          active={pathName.includes('/wishlist')}
+          active={pathName.includes("/wishlist")}
         >
           <FaHeart className="text" />
-          Danh sách yêu thích
+          {t("account.navigation.wishlist")}
         </NavLink>
       </li>
       <li className="---mt-8">
@@ -74,7 +76,7 @@ function SideNavList() {
             type="submit"
           >
             <FaDoorOpen />
-            Đăng xuất
+            {t("account.navigation.logout")}
           </button>
         </SignoutButton>
       </li>

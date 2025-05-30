@@ -7,6 +7,7 @@ import { LineItem } from "@/app/_types/lineItem";
 import { Product } from "@/app/_types/product";
 import { WishlistProvider } from "@/app/_contexts/WishlistContext";
 import WishlistButton from "../Wistlist/WishlistButton";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 import { isSaleOfferActive } from "@/app/_utils/saleValidation";
 
 interface CheckoutItemProps {
@@ -14,6 +15,7 @@ interface CheckoutItemProps {
 }
 
 function CheckoutItem({ item }: CheckoutItemProps) {
+  const { t } = useLanguage();
   const { product, variant, quantity } = item;
 
   const itemVariant = (product as Product).variants.find(
@@ -50,18 +52,20 @@ function CheckoutItem({ item }: CheckoutItemProps) {
       </div>
       <div className="flex items-center gap-12 md:items-start md:justify-between">
         <p className="inline-flex items-center gap-2 whitespace-nowrap text-sm text-grey-300">
-          Số lượng:{" "}
+          {t("cart.quantity")}:{" "}
           <span className="text-base font-semibold text-primary-default">
             {quantity}
           </span>
         </p>
         <div className="flex flex-col justify-between gap-4 text-lg font-bold md:gap-1">
           <div>
-            <p className="text-xs font-normal text-grey-300">Đơn giá:</p>
+            <p className="text-xs font-normal text-grey-300">
+              {t("cart.price")}
+            </p>
             <div className="flex items-center gap-2">
               <span className="text-sm">
                 {formatMoney(itemVariant.finalPrice || itemVariant.price)}
-              </span>{" "}
+              </span>
               {isSaleOfferActive(itemVariant.saleOff) &&
                 itemVariant.saleOff && (
                   <span className="rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white">
@@ -77,7 +81,9 @@ function CheckoutItem({ item }: CheckoutItemProps) {
               )}
           </div>
           <div>
-            <p className="text-sm font-normal text-grey-300">Thành tiền:</p>
+            <p className="text-sm font-normal text-grey-300">
+              {t("checkout.item.subtotal")}:
+            </p>
             <span className="">
               {formatMoney(
                 (itemVariant.finalPrice || itemVariant.price) * quantity,

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface OrderStatusTabsProps {
   onChangeTab?: (status: string) => void;
@@ -11,6 +12,7 @@ interface OrderStatusTabsProps {
 export default function OrderStatusTabs({ onChangeTab }: OrderStatusTabsProps) {
   const [activeTab, setActiveTab] = useState("all");
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleTabChange = (status: string) => {
     setActiveTab(status);
@@ -26,54 +28,55 @@ export default function OrderStatusTabs({ onChangeTab }: OrderStatusTabsProps) {
   return (
     <div>
       <ul className="flex w-full overflow-hidden overflow-x-auto whitespace-nowrap rounded-lg text-center text-sm font-medium shadow-sm scrollbar-hide dark:divide-gray-700 dark:text-gray-400">
+        {" "}
         <TabItem
           href="#"
           current={activeTab === "all"}
           onClick={() => handleTabChange("all")}
         >
-          Tất cả
+          {t("orders.status.all")}
         </TabItem>
         <TabItem
           href="#"
           current={activeTab === "unpaid"}
           onClick={() => handleTabChange("unpaid")}
         >
-          Chưa thanh toán
+          {t("orders.status.unpaid")}
         </TabItem>
         <TabItem
           href="#"
           current={activeTab === "pending"}
           onClick={() => handleTabChange("pending")}
         >
-          Chờ xác nhận
+          {t("orders.status.pending")}
         </TabItem>
         <TabItem
           href="#"
           current={activeTab === "processing"}
           onClick={() => handleTabChange("processing")}
         >
-          Đang xử lí
+          {t("orders.status.processing")}
         </TabItem>
         <TabItem
           href="#"
           current={activeTab === "shipped"}
           onClick={() => handleTabChange("shipped")}
         >
-          Đang giao
+          {t("orders.status.shipped")}
         </TabItem>
         <TabItem
           href="#"
           current={activeTab === "delivered"}
           onClick={() => handleTabChange("delivered")}
         >
-          Đã giao
+          {t("orders.status.delivered")}
         </TabItem>
         <TabItem
           href="#"
           current={activeTab === "cancelled"}
           onClick={() => handleTabChange("cancelled")}
         >
-          Đã hủy
+          {t("orders.status.cancelled")}
         </TabItem>
       </ul>
     </div>

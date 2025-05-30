@@ -6,6 +6,7 @@ import { ReviewUpdateInput } from "@/app/_types/validateInput";
 import { updateReviewsByOrderAction } from "@/app/_libs/actions";
 import { toast } from "react-toastify";
 import { Variant } from "@/app/_types/variant";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface FormUpdateReviewProps {
   order: Order;
@@ -18,6 +19,7 @@ export default function FormUpdateReview({
 }: FormUpdateReviewProps) {
   const [isPending, startTransition] = useTransition();
   const [isUpdating, setIsUpdating] = useState(false);
+  const { t } = useLanguage();
 
   // Filter lineItems to only include those that have a review
   const reviewedLineItems = order.lineItems.filter((item) => !!item.review);
@@ -48,19 +50,16 @@ export default function FormUpdateReview({
     startTransition(async () => {
       await updateReviewsByOrderAction(order._id, reviews);
       closeModal();
-      toast.success("Cập nhật đánh giá thành công!");
+      toast.success(t("orders.review.success.update"));
     });
-
-    console.log(reviews);
   }
 
   const updatable =
     order.reviewCount < 2 &&
     new Date(order.createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000;
-
   return (
     <form className="w-[600px] max-w-3xl md:max-w-full" onSubmit={handleSubmit}>
-      <h1 className="mb-6 font-title text-2xl">Đánh giá sản phẩm</h1>
+      <h1 className="mb-6 font-title text-2xl">{t("orders.review.title")}</h1>
       <div className="flex flex-col gap-6">
         {reviewedLineItems.map((item) => (
           <OrderReviewItem
@@ -80,10 +79,12 @@ export default function FormUpdateReview({
       </div>
       <div className="mt-6 flex justify-end">
         {!isUpdating ? (
-          <Button onClick={closeModal}>Xác nhận</Button>
+          <Button onClick={closeModal}>
+            {t("orders.review.confirmButton")}
+          </Button>
         ) : (
           <Button role="submit" loading={isPending}>
-            Gửi đánh giá
+            {t("orders.review.updateButton")}
           </Button>
         )}
       </div>

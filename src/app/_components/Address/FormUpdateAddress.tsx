@@ -12,6 +12,7 @@ import { FormError } from "@/app/_types/formError";
 import { Address } from "@/app/_types/address";
 import { hasFormError } from "@/app/_helpers/hasFormError";
 import AssistiveText from "../UI/AssistiveText";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface FormUpdateAddressProps {
   onSubmit: () => void;
@@ -19,6 +20,7 @@ interface FormUpdateAddressProps {
 }
 
 function FormUpdateAddress({ onSubmit, address }: FormUpdateAddressProps) {
+  const { t } = useLanguage();
   const [state, action, isPending] = useActionState(
     updateAddressAction.bind(null, address._id),
     {
@@ -39,19 +41,20 @@ function FormUpdateAddress({ onSubmit, address }: FormUpdateAddressProps) {
 
   useEffect(() => {
     if (state.success) {
-      toast.success("Address updated successfully");
+      toast.success(t("account.addresses.success.updated"));
       onSubmit();
     } else if (state.errors.message) toast.error(state.errors.message);
-  }, [state.success, state.errors, onSubmit]);
+  }, [state.success, state.errors, onSubmit, t]);
 
   if (isPending) return <Loader />;
-
   return (
     <form className="flex w-[600px] max-w-full flex-col gap-6" action={action}>
-      <h1 className="mb-2 text-xl font-semibold">Cập nhật địa chỉ</h1>
+      <h1 className="mb-2 text-xl font-semibold">
+        {t("account.addresses.updateTitle")}
+      </h1>
       <div className="flex items-center gap-6">
         <Input
-          label="Họ và tên"
+          label={t("account.addresses.form.fullname")}
           name="fullname"
           type="text"
           id="fullname"
@@ -60,7 +63,7 @@ function FormUpdateAddress({ onSubmit, address }: FormUpdateAddressProps) {
           defaultValue={address.fullname}
         />
         <Input
-          label="Số điện thoại"
+          label={t("account.addresses.form.phoneNumber")}
           name="phoneNumber"
           type="text"
           id="phoneNumber"
@@ -84,7 +87,7 @@ function FormUpdateAddress({ onSubmit, address }: FormUpdateAddressProps) {
         <LocationSelector address={address} />
       </div>
       <Input
-        label="Địa chỉ (số nhà & tên đường)"
+        label={t("account.addresses.form.address")}
         name="address"
         type="textarea"
         id="address"
@@ -93,7 +96,7 @@ function FormUpdateAddress({ onSubmit, address }: FormUpdateAddressProps) {
         errorMessage={state.errors.address}
       />
       <Input
-        label="Địa chỉ chi tiết (tuỳ chọn)"
+        label={t("account.addresses.form.addressDetail")}
         name="addressInfo"
         type="text"
         id="addressInfo"
@@ -101,7 +104,7 @@ function FormUpdateAddress({ onSubmit, address }: FormUpdateAddressProps) {
       />
       <Input
         type="checkbox"
-        label="Đặt mặc định"
+        label={t("account.addresses.form.setDefaultLabel")}
         id="isDefault"
         name="isDefault"
         checked={isDefault}
@@ -109,7 +112,7 @@ function FormUpdateAddress({ onSubmit, address }: FormUpdateAddressProps) {
         disabled={address.isDefault}
       />
       <input type="hidden" name="isDefault" value={isDefault.toString()} />
-      <Button role="submit">Cập nhật</Button>
+      <Button role="submit">{t("account.addresses.form.updateButton")}</Button>
     </form>
   );
 }

@@ -1,13 +1,14 @@
-'use client';
+"use client";
 
-import { Address } from '@/app/_types/address';
-import React, { useState } from 'react';
-import SelectAddress from './SelectAddress';
-import CheckoutItems from './CheckoutItems';
-import SelectPaymentMethod from './SelectPaymentMethod';
-import CheckoutSummary from './CheckoutSummary';
-import { LineItem } from '@/app/_types/lineItem';
-import { Product } from '@/app/_types/product';
+import { Address } from "@/app/_types/address";
+import { useState } from "react";
+import SelectAddress from "./SelectAddress";
+import CheckoutItems from "./CheckoutItems";
+import SelectPaymentMethod from "./SelectPaymentMethod";
+import CheckoutSummary from "./CheckoutSummary";
+import { LineItem } from "@/app/_types/lineItem";
+import { Product } from "@/app/_types/product";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface CheckoutPageProps {
   addresses: Address[];
@@ -20,6 +21,7 @@ export default function CheckoutPage({
   lineItems,
   subtotal,
 }: CheckoutPageProps) {
+  const { t } = useLanguage();
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     string | null
@@ -31,9 +33,9 @@ export default function CheckoutPage({
   };
 
   return (
-    <div className="mx-auto mt-14 lg:mt-4 grid w-full max-w-7xl xl:px-6 grid-cols-[70fr_30fr] lg:grid-cols-1 gap-10">
+    <div className="mx-auto mt-14 grid w-full max-w-7xl grid-cols-[70fr_30fr] gap-10 xl:px-6 lg:mt-4 lg:grid-cols-1">
       <h1 className="col-span-full self-start font-title text-3xl font-semibold text-primary-500">
-        Đặt hàng
+        {t("checkout.title")}
       </h1>
       <SelectAddress addresses={addresses} onSelect={setSelectedAddress} />
       <CheckoutItems items={lineItems} />
@@ -41,7 +43,7 @@ export default function CheckoutPage({
       <div className="col-start-2 row-span-3 row-start-2 lg:col-span-full lg:row-start-5">
         <CheckoutSummary
           subtotal={subtotal}
-          code={code || ''}
+          code={code || ""}
           address={selectedAddress}
           paymentMethod={selectedPaymentMethod}
           lineItems={lineItems.map((item) => {

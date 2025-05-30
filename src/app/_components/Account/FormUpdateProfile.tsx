@@ -12,12 +12,14 @@ import imageCompression from "browser-image-compression";
 import Loader from "../UI/Loader";
 import { User } from "@/app/_types/user";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface FormUpdateProfileProps {
   user: User;
 }
 
 function FormUpdateProfile({ user }: FormUpdateProfileProps) {
+  const { t } = useLanguage();
   const [, startTransition] = useTransition();
   const [photo, setPhoto] = useState<File | undefined>(undefined);
   const updateProfileActionWithPhoto = updateProfileAction.bind(null, photo);
@@ -96,7 +98,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               htmlFor="name"
               className="text-right text-grey-300 md:text-left"
             >
-              Tên tài khoản
+              {t("account.profile.personalInfo")}
             </label>
             <input
               type="text"
@@ -111,7 +113,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               htmlFor="gender"
               className="text-right text-grey-300 md:text-left"
             >
-              Giới tính
+              {t("account.profile.gender")}
             </label>
             <div className="col-span-3 flex w-full gap-3">
               <div className="flex items-center gap-2">
@@ -123,7 +125,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                   className="capitalize"
                   defaultChecked={user?.gender === "male"}
                 />
-                <label htmlFor="male">Nam</label>
+                <label htmlFor="male">{t("account.profile.male")}</label>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -134,7 +136,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                   className="capitalize"
                   defaultChecked={user?.gender === "female"}
                 />
-                <label htmlFor="female">Nữ</label>
+                <label htmlFor="female">{t("account.profile.female")}</label>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -145,7 +147,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                   className="capitalize"
                   defaultChecked={user?.gender === "other"}
                 />
-                <label htmlFor="other">Khác</label>
+                <label htmlFor="other">{t("account.profile.other")}</label>
               </div>
             </div>
           </div>
@@ -154,7 +156,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               htmlFor="email"
               className="text-right text-grey-300 md:text-left"
             >
-              Email
+              {t("account.profile.email")}
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
               <span>{user && user.email}</span>{" "}
@@ -165,7 +167,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                     onClick={handleVerifyEmail}
                   >
                     <FaArrowUpRightFromSquare />
-                    Xác thực
+                    {t("account.profile.verify")}
                   </div>
                 </NavLink>
               )}
@@ -176,14 +178,14 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               htmlFor="phone"
               className="text-right text-grey-300 md:text-left"
             >
-              Số điện thoại
+              {t("account.profile.phone")}
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
               {user?.phoneNo ? (
                 user.phoneNo
               ) : (
                 <span className="text-xs">
-                  (Bạn vẫn chưa thêm số điện thoại)
+                  {t("account.profile.phoneNotAdded")}
                 </span>
               )}
               <NavLink href="#" hoverUnderline={false}>
@@ -192,7 +194,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                   onClick={() => {}}
                 >
                   <FaArrowUpRightFromSquare />
-                  Thay đổi
+                  {t("account.profile.change")}
                 </div>
               </NavLink>
             </div>
@@ -205,7 +207,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               htmlFor="dob"
               className="text-right text-grey-300 md:text-left"
             >
-              Sinh nhật
+              {t("account.profile.birthday")}
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
               {user?.dob ? (
@@ -215,7 +217,9 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
                   day: "2-digit",
                 })
               ) : (
-                <span className="text-xs">(Bạn vẫn chưa thêm ngày sinh)</span>
+                <span className="text-xs">
+                  {t("account.profile.birthdayNotAdded")}
+                </span>
               )}
             </div>
           </div>
@@ -227,7 +231,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               loading={isLoading || isPending}
               size="medium"
             >
-              Cập nhật hồ sơ
+              {t("account.profile.updateProfile")}
             </Button>
           </div>
         </div>
@@ -265,13 +269,13 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               size="small"
               className="md:hidden"
             >
-              Đổi ảnh đại diện
+              {t("account.profile.changeAvatar")}
             </Button>
             <span className="text-md mt-2 hidden items-center gap-2 font-semibold text-grey-300 md:flex">
-              <FaCircleInfo /> Bấm vào ảnh để thay đổi
+              <FaCircleInfo /> {t("account.profile.clickToChange")}
             </span>
             <span className="text-md text-gray-400 md:text-xs">
-              Định dạng: .JPEG, .JPG, .PNG
+              {t("account.profile.imageFormat")}
             </span>
           </div>
         )}

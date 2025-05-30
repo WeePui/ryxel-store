@@ -7,6 +7,7 @@ import { ReviewInput } from "@/app/_types/validateInput";
 import Button from "../UI/Button";
 import { createReviewsByOrderAction } from "@/app/_libs/actions";
 import { toast } from "react-toastify";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface FormReviewOrderProps {
   order: Order;
@@ -19,6 +20,7 @@ export default function FormReviewOrder({
 }: FormReviewOrderProps) {
   const [isPending, startTransition] = useTransition();
   const [reviews, setReviews] = useState<ReviewInput[]>([]);
+  const { t } = useLanguage();
 
   const handleReviewUpdate = useCallback(
     (index: number, review: ReviewInput) => {
@@ -40,8 +42,7 @@ export default function FormReviewOrder({
         toast.error(result.errors.message);
         return;
       }
-
-      toast.success("Đánh giá của bạn đã được chúng tôi ghi nhận!");
+      toast.success(t("orders.review.success.message"));
       if (closeModal) {
         closeModal();
       }
@@ -50,7 +51,7 @@ export default function FormReviewOrder({
 
   return (
     <form className="w-[600px] max-w-3xl md:max-w-full" onSubmit={handleSubmit}>
-      <h1 className="mb-6 font-title text-2xl">Đánh giá sản phẩm</h1>
+      <h1 className="mb-6 font-title text-2xl">{t("orders.review.title")}</h1>
       <div className="flex flex-col gap-6">
         {order.lineItems.map((item, index) => (
           <OrderReviewItem
@@ -64,7 +65,7 @@ export default function FormReviewOrder({
       </div>
       <div className="mt-6 flex justify-end">
         <Button role="submit" loading={isPending} fullWidth>
-          Gửi đánh giá
+          {t("orders.review.submitButton")}
         </Button>
       </div>
     </form>
