@@ -8,6 +8,7 @@ import { Product } from "@/app/_types/product";
 import { WishlistProvider } from "@/app/_contexts/WishlistContext";
 import WishlistButton from "../Wistlist/WishlistButton";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { isSaleOfferActive } from "@/app/_utils/saleValidation";
 
 interface CheckoutItemProps {
   item: LineItem;
@@ -59,16 +60,34 @@ function CheckoutItem({ item }: CheckoutItemProps) {
         <div className="flex flex-col justify-between gap-4 text-lg font-bold md:gap-1">
           <div>
             <p className="text-xs font-normal text-grey-300">
-              {t("cart.price")}:
+              {t("cart.price")}
             </p>
-            <span className="text-sm">{formatMoney(itemVariant.price)}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm">
+                {formatMoney(itemVariant.finalPrice || itemVariant.price)}
+              </span>
+              {isSaleOfferActive(itemVariant.saleOff) &&
+                itemVariant.saleOff && (
+                  <span className="rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white">
+                    -{itemVariant.saleOff.percentage}%
+                  </span>
+                )}
+            </div>
+            {itemVariant.finalPrice &&
+              itemVariant.finalPrice < itemVariant.price && (
+                <span className="text-xs text-gray-500 line-through">
+                  {formatMoney(itemVariant.price)}
+                </span>
+              )}
           </div>
           <div>
             <p className="text-sm font-normal text-grey-300">
               {t("checkout.item.subtotal")}:
             </p>
             <span className="">
-              {formatMoney(itemVariant.price * quantity)}
+              {formatMoney(
+                (itemVariant.finalPrice || itemVariant.price) * quantity,
+              )}
             </span>
           </div>
         </div>

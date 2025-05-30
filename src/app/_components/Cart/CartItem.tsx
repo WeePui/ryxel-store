@@ -18,6 +18,7 @@ import { LineItem } from "@/app/_types/lineItem";
 import WishlistButton from "../Wistlist/WishlistButton";
 import { Product } from "@/app/_types/product";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { isSaleOfferActive } from "@/app/_utils/saleValidation";
 
 interface CartItemProps {
   item: LineItem;
@@ -132,7 +133,6 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
               {(item.product as Product).totalStock >
               Number(process.env.NEXT_PUBLIC_STOCK_LIMIT) ? (
                 <div className="flex h-[4.6rem] w-28 flex-col gap-2 xl:flex-[3] md:justify-center">
-                  {" "}
                   <span className="text-sm text-grey-300 md:hidden">
                     {t("cart.quantity")}
                   </span>
@@ -149,11 +149,30 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
                 </div>
               )}
               <div className="flex h-[4.6rem] flex-col items-center justify-between gap-2 xl:flex-[7] xl:items-end md:justify-center">
-                <p className="text-lg font-bold">
-                  {formatMoney(itemVariant.price * quantity)}
-                </p>
+                <div className="flex flex-col items-end">
+                  <div className="flex items-center gap-2">
+                    <p className="text-lg font-bold">
+                      {formatMoney(
+                        (itemVariant.finalPrice || itemVariant.price) *
+                          quantity,
+                      )}
+                    </p>{" "}
+                    {isSaleOfferActive(itemVariant.saleOff) &&
+                      itemVariant.saleOff && (
+                        <span className="rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white">
+                          -{itemVariant.saleOff.percentage}%
+                        </span>
+                      )}
+                  </div>
+                  {itemVariant.finalPrice &&
+                    itemVariant.finalPrice < itemVariant.price && (
+                      <p className="text-sm text-gray-500 line-through">
+                        {formatMoney(itemVariant.price * quantity)}
+                      </p>
+                    )}
+                </div>
                 <button
-                  className="flex items-center gap-2 border-b-2 border-red-500 text-red-500"
+                  className="flex items-center gap-2 self-end border-b-2 border-red-500 text-red-500"
                   disabled={isPending}
                   onClick={() => setOpenConfirm(true)}
                 >
@@ -164,7 +183,6 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
                     onClose={() => setOpenConfirm(false)}
                     showCloseButton={false}
                   >
-                    {" "}
                     <ConfirmDialogue
                       message={
                         <span>

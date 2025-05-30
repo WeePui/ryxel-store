@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
 import { motion } from "framer-motion";
+import { isSaleOfferActive } from "@/app/_utils/saleValidation";
 
 interface BestsellerItemProps {
   item: Product;
@@ -23,6 +24,18 @@ export default function BestsellerItem({ item }: BestsellerItemProps) {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
   const { language } = useLanguage();
+
+  // Find the best sale offer from all variants
+  const bestVariantSale =
+    item.variants?.reduce((best, variant) => {
+      if (isSaleOfferActive(variant.saleOff)) {
+        const currentDiscount = variant.saleOff?.percentage || 0;
+        const bestDiscount = best?.saleOff?.percentage || 0;
+        return currentDiscount > bestDiscount ? variant : best;
+      }
+      return best;
+    }, item.variants[0]) || null;
+
   const handleAddToCart = () => {
     startTransition(async () => {
       const variantId = item.variants[0]?._id || "";
@@ -76,14 +89,23 @@ export default function BestsellerItem({ item }: BestsellerItemProps) {
           >
             {item.name}
           </Link>
-        </motion.div>
+        </motion.div>{" "}
         <motion.p
           className="flex items-center gap-2 text-primary-500"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <span>{formatMoney(item.lowestPrice)}</span> -
+          <div className="flex items-center gap-2">
+            <span>{formatMoney(item.lowestPrice)}</span>
+            {bestVariantSale &&
+              isSaleOfferActive(bestVariantSale.saleOff) &&
+              bestVariantSale.saleOff && (
+                <span className="rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white">
+                  -{bestVariantSale.saleOff.percentage}%
+                </span>
+              )}
+          </div>
           <span className="text-sm text-gray-400">
             {language === "vi" ? `Đã bán: ${item.sold}` : `Sold: ${item.sold}`}
           </span>
@@ -122,9 +144,23 @@ export default function BestsellerItem({ item }: BestsellerItemProps) {
           transition={{ repeat: Infinity, repeatDelay: 2, duration: 0.7 }}
         >
           <FaFire />
-        </motion.div>
+        </motion.div>{" "}
         <span>{language === "vi" ? "Bán chạy" : "Best Seller"}</span>
       </motion.div>
+
+      {/* Sale badge if there's an active sale */}
+      {bestVariantSale &&
+        isSaleOfferActive(bestVariantSale.saleOff) &&
+        bestVariantSale.saleOff && (
+          <motion.div
+            className="absolute bottom-2 right-2 rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white shadow-md"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
+            {language === "vi" ? "GIẢM GIÁ" : "SALE"}
+          </motion.div>
+        )}
     </motion.div>
   );
 }

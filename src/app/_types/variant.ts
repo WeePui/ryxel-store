@@ -3,6 +3,7 @@ export interface Variant {
   name: string;
   title?: string;
   price: number;
+  finalPrice?: number;
   images: (string | File)[];
   specifications: {
     [key: string]: string;
