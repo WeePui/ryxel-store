@@ -4,6 +4,7 @@ import Button from "../UI/Button";
 import formatMoney from "@/app/_utils/formatMoney";
 import { Cart } from "@/app/_types/cart";
 import { Product } from "@/app/_types/product";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface HeaderCartModalProps {
   cart: Cart;
@@ -11,10 +12,11 @@ interface HeaderCartModalProps {
 
 function HeaderCartModal({ cart }: HeaderCartModalProps) {
   const { lineItems } = cart;
+  const { t } = useLanguage();
 
   return (
     <div className="absolute right-0 z-[100] mt-2 w-96 rounded-lg bg-white p-4 shadow-lg">
-      <h3 className="mb-2 text-lg font-semibold">Sản phẩm đã thêm</h3>
+      <h3 className="mb-2 text-lg font-semibold">{t("cart.modal.title")}</h3>
       {lineItems.length > 0 ? (
         <div className="relative max-h-48 overflow-hidden">
           <ul className="space-y-2">
@@ -36,9 +38,9 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
                   <div>
                     <p className="text-sm font-medium">
                       {(item.product as Product).name}
-                    </p>
+                    </p>{" "}
                     <p className="text-sm text-gray-500">
-                      {item.quantity} (sản phẩm) x{" "}
+                      {item.quantity} ({t("cart.modal.productsCount")}) x{" "}
                       {formatMoney((item.product as Product).lowestPrice)}
                     </p>
                   </div>
@@ -48,14 +50,14 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
             {lineItems.length > 3 && (
               <div className="absolute bottom-0 left-0 h-12 w-full bg-gradient-to-t from-white to-transparent"></div>
             )}
-          </ul>
+          </ul>{" "}
         </div>
       ) : (
-        <p className="text-sm text-gray-500">Giỏ hàng của bạn đang trống.</p>
+        <p className="text-sm text-gray-500">{t("cart.modal.empty")}</p>
       )}
       <div className="mt-4 flex justify-end">
         <Button href="/cart">
-          <span className="text-xs">Xem giỏ hàng</span>
+          <span className="text-xs">{t("cart.modal.viewCart")}</span>
         </Button>
       </div>
     </div>

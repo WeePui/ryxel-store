@@ -56,7 +56,7 @@ function ProductCard({
           </p>
         </div>
         <div className="mt-auto flex flex-col gap-2 px-6 py-4 text-grey-400 lg:px-3">
-          <p className="flex flex-wrap items-center gap-2 font-bold transition-colors duration-300 group-hover:text-primary-default">
+          <div className="flex flex-wrap items-center gap-2 font-bold transition-colors duration-300 group-hover:text-primary-default">
             <div className="flex items-center gap-2">
               <span>{formatMoney(product.lowestPrice)}</span>
               {product.percentageSaleOff > 0 && (
@@ -71,7 +71,7 @@ function ProductCard({
                 ({t("products.outOfStock")})
               </span>
             )}
-          </p>
+          </div>
           <div className="mt-auto flex items-center justify-between capitalize">
             <span className="flex items-center text-sm">
               <span className="mr-2 text-xl font-bold text-primary-400">

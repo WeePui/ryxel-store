@@ -26,9 +26,9 @@ export default function MobileMenu() {
         aria-label="Menu"
       >
         <FaBars />
-      </button>{" "}
+      </button>
       {menuOpen && (
-        <div className="animate-slide-in lg:animate-slide-in-reverse md:animate-slide-in fixed top-0 z-40 h-full w-full bg-white p-6 shadow-lg lg:right-0 lg:w-7/12 md:left-0 md:w-full">
+        <div className="animate-slide-in lg:animate-slide-in-reverse md:animate-slide-in fixed top-0 z-40 h-full w-full overflow-y-auto bg-white p-6 shadow-lg lg:right-0 lg:w-7/12 md:left-0 md:w-full">
           <button
             onClick={() => setMenuOpen(false)}
             className="text-primary self-end text-3xl"

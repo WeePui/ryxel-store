@@ -89,8 +89,8 @@ export default function BestsellerItem({ item }: BestsellerItemProps) {
           >
             {item.name}
           </Link>
-        </motion.div>{" "}
-        <motion.p
+        </motion.div>
+        <motion.div
           className="flex items-center gap-2 text-primary-500"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -109,7 +109,7 @@ export default function BestsellerItem({ item }: BestsellerItemProps) {
           <span className="text-sm text-gray-400">
             {language === "vi" ? `Đã bán: ${item.sold}` : `Sold: ${item.sold}`}
           </span>
-        </motion.p>
+        </motion.div>
         <motion.div
           className="mt-auto flex pt-4"
           initial={{ opacity: 0, y: 10 }}
@@ -144,23 +144,9 @@ export default function BestsellerItem({ item }: BestsellerItemProps) {
           transition={{ repeat: Infinity, repeatDelay: 2, duration: 0.7 }}
         >
           <FaFire />
-        </motion.div>{" "}
+        </motion.div>
         <span>{language === "vi" ? "Bán chạy" : "Best Seller"}</span>
       </motion.div>
-
-      {/* Sale badge if there's an active sale */}
-      {bestVariantSale &&
-        isSaleOfferActive(bestVariantSale.saleOff) &&
-        bestVariantSale.saleOff && (
-          <motion.div
-            className="absolute bottom-2 right-2 rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white shadow-md"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-          >
-            {language === "vi" ? "GIẢM GIÁ" : "SALE"}
-          </motion.div>
-        )}
     </motion.div>
   );
 }

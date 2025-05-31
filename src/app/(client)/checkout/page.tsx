@@ -11,8 +11,8 @@ import { Product } from "../../_types/product";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Đặt hàng",
-  description: "Đặt hàng",
+  title: "Checkout",
+  description: "Ryxel eCommerce Checkout Page",
 };
 
 async function Page({

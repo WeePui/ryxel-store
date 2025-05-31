@@ -13,7 +13,7 @@ async function Header() {
   const { data: cart } = await getCart({ value: token.value });
   const { data: user } = await getProfile({ value: token.value });
 
-  return <HeaderClient cart={cart} user={user.user} />;
+  return <HeaderClient cart={cart.cart} user={user.user} />;
 }
 
 export default Header;

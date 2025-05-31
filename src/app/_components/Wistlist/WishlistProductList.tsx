@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { Product } from '@/app/_types/product';
-import React, { useState } from 'react';
-import WishlistProductItem from './WishlistProductItem';
-import { WishlistProvider } from '@/app/_contexts/WishlistContext';
-import { LineItem } from '@/app/_types/lineItem';
-import WishlistCTA from './WishlistCTA';
+import { Product } from "@/app/_types/product";
+import React, { useState } from "react";
+import WishlistProductItem from "./WishlistProductItem";
+import { WishlistProvider } from "@/app/_contexts/WishlistContext";
+import { LineItem } from "@/app/_types/lineItem";
+import WishlistCTA from "./WishlistCTA";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface WishlistProductListProps {
   items: Product[];
@@ -14,19 +15,20 @@ interface WishlistProductListProps {
 export default function WishlistProductList({
   items,
 }: WishlistProductListProps) {
+  const { t } = useLanguage();
   const [cartItems, setCartItems] = useState<LineItem[]>(() =>
     items.map((item) => {
       return {
         product: item._id,
         variant: item.variants[0]._id,
         quantity: 1,
-      };
-    })
+      } as LineItem;
+    }),
   );
 
   const handleOnUpdateCartItems = (newCartItem: LineItem) => {
     const existingItemIndex = cartItems.findIndex(
-      (item) => item.variant === newCartItem.variant
+      (item) => item.variant === newCartItem.variant,
     );
     if (existingItemIndex !== -1) {
       const updatedCartItems = [...cartItems];
@@ -39,17 +41,22 @@ export default function WishlistProductList({
 
   return (
     <>
-      <table className="w-full border-collapse border border-gray-200 table-fixed md:hidden">
+      <table className="w-full table-fixed border-collapse border border-gray-200 md:hidden">
+        {" "}
         <thead className="bg-gray-100">
           <tr className="p-4">
-            <th className="pl-1 text-center w-1"></th>
-            <th className="py-4 text-left w-1/6"></th>
-            <th className="py-4 text-left w-8 font-title text-lg">Sản phẩm</th>
-            <th className="py-4 text-left w-1/6 font-title text-lg">
-              Phân loại
+            <th className="w-1 pl-1 text-center"></th>
+            <th className="w-1/6 py-4 text-left"></th>
+            <th className="w-8 py-4 text-left font-title text-lg">
+              {t("account.wishlist.productName")}
             </th>
-            <th className="py-4 text-center w-1/6 font-title text-lg">Giá</th>
-            <th className="py-4 text-center w-1/6 font-title text-lg"></th>
+            <th className="w-1/6 py-4 text-left font-title text-lg">
+              {t("account.wishlist.category")}
+            </th>
+            <th className="w-1/6 py-4 text-center font-title text-lg">
+              {t("account.wishlist.price")}
+            </th>
+            <th className="w-1/6 py-4 text-center font-title text-lg"></th>
           </tr>
         </thead>
         <WishlistProvider>
@@ -64,7 +71,7 @@ export default function WishlistProductList({
           </tbody>
         </WishlistProvider>
       </table>
-      <div className=" flex-col gap-4 hidden md:flex">
+      <div className="hidden flex-col gap-4 md:flex">
         {items.map((item) => (
           <WishlistProvider key={item._id}>
             <WishlistProductItem
