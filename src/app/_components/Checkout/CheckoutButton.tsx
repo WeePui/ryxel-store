@@ -3,10 +3,10 @@
 import { useActionState, useEffect } from "react";
 import { createCheckoutSessionAction } from "@libs/actions";
 import Button from "@components/UI/Button";
-import Spinner from "../UI/Spinner";
 import { toast } from "react-toastify";
 import { useSearchParams } from "next/navigation";
 import errorMessages from "@/app/_utils/mappingErrorMessages";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface LineItem {
   product: string;
@@ -33,6 +33,7 @@ function CheckoutButton({
     createCheckoutSessionAction,
     undefined,
   );
+  const { language } = useLanguage();
   const searchParams = useSearchParams();
   const processPayment = searchParams.get("processPayment");
   const orderCode = searchParams.get("orderCode");
@@ -57,7 +58,7 @@ function CheckoutButton({
       <input type="hidden" name="orderCode" value={orderCode || ""} />
       {/* Added processPayment */}
       <Button role="submit" loading={isPending || loading} size="large">
-        Tiến hành thanh toán
+        {language === "vi" ? "Tiến hành thanh toán" : "Proceed to Payment"}
       </Button>
     </form>
   );

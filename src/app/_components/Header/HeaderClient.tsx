@@ -7,10 +7,10 @@ import HeaderUser from "./HeaderUser";
 import Spinner from "../UI/Spinner";
 import { Suspense } from "react";
 import HeaderCart from "./HeaderCart";
-import MobileMenuTranslated from "./MobileMenuTranslated";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { Cart } from "@/app/_types/cart";
 import { User } from "@/app/_types/user";
+import MobileMenu from "./MobileMenu";
 // import { useLanguage } from '@/app/_contexts/LanguageContext';
 
 interface HeaderClientProps {
@@ -18,14 +18,11 @@ interface HeaderClientProps {
   user?: User;
 }
 
-export default function HeaderClient({
-  cart,
-  user,
-}: HeaderClientProps) {
+export default function HeaderClient({ cart, user }: HeaderClientProps) {
   // const { t } = useLanguage();
 
   return (
-    <header className="relative z-50 h-16 w-full border-b border-primary-700 bg-white px-6 font-title xl:px-6 lg:px-0">
+    <header className="relative z-50 h-16 w-full overflow-y-auto border-b border-primary-700 bg-white px-6 font-title xl:px-6 lg:px-0">
       <div className="flex h-full items-center justify-between">
         <div className="flex items-center gap-6">
           <Logo />
@@ -48,7 +45,7 @@ export default function HeaderClient({
               <HeaderUser user={user} />
             </Suspense>
           </div>
-          <MobileMenuTranslated />
+          <MobileMenu />
         </div>
       </div>
     </header>

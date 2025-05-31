@@ -85,27 +85,30 @@ function HeaderNav({
                     {t("header.shop")}
                   </h3>
                   <div className="flex flex-col gap-2" onClick={onNavigate}>
-                    <NavLink href="/products?category=chuot">
-                      Chuột Gaming
+                    <NavLink href="/products?category=Chuột">
+                      {t("navigation.categories.gaming.mouse")}
                     </NavLink>
-                    <NavLink href="/products?category=ban-phim">
-                      Bàn phím
+                    <NavLink href="/products?category=Bàn phím">
+                      {t("navigation.categories.gaming.keyboard")}
                     </NavLink>
-                    <NavLink href="/products?category=tai-nghe">
-                      Tai nghe
+                    <NavLink href="/products?category=Tai+nghe">
+                      {t("navigation.categories.gaming.headphone")}
                     </NavLink>
-                    <NavLink href="/products?category=ban">Bàn Gaming</NavLink>
-                    <NavLink href="/products?category=ghe">Ghế Gaming</NavLink>
+                    <NavLink href="/products?category=ban">
+                      {t("navigation.categories.gaming.table")}
+                    </NavLink>
+                    <NavLink href="/products?category=ghe">
+                      {t("navigation.categories.gaming.chair")}
+                    </NavLink>
                     <NavLink href="/products?category=phu-kien">
-                      Phụ kiện
+                      {t("navigation.categories.gaming.accessory")}
                     </NavLink>
                   </div>
-                </div>
-
+                </div>{" "}
                 {/* Brands */}
                 <div>
                   <h3 className="mb-2 font-semibold text-primary-700">
-                    Thương hiệu
+                    {t("navigation.brands.title")}
                   </h3>
                   <div className="flex flex-col gap-2">
                     <NavLink href="/products?brand=logitech">Logitech</NavLink>
@@ -122,28 +125,27 @@ function HeaderNav({
                     <NavLink href="/products?brand=Pulsar">Pulsar</NavLink>
                     <NavLink href="/products?brand=HyperX">HyperX</NavLink>
                   </div>
-                </div>
-
+                </div>{" "}
                 {/* References */}
                 <div>
                   <h3 className="mb-2 font-semibold text-primary-700">
-                    Tham khảo
+                    {t("navigation.reference.title")}
                   </h3>
                   <div className="flex flex-col gap-2" onClick={onNavigate}>
                     <NavLink href="/products?sort=-sold">
-                      Sản phẩm bán chạy
+                      {t("navigation.reference.bestSellers")}
                     </NavLink>
                     <NavLink href="/products?specs=%7B%22sound%22%3A%22Apple+Spacial+Sound%22%7D">
-                      Apple Spacial Sound
+                      {t("navigation.reference.spatialAudio")}
                     </NavLink>
                     <NavLink href="/products?specs=%7B%22material%22%3A%22Steel%2FFabric%22%7D">
-                      Bền bỉ tuyệt đối
+                      {t("navigation.reference.durability")}
                     </NavLink>
                     <NavLink href="/products?brand=Sennheiser">
-                      Sennheiser Chính hãng
+                      {t("navigation.reference.sennheiserPartner")}
                     </NavLink>
                     <NavLink href="/products?specs=%7B%22connection%22%3A%22Wireless%22%7D">
-                      Không dây
+                      {t("navigation.reference.wireless")}
                     </NavLink>
                   </div>
                 </div>
@@ -156,7 +158,7 @@ function HeaderNav({
         </li>
         <li onClick={onNavigate}>
           <NavLink href="/blogs">{t("header.blogs")}</NavLink>
-        </li>{" "}
+        </li>
         <li onClick={onNavigate}>
           <NavLink href="/about-us">{t("header.aboutUs")}</NavLink>
         </li>

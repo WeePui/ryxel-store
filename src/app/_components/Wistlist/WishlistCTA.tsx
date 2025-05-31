@@ -4,6 +4,7 @@ import { FaCartPlus, FaShare } from "react-icons/fa6";
 import { LineItem } from "@/app/_types/lineItem";
 import { addMultipleItemsToCartAction } from "@/app/_libs/actions";
 import { toast } from "react-toastify";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface WishlistCTAProps {
   cartItems: LineItem[];
@@ -16,6 +17,7 @@ interface CartItem {
 }
 
 export default function WishlistCTA({ cartItems }: WishlistCTAProps) {
+  const { t } = useLanguage();
   const [isPending, startTransition] = useTransition();
 
   const handleAddAllToCart = async () => {
@@ -25,11 +27,11 @@ export default function WishlistCTA({ cartItems }: WishlistCTAProps) {
       );
 
       if (result.success) {
-        toast.success("Tất cả sản phẩm đã được thêm vào giỏ hàng.", {
+        toast.success(t("account.wishlist.addAllToCartSuccess"), {
           icon: <FaCartPlus className="text-primary-500" />,
         });
       } else {
-        toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.", {
+        toast.error(t("account.wishlist.addAllToCartError"), {
           icon: <FaCartPlus className="text-red-500" />,
         });
       }
@@ -52,10 +54,10 @@ export default function WishlistCTA({ cartItems }: WishlistCTAProps) {
         loading={isPending}
         icon={<FaCartPlus />}
       >
-        Thêm tất cả vào giỏ hàng
+        {t("account.wishlist.addAllToCart")}
       </Button>
       <Button size="small" onClick={handleShareToFacebook} icon={<FaShare />}>
-        Chia sẻ
+        {t("account.wishlist.share")}
       </Button>
     </div>
   );

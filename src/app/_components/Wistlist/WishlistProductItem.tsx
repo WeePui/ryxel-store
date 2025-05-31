@@ -38,14 +38,15 @@ export default function WishlistProductItem({
         selectedVariant._id!,
         1,
       );
+
       if (result.success) {
-        toast.success("Sản phẩm đã được thêm vào giỏ hàng.", {
+        toast.success(t("successAddToCart"), {
           icon: <FaCartShopping className="text-primary-500" />,
         });
       }
       if (result.errors) {
         if (result.errors.user) {
-          toast.error("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+          toast.error(t("loginRequired"));
           router.push("/login");
         } else toast.error(result.errors.message);
       }
@@ -97,11 +98,13 @@ export default function WishlistProductItem({
 
           <div className="mt-2 flex items-center justify-between">
             <span className="text-sm font-semibold">
-              <span className="font-normal text-gray-400">Giá tiền: </span>
+              <span className="font-normal text-gray-400">
+                {t("account.wishlist.priceLabel")}{" "}
+              </span>
               {formatMoney(item.lowestPrice)}
             </span>
             <Button size="small" loading={isPending} onClick={handleAddToCart}>
-              Thêm giỏ hàng
+              {t("account.wishlist.addToCart")}
             </Button>
           </div>
         </div>

@@ -10,6 +10,7 @@ import formatMoney from "@/app/_utils/formatMoney";
 import CheckoutButton from "./CheckoutButton";
 import { Address } from "@/app/_types/address";
 import { getShippingFee } from "@/app/_libs/apiServices";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface CheckoutItem {
   product: string;
@@ -34,6 +35,7 @@ function CheckoutSummary({
   lineItems,
   onCodeChange,
 }: CheckoutSummaryProps) {
+  const { t } = useLanguage();
   const [discountState, action, isPending] = useActionState(
     verifyDiscountCodeAction,
     { success: false, discountAmount: 0, code: code && "", errors: {} },
@@ -60,18 +62,15 @@ function CheckoutSummary({
   return (
     <div className="sticky top-20 flex flex-col divide-y-2 divide-gray-300 rounded-xl bg-grey-100 px-4 font-semibold">
       <div className="flex flex-col items-center justify-between gap-2 py-4">
-        <h2 className="text-2xl font-bold">Tóm tắt đơn hàng</h2>
-        <p className="text-xs text-grey-400">
-          *Lưu ý: bạn chỉ có thể huỷ đơn trong vòng 30 phút kể từ khi đặt hàng
-          và trước khi đơn hàng được xác nhận.
-        </p>
+        <h2 className="text-2xl font-bold">{t("checkout.summary.title")}</h2>
+        <p className="text-xs text-grey-400">{t("checkout.summary.note")}</p>
       </div>
       <div className="flex flex-col transition-all duration-300">
         <h3
           onClick={() => setIsApplyVoucher((prev) => !prev)}
           className="flex cursor-pointer justify-between py-4 font-semibold"
         >
-          Áp dụng voucher
+          {t("checkout.summary.voucher")}
           <span className="text-xl">
             {isApplyVoucher ? <FaChevronUp /> : <FaChevronDown />}
           </span>
@@ -86,12 +85,14 @@ function CheckoutSummary({
               discountState?.success && (
                 <div className="flex items-center gap-2 pb-4">
                   <FaCheck className="text-xl text-green-500" />
-                  {discountState?.code?.toString().toUpperCase()} đã được sử
-                  dụng thành công
+                  {t("checkout.summary.voucherSuccess").replace(
+                    "{code}",
+                    discountState?.code?.toString().toUpperCase() || "",
+                  )}
                 </div>
               )
             ) : (
-              <form className="flex w-full flex-col gap-2 py-4" action={action}>
+              <form className="flex w-full flex-col gap-2 pb-4" action={action}>
                 {discountState?.errors?.message && (
                   <p className="flex items-center gap-2 text-red-500">
                     <FaXmark /> {discountState.errors.message}
@@ -100,7 +101,7 @@ function CheckoutSummary({
                 <div className="flex w-full gap-2">
                   <input
                     name="code"
-                    placeholder="Voucher code"
+                    placeholder={t("checkout.summary.voucherPlaceholder")}
                     className="w-full rounded-lg border-2 border-grey-300 bg-transparent p-4 text-lg font-semibold transition-all duration-300 focus:border-primary-default"
                     defaultValue={discountState?.code || ""}
                     onChange={(e) => onCodeChange?.(e.target.value)}
@@ -111,7 +112,7 @@ function CheckoutSummary({
                     value={JSON.stringify(lineItems)}
                   />
                   <Button role="submit" loading={isPending}>
-                    Dùng
+                    {t("checkout.summary.use")}
                   </Button>
                 </div>
               </form>
@@ -120,29 +121,28 @@ function CheckoutSummary({
       </div>
       <div className="flex flex-col gap-2 py-4">
         <div className="flex justify-between">
-          <h3>Tổng cộng</h3>
+          <h3>{t("checkout.summary.subtotal")}</h3>
           <span>{formatMoney(subtotal)}</span>
         </div>
         <div>
           <div className="flex justify-between">
-            <h3>Phí vận chuyển</h3>
+            <h3>{t("checkout.summary.shipping")}</h3>
             <span>{formatMoney(shippingFee)}</span>
           </div>
           <p className="text-right text-xs text-gray-500">
-            *Dự kiến giao hàng:{" "}
+            {t("checkout.summary.expectedDelivery")}{" "}
             {new Date(expectedDeliveryDate).toLocaleDateString("vi-VN")}
           </p>
         </div>
         {discountState?.success && (
           <div className="flex justify-between">
-            <h3>Giảm giá</h3>
+            <h3>{t("checkout.summary.discount")}</h3>
             <span>- {formatMoney(discountState?.discountAmount || 0)}</span>
           </div>
         )}
       </div>
-
       <div className="flex justify-between py-6 text-xl">
-        <h3>Tổng thanh toán</h3>
+        <h3>{t("checkout.summary.total")}</h3>
         <span>
           {formatMoney(
             subtotal -
@@ -151,7 +151,6 @@ function CheckoutSummary({
           )}
         </span>
       </div>
-
       <div className="flex w-full flex-col">
         <CheckoutButton
           lineItems={lineItems}
@@ -161,7 +160,7 @@ function CheckoutSummary({
           loading={loadingShippingFee}
         />
         <div className="my-5 flex flex-col items-center text-xs">
-          <p>Phương thức thanh toán</p>
+          <p>{t("checkout.summary.paymentMethod")}</p>
           <div className="mt-2 grid w-36 grid-cols-3 justify-center gap-2 text-5xl">
             <PaymentMethods />
           </div>

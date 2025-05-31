@@ -899,6 +899,12 @@ const translations = {
         },
       },
     },
+    brands: {
+      title: {
+        vi: "Thương hiệu",
+        en: "Brands",
+      },
+    },
     reference: {
       title: {
         vi: "Tham khảo",
@@ -947,6 +953,24 @@ const translations = {
       subtitle: {
         vi: "Cửa hàng của chúng tôi đang có những điều tuyệt vời đang chờ đợi bạn.",
         en: "Our store has amazing things waiting for you.",
+      },
+    },
+    modal: {
+      title: {
+        vi: "Sản phẩm đã thêm",
+        en: "Added products",
+      },
+      empty: {
+        vi: "Giỏ hàng của bạn đang trống.",
+        en: "Your cart is empty.",
+      },
+      viewCart: {
+        vi: "Xem giỏ hàng",
+        en: "View cart",
+      },
+      productsCount: {
+        vi: "sản phẩm",
+        en: "products",
       },
     },
     selectAll: {
@@ -1017,6 +1041,10 @@ const translations = {
       paymentMethods: {
         vi: "Phương thức thanh toán",
         en: "Payment Methods",
+      },
+      selectPaymentMethod: {
+        vi: "Chọn phương thức thanh toán",
+        en: "Select payment method",
       },
     },
     confirmations: {
@@ -1712,12 +1740,12 @@ const translations = {
           en: "Cash on Delivery",
         },
         stripe: {
-          vi: "Thanh toán qua Stripe",
-          en: "Stripe Payment",
+          vi: "Stripe (Link, Visa, MasterCard)",
+          en: "Stripe (Link, Visa, MasterCard)",
         },
         zalopay: {
-          vi: "Thanh toán qua ZaloPay",
-          en: "ZaloPay Payment",
+          vi: "Ví ZaloPay (Thẻ ATM/tín dụng)",
+          en: "ZaloPay Wallet (ATM/Credit Card)",
         },
       },
     },
@@ -1868,6 +1896,58 @@ const translations = {
         vi: "Thêm giỏ hàng",
         en: "Add to Cart",
       },
+      productName: {
+        vi: "Tên sản phẩm",
+        en: "Product Name",
+      },
+      category: {
+        vi: "Phân loại",
+        en: "Category",
+      },
+      price: {
+        vi: "Giá",
+        en: "Price",
+      },
+      priceLabel: {
+        vi: "Giá tiền:",
+        en: "Price:",
+      },
+      stock: {
+        vi: "Tình trạng",
+        en: "Stock",
+      },
+      action: {
+        vi: "Hành động",
+        en: "Action",
+      },
+      addAllToCart: {
+        vi: "Thêm tất cả vào giỏ",
+        en: "Add All to Cart",
+      },
+      clearWishlist: {
+        vi: "Xóa tất cả",
+        en: "Clear All",
+      },
+      addAllToCartSuccess: {
+        vi: "Tất cả sản phẩm đã được thêm vào giỏ hàng.",
+        en: "All products have been added to cart.",
+      },
+      addAllToCartError: {
+        vi: "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.",
+        en: "An error occurred while adding products to cart.",
+      },
+      share: {
+        vi: "Chia sẻ",
+        en: "Share",
+      },
+      inStock: {
+        vi: "Còn hàng",
+        en: "In Stock",
+      },
+      outOfStock: {
+        vi: "Hết hàng",
+        en: "Out of Stock",
+      },
     },
     orderReview: {
       variant: {
@@ -1974,10 +2054,76 @@ const translations = {
       },
     },
     summary: {
+      title: {
+        vi: "Tóm tắt đơn hàng",
+        en: "Order Summary",
+      },
+      note: {
+        vi: "*Lưu ý: bạn chỉ có thể huỷ đơn trong vòng 30 phút kể từ khi đặt hàng và trước khi đơn hàng được xác nhận.",
+        en: "*Note: you can only cancel your order within 30 minutes from placing it and before the order is confirmed.",
+      },
+      voucher: {
+        vi: "Áp dụng voucher",
+        en: "Apply voucher",
+      },
+      voucherSuccess: {
+        vi: "{code} đã được sử dụng thành công",
+        en: "{code} has been applied successfully",
+      },
+      voucherPlaceholder: {
+        vi: "Mã giảm giá",
+        en: "Voucher code",
+      },
+      use: {
+        vi: "Dùng",
+        en: "Use",
+      },
+      subtotal: {
+        vi: "Tổng cộng",
+        en: "Subtotal",
+      },
+      shipping: {
+        vi: "Phí vận chuyển",
+        en: "Shipping fee",
+      },
+      expectedDelivery: {
+        vi: "*Dự kiến giao hàng:",
+        en: "*Expected delivery:",
+      },
+      discount: {
+        vi: "Giảm giá",
+        en: "Discount",
+      },
+      total: {
+        vi: "Tổng thanh toán",
+        en: "Total payment",
+      },
       paymentMethod: {
         vi: "Phương thức thanh toán",
         en: "Payment method",
       },
+    },
+    paymentMethods: {
+      title: {
+        vi: "Phương thức thanh toán",
+        en: "Payment Method",
+      },
+      cod: {
+        vi: "Thanh toán khi nhận hàng",
+        en: "Cash on Delivery",
+      },
+      stripe: {
+        vi: "Thanh toán qua Stripe (Link, Visa, MasterCard)",
+        en: "Stripe Payment (Link, Visa, MasterCard)",
+      },
+      zalopay: {
+        vi: "Thanh toán qua ZaloPay (Thẻ ATM/tín dụng)",
+        en: "ZaloPay Payment (ATM/Credit Card)",
+      },
+    },
+    selectPaymentMethod: {
+      vi: "Chọn phương thức thanh toán",
+      en: "Select a payment method",
     },
   },
   orders: {
@@ -2068,6 +2214,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>("vi");
+
   // Load language preference from localStorage on client-side or detect from browser
   useEffect(() => {
     const storedLang = localStorage.getItem("language") as Language | null;
@@ -2086,11 +2233,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       }
     }
   }, []);
+
   // Save language preference to localStorage when it changes
   useEffect(() => {
     localStorage.setItem("language", language);
     document.documentElement.lang = language;
   }, [language]);
+
   // Translation function
   const t = (key: string): string => {
     try {

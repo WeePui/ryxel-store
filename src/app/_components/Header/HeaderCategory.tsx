@@ -19,14 +19,13 @@ export default function HeaderCategory() {
   return (
     <div className="fixed left-0 z-10 mx-auto w-full border-b border-primary-200 bg-grey-50 p-4 shadow-md">
       <div className="mx-auto grid max-w-7xl grid-cols-[60fr_40fr] divide-x divide-primary-200">
-        {" "}
         <div className="p-6">
           <h1 className="mb-4 text-xl">{t("navigation.categories.title")}</h1>
           <div className="flex">
             <div className="grid w-fit grid-cols-3 justify-start gap-x-12 gap-y-6">
               <div
                 className="group flex w-fit flex-col items-center gap-2"
-                id="Mouse"
+                id="Chuột"
                 role="button"
                 onClick={handleClick}
               >
@@ -44,7 +43,7 @@ export default function HeaderCategory() {
               </div>
               <div
                 className="group flex w-fit flex-col items-center gap-2"
-                id="Keyboard"
+                id="Bàn phím"
                 role="button"
                 onClick={handleClick}
               >
@@ -63,7 +62,7 @@ export default function HeaderCategory() {
               <div
                 className="group flex w-fit flex-col items-center gap-2"
                 role="button"
-                id="Headphone"
+                id="Tai nghe"
                 onClick={handleClick}
               >
                 <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
@@ -81,7 +80,7 @@ export default function HeaderCategory() {
               <div
                 className="group flex w-fit flex-col items-center gap-2"
                 role="button"
-                id="Table"
+                id="Bàn"
                 onClick={handleClick}
               >
                 <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
@@ -99,7 +98,7 @@ export default function HeaderCategory() {
               <div
                 className="group flex w-fit flex-col items-center gap-2"
                 role="button"
-                id="Chair"
+                id="Ghế"
                 onClick={handleClick}
               >
                 <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
@@ -117,7 +116,7 @@ export default function HeaderCategory() {
               <div
                 className="group flex w-fit flex-col items-center gap-2"
                 role="button"
-                id="Accessory"
+                id="Phụ kiện"
                 onClick={handleClick}
               >
                 <div className="relative aspect-square w-32 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">

@@ -18,7 +18,6 @@ export default function BestsellerSection() {
         setIsLoading(true);
         setError("");
         const { data } = await getBestsellers();
-        console.log("Bestsellers data:", data);
         setBestsellers(data.products || []);
       } catch (err) {
         console.error("Error fetching bestsellers:", err);
@@ -34,6 +33,7 @@ export default function BestsellerSection() {
 
     fetchBestsellers();
   }, [language]);
+
   return (
     <section className="mx-auto mb-12 flex w-full max-w-7xl flex-col items-center justify-center px-6 py-10 lg:mb-0">
       <motion.p
@@ -44,7 +44,7 @@ export default function BestsellerSection() {
         viewport={{ once: true }}
       >
         {language === "vi" ? "Sản phẩm bán chạy" : "Best Sellers"}
-      </motion.p>{" "}
+      </motion.p>
       {isLoading ? (
         <motion.div
           className="flex h-60 items-center justify-center"
