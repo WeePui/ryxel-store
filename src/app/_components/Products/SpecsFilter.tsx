@@ -3,9 +3,21 @@
 import { mappingSpecsName } from "@/app/_utils/mappingSpecs";
 import { mappingSpecsNameMultilingual } from "@/app/_utils/mappingSpecsMultilingual";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import React, { useState, useContext } from "react";
+import { LanguageContext } from "@/app/_contexts/LanguageContext";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+
+// Safe language hook that falls back to Vietnamese when not in provider
+const useSafeLanguage = () => {
+  const context = useContext(LanguageContext);
+
+  if (!context) {
+    // Fallback to Vietnamese when not in LanguageProvider context
+    return { language: "vi" as const };
+  }
+
+  return { language: context.language };
+};
 
 interface SpecsFilterProps {
   specifications: {
@@ -75,7 +87,7 @@ function SpecsFilterItem({
 }: SpecsFilterItemProps) {
   const [openFilter, setOpenFilter] = useState(false);
   const searchParams = useSearchParams();
-  const { language } = useLanguage();
+  const { language } = useSafeLanguage();
 
   const handleSelectSpecs = (value: string) => {
     onSelectSpecs(filterName, value);

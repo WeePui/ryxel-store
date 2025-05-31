@@ -1,6 +1,6 @@
 "use client";
 
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaSistrix } from "react-icons/fa6";
@@ -15,7 +15,7 @@ function SearchBar({
   placeholder = "Tìm kiếm sản phẩm, danh mục & khác ...",
 }: SearchBarProps) {
   const [keyword, setKeyword] = useState("");
-  const { t } = useLanguage();
+  const t = useSafeTranslation();
   const pathname = usePathname();
   const navigation = onHeader ? "/products" : pathname;
   const router = useRouter();

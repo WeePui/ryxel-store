@@ -4,7 +4,7 @@ import { FaFilter } from "react-icons/fa";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaXmark } from "react-icons/fa6";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 
 interface FilterButtonProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ interface FilterButtonProps {
 
 export default function FilterButton({ children }: FilterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { t } = useLanguage();
+  const t = useSafeTranslation();
 
   return (
     <>

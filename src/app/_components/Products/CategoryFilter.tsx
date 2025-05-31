@@ -5,7 +5,21 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { MdCategory } from "react-icons/md";
 import { categoryIcons } from "@/app/_utils/mappingCategory";
 import { categoryNamesMultilingual } from "@/app/_utils/mappingCategoryMultilingual";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useContext } from "react";
+import { LanguageContext } from "@/app/_contexts/LanguageContext";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
+
+// Safe language hook that falls back to Vietnamese when not in provider
+const useSafeLanguage = () => {
+  const context = useContext(LanguageContext);
+
+  if (!context) {
+    // Fallback to Vietnamese when not in LanguageProvider context
+    return { language: "vi" as const };
+  }
+
+  return { language: context.language };
+};
 
 interface CategoryFilterProps {
   categories: {
@@ -19,7 +33,8 @@ function CategoryFilter({ categories }: CategoryFilterProps) {
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get("category");
   const router = useRouter();
-  const { t, language } = useLanguage();
+  const t = useSafeTranslation();
+  const { language } = useSafeLanguage();
 
   const handleFilter = function (category: string) {
     if (!category) return router.replace("products");

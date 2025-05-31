@@ -152,6 +152,10 @@ export default function OrderHistoryTable({
               current: currentPage,
               pageSize: 10,
               onChange: onPageChange,
+              showSizeChanger: false, // Disable page size changer since it's handled server-side
+              showQuickJumper: true,
+              showTotal: (total: number, range: [number, number]) =>
+                `${range[0]}-${range[1]} của ${total} đơn hàng`,
             }}
             className="w-full"
           />

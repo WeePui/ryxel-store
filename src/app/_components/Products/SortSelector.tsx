@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 
 interface OrderSortSelectorProps {
   children?: React.ReactNode;
@@ -12,7 +12,7 @@ function SortSelector({ children }: OrderSortSelectorProps) {
   const pathname = usePathname();
   const router = useRouter();
   const currentSort = searchParams.get("sort");
-  const { t } = useLanguage();
+  const t = useSafeTranslation();
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const params = new URLSearchParams(searchParams);
