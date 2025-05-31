@@ -143,6 +143,10 @@ export default function ProductsTable({
               current: currentPage,
               pageSize: resultsPerPage,
               onChange: handleChangePage,
+              showSizeChanger: false, // Disable page size changer since it's handled server-side
+              showQuickJumper: true,
+              showTotal: (total: number, range: [number, number]) =>
+                `${range[0]}-${range[1]} của ${total} sản phẩm`,
             }}
             exportFileName="danh-sach-san-pham.csv"
             className="w-full font-semibold text-primary-500"

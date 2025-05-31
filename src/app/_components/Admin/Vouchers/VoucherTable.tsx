@@ -176,7 +176,6 @@ export default function VoucherTable({
       )}
       {data && data.length > 0 ? (
         <div className="flex flex-col">
-          {" "}
           <Table
             data={data}
             columns={columns}
@@ -186,6 +185,10 @@ export default function VoucherTable({
               current: currentPage,
               pageSize: resultsPerPage,
               onChange: handleChangePage,
+              showSizeChanger: false, // Disable page size changer since it's handled server-side
+              showQuickJumper: true,
+              showTotal: (total: number, range: [number, number]) =>
+                `${range[0]}-${range[1]} của ${total} mã giảm giá`,
             }}
             className="w-full"
             exportFileName="danh-sach-ma-giam-gia.csv"

@@ -236,6 +236,10 @@ export default function UserTable({ authToken }: UserTableProps) {
               current: currentPage,
               pageSize: resultsPerPage,
               onChange: handleChangePage,
+              showSizeChanger: false, // Disable page size changer since it's handled server-side
+              showQuickJumper: true,
+              showTotal: (total: number, range: [number, number]) =>
+                `${range[0]}-${range[1]} của ${total} người dùng`,
             }}
             exportData={exportData}
             exportFileName="danh-sach-nguoi-dung.csv"

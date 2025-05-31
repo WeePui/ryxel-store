@@ -9,7 +9,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
 import {
   FaRegCircleXmark,
   FaChevronDown,
@@ -18,6 +17,7 @@ import {
   FaRegStar,
 } from "react-icons/fa6";
 import SpecsFilter from "./SpecsFilter";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 
 interface SideFilterProps {
   brands: Array<{ value: string; count?: number }>;
@@ -116,7 +116,7 @@ function SideFilter({
   specifications,
   isMobile = false,
 }: SideFilterProps) {
-  const { t } = useLanguage();
+  const t = useSafeTranslation();
   const brandOptions = brands.map((brand) => ({
     value: brand.value,
     label: brand.value,
