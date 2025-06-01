@@ -22,7 +22,7 @@ export default function HeaderClient({ cart, user }: HeaderClientProps) {
   // const { t } = useLanguage();
 
   return (
-    <header className="relative z-50 h-16 w-full overflow-y-auto border-b border-primary-700 bg-white px-6 font-title xl:px-6 lg:px-0">
+    <header className="relative z-50 h-16 w-full border-b border-primary-700 bg-white px-6 font-title xl:px-6 lg:px-0">
       <div className="flex h-full items-center justify-between">
         <div className="flex items-center gap-6">
           <Logo />

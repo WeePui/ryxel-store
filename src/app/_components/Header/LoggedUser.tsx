@@ -52,7 +52,6 @@ function LoggedUser({ user }: LoggedUserProps) {
       {isModalVisible && (
         <div className="absolute right-0 z-20 mt-2 w-40 rounded-lg border border-gray-200 bg-white shadow-lg">
           <ul className="px-6 py-4">
-            {" "}
             {user.role !== "admin" && (
               <>
                 <li>

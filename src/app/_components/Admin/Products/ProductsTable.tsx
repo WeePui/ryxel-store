@@ -42,6 +42,7 @@ export default function ProductsTable({
     router.replace(`${pathname}?${params.toString()}`);
     setCurrentPage(page);
   };
+
   // Define columns for the enhanced Table component
   const columns: TableColumn<Product>[] = [
     {
