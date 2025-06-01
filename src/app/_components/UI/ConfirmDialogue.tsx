@@ -1,6 +1,6 @@
 import { JSX } from "react";
 import Button from "./Button";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 
 interface ConfirmDialogueProps {
   message: string | JSX.Element;
@@ -19,7 +19,7 @@ function ConfirmDialogue({
   onCancel,
   children,
 }: ConfirmDialogueProps) {
-  const { t } = useLanguage();
+  const t = useSafeTranslation();
   const defaultConfirmText = t("confirmDialogue.confirm");
   const defaultCancelText = t("confirmDialogue.cancel");
 

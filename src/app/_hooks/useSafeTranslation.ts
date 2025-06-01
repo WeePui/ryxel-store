@@ -42,8 +42,11 @@ const vietnameseFallback = {
   "blog.categoryMap.Gaming Gear": "Gaming Gear",
   "blog.categoryMap.Hướng dẫn": "Hướng dẫn",
   "blog.categoryMap.Esports": "Esports",
-  "blog.categoryMap.Phần mềm": "Phần mềm",
-  "blog.categoryMap.Công nghệ": "Công nghệ",
+  "blog.categoryMap.Phần mềm": "Phần mềm",  "blog.categoryMap.Công nghệ": "Công nghệ",
+
+  // Confirm dialogue translations
+  "confirmDialogue.cancel": "Hủy",
+  "confirmDialogue.confirm": "Xác nhận",
 
   // Add more translations as needed for other components
 };

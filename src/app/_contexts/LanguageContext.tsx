@@ -2260,6 +2260,16 @@ const translations = {
       en: "No articles found in this category.",
     },
   },
+  confirmDialogue: {
+    cancel: {
+      vi: "Hủy",
+      en: "Cancel",
+    },
+    confirm: {
+      vi: "Xác nhận",
+      en: "Confirm",
+    },
+  },
 };
 
 export const LanguageContext = createContext<LanguageContextType | undefined>(
