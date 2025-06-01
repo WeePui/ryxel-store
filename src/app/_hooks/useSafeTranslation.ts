@@ -29,6 +29,21 @@ const vietnameseFallback = {
   "products.sortOptions.priceLowToHigh": "Giá: Thấp đến cao",
   "products.sortOptions.bestSelling": "Bán chạy nhất",
   "products.sortOptions.topRated": "Đánh giá cao nhất",
+  // Blog translations
+  "blog.categories.all": "Tất cả",
+  "blog.categories.gamingGear": "Gaming Gear",
+  "blog.categories.tutorials": "Hướng dẫn",
+  "blog.categories.esports": "Esports",
+  "blog.categories.software": "Phần mềm",
+  "blog.categories.technology": "Công nghệ",
+  "blog.noArticles": "Không có bài viết nào trong danh mục này.",
+
+  // Blog category mappings (for filtering)
+  "blog.categoryMap.Gaming Gear": "Gaming Gear",
+  "blog.categoryMap.Hướng dẫn": "Hướng dẫn",
+  "blog.categoryMap.Esports": "Esports",
+  "blog.categoryMap.Phần mềm": "Phần mềm",
+  "blog.categoryMap.Công nghệ": "Công nghệ",
 
   // Add more translations as needed for other components
 };

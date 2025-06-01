@@ -2206,6 +2206,60 @@ const translations = {
       },
     },
   },
+  blog: {
+    categories: {
+      all: {
+        vi: "Tất cả",
+        en: "All",
+      },
+      gamingGear: {
+        vi: "Gaming Gear",
+        en: "Gaming Gear",
+      },
+      tutorials: {
+        vi: "Hướng dẫn",
+        en: "Tutorials",
+      },
+      esports: {
+        vi: "Esports",
+        en: "Esports",
+      },
+      technology: {
+        vi: "Công nghệ",
+        en: "Technology",
+      },
+      software: {
+        vi: "Phần mềm",
+        en: "Software",
+      },
+    },
+    categoryMap: {
+      "Gaming Gear": {
+        vi: "Gaming Gear",
+        en: "Gaming Gear",
+      },
+      "Hướng dẫn": {
+        vi: "Hướng dẫn",
+        en: "Tutorials",
+      },
+      Esports: {
+        vi: "Esports",
+        en: "Esports",
+      },
+      "Công nghệ": {
+        vi: "Công nghệ",
+        en: "Technology",
+      },
+      "Phần mềm": {
+        vi: "Phần mềm",
+        en: "Software",
+      },
+    },
+    noArticles: {
+      vi: "Không có bài viết nào trong danh mục này.",
+      en: "No articles found in this category.",
+    },
+  },
 };
 
 export const LanguageContext = createContext<LanguageContextType | undefined>(
