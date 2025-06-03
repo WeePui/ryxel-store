@@ -1634,3 +1634,409 @@ export const getUserById = async (userId: string, authToken: string) => {
   const data = await response.json();
   return data;
 };
+
+// FCM Token Registration
+export const registerFcmToken = async (
+  token: string,
+  authToken: { value: string },
+) => {
+  const response = await fetch(`${API_URL}/users/fcm-token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    body: JSON.stringify({
+      fcmToken: token,
+    }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to register FCM token");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Delete FCM token
+export const deleteFcmToken = async (
+  token: string,
+  authToken: { value: string },
+) => {
+  const response = await fetch(`${API_URL}/users/fcm-token`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    body: JSON.stringify({
+      fcmToken: token,
+    }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete FCM token");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// =================
+// Notification Management APIs
+// =================
+
+// Register FCM token for notifications
+export const registerNotificationToken = async (
+  token: string,
+  platform: string,
+  deviceInfo: string,
+  authToken: { value: string },
+) => {
+  const response = await fetch(`${API_URL}/notifications/tokens`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    body: JSON.stringify({
+      token,
+      platform,
+      deviceInfo,
+    }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to register notification token");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Unregister FCM token
+export const unregisterNotificationToken = async (
+  token: string,
+  authToken: { value: string },
+) => {
+  const response = await fetch(`${API_URL}/notifications/tokens`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    body: JSON.stringify({
+      token,
+    }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to unregister notification token");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Get user notifications
+export const getUserNotifications = async (
+  authToken: { value: string },
+  page: number = 1,
+  limit: number = 20,
+  type?: string,
+  isRead?: boolean,
+) => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+  });
+
+  if (type) params.append("type", type);
+  if (isRead !== undefined) params.append("isRead", isRead.toString());
+
+  const response = await fetch(`${API_URL}/notifications/user?${params}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch notifications");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Mark notification as read
+export const markNotificationAsRead = async (
+  notificationId: string,
+  authToken: { value: string },
+) => {
+  const response = await fetch(
+    `${API_URL}/notifications/user/mark-read/${notificationId}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${authToken.value}`,
+      },
+      credentials: "include",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to mark notification as read");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Mark all notifications as read
+export const markAllNotificationsAsRead = async (authToken: {
+  value: string;
+}) => {
+  const response = await fetch(`${API_URL}/notifications/user/mark-all-read`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to mark all notifications as read");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Delete notification
+export const deleteNotification = async (
+  notificationId: string,
+  authToken: { value: string },
+) => {
+  const response = await fetch(
+    `${API_URL}/notifications/user/${notificationId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authToken.value}`,
+      },
+      credentials: "include",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to delete notification");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Delete all notifications
+export const deleteAllNotifications = async (authToken: { value: string }) => {
+  const response = await fetch(`${API_URL}/notifications/user/delete-all`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete all notifications");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// =================
+// Admin Notification APIs
+// =================
+
+// Get notification statistics (admin only)
+export const getNotificationStats = async (authToken: { value: string }) => {
+  const response = await fetch(`${API_URL}/notifications/stats`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch notification stats");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Get notification history (admin only)
+export const getNotificationHistory = async (
+  authToken: { value: string },
+  page: number = 1,
+  limit: number = 50,
+  type?: string,
+  startDate?: string,
+  endDate?: string,
+) => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+  });
+
+  if (type) params.append("type", type);
+  if (startDate) params.append("startDate", startDate);
+  if (endDate) params.append("endDate", endDate);
+
+  const response = await fetch(`${API_URL}/notifications/history?${params}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch notification history");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// Send promotional notification (admin only)
+export const sendPromotionalNotification = async (
+  title: string,
+  body: string,
+  authToken: { value: string },
+  notificationData?: Record<string, string | number | boolean>,
+  targetUsers?: string[],
+) => {
+  const response = await fetch(`${API_URL}/notifications/promotional`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    body: JSON.stringify({
+      title,
+      body,
+      data: notificationData,
+      targetUsers,
+    }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to send promotional notification");
+  }
+
+  const result = await response.json();
+  return result;
+};
+
+// Send notification to specific user (admin only)
+export const sendNotificationToUser = async (
+  userId: string,
+  title: string,
+  body: string,
+  authToken: { value: string },
+  notificationData?: Record<string, string | number | boolean>,
+) => {
+  const response = await fetch(`${API_URL}/notifications/send`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    body: JSON.stringify({
+      userId,
+      payload: {
+        title,
+        body,
+        data: notificationData,
+      },
+    }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to send notification");
+  }
+
+  const result = await response.json();
+  return result;
+};
+
+// Send notification to multiple users (admin only)
+export const sendNotificationToMultipleUsers = async (
+  userIds: string[],
+  title: string,
+  body: string,
+  authToken: { value: string },
+  notificationData?: Record<string, string | number | boolean>,
+) => {
+  const response = await fetch(`${API_URL}/notifications/send-multiple`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    body: JSON.stringify({
+      userIds,
+      title,
+      body,
+      data: notificationData,
+    }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to send notifications");
+  }
+
+  const result = await response.json();
+  return result;
+};
+
+// Send notification to all users (admin only)
+export const sendNotificationToAllUsers = async (
+  title: string,
+  body: string,
+  authToken: { value: string },
+  notificationData?: Record<string, string | number | boolean>,
+) => {
+  const response = await fetch(`${API_URL}/notifications/send-all`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken.value}`,
+    },
+    body: JSON.stringify({
+      title,
+      body,
+      data: notificationData,
+    }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to send notification to all users");
+  }
+
+  const result = await response.json();
+  return result;
+};

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { FaCartShopping } from 'react-icons/fa6';
-import NavLink from '../UI/NavLink';
-import { useEffect, useRef, useState } from 'react';
-import HeaderCartModal from './HeaderCartModal';
-import { Cart } from '@/app/_types/cart';
+import { FaCartShopping } from "react-icons/fa6";
+import NavLink from "../UI/NavLink";
+import { useEffect, useRef, useState } from "react";
+import HeaderCartModal from "./HeaderCartModal";
+import { Cart } from "@/app/_types/cart";
 
 interface LoggedCartProps {
   cart: Cart;
@@ -17,7 +17,7 @@ function LoggedCart({ cart }: LoggedCartProps) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    setIsTouchDevice(window.matchMedia('(pointer: coarse)').matches);
+    setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
   }, []);
 
   const handleMouseEnter = () => {
@@ -42,9 +42,13 @@ function LoggedCart({ cart }: LoggedCartProps) {
       onMouseLeave={handleMouseLeave}
     >
       <NavLink hoverUnderline={false} href="/cart">
-        <div className="flex items-center gap-2">
+        <div className="relative">
           <FaCartShopping className="text-xl" />
-          <span className="text-tertiary-500">({cart.lineItems?.length})</span>
+          {cart.lineItems && cart.lineItems.length > 0 && (
+            <span className="absolute -right-3 -top-3 flex h-5 w-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+              {cart.lineItems.length > 99 ? "99+" : cart.lineItems.length}
+            </span>
+          )}
         </div>
       </NavLink>
       {!isTouchDevice && isModalVisible && <HeaderCartModal cart={cart} />}

@@ -111,6 +111,7 @@ const scaleVariants = {
 export default function HomePageContent() {
   const { language } = useLanguage();
   const slides = slidesContent[language] || slidesContent["vi"]; // Fallback to Vietnamese if language is undefined
+
   return (
     <>
       <section className="relative flex h-[calc(100dvh-4rem)] w-full items-center justify-center overflow-hidden bg-gray-800 xl:h-[60vh] sm:h-[70vh]">

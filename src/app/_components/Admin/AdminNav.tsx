@@ -1,17 +1,18 @@
-'use client';
+"use client";
 
-import { useToggleAdminSidebar } from '@/app/_contexts/ToggleAdminSidebarContext';
-import { usePathname, useRouter } from 'next/navigation';
-import { JSX, useState } from 'react';
+import { useToggleAdminSidebar } from "@/app/_contexts/ToggleAdminSidebarContext";
+import { usePathname, useRouter } from "next/navigation";
+import { JSX, useState } from "react";
 import {
+  FaBell,
   FaBoxes,
   FaHeadset,
   FaLayerGroup,
   FaReceipt,
   FaThLarge,
   FaUsers,
-} from 'react-icons/fa';
-import { FaCircleChevronRight, FaGears, FaTicket } from 'react-icons/fa6';
+} from "react-icons/fa";
+import { FaCircleChevronRight, FaGears, FaTicket } from "react-icons/fa6";
 
 export default function AdminNav() {
   const { isOpen } = useToggleAdminSidebar();
@@ -19,18 +20,18 @@ export default function AdminNav() {
   return (
     <div
       className={`flex flex-col ${
-        isOpen ? 'px-8 sm:px-12' : 'justify-center'
-      } gap-8 justify-between flex-1`}
+        isOpen ? "px-8 sm:px-12" : "justify-center"
+      } flex-1 justify-between gap-8`}
     >
       <section
         className={`flex flex-col gap-6 ${
-          isOpen ? 'items-start' : 'items-center'
+          isOpen ? "items-start" : "items-center"
         }`}
       >
         <h2
-          className={`text-[12px] font-title font-semibold text-grey-300 uppercase tracking-wider`}
+          className={`font-title text-[12px] font-semibold uppercase tracking-wider text-grey-300`}
         >
-          {isOpen ? 'Cửa hàng' : '•'}
+          {isOpen ? "Cửa hàng" : "•"}
         </h2>
         <AdminNavItem
           icon={<FaThLarge />}
@@ -54,20 +55,25 @@ export default function AdminNav() {
           icon={<FaLayerGroup />}
           label="Danh mục"
           href="/admin/categories"
-        />
+        />{" "}
         <AdminNavItem
           icon={<FaTicket />}
           label="Khuyến mãi"
           href="/admin/vouchers"
         />
+        <AdminNavItem
+          icon={<FaBell />}
+          label="Thông báo"
+          href="/admin/notifications"
+        />
       </section>
       <section
         className={`flex flex-col gap-6 ${
-          isOpen ? 'items-start' : 'items-center'
+          isOpen ? "items-start" : "items-center"
         }`}
       >
-        <h2 className="text-[12px] font-title font-semibold text-grey-300 uppercase tracking-wider">
-          {isOpen ? 'Khách hàng' : '•'}
+        <h2 className="font-title text-[12px] font-semibold uppercase tracking-wider text-grey-300">
+          {isOpen ? "Khách hàng" : "•"}
         </h2>
         <AdminNavItem
           icon={<FaUsers />}
@@ -77,7 +83,7 @@ export default function AdminNav() {
       </section>
       <section
         className={`flex flex-col gap-6 ${
-          isOpen ? 'items-start' : 'items-center'
+          isOpen ? "items-start" : "items-center"
         }`}
       >
         <AdminNavItem
@@ -117,15 +123,15 @@ function AdminNavItem({ icon, label, href, children }: AdminNavItemProps) {
   return (
     <div
       className={`flex flex-col ${
-        isActive ? 'text-grey-50' : 'text-grey-200'
-      } ${isOpen ? 'items-start' : 'items-center'}`}
+        isActive ? "text-grey-50" : "text-grey-200"
+      } ${isOpen ? "items-start" : "items-center"}`}
       onClick={children ? toggleExpand : () => router.push(href)}
     >
-      <div className="flex items-center gap-4 cursor-pointer w-full">
+      <div className="flex w-full cursor-pointer items-center gap-4">
         <div className="text-xl">{icon}</div>
         <span
-          className={`transition-all duration-300 font-semibold ${
-            isOpen ? 'inline' : 'hidden'
+          className={`font-semibold transition-all duration-300 ${
+            isOpen ? "inline" : "hidden"
           }`}
           title={!isOpen ? label : undefined}
         >
@@ -133,8 +139,8 @@ function AdminNavItem({ icon, label, href, children }: AdminNavItemProps) {
         </span>
         {children && isOpen ? (
           <FaCircleChevronRight
-            className={`ml-auto transition-all duration-300 text-sm ${
-              isExpanded ? 'rotate-90' : ''
+            className={`ml-auto text-sm transition-all duration-300 ${
+              isExpanded ? "rotate-90" : ""
             }`}
           />
         ) : null}
@@ -142,7 +148,7 @@ function AdminNavItem({ icon, label, href, children }: AdminNavItemProps) {
       {children && isOpen && (
         <div
           className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            isExpanded ? 'max-h-[1000px] opacity-1' : 'max-h-0 opacity-0'
+            isExpanded ? "opacity-1 max-h-[1000px]" : "max-h-0 opacity-0"
           }`}
         >
           <div className="flex flex-col gap-2 pl-5 pt-4">{children}</div>
