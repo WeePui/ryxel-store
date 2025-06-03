@@ -545,7 +545,8 @@ export async function updateAddressAction(
 
   const token = checkIsLogin.token!;
 
-  const response = await updateAddress(addressId, data, token);
+  const response = await updateAddress(addressId, addressData, token);
+
   if (response.status === "success") {
     revalidatePath("/account/addresses");
     return {
