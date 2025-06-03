@@ -55,13 +55,12 @@ export default function AdminNotificationsPage() {
   const [activeTab, setActiveTab] = useState<"dashboard" | "history" | "send">(
     "dashboard",
   );
-
   // Send notification form state
   const [notificationForm, setNotificationForm] = useState({
     type: "promotional" as "promotional" | "user" | "broadcast",
     title: "",
     body: "",
-    userId: "",
+    email: "",
     data: {} as Record<string, string | number | boolean>,
   });
 
@@ -104,16 +103,24 @@ export default function AdminNotificationsPage() {
       toast.error("An unexpected error occurred while fetching history");
     }
   };
-
   const handleSendNotification = async () => {
     if (!notificationForm.title.trim() || !notificationForm.body.trim()) {
       toast.error("Title and body are required");
       return;
     }
 
-    if (notificationForm.type === "user" && !notificationForm.userId.trim()) {
-      toast.error("User ID is required for user-specific notifications");
+    if (notificationForm.type === "user" && !notificationForm.email.trim()) {
+      toast.error("Email address is required for user-specific notifications");
       return;
+    }
+
+    // Email validation for user-specific notifications
+    if (notificationForm.type === "user") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(notificationForm.email.trim())) {
+        toast.error("Please enter a valid email address");
+        return;
+      }
     }
 
     setSendingNotification(true);
@@ -127,10 +134,9 @@ export default function AdminNotificationsPage() {
             notificationForm.body,
             notificationForm.data,
           );
-          break;
-        case "user":
+          break;        case "user":
           response = await sendNotificationToUserAction(
-            notificationForm.userId,
+            notificationForm.email,
             notificationForm.title,
             notificationForm.body,
             notificationForm.data,
@@ -149,12 +155,11 @@ export default function AdminNotificationsPage() {
 
       if (response.success) {
         toast.success("Notification sent successfully!");
-        setShowSendDialog(false);
-        setNotificationForm({
+        setShowSendDialog(false);        setNotificationForm({
           type: "promotional",
           title: "",
           body: "",
-          userId: "",
+          email: "",
           data: {},
         });
         await fetchStats();
@@ -409,16 +414,15 @@ export default function AdminNotificationsPage() {
                     { value: "broadcast", label: "Toàn bộ người dùng" },
                   ]}
                 />
-              </div>
-
-              {notificationForm.type === "user" && (
+              </div>              {notificationForm.type === "user" && (
                 <div>
                   <Input
-                    id="user-id"
-                    label="User ID"
-                    type="text"
-                    value={notificationForm.userId}
-                    onChange={(e) => handleFormChange("userId", e.target.value)}
+                    id="user-email"
+                    label="Email Address"
+                    type="email"
+                    value={notificationForm.email}
+                    onChange={(e) => handleFormChange("email", e.target.value)}
+                    placeholder="user@example.com"
                   />
                 </div>
               )}

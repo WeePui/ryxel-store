@@ -1948,14 +1948,17 @@ export const sendPromotionalNotification = async (
   return result;
 };
 
-// Send notification to specific user (admin only)
+// Send notification to specific user (admin only) - supports both userId and email
 export const sendNotificationToUser = async (
-  userId: string,
+  userIdentifier: string,
   title: string,
   body: string,
   authToken: { value: string },
   notificationData?: Record<string, string | number | boolean>,
 ) => {
+  // Determine if it's an email or userId
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userIdentifier);
+  
   const response = await fetch(`${API_URL}/notifications/send`, {
     method: "POST",
     headers: {
@@ -1963,7 +1966,7 @@ export const sendNotificationToUser = async (
       Authorization: `Bearer ${authToken.value}`,
     },
     body: JSON.stringify({
-      userId,
+      ...(isEmail ? { email: userIdentifier } : { userId: userIdentifier }),
       payload: {
         title,
         body,
@@ -1981,14 +1984,17 @@ export const sendNotificationToUser = async (
   return result;
 };
 
-// Send notification to multiple users (admin only)
+// Send notification to multiple users (admin only) - supports both userIds and emails
 export const sendNotificationToMultipleUsers = async (
-  userIds: string[],
+  userIdentifiers: string[],
   title: string,
   body: string,
   authToken: { value: string },
   notificationData?: Record<string, string | number | boolean>,
 ) => {
+  // Check if any of the identifiers are emails
+  const hasEmails = userIdentifiers.some(id => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id));
+  
   const response = await fetch(`${API_URL}/notifications/send-multiple`, {
     method: "POST",
     headers: {
@@ -1996,7 +2002,7 @@ export const sendNotificationToMultipleUsers = async (
       Authorization: `Bearer ${authToken.value}`,
     },
     body: JSON.stringify({
-      userIds,
+      ...(hasEmails ? { emails: userIdentifiers } : { userIds: userIdentifiers }),
       title,
       body,
       data: notificationData,

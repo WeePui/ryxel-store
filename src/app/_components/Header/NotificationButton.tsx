@@ -54,13 +54,7 @@ export default function NotificationButton({
       disabled={loading}
       aria-label={`Notifications ${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
     >
-      <FaBell
-        className={`text-xl transition-colors ${
-          unreadCount > 0
-            ? "text-primary-500 hover:text-blue-800"
-            : "text-gray-600 hover:text-gray-800"
-        }`}
-      />
+      <FaBell className={`text-xl transition-colors hover:text-gray-400`} />
 
       {unreadCount > 0 && (
         <span className="absolute -right-3 -top-3 flex h-5 w-5 min-w-[20px] animate-pulse items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">

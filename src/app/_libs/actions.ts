@@ -1824,7 +1824,7 @@ export const sendPromotionalNotificationAction = async (
 };
 
 export const sendNotificationToUserAction = async (
-  userId: string,
+  userIdentifier: string,
   title: string,
   body: string,
   data?: Record<string, string | number | boolean>,
@@ -1835,7 +1835,7 @@ export const sendNotificationToUserAction = async (
 
     const authToken = { value: checkIsLogin.token!.value };
     const response = await sendNotificationToUser(
-      userId,
+      userIdentifier,
       title,
       body,
       authToken,
@@ -1868,7 +1868,7 @@ export const sendNotificationToUserAction = async (
 };
 
 export const sendNotificationToMultipleUsersAction = async (
-  userIds: string[],
+  userIdentifiers: string[],
   title: string,
   body: string,
   data?: Record<string, string | number | boolean>,
@@ -1879,7 +1879,7 @@ export const sendNotificationToMultipleUsersAction = async (
 
     const authToken = { value: checkIsLogin.token!.value };
     const response = await sendNotificationToMultipleUsers(
-      userIds,
+      userIdentifiers,
       title,
       body,
       authToken,

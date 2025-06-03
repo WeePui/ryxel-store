@@ -51,12 +51,12 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   const refreshUnreadCount = useCallback(async () => {
     try {
       const response = await getUserNotificationsAction(1, 1, false);
-      
+
       if (response.success && response.data) {
         setUnreadCount(response.data.data.unreadCount || 0);
       }
     } catch (error) {
-      console.error('Failed to fetch unread count:', error);
+      console.error("Failed to fetch unread count:", error);
     }
   }, []);
 
@@ -107,7 +107,8 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
     return () => {
       unsubscribe();
-    };  }, [
+    };
+  }, [
     getPermissionStatus,
     onMessage,
     showNotification,
