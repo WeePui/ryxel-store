@@ -191,7 +191,7 @@ export default function NotificationsPage() {
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between md:flex-col md:items-start md:gap-4">
         <div className="flex items-center gap-2">
           <FaBell className="h-6 w-6" />
           <h1 className="text-2xl font-bold">Notifications</h1>
@@ -267,7 +267,7 @@ export default function NotificationsPage() {
               key={notification._id}
               className={`rounded-lg border bg-white p-4 shadow-sm transition-all ${!notification.isRead ? "border-l-4 border-l-blue-500 bg-blue-50/30" : ""}`}
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between md:flex-col md:gap-2">
                 <div className="flex-1">
                   <div className="mb-2 flex items-center gap-2">
                     <h3 className="font-semibold">{notification.title}</h3>
@@ -290,7 +290,7 @@ export default function NotificationsPage() {
                   </p>
                 </div>
 
-                <div className="ml-4 flex gap-2">
+                <div className="ml-4 flex gap-2 md:self-end">
                   {!notification.isRead && (
                     <Button
                       onClick={() => handleMarkAsRead(notification._id)}
