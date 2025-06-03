@@ -312,7 +312,7 @@ export async function deleteAddress(id: string, token: { value: string }) {
 
 export async function updateAddress(
   id: string,
-  formData: { [key: string]: { code: string | number; name: string } | string },
+  formData: AddressFormInput,
   token: { value: string },
 ) {
   const response = await fetch(`${API_URL}/addresses/${id}`, {
@@ -1958,7 +1958,7 @@ export const sendNotificationToUser = async (
 ) => {
   // Determine if it's an email or userId
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userIdentifier);
-  
+
   const response = await fetch(`${API_URL}/notifications/send`, {
     method: "POST",
     headers: {
@@ -1993,8 +1993,10 @@ export const sendNotificationToMultipleUsers = async (
   notificationData?: Record<string, string | number | boolean>,
 ) => {
   // Check if any of the identifiers are emails
-  const hasEmails = userIdentifiers.some(id => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id));
-  
+  const hasEmails = userIdentifiers.some((id) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id),
+  );
+
   const response = await fetch(`${API_URL}/notifications/send-multiple`, {
     method: "POST",
     headers: {
@@ -2002,7 +2004,9 @@ export const sendNotificationToMultipleUsers = async (
       Authorization: `Bearer ${authToken.value}`,
     },
     body: JSON.stringify({
-      ...(hasEmails ? { emails: userIdentifiers } : { userIds: userIdentifiers }),
+      ...(hasEmails
+        ? { emails: userIdentifiers }
+        : { userIds: userIdentifiers }),
       title,
       body,
       data: notificationData,

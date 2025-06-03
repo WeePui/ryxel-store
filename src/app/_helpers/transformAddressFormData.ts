@@ -1,5 +1,5 @@
-import { City, District, Ward } from '../_types/address';
-import { AddressFormInput, AddressSelectInput } from '../_types/validateInput';
+import { City, District, Ward } from "../_types/address";
+import { AddressFormInput, AddressSelectInput } from "../_types/validateInput";
 
 export function transformAddressFormData(data: AddressSelectInput) {
   const transformedCity = {
@@ -22,7 +22,7 @@ export function transformAddressFormData(data: AddressSelectInput) {
     district: transformedDistrict,
     ward: transformedWard,
     address: data.address as string,
-    isDefault: data.isDefault === 'true',
+    isDefault: data.isDefault === "true",
   };
 
   return addressData;
