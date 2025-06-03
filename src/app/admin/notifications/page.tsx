@@ -134,7 +134,8 @@ export default function AdminNotificationsPage() {
             notificationForm.body,
             notificationForm.data,
           );
-          break;        case "user":
+          break;
+        case "user":
           response = await sendNotificationToUserAction(
             notificationForm.email,
             notificationForm.title,
@@ -155,7 +156,8 @@ export default function AdminNotificationsPage() {
 
       if (response.success) {
         toast.success("Notification sent successfully!");
-        setShowSendDialog(false);        setNotificationForm({
+        setShowSendDialog(false);
+        setNotificationForm({
           type: "promotional",
           title: "",
           body: "",
@@ -414,7 +416,8 @@ export default function AdminNotificationsPage() {
                     { value: "broadcast", label: "Toàn bộ người dùng" },
                   ]}
                 />
-              </div>              {notificationForm.type === "user" && (
+              </div>{" "}
+              {notificationForm.type === "user" && (
                 <div>
                   <Input
                     id="user-email"
@@ -426,7 +429,6 @@ export default function AdminNotificationsPage() {
                   />
                 </div>
               )}
-
               <div>
                 <Input
                   id="notification-title"
@@ -436,7 +438,6 @@ export default function AdminNotificationsPage() {
                   onChange={(e) => handleFormChange("title", e.target.value)}
                 />
               </div>
-
               <div>
                 <Input
                   id="notification-body"
@@ -446,7 +447,6 @@ export default function AdminNotificationsPage() {
                   onChange={(e) => handleFormChange("body", e.target.value)}
                 />
               </div>
-
               <div className="flex justify-end gap-3 pt-4">
                 <Button
                   onClick={() => setShowSendDialog(false)}
