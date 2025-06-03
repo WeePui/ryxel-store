@@ -47,10 +47,9 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     showNotification,
     isSupported,
   } = useNotifications();
-
   const refreshUnreadCount = useCallback(async () => {
     try {
-      const response = await getUserNotificationsAction(1, 1, false);
+      const response = await getUserNotificationsAction(1, 1, undefined);
 
       if (response.success && response.data) {
         setUnreadCount(response.data.data.unreadCount || 0);

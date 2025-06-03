@@ -1960,7 +1960,7 @@ export const sendNotificationToAllUsersAction = async (
 export async function getUserNotificationsAction(
   page: number = 1,
   limit: number = 10,
-  unreadOnly: boolean = false,
+  isRead?: boolean,
 ) {
   try {
     const cookiesStore = await cookies();
@@ -1978,7 +1978,7 @@ export async function getUserNotificationsAction(
       page,
       limit,
       undefined,
-      unreadOnly,
+      isRead,
     );
     return {
       success: true,

@@ -42,11 +42,19 @@ export default function NotificationsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filter, setFilter] = useState<"all" | "unread" | "read">("all");
-
-  const fetchNotifications = async (page = 1, unreadOnly = false) => {
+  const fetchNotifications = async (page = 1, filterType?: "all" | "unread" | "read") => {
     try {
       setLoading(true);
-      const response = await getUserNotificationsAction(page, 20, unreadOnly);
+      
+      let isRead: boolean | undefined;
+      if (filterType === "read") {
+        isRead = true;
+      } else if (filterType === "unread") {
+        isRead = false;
+      }
+      // For "all" or undefined, isRead remains undefined to get all notifications
+      
+      const response = await getUserNotificationsAction(page, 20, isRead);
 
       if (response.success) {
         const { data } = response.data as NotificationResponse;
@@ -80,11 +88,9 @@ export default function NotificationsPage() {
 
   const handleMarkAsRead = async (notificationId: string) => {
     try {
-      const response = await markNotificationAsReadAction(notificationId);
-
-      if (response.success) {
+      const response = await markNotificationAsReadAction(notificationId);      if (response.success) {
         toast.success("Notification marked as read");
-        fetchNotifications(currentPage, filter === "unread");
+        fetchNotifications(currentPage, filter);
       } else {
         toast.error(
           response.errors?.message || "Failed to mark notification as read",
@@ -97,11 +103,9 @@ export default function NotificationsPage() {
 
   const handleMarkAllAsRead = async () => {
     try {
-      const response = await markAllNotificationsAsReadAction();
-
-      if (response.success) {
+      const response = await markAllNotificationsAsReadAction();      if (response.success) {
         toast.success("All notifications marked as read");
-        fetchNotifications(currentPage, filter === "unread");
+        fetchNotifications(currentPage, filter);
       } else {
         toast.error(
           response.errors?.message ||
@@ -115,11 +119,9 @@ export default function NotificationsPage() {
 
   const handleDeleteNotification = async (notificationId: string) => {
     try {
-      const response = await deleteNotificationAction(notificationId);
-
-      if (response.success) {
+      const response = await deleteNotificationAction(notificationId);      if (response.success) {
         toast.success("Notification deleted successfully");
-        fetchNotifications(currentPage, filter === "unread");
+        fetchNotifications(currentPage, filter);
       } else {
         toast.error(
           response.errors?.message || "Failed to delete notification",
@@ -132,11 +134,9 @@ export default function NotificationsPage() {
 
   const handleDeleteAllNotifications = async () => {
     try {
-      const response = await deleteAllNotificationsAction();
-
-      if (response.success) {
+      const response = await deleteAllNotificationsAction();      if (response.success) {
         toast.success("All notifications deleted successfully");
-        fetchNotifications(currentPage, filter === "unread");
+        fetchNotifications(currentPage, filter);
       } else {
         toast.error(
           response.errors?.message || "Failed to delete all notifications",
@@ -146,11 +146,9 @@ export default function NotificationsPage() {
       toast.error("An unexpected error occurred");
     }
   };
-
   const handleFilterChange = (newFilter: "all" | "unread" | "read") => {
     setFilter(newFilter);
-    const unreadOnly = newFilter === "unread";
-    fetchNotifications(1, unreadOnly);
+    fetchNotifications(1, newFilter);
   };
 
   const formatDate = (dateString: string) => {
@@ -176,9 +174,8 @@ export default function NotificationsPage() {
         return "bg-gray-100 text-gray-800";
     }
   };
-
   useEffect(() => {
-    fetchNotifications();
+    fetchNotifications(1, "all");
   }, []);
 
   if (loading && (notifications?.length === 0 || !notifications)) {
@@ -321,10 +318,9 @@ export default function NotificationsPage() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="mt-8 flex justify-center gap-2">
-          <Button
+        <div className="mt-8 flex justify-center gap-2">          <Button
             onClick={() =>
-              fetchNotifications(currentPage - 1, filter === "unread")
+              fetchNotifications(currentPage - 1, filter)
             }
             disabled={currentPage === 1}
             variant="tertiary"
@@ -338,7 +334,7 @@ export default function NotificationsPage() {
 
           <Button
             onClick={() =>
-              fetchNotifications(currentPage + 1, filter === "unread")
+              fetchNotifications(currentPage + 1, filter)
             }
             disabled={currentPage === totalPages}
             variant="tertiary"
