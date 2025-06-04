@@ -219,8 +219,8 @@ export const sendOTPAction = async ({
   counter,
 }: {
   counter: number;
-  success?: true;
-}) => {
+  success?: boolean;
+}): Promise<{ counter: number; success?: boolean; errors?: FormError }> => {
   try {
     const cookiesStore = await cookies();
     const token = cookiesStore.get("jwt");
@@ -237,6 +237,7 @@ export const sendOTPAction = async ({
     throw new Error(response.message || "Failed to send OTP.");
   } catch (error) {
     return {
+      success: false,
       counter: counter,
       errors: {
         message: (error as Error).message || "An unknown error occurred.",
@@ -250,6 +251,7 @@ export async function verifyOTPAction(_: unknown, formData: FormData) {
 
   if (!otp) {
     return {
+      success: false,
       errors: {
         message: "OTP is required",
       },
@@ -269,6 +271,7 @@ export async function verifyOTPAction(_: unknown, formData: FormData) {
     });
 
     return {
+      success: false,
       errors: {
         message: data.message,
       },

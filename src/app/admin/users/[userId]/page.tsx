@@ -2,9 +2,9 @@ import UserDetailClient from "@/app/_components/Admin/Users/UserDetailClient";
 import { cookies } from "next/headers";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 }
 
 export default async function UserDetailPage({ params }: PageProps) {
@@ -15,7 +15,7 @@ export default async function UserDetailPage({ params }: PageProps) {
     throw new Error("Đăng nhập để tiếp tục");
   }
 
-  const { userId } = params;
+  const { userId } = await params;
 
   return <UserDetailClient userId={userId} authToken={token} />;
 }

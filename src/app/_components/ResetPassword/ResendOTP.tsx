@@ -12,6 +12,7 @@ interface ResendOTPProps {
 function ResendOTP({ delay = 60 }: ResendOTPProps) {
   const { t } = useLanguage();
   const [state, action, isPending] = useActionState(sendOTPAction, {
+    success: undefined,
     counter: 0,
   });
   const [timer, setTimer] = useState(0);
