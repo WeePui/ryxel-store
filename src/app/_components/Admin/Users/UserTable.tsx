@@ -180,7 +180,7 @@ export default function UserTable({ authToken }: UserTableProps) {
       title: "Thao tác",
       dataIndex: "_id",
       key: "actions",
-      render: (value, record) => (
+      render: (value) => (
         <div className="flex items-center justify-center gap-2">
           <NavLink
             href={`/admin/users/${value as string}`}
