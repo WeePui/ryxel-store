@@ -49,7 +49,7 @@ export default function NotificationButton({
   return (
     <button
       onClick={handleClick}
-      className={`relative rounded-lg transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${className}`}
+      className={`relative rounded-lg transition-colors hover:bg-gray-100 ${className}`}
       title={`Notifications ${unreadCount > 0 ? `(${unreadCount} unread)` : ""}`}
       disabled={loading}
       aria-label={`Notifications ${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}

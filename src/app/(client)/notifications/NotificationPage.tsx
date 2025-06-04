@@ -12,6 +12,7 @@ import Button from "@/app/_components/UI/Button";
 import { FaBell, FaCheck, FaCheckDouble, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Loader from "@/app/_components/UI/Loader";
+import { useLanguage } from "@/app/_contexts/LanguageContext";
 
 interface Notification {
   _id: string;
@@ -36,16 +37,20 @@ interface NotificationResponse {
 }
 
 export default function NotificationsPage() {
+  const { t } = useLanguage();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filter, setFilter] = useState<"all" | "unread" | "read">("all");
-  const fetchNotifications = async (page = 1, filterType?: "all" | "unread" | "read") => {
+  const fetchNotifications = async (
+    page = 1,
+    filterType?: "all" | "unread" | "read",
+  ) => {
     try {
       setLoading(true);
-      
+
       let isRead: boolean | undefined;
       if (filterType === "read") {
         isRead = true;
@@ -53,12 +58,11 @@ export default function NotificationsPage() {
         isRead = false;
       }
       // For "all" or undefined, isRead remains undefined to get all notifications
-      
+
       const response = await getUserNotificationsAction(page, 20, isRead);
 
       if (response.success) {
         const { data } = response.data as NotificationResponse;
-        console.log("Fetched notifications:", data);
 
         setNotifications(data.notifications || []);
         setUnreadCount(data.unreadCount || 0);
@@ -88,7 +92,8 @@ export default function NotificationsPage() {
 
   const handleMarkAsRead = async (notificationId: string) => {
     try {
-      const response = await markNotificationAsReadAction(notificationId);      if (response.success) {
+      const response = await markNotificationAsReadAction(notificationId);
+      if (response.success) {
         toast.success("Notification marked as read");
         fetchNotifications(currentPage, filter);
       } else {
@@ -103,7 +108,8 @@ export default function NotificationsPage() {
 
   const handleMarkAllAsRead = async () => {
     try {
-      const response = await markAllNotificationsAsReadAction();      if (response.success) {
+      const response = await markAllNotificationsAsReadAction();
+      if (response.success) {
         toast.success("All notifications marked as read");
         fetchNotifications(currentPage, filter);
       } else {
@@ -119,7 +125,8 @@ export default function NotificationsPage() {
 
   const handleDeleteNotification = async (notificationId: string) => {
     try {
-      const response = await deleteNotificationAction(notificationId);      if (response.success) {
+      const response = await deleteNotificationAction(notificationId);
+      if (response.success) {
         toast.success("Notification deleted successfully");
         fetchNotifications(currentPage, filter);
       } else {
@@ -134,7 +141,8 @@ export default function NotificationsPage() {
 
   const handleDeleteAllNotifications = async () => {
     try {
-      const response = await deleteAllNotificationsAction();      if (response.success) {
+      const response = await deleteAllNotificationsAction();
+      if (response.success) {
         toast.success("All notifications deleted successfully");
         fetchNotifications(currentPage, filter);
       } else {
@@ -191,7 +199,7 @@ export default function NotificationsPage() {
       <div className="mb-6 flex items-center justify-between md:flex-col md:items-start md:gap-4">
         <div className="flex items-center gap-2">
           <FaBell className="h-6 w-6" />
-          <h1 className="text-2xl font-bold">Notifications</h1>
+          <h1 className="text-2xl font-bold">{t("notifications.title")}</h1>
           {unreadCount > 0 && (
             <span className="inline-flex items-center rounded-full bg-red-500 px-2 py-1 text-xs font-medium text-white">
               {unreadCount}
@@ -208,7 +216,7 @@ export default function NotificationsPage() {
               className="flex items-center gap-2"
             >
               <FaCheckDouble className="h-4 w-4" />
-              Mark All Read
+              {t("notifications.markAllRead")}
             </Button>
           )}
 
@@ -220,7 +228,7 @@ export default function NotificationsPage() {
               className="flex items-center gap-2"
             >
               <FaTrash className="h-4 w-4" />
-              Delete All
+              {t("notifications.deleteAll")}
             </Button>
           )}
         </div>
@@ -233,21 +241,21 @@ export default function NotificationsPage() {
           variant={filter === "all" ? "primary" : "tertiary"}
           size="small"
         >
-          All
+          {t("notifications.filter.all")}
         </Button>
         <Button
           onClick={() => handleFilterChange("unread")}
           variant={filter === "unread" ? "primary" : "tertiary"}
           size="small"
         >
-          Unread
+          {t("notifications.filter.unread")}
         </Button>
         <Button
           onClick={() => handleFilterChange("read")}
           variant={filter === "read" ? "primary" : "tertiary"}
           size="small"
         >
-          Read
+          {t("notifications.filter.read")}
         </Button>
       </div>
 
@@ -256,7 +264,7 @@ export default function NotificationsPage() {
         {(notifications?.length ?? 0) === 0 ? (
           <div className="rounded-lg border bg-white p-8 text-center shadow-sm">
             <FaBell className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-            <p className="text-gray-500">No notifications found</p>
+            <p className="text-gray-500">{t("notifications.noNotifications")}</p>
           </div>
         ) : (
           (notifications || []).map((notification) => (
@@ -271,11 +279,11 @@ export default function NotificationsPage() {
                     <span
                       className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getNotificationTypeColor(notification.type)}`}
                     >
-                      {notification.type}
+                      {t(`notifications.type.${notification.type}`)}
                     </span>
                     {!notification.isRead && (
                       <span className="inline-flex items-center rounded-full bg-red-500 px-2 py-1 text-xs font-medium text-white">
-                        New
+                        {t("notifications.new")}
                       </span>
                     )}
                   </div>
@@ -296,7 +304,7 @@ export default function NotificationsPage() {
                       className="flex items-center gap-1"
                     >
                       <FaCheck className="h-3 w-3" />
-                      Mark Read
+                      {t("notifications.markRead")}
                     </Button>
                   )}
 
@@ -307,7 +315,7 @@ export default function NotificationsPage() {
                     className="flex items-center gap-1"
                   >
                     <FaTrash className="h-3 w-3" />
-                    Delete
+                    {t("notifications.delete")}
                   </Button>
                 </div>
               </div>
@@ -318,28 +326,23 @@ export default function NotificationsPage() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="mt-8 flex justify-center gap-2">          <Button
-            onClick={() =>
-              fetchNotifications(currentPage - 1, filter)
-            }
+        <div className="mt-8 flex justify-center gap-2">
+          <Button
+            onClick={() => fetchNotifications(currentPage - 1, filter)}
             disabled={currentPage === 1}
             variant="tertiary"
           >
-            Previous
+            {t("pagination.previous")}
           </Button>
-
           <span className="flex items-center px-4">
-            Page {currentPage} of {totalPages}
+            {t("pagination.page", { page: currentPage, totalPages })}
           </span>
-
           <Button
-            onClick={() =>
-              fetchNotifications(currentPage + 1, filter)
-            }
+            onClick={() => fetchNotifications(currentPage + 1, filter)}
             disabled={currentPage === totalPages}
             variant="tertiary"
           >
-            Next
+            {t("pagination.next")}
           </Button>
         </div>
       )}

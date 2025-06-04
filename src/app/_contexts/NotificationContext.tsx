@@ -84,8 +84,6 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
     // Listen for foreground messages
     const unsubscribe = onMessage((payload: MessagePayload) => {
-      console.log("Foreground notification received:", payload);
-
       // Show notification if app is in foreground
       const title = payload.notification?.title || "New Notification";
       const body = payload.notification?.body || "You have a new notification";
@@ -115,21 +113,12 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     refreshUnreadCount,
   ]);
   const handleRequestPermission = useCallback(async (): Promise<boolean> => {
-    console.log("handleRequestPermission called");
-    console.log(
-      "Current Notification.permission:",
-      typeof window !== "undefined" ? Notification?.permission : "server-side",
-    );
-
     try {
       const granted = await requestPermission();
-      console.log("requestPermission result:", granted);
 
       setPermission(getPermissionStatus());
-      console.log("Updated permission state:", getPermissionStatus());
 
       if (granted) {
-        console.log("Setting up notifications...");
         await handleSetupNotifications();
       }
 
@@ -178,19 +167,11 @@ export const NotificationPermissionBanner: React.FC = () => {
     setShowBanner(isSupported && permission === "default");
   }, [isSupported, permission]);
   const handleEnable = async () => {
-    console.log("Enable button clicked");
-    console.log("Current permission:", permission);
-    console.log("isSupported:", isSupported);
-
     try {
       const granted = await requestPermission();
-      console.log("Permission request result:", granted);
 
       if (granted) {
         setShowBanner(false);
-        console.log("Permission granted, banner hidden");
-      } else {
-        console.log("Permission denied or failed");
       }
     } catch (error) {
       console.error("Error in handleEnable:", error);

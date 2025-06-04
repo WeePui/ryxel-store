@@ -90,7 +90,6 @@ class NotificationService {
 
       if (token) {
         this.currentToken = token;
-        console.log("FCM Token:", token);
 
         // Register token with backend
         await this.registerToken(token);

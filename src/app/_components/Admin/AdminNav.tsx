@@ -6,23 +6,18 @@ import { JSX, useState } from "react";
 import {
   FaBell,
   FaBoxes,
-  FaHeadset,
   FaLayerGroup,
   FaReceipt,
   FaThLarge,
   FaUsers,
 } from "react-icons/fa";
-import { FaCircleChevronRight, FaGears, FaTicket } from "react-icons/fa6";
+import { FaCircleChevronRight, FaTicket } from "react-icons/fa6";
 
 export default function AdminNav() {
   const { isOpen } = useToggleAdminSidebar();
 
   return (
-    <div
-      className={`flex flex-col ${
-        isOpen ? "px-8 sm:px-12" : "justify-center"
-      } flex-1 justify-between gap-8`}
-    >
+    <div className="flex flex-1 flex-col gap-8 px-8 sm:px-12">
       <section
         className={`flex flex-col gap-6 ${
           isOpen ? "items-start" : "items-center"
@@ -55,16 +50,11 @@ export default function AdminNav() {
           icon={<FaLayerGroup />}
           label="Danh mục"
           href="/admin/categories"
-        />{" "}
+        />
         <AdminNavItem
           icon={<FaTicket />}
           label="Khuyến mãi"
           href="/admin/vouchers"
-        />
-        <AdminNavItem
-          icon={<FaBell />}
-          label="Thông báo"
-          href="/admin/notifications"
         />
       </section>
       <section
@@ -80,21 +70,10 @@ export default function AdminNav() {
           label="Khách hàng"
           href="/admin/users"
         />
-      </section>
-      <section
-        className={`flex flex-col gap-6 ${
-          isOpen ? "items-start" : "items-center"
-        }`}
-      >
         <AdminNavItem
-          icon={<FaGears />}
-          label="Cài đặt"
-          href="/admin/settings"
-        />
-        <AdminNavItem
-          icon={<FaHeadset />}
-          label="Hỗ trợ"
-          href="/admin/support"
+          icon={<FaBell />}
+          label="Thông báo"
+          href="/admin/notifications"
         />
       </section>
     </div>

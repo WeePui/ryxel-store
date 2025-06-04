@@ -92,7 +92,6 @@ export default function AdminNotificationsPage() {
     try {
       const response = await getNotificationHistoryAction(1, 50);
       if (response.success && "data" in response) {
-        console.log("Hell: o", response.data);
         setHistory(response.data.notifications || []);
       } else {
         toast.error(
