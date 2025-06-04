@@ -78,7 +78,7 @@ export default function NewReleasesSection() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {language === "vi" ? "Mua ngay" : "Buy now"}{" "}
+              {language === "vi" ? "Mua ngay" : "Buy now"}
               <motion.span
                 animate={{ x: [0, 5, 0] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}

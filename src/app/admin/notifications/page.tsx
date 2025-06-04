@@ -415,7 +415,7 @@ export default function AdminNotificationsPage() {
                     { value: "broadcast", label: "Toàn bộ người dùng" },
                   ]}
                 />
-              </div>{" "}
+              </div>
               {notificationForm.type === "user" && (
                 <div>
                   <Input
