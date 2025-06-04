@@ -21,11 +21,7 @@ const inputVariants = cva(
     variants: {
       variant: {
         // Standard input with border
-        standard: [
-          "border-grey-300 text-gray-900",
-          "focus:border-primary-400",
-          "dark:border-gray-600 dark:text-white dark:focus:border-primary-500",
-        ],
+        standard: ["border-grey-300 text-gray-900", "focus:border-primary-400"],
         // Input with error state
         error: ["!border-red-500 !text-red-500", "focus:border-red-500"],
         // Successful validation
@@ -75,10 +71,7 @@ const labelVariants = cva(
   {
     variants: {
       variant: {
-        standard: [
-          "text-gray-500 peer-focus:text-primary-500",
-          "dark:text-gray-400 peer-focus:dark:text-primary-300",
-        ],
+        standard: ["text-gray-500 peer-focus:text-primary-500"],
         error: ["text-red-500 peer-focus:text-red-500"],
         success: ["text-green-600 peer-focus:text-green-700"],
         disabled: ["text-grey-300"],
@@ -356,7 +349,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               "h-4 w-4 rounded-xl border-gray-300",
               "text-primary-600 focus:ring-2 focus:ring-primary-500",
               "disabled:cursor-not-allowed disabled:opacity-50",
-              "dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600",
               {
                 "bg-white": bgColor === "white",
                 "bg-transparent": bgColor === "transparent",
@@ -373,7 +365,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={cn("ms-2 text-sm font-medium", {
               "cursor-not-allowed text-grey-300": disabled,
               "text-grey-400": !disabled,
-              "dark:text-gray-300": true,
             })}
           >
             {label}

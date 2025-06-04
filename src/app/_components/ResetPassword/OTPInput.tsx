@@ -65,7 +65,7 @@ function OTPInput() {
             ref={(el) => {
               if (el) inputs.current[index] = el;
             }}
-            className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-grey-300 bg-transparent text-center font-bold text-primary-default focus:border-primary-400 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary-500"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-grey-300 bg-transparent text-center font-bold text-primary-default focus:border-primary-400 focus:outline-none focus:ring-0"
           />
         ))}
         <input type="hidden" name="otp" value={otp.join("")} />
