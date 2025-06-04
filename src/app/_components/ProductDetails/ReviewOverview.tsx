@@ -80,7 +80,7 @@ export default function ReviewOverview({
               >
                 <FaRegStar />
               </motion.span>
-            ))}{" "}
+            ))}
           </motion.div>
           <motion.p
             className="text-gray-400"
@@ -109,7 +109,7 @@ export default function ReviewOverview({
                 onSelectRating={handleRatingSelect}
               />
             );
-          })}{" "}
+          })}
         <motion.div
           className="mb-1 mt-3 flex justify-between self-center text-center transition-all duration-300 hover:border-b-[1px] hover:border-primary-default hover:opacity-70 dark:hover:border-white"
           role="button"

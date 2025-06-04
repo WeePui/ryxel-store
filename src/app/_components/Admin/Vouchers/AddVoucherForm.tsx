@@ -170,7 +170,7 @@ export default function AddVoucherForm({ discount }: AddVoucherFormProps) {
         error={!!state?.errors?.minOrderValue}
         errorMessage={state?.errors?.minOrderValue}
         disabled={isPending}
-      />{" "}
+      />
       <Input
         type="number"
         label="Số lượt sử dụng tối đa"

@@ -38,7 +38,7 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
                   <div>
                     <p className="text-sm font-medium">
                       {(item.product as Product).name}
-                    </p>{" "}
+                    </p>
                     <p className="text-sm text-gray-500">
                       {item.quantity} ({t("cart.modal.productsCount")}) x{" "}
                       {formatMoney((item.product as Product).lowestPrice)}
@@ -50,7 +50,7 @@ function HeaderCartModal({ cart }: HeaderCartModalProps) {
             {lineItems.length > 3 && (
               <div className="absolute bottom-0 left-0 h-12 w-full bg-gradient-to-t from-white to-transparent"></div>
             )}
-          </ul>{" "}
+          </ul>
         </div>
       ) : (
         <p className="text-sm text-gray-500">{t("cart.modal.empty")}</p>

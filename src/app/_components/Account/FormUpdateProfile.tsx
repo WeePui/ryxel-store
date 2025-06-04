@@ -159,7 +159,7 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               {t("account.profile.email")}
             </label>
             <div className="col-span-3 flex w-full items-center gap-4">
-              <span>{user && user.email}</span>{" "}
+              <span>{user && user.email}</span>
               {!user.emailVerified && (
                 <NavLink href="#" hoverUnderline={false}>
                   <div

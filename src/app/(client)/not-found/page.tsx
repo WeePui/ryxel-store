@@ -23,9 +23,7 @@ export default function Page() {
         {t("notFound.title")}
       </h1>
       <p className="mb-4 text-xl text-primary-400">{t("notFound.subtitle")}</p>
-      <p className="mb-8 max-w-md text-gray-600">
-        {t("notFound.description")}
-      </p>{" "}
+      <p className="mb-8 max-w-md text-gray-600">{t("notFound.description")}</p>
       <Button onClick={() => router.push("/")} size="large" icon={<FaHouse />}>
         {t("notFound.goHome")}
       </Button>

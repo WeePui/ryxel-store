@@ -28,7 +28,6 @@ export default function OrderStatusTabs({ onChangeTab }: OrderStatusTabsProps) {
   return (
     <div>
       <ul className="flex w-full overflow-hidden overflow-x-auto whitespace-nowrap rounded-lg text-center text-sm font-medium shadow-sm scrollbar-hide dark:divide-gray-700 dark:text-gray-400">
-        {" "}
         <TabItem
           href="#"
           current={activeTab === "all"}

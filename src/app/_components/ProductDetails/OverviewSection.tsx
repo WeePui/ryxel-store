@@ -56,7 +56,6 @@ function OverviewSection() {
 
   return (
     <section className="min-h-[36rem] w-full bg-grey-400 xl:h-full">
-      {" "}
       <div className="mx-auto grid h-full max-w-[77.5rem] translate-y-12 grid-cols-[65fr_35fr] rounded-3xl bg-white px-12 py-6 shadow-lg xl:translate-y-0 xl:grid-cols-[60fr_40fr] xl:rounded-none lg:max-w-full lg:grid-cols-1 lg:px-8 lg:py-2 md:px-4">
         <div className="flex min-w-0 flex-col gap-6">
           <motion.div
@@ -83,7 +82,7 @@ function OverviewSection() {
               alt={currentVariant.name}
             />
           </motion.div>
-        </div>{" "}
+        </div>
         <div className="min-w-0 py-8 lg:py-4">
           <motion.div
             className="mb-6 lg:hidden"
@@ -123,8 +122,8 @@ function OverviewSection() {
                       i < product.rating ? "text-yellow-500" : "text-grey-300"
                     }`}
                   />
-                ))}{" "}
-              </motion.span>{" "}
+                ))}
+              </motion.span>
               <motion.span
                 className="ml-1 text-sm text-grey-500"
                 initial={{ opacity: 0 }}
@@ -144,7 +143,7 @@ function OverviewSection() {
                 </motion.span>
               )}
             </div>
-          </motion.div>{" "}
+          </motion.div>
           <motion.p
             className="mb-6 text-xs text-grey-500 lg:mb-2"
             initial={{ opacity: 0 }}
@@ -193,7 +192,7 @@ function OverviewSection() {
                 </Button>
               </motion.div>
             ))}
-          </motion.div>{" "}
+          </motion.div>
           <motion.h2
             className="flex items-center text-3xl font-bold text-grey-default"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -217,7 +216,7 @@ function OverviewSection() {
                   {formatMoney(
                     currentVariant.finalPrice || currentVariant.price,
                   )}
-                </motion.span>{" "}
+                </motion.span>
                 {isSaleOfferActive(currentVariant.saleOff) &&
                   currentVariant.saleOff && (
                     <motion.span

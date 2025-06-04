@@ -312,7 +312,6 @@ function SideFilter({
           isMobile ? "bg-white" : "bg-grey-100"
         } px-4 pb-6`}
       >
-        {" "}
         <div className="flex items-center justify-between px-4 pb-2 pt-6">
           <h3 className="text-xl font-bold text-primary-default">
             {t("products.filter.title")}

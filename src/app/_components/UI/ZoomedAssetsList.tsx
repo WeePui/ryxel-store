@@ -90,7 +90,6 @@ export default function ZoomedAssetsList({
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          {" "}
           <FaChevronRight className="stroke-2" />
         </motion.button>
       )}

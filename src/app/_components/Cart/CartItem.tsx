@@ -112,7 +112,6 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
                   </NavLink>
                 </p>
                 <div className="mb-4 flex items-center justify-between">
-                  {" "}
                   <p className="text-sm text-grey-200">
                     {t("cart.variant")}: {itemVariant.name}
                   </p>
@@ -156,7 +155,7 @@ function CartItem({ item, onChangeLineItems, selected }: CartItemProps) {
                         (itemVariant.finalPrice || itemVariant.price) *
                           quantity,
                       )}
-                    </p>{" "}
+                    </p>
                     {isSaleOfferActive(itemVariant.saleOff) &&
                       itemVariant.saleOff && (
                         <span className="rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white">

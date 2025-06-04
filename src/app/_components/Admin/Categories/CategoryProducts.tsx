@@ -117,7 +117,6 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
       className="w-full"
       titleAction={<ProductSearchBar />}
     >
-      {" "}
       <Table
         data={products}
         columns={columns}

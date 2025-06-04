@@ -223,7 +223,6 @@ export function Table<T extends object>({
 
   return (
     <div className={`responsive-table-container ${className || ""}`}>
-      {" "}
       <style jsx global>{`
         /* Desktop-first approach - mặc định hiển thị bảng đầy đủ */
         .responsive-table-container .ant-table {
@@ -314,7 +313,7 @@ export function Table<T extends object>({
             color: #666;
           }
         }
-      `}</style>{" "}
+      `}</style>
       <div className="mb-4 flex flex-wrap justify-between gap-2">
         <Tooltip
           title={

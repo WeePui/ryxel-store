@@ -25,7 +25,7 @@ export default function UserOrderDashboard({
     <div>
       <hr className="border-t-1 my-4 border-grey-100" />
       <OrderStatusTabs onChangeTab={setStatus} />
-      <hr className="border-t-1 my-4 border-grey-100" />{" "}
+      <hr className="border-t-1 my-4 border-grey-100" />
       {filterOrders.length > 0 ? (
         <OrderList orders={filterOrders} />
       ) : (

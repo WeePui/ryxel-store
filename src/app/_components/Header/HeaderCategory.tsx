@@ -162,7 +162,7 @@ export default function HeaderCategory() {
               </NavLink>
             </div>
           </div>
-        </div>{" "}
+        </div>
         <div className="p-6 pl-12">
           <h1 className="text-xl">{t("navigation.reference.title")}</h1>
           <div className="mt-4 flex flex-col gap-2">
@@ -175,7 +175,6 @@ export default function HeaderCategory() {
               href={`/products?specs=%7B"sound"%3A"Apple+Spacial+Sound"%7D`}
               type="mainNavInline"
             >
-              {" "}
               <span className="text-base">
                 {t("navigation.reference.spatialAudio")}
               </span>

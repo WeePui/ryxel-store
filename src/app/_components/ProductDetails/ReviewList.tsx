@@ -70,7 +70,7 @@ export default function ReviewList({
       {filteredReviews.slice(0, loadmore).map((review) => (
         <ReviewItem key={review._id} review={review} />
       ))}
-      {/* <ReviewItem key={blindReview.user.name} review={blindReview} /> */}{" "}
+      {/* <ReviewItem key={blindReview.user.name} review={blindReview} /> */}
       <motion.div
         className="flex justify-center gap-4"
         initial={{ opacity: 0 }}

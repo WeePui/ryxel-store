@@ -193,7 +193,7 @@ export default function UserStatistics({ authToken }: UserStatisticsProps) {
             <div className="mb-4 flex items-center justify-between">
               <h3 className="text-lg font-semibold">
                 Biểu đồ phân bố người dùng
-              </h3>{" "}
+              </h3>
               <button
                 onClick={nextChartView}
                 className="rounded-md bg-gray-100 px-4 py-2 text-sm transition-colors hover:bg-gray-200"
@@ -209,7 +209,6 @@ export default function UserStatistics({ authToken }: UserStatisticsProps) {
             </div>
 
             <div className="h-72 w-full">
-              {" "}
               <ResponsiveContainer width="100%" height="100%">
                 {chartView === "bar" ? (
                   <BarChart data={chartData}>

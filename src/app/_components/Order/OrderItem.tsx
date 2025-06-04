@@ -48,7 +48,7 @@ export default function OrderItem({ item }: OrderItemProps) {
       </div>
       <div className="flex items-center gap-12 lg:flex-col lg:items-start lg:justify-center lg:gap-2 sm:flex-row sm:justify-between">
         <p className="inline-flex items-center gap-2 whitespace-nowrap text-sm text-grey-300">
-          {t("account.orders.quantity")}:{" "}
+          {t("account.orders.quantity")}:
           <span className="text-base font-semibold text-primary-default">
             {item.quantity}
           </span>

@@ -71,7 +71,6 @@ export default function Pagination({
 
   return (
     <div className="bg-white-50 flex items-center divide-x-2 rounded-lg font-semibold">
-      {" "}
       <button
         className={`flex h-12 w-12 items-center justify-center px-4 py-2 ${
           currentPage === 1 ? "disabled" : ""
@@ -104,7 +103,7 @@ export default function Pagination({
             {page}
           </span>
         ),
-      )}{" "}
+      )}
       <button
         className={`flex h-12 w-12 items-center justify-center px-4 py-2 ${
           currentPage === totalPages ? "disabled" : ""

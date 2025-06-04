@@ -57,7 +57,6 @@ export default async function RootLayout({
           "flex min-h-screen overflow-x-hidden bg-grey-50 text-primary-default antialiased"
         }
       >
-        {" "}
         <ToastProvider>
           <NotificationProvider>
             <ToggleAdminSidebarProvider>

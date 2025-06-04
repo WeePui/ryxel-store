@@ -114,7 +114,7 @@ export default function ProductsOverview({
       {openModal && (
         <Modal onClose={() => setOpenModal(false)}>
           <div className="flex w-full flex-col gap-4 p-4">
-            <h2 className="text-xl font-bold">Sản phẩm sắp hết hàng</h2>{" "}
+            <h2 className="text-xl font-bold">Sản phẩm sắp hết hàng</h2>
             <Table
               data={predictions}
               columns={columns}
