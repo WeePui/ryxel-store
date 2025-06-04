@@ -569,6 +569,12 @@ const translations = {
       vi: "Sắp xếp:",
       en: "Sort by:",
     },
+    searchResults: {
+      found: {
+        vi: "Đã tìm thấy {count} trong tổng số {total} sản phẩm.",
+        en: "Found {count} products out of {total} products.",
+      },
+    },
     sortOptions: {
       newest: {
         vi: "Mới nhất",
@@ -836,15 +842,15 @@ const translations = {
     pagination: {
       previous: {
         vi: "Trang trước",
-        en: "Previous page",
+        en: "Previous",
       },
       next: {
         vi: "Trang sau",
-        en: "Next page",
+        en: "Next",
       },
       page: {
-        vi: "Đến trang {page}",
-        en: "Go to page {page}",
+        vi: "Trang {page} trên {totalPages}",
+        en: "Page {page} of {totalPages}",
       },
     },
     carousel: {
@@ -2268,6 +2274,73 @@ const translations = {
     confirm: {
       vi: "Xác nhận",
       en: "Confirm",
+    },
+  },
+  notifications: {
+    title: {
+      vi: "Thông báo",
+      en: "Notifications",
+    },
+    markAllRead: {
+      vi: "Đánh dấu tất cả đã đọc",
+      en: "Mark all as read",
+    },
+    deleteAll: {
+     
+      vi: "Xóa tất cả",
+      en: "Delete all",
+    },
+    filter: {
+      all: {
+        vi: "Tất cả",
+        en: "All",
+      },
+      unread: {
+        vi: "Chưa đọc",
+        en: "Unread",
+      },
+      read: {
+        vi: "Đã đọc",
+        en: "Read",
+      },
+    },
+    noNotifications: {
+      vi: "Không có thông báo nào",
+      en: "No notifications",
+    },
+    type: {
+      order: {
+        vi: "Đơn hàng",
+        en: "Order",
+      },
+      shipping: {
+        vi: "Vận chuyển",
+        en: "Shipping",
+      },
+      promotional: {
+        vi: "Khuyến mãi",
+        en: "Promotional",
+      },
+      system: {
+        vi: "Hệ thống",
+        en: "System",
+      },
+      general: {
+        vi: "Chung",
+        en: "General",
+      },
+    },
+    new: {
+      vi: "Mới",
+      en: "New",
+    },
+    markRead: {
+      vi: "Đánh dấu đã đọc",
+      en: "Mark as read",
+    },
+    delete: {
+      vi: "Xóa",
+      en: "Delete",
     },
   },
 };

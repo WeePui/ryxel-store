@@ -1,18 +1,24 @@
-import type { NextConfig } from 'next';
-import createMDX from '@next/mdx';
-import remarkFrontmatter from 'remark-frontmatter';
+import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
+import remarkFrontmatter from "remark-frontmatter";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['res.cloudinary.com'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "**",
+      },
+    ],
   },
   reactStrictMode: true,
   experimental: {
     serverActions: {
-      bodySizeLimit: '30mb',
+      bodySizeLimit: "30mb",
     },
   },
-  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
 
 const withMDX = createMDX({

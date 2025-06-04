@@ -13,11 +13,8 @@ function NumResults({ results, totalResults }: NumResultsProps) {
   const [displayedResults, setDisplayedResults] = useState(0);
   const searchParams = useSearchParams();
   const { t } = useLanguage();
-
   useEffect(() => {
-    setDisplayedResults((prev) => {
-      return prev + results;
-    });
+    setDisplayedResults(results);
   }, [searchParams, results]);
 
   const resultText = t("products.searchResults.found")

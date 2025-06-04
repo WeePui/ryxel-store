@@ -8,6 +8,7 @@ import Spinner from "../UI/Spinner";
 import { Suspense } from "react";
 import HeaderCart from "./HeaderCart";
 import LanguageSwitcher from "./LanguageSwitcher";
+import NotificationButton from "./NotificationButton";
 import { Cart } from "@/app/_types/cart";
 import { User } from "@/app/_types/user";
 import MobileMenu from "./MobileMenu";
@@ -40,6 +41,11 @@ export default function HeaderClient({ cart, user }: HeaderClientProps) {
           <Suspense fallback={<Spinner />}>
             <HeaderCart cart={cart} />
           </Suspense>
+          {user && (
+            <Suspense fallback={<Spinner />}>
+              <NotificationButton />
+            </Suspense>
+          )}
           <div className="flex items-center gap-4">
             <Suspense fallback={<Spinner />}>
               <HeaderUser user={user} />

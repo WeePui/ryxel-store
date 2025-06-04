@@ -52,6 +52,20 @@ import {
   addDiscount,
   updateDiscount,
   deleteDiscount,
+  deleteFcmToken,
+  registerNotificationToken,
+  unregisterNotificationToken,
+  getUserNotifications,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+  deleteNotification,
+  deleteAllNotifications,
+  getNotificationStats,
+  getNotificationHistory,
+  sendPromotionalNotification,
+  sendNotificationToUser,
+  sendNotificationToMultipleUsers,
+  sendNotificationToAllUsers,
 } from "@libs/apiServices";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
@@ -264,23 +278,45 @@ export async function verifyOTPAction(_: unknown, formData: FormData) {
   redirect("/account");
 }
 
-export async function logoutAction(isRedirect = true) {
+export async function logoutAction(
+  _: unknown,
+  formData: FormData,
+): Promise<{ success: boolean; errors?: FormError }> {
+  console.log("Logging out...");
+
+  const checkIsLogin = await checkLogin();
+
+  // Try to clean up FCM token before logout
+  if (checkIsLogin.success) {
+    const token = checkIsLogin.token!;
+    const fcmToken = formData.get("fcmToken") as string;
+
+    if (fcmToken) {
+      try {
+        await deleteFcmToken(fcmToken, token);
+      } catch (error) {
+        // Don't fail logout if FCM cleanup fails, just log the error
+        console.error("Failed to cleanup FCM token during logout:", error);
+      }
+    }
+  }
+
   const data = await logout();
 
-  if (data.status !== "success")
+  if (data.status !== "success") {
     return {
+      success: false,
       errors: {
         message: data.message,
       },
     };
+  }
 
   const cookiesStore = await cookies();
   cookiesStore.delete("jwt");
   cookiesStore.delete("reauthenticated");
 
-  if (isRedirect) {
-    redirect("/");
-  }
+  redirect("/");
 }
 
 export async function forgotPasswordAction(
@@ -1230,7 +1266,6 @@ export const addCategoryAction = async (
 export const addProductAction = async (product: ProductInput) => {
   const checkIsLogin = await checkLogin();
   if (!checkIsLogin.success) return checkIsLogin;
-
   const token = checkIsLogin.token!;
   const response = await addProduct(product, token);
   if (response.status === "success") {
@@ -1594,3 +1629,479 @@ export const deleteDiscountAction = async (discountId: string) => {
     };
   }
 };
+
+// ===== NOTIFICATION MANAGEMENT ACTIONS =====
+
+export const registerNotificationTokenAction = async (
+  token: string,
+  platform: string,
+  deviceInfo: string,
+) => {
+  try {
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return checkIsLogin;
+
+    const authToken = { value: checkIsLogin.token!.value };
+    const response = await registerNotificationToken(
+      token,
+      platform,
+      deviceInfo,
+      authToken,
+    );
+
+    if (response.status === "success") {
+      return {
+        success: true,
+        message: "Notification token registered successfully",
+      };
+    } else {
+      return {
+        success: false,
+        errors: {
+          message: response.error || "Failed to register notification token",
+        },
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+};
+
+export const unregisterNotificationTokenAction = async (token: string) => {
+  try {
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return checkIsLogin;
+
+    const authToken = { value: checkIsLogin.token!.value };
+    const response = await unregisterNotificationToken(token, authToken);
+
+    if (response.status === "success") {
+      return {
+        success: true,
+        message: "Notification token unregistered successfully",
+      };
+    } else {
+      return {
+        success: false,
+        errors: {
+          message: response.error || "Failed to unregister notification token",
+        },
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+};
+
+// ===== ADMIN NOTIFICATION ACTIONS =====
+
+export const getNotificationStatsAction = async () => {
+  try {
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return checkIsLogin;
+
+    const authToken = { value: checkIsLogin.token!.value };
+    const response = await getNotificationStats(authToken);
+
+    if (response.status === "success") {
+      return {
+        success: true,
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        errors: {
+          message: response.error || "Failed to fetch notification statistics",
+        },
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+};
+
+export const getNotificationHistoryAction = async (
+  page?: number,
+  limit?: number,
+  type?: string,
+  startDate?: string,
+  endDate?: string,
+) => {
+  try {
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return checkIsLogin;
+
+    const authToken = { value: checkIsLogin.token!.value };
+    const response = await getNotificationHistory(
+      authToken,
+      page,
+      limit,
+      type,
+      startDate,
+      endDate,
+    );
+
+    if (response.status === "success") {
+      return {
+        success: true,
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        errors: {
+          message: response.error || "Failed to fetch notification history",
+        },
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+};
+
+export const sendPromotionalNotificationAction = async (
+  title: string,
+  body: string,
+  data?: Record<string, string | number | boolean>,
+  targetUsers?: string[],
+) => {
+  try {
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return checkIsLogin;
+
+    const authToken = { value: checkIsLogin.token!.value };
+    const response = await sendPromotionalNotification(
+      title,
+      body,
+      authToken,
+      data,
+      targetUsers,
+    );
+
+    if (response.status === "success") {
+      revalidatePath("/admin/notifications");
+      return {
+        success: true,
+        message: "Promotional notification sent successfully",
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        errors: {
+          message: response.error || "Failed to send promotional notification",
+        },
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+};
+
+export const sendNotificationToUserAction = async (
+  userIdentifier: string,
+  title: string,
+  body: string,
+  data?: Record<string, string | number | boolean>,
+) => {
+  try {
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return checkIsLogin;
+
+    const authToken = { value: checkIsLogin.token!.value };
+    const response = await sendNotificationToUser(
+      userIdentifier,
+      title,
+      body,
+      authToken,
+      data,
+    );
+
+    if (response.status === "success") {
+      revalidatePath("/admin/notifications");
+      return {
+        success: true,
+        message: "Notification sent to user successfully",
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        errors: {
+          message: response.error || "Failed to send notification to user",
+        },
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+};
+
+export const sendNotificationToMultipleUsersAction = async (
+  userIdentifiers: string[],
+  title: string,
+  body: string,
+  data?: Record<string, string | number | boolean>,
+) => {
+  try {
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return checkIsLogin;
+
+    const authToken = { value: checkIsLogin.token!.value };
+    const response = await sendNotificationToMultipleUsers(
+      userIdentifiers,
+      title,
+      body,
+      authToken,
+      data,
+    );
+
+    if (response.status === "success") {
+      revalidatePath("/admin/notifications");
+      return {
+        success: true,
+        message: "Notifications sent to multiple users successfully",
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        errors: {
+          message:
+            response.error || "Failed to send notifications to multiple users",
+        },
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+};
+
+export const sendNotificationToAllUsersAction = async (
+  title: string,
+  body: string,
+  data?: Record<string, string | number | boolean>,
+) => {
+  try {
+    const checkIsLogin = await checkLogin();
+    if (!checkIsLogin.success) return checkIsLogin;
+
+    const authToken = { value: checkIsLogin.token!.value };
+    const response = await sendNotificationToAllUsers(
+      title,
+      body,
+      authToken,
+      data,
+    );
+
+    if (response.status === "success") {
+      revalidatePath("/admin/notifications");
+      return {
+        success: true,
+        message: "Notifications sent to all users successfully",
+        data: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        errors: {
+          message:
+            response.error || "Failed to send notifications to all users",
+        },
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+};
+
+// User Notification Actions
+export async function getUserNotificationsAction(
+  page: number = 1,
+  limit: number = 10,
+  isRead?: boolean,
+) {
+  try {
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("jwt");
+
+    if (!token) {
+      return {
+        success: false,
+        errors: { message: "Authentication required" },
+      };
+    }
+
+    const response = await getUserNotifications(
+      token,
+      page,
+      limit,
+      undefined,
+      isRead,
+    );
+    return {
+      success: true,
+      data: response,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+}
+
+export async function markNotificationAsReadAction(notificationId: string) {
+  try {
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("jwt");
+
+    if (!token) {
+      return {
+        success: false,
+        errors: { message: "Authentication required" },
+      };
+    }
+
+    const response = await markNotificationAsRead(notificationId, token);
+    revalidatePath("/notifications");
+    return {
+      success: true,
+      data: response,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+}
+
+export async function markAllNotificationsAsReadAction() {
+  try {
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("jwt");
+
+    if (!token) {
+      return {
+        success: false,
+        errors: { message: "Authentication required" },
+      };
+    }
+
+    const response = await markAllNotificationsAsRead(token);
+    revalidatePath("/notifications");
+    return {
+      success: true,
+      data: response,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+}
+
+export async function deleteNotificationAction(notificationId: string) {
+  try {
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("jwt");
+
+    if (!token) {
+      return {
+        success: false,
+        errors: { message: "Authentication required" },
+      };
+    }
+
+    const response = await deleteNotification(notificationId, token);
+    revalidatePath("/notifications");
+    return {
+      success: true,
+      data: response,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+}
+
+export async function deleteAllNotificationsAction() {
+  try {
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("jwt");
+
+    if (!token) {
+      return {
+        success: false,
+        errors: { message: "Authentication required" },
+      };
+    }
+
+    const response = await deleteAllNotifications(token);
+    revalidatePath("/notifications");
+    return {
+      success: true,
+      data: response,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      errors: {
+        message: (error as Error).message,
+      },
+    };
+  }
+}

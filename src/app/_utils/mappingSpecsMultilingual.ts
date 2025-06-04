@@ -62,4 +62,12 @@ export const mappingSpecsNameMultilingual: Record<
     vi: "Pin",
     en: "Battery",
   },
+  surface: {
+    vi: "Bề mặt",
+    en: "Surface",
+  },
+  thickness: {
+    vi: "Độ dày",
+    en: "Thickness",
+  },
 };
