@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "This is the products page",
 };
 
-async function Layout({
+export default async function Layout({
   children,
 }: {
   searchParams: Promise<{ [key: string]: string }>;
@@ -33,5 +33,3 @@ async function Layout({
     </Suspense>
   );
 }
-
-export default Layout;
