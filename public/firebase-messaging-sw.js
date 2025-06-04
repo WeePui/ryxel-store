@@ -22,11 +22,6 @@ const messaging = firebase.messaging();
 
 // Handle background messages
 messaging.onBackgroundMessage((payload) => {
-  console.log(
-    "[firebase-messaging-sw.js] Received background message ",
-    payload,
-  );
-
   const notificationTitle = payload.notification?.title || "New Notification";
   const notificationOptions = {
     body: payload.notification?.body || "You have a new notification",
@@ -59,8 +54,6 @@ messaging.onBackgroundMessage((payload) => {
 
 // Handle notification click
 self.addEventListener("notificationclick", (event) => {
-  console.log("[firebase-messaging-sw.js] Notification click received.");
-
   event.notification.close();
 
   if (event.action === "view") {
@@ -120,8 +113,6 @@ self.addEventListener("notificationclick", (event) => {
 
 // Handle notification close events
 self.addEventListener("notificationclose", function (event) {
-  console.log("Notification closed: ", event);
-
   // Track notification close events if needed
   const data = event.notification.data;
   if (data?.notificationId) {

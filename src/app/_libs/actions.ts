@@ -285,8 +285,6 @@ export async function logoutAction(
   _: unknown,
   formData: FormData,
 ): Promise<{ success: boolean; errors?: FormError }> {
-  console.log("Logging out...");
-
   const checkIsLogin = await checkLogin();
 
   // Try to clean up FCM token before logout

@@ -47,8 +47,6 @@ async function Page({
     subtotal = cart.subtotal;
 
     if (fromCart && fromCart === "1") {
-      console.log("fromCart", fromCart);
-
       const cookiesStore = await cookies();
       const selectedCartItems = cookiesStore.get("selectedCartItems");
 

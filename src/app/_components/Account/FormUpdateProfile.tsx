@@ -173,32 +173,6 @@ function FormUpdateProfile({ user }: FormUpdateProfileProps) {
               )}
             </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4 md:grid-cols-1 md:items-start md:gap-2">
-            <label
-              htmlFor="phone"
-              className="text-right text-grey-300 md:text-left"
-            >
-              {t("account.profile.phone")}
-            </label>
-            <div className="col-span-3 flex w-full items-center gap-4">
-              {user?.phoneNo ? (
-                user.phoneNo
-              ) : (
-                <span className="text-xs">
-                  {t("account.profile.phoneNotAdded")}
-                </span>
-              )}
-              <NavLink href="#" hoverUnderline={false}>
-                <div
-                  className="flex items-center gap-2 text-xs font-semibold underline"
-                  onClick={() => {}}
-                >
-                  <FaArrowUpRightFromSquare />
-                  {t("account.profile.change")}
-                </div>
-              </NavLink>
-            </div>
-          </div>
           {
             //TODO: Add birthday field if OAuth can't get user's birthday
           }

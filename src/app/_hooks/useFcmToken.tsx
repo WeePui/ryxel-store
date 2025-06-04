@@ -164,8 +164,6 @@ const useFcmToken = () => {
 
           if (link) {
             router.push(link);
-          } else {
-            console.log("No link found in the notification payload");
           }
         };
         // --------------------------------------------

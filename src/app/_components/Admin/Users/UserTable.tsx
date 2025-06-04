@@ -193,7 +193,6 @@ export default function UserTable({ authToken }: UserTableProps) {
             className="flex items-center gap-1 rounded px-2 py-1 text-sm text-green-600 hover:bg-green-50"
             onClick={() => {
               // TODO: Add edit functionality
-              console.log("Edit user:", record);
             }}
           >
             <FaEdit />

@@ -584,8 +584,6 @@ export const getShippingFee = async (
     },
   );
 
-  console.log(response);
-
   if (!response.ok) {
     throw new Error("Failed to fetch shipping fee");
   }
@@ -1133,8 +1131,6 @@ export const addProduct = async (
       }
     });
   });
-
-  console.log("hello");
 
   const response = await fetch(`${API_URL}/products`, {
     method: "POST",

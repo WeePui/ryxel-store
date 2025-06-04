@@ -40,19 +40,12 @@ class NotificationService {
   }
   // Request notification permission
   async requestPermission(): Promise<boolean> {
-    console.log("NotificationService.requestPermission called");
-
     if (!("Notification" in window)) {
       console.warn("This browser does not support notifications");
       return false;
     }
 
-    console.log("Current Notification.permission:", Notification.permission);
-    console.log("Is HTTPS:", window.location.protocol === "https:");
-    console.log("Current location:", window.location.href);
-
     if (Notification.permission === "granted") {
-      console.log("Permission already granted");
       return true;
     }
 
@@ -61,10 +54,8 @@ class NotificationService {
       return false;
     }
 
-    console.log("Requesting notification permission...");
     try {
       const permission = await Notification.requestPermission();
-      console.log("Permission request result:", permission);
       return permission === "granted";
     } catch (error) {
       console.error("Error requesting notification permission:", error);
@@ -118,7 +109,6 @@ class NotificationService {
       );
 
       if (response.success) {
-        console.log("Token registered successfully");
         return true;
       } else {
         console.error("Failed to register token:", response.errors?.message);
@@ -143,7 +133,6 @@ class NotificationService {
         await unregisterNotificationTokenAction(tokenToUnregister);
 
       if (response.success) {
-        console.log("Token unregistered successfully");
         this.currentToken = null;
         return true;
       } else {
@@ -164,7 +153,6 @@ class NotificationService {
     }
 
     const unsubscribe = onMessage(this.messaging, (payload) => {
-      console.log("Foreground message received:", payload);
       callback(payload);
     });
 
