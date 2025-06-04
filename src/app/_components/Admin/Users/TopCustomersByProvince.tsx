@@ -24,7 +24,7 @@ export default function TopCustomersByProvince({
   authToken,
 }: TopCustomersByProvinceProps) {
   const [range, setRange] = useState("month");
-  const [timeRange, setTimeRange] = useState<string>("year=2023&month=1");
+  const [timeRange, setTimeRange] = useState<string>("");
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);

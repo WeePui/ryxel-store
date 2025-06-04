@@ -65,9 +65,6 @@ export default async function Page() {
       <div className="xl:col-span-4">
         <SalesByCategories cookies={token} />
       </div>
-      <div className="col-span-2 xl:col-span-4">
-        <TopSellingProducts />
-      </div>
       <div className="col-span-4">
         <OrderSummary data={recentOrders} />
       </div>

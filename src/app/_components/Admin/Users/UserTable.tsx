@@ -91,7 +91,6 @@ export default function UserTable({ authToken }: UserTableProps) {
       render: (_, record) => (
         <div className="flex items-center gap-3">
           <div className="relative h-10 w-10 flex-shrink-0">
-            {" "}
             <Image
               src={record.photo?.url || "/dev-users/default.png"}
               alt={record.name}

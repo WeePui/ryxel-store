@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 export default async function Layout({
   children,
 }: {
-  searchParams: Promise<{ [key: string]: string }>;
   children: React.ReactNode;
 }) {
   // const filter = await searchParams;
