@@ -5,6 +5,7 @@ import InlineError from "./InlineError";
 import Button from "./Button";
 import { User } from "@/app/_types/user";
 import { Product } from "@/app/_types/product";
+import { Address } from "@/app/_types/address";
 
 // Import client components
 import FormUpdateProfile from "../Account/FormUpdateProfile";
@@ -92,7 +93,7 @@ export function SafeWishlistProductList({ items }: { items: Product[] }) {
  * Error boundary wrapper for AddressesList component
  * Protects address management functionality
  */
-export function SafeAddressesList() {
+export function SafeAddressesList({ addresses }: { addresses: Address[] }) {
   return (
     <ErrorBoundary
       fallback={
@@ -116,8 +117,9 @@ export function SafeAddressesList() {
           </div>
         </div>
       }
+      resetKeys={[addresses?.length]}
     >
-      <AddressesList />
+      <AddressesList addresses={addresses} />
     </ErrorBoundary>
   );
 }
