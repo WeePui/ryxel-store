@@ -1316,6 +1316,14 @@ export async function getBestsellers() {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/top-5-bestsellers`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true",
+        },
+        credentials: "include",
+      },
     );
 
     if (!response.ok) {
