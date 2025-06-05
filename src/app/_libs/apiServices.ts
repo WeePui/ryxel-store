@@ -13,7 +13,7 @@ import {
   UpdateProfileInput,
 } from "../_types/validateInput";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 
 interface Filter {
   [key: string]: string;
@@ -915,16 +915,14 @@ export const getShippingFee = async (
 };
 
 export const cancelOrder = async (id: string, token: { value: string }) => {
-  try {    const response = await fetch(
-      `${API_URL}/orders/${id}/cancel`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-        credentials: "include",
+  try {
+    const response = await fetch(`${API_URL}/orders/${id}/cancel`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token.value}`,
       },
-    );
+      credentials: "include",
+    });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -952,15 +950,12 @@ export const getOrderByOrderCode = async (
   token: { value: string },
 ) => {
   try {
-    const response = await fetch(
-      `${API_URL}/orders/orderCode/${code}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-        credentials: "include",
+    const response = await fetch(`${API_URL}/orders/orderCode/${code}`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
       },
-    );
+      credentials: "include",
+    });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -1132,16 +1127,13 @@ export const addProductToWishlist = async (
   token: { value: string },
 ) => {
   try {
-    const response = await fetch(
-      `${API_URL}/wishlist/${productId}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-        credentials: "include",
+    const response = await fetch(`${API_URL}/wishlist/${productId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token.value}`,
       },
-    );
+      credentials: "include",
+    });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -1166,9 +1158,7 @@ export const addProductToWishlist = async (
 
 export const getWishlistByShareCode = async (shareCode: string) => {
   try {
-    const response = await fetch(
-      `${API_URL}/wishlist/${shareCode}`,
-    );
+    const response = await fetch(`${API_URL}/wishlist/${shareCode}`);
 
     if (!response.ok) {
       return {
@@ -1193,17 +1183,15 @@ export const getWishlistByShareCode = async (shareCode: string) => {
 export const removeProductFromWishlist = async (
   productId: string,
   token: { value: string },
-) => {  try {
-    const response = await fetch(
-      `${API_URL}/wishlist/${productId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-        credentials: "include",
+) => {
+  try {
+    const response = await fetch(`${API_URL}/wishlist/${productId}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token.value}`,
       },
-    );
+      credentials: "include",
+    });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
