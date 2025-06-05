@@ -82,14 +82,13 @@ export default function TopCustomersByProvince({
         </div>
       }
     >
-      {" "}
       {loading ? (
         <Loader />
       ) : error ? (
         <div className="text-center">
           <div className="mb-4 font-medium text-red-500">
             Không thể tải dữ liệu. Vui lòng thử lại.
-          </div>{" "}
+          </div>
           <Button onClick={fetchData}>Thử lại</Button>
         </div>
       ) : data.length === 0 ? (

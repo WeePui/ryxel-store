@@ -1,5 +1,5 @@
 import AccountPage from "@/app/_components/Account/AccountPage";
-import FormUpdatePassword from "@/app/_components/Account/FormUpdatePassword";
+import { SafeFormUpdatePassword } from "@/app/_components/UI/ClientErrorBoundaryWrappers";
 
 function Page() {
   return (
@@ -8,7 +8,7 @@ function Page() {
       descriptionKey="account.updatePassword.description"
     >
       <div className="flex justify-center">
-        <FormUpdatePassword />
+        <SafeFormUpdatePassword />
       </div>
     </AccountPage>
   );

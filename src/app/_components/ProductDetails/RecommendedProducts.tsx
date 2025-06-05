@@ -20,9 +20,11 @@ export default function RecommendedProducts({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
-
   // Handle effect for scroll events
   useEffect(() => {
+    // Early return if products is undefined or empty
+    if (!products || products.length === 0) return;
+
     const scrollContainer = scrollContainerRef.current;
 
     // Initial check for button visibility
@@ -44,7 +46,7 @@ export default function RecommendedProducts({
       }
       window.removeEventListener("load", onLoadHandler);
     };
-  }, [products.length]); // Depend on products.length instead
+  }, [products]); // Use products object as dependency
 
   if (!products || products.length === 0) return null;
 

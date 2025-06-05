@@ -16,6 +16,7 @@ import {
   getStockData,
 } from "@/app/_libs/apiServices";
 import { cookies } from "next/headers";
+import ApiErrorDisplay from "@/app/_components/UI/ApiErrorDisplay";
 
 // const brands = [
 //   { value: 'brand-1', count: 10 },
@@ -49,11 +50,11 @@ export default async function Page({ searchParams }: PageProps) {
   const filter = await searchParams;
 
   const [
-    productsData,
-    filterData,
-    stockData,
-    productSummary,
-    clientCategories,
+    productsResponse,
+    filterResponse,
+    stockResponse,
+    productSummaryResponse,
+    categoriesResponse,
   ] = await Promise.all([
     getProducts(filter),
     getFilterData(filter),
@@ -62,11 +63,56 @@ export default async function Page({ searchParams }: PageProps) {
     getCategories({ value: token }),
   ]);
 
-  const { categories } = clientCategories;
+  // Check for errors in any of the API responses
+  if (productsResponse.status === "error") {
+    return (
+      <ApiErrorDisplay
+        error={productsResponse}
+        title="Failed to Load Products"
+      />
+    );
+  }
+
+  if (filterResponse.status === "error") {
+    return (
+      <ApiErrorDisplay
+        error={filterResponse}
+        title="Failed to Load Filter Data"
+      />
+    );
+  }
+
+  if (stockResponse.status === "error") {
+    return (
+      <ApiErrorDisplay
+        error={stockResponse}
+        title="Failed to Load Stock Data"
+      />
+    );
+  }
+
+  if (productSummaryResponse.status === "error") {
+    return (
+      <ApiErrorDisplay
+        error={productSummaryResponse}
+        title="Failed to Load Product Summary"
+      />
+    );
+  }
+  if (categoriesResponse.status === "error") {
+    return (
+      <ApiErrorDisplay
+        error={categoriesResponse}
+        title="Failed to Load Categories"
+      />
+    );
+  }
+
+  const { categories } = categoriesResponse.data;
   const {
     data: { products, totalProducts, resultsPerPage },
-  } = productsData;
-  const { data: filtersData } = filterData;
+  } = productsResponse;
+  const { data: filtersData } = filterResponse;
   const { brands, minPrice, maxPrice, specs } = filtersData;
   const priceRange = products.reduce(
     (acc: { min: number; max: number }) => {
@@ -77,13 +123,12 @@ export default async function Page({ searchParams }: PageProps) {
     { min: Infinity, max: -Infinity },
   );
   const priceRanges = generatePriceRanges(priceRange.min, priceRange.max);
-
   const {
     totalStock,
     totalOutStock,
     totalInStock,
     prediction: { predictions },
-  } = productSummary;
+  } = productSummaryResponse;
 
   return (
     <div className="grid grid-cols-4 gap-6 p-6 xl:grid-cols-2 md:grid-cols-1">
@@ -102,7 +147,7 @@ export default async function Page({ searchParams }: PageProps) {
         <ProductsSold cookies={token} />
       </div>
       <div className="col-span-1">
-        <StockChart data={stockData.data} />
+        <StockChart data={stockResponse.data} />
       </div>
       <div className="col-span-full mt-14 max-w-full overflow-x-hidden">
         <CategoryFilter categories={categories} />

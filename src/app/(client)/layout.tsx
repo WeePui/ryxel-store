@@ -10,7 +10,10 @@ import { checkToken } from "../_libs/apiServices";
 import { redirect } from "next/navigation";
 import LanguageClientProvider from "../_components/UI/LanguageClientProvider";
 import ClientMainScreen from "../_components/UI/ClientMainScreen";
-import { NotificationProvider, NotificationPermissionBanner } from "../_contexts/NotificationContext";
+import {
+  NotificationProvider,
+  NotificationPermissionBanner,
+} from "../_contexts/NotificationContext";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -55,7 +58,9 @@ export default async function RootLayout({
         className={
           "flex min-h-screen flex-col bg-secondary-100 text-primary-default antialiased"
         }
-      >        <LanguageClientProvider>
+      >
+        {" "}
+        <LanguageClientProvider>
           <NotificationProvider>
             <NotificationPermissionBanner />
             <Header />
