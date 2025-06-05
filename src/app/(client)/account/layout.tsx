@@ -1,11 +1,11 @@
-import SideNavigation from '@/app/_components/Account/SideNav';
-import { Metadata } from 'next';
-import ErrorBoundary from '@/app/_components/UI/ErrorBoundary';
-import InlineError from '@/app/_components/UI/InlineError';
+import SideNavigation from "@/app/_components/Account/SideNav";
+import { Metadata } from "next";
+import ErrorBoundary from "@/app/_components/UI/ErrorBoundary";
+import InlineError from "@/app/_components/UI/InlineError";
 
 export const metadata: Metadata = {
-  title: 'Manage Account',
-  description: 'Manage your account details, vouchers, password and more.',
+  title: "Manage Account",
+  description: "Manage your account details, vouchers, password and more.",
 };
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -34,7 +34,8 @@ function Layout({ children }: { children: React.ReactNode }) {
                 size="medium"
               />
               <p className="mt-2 text-sm text-gray-600">
-                Please try refreshing the page or contact support if the problem persists.
+                Please try refreshing the page or contact support if the problem
+                persists.
               </p>
             </div>
           </div>

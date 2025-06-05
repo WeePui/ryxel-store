@@ -24,7 +24,7 @@ export default async function page({ searchParams }: PageProps) {
   try {
     const cookiesStore = await cookies();
     const token = cookiesStore.get("jwt");
-    
+
     // Check authentication
     if (!token) {
       redirect("/login?redirect=/account/orders");
@@ -34,7 +34,7 @@ export default async function page({ searchParams }: PageProps) {
     if (!search) search = "";
 
     const ordersResponse = await getOrders(token, search);
-    
+
     // Handle API errors
     if (ordersResponse.status === "error") {
       return (
@@ -43,11 +43,11 @@ export default async function page({ searchParams }: PageProps) {
           descriptionKey="account.orders.description"
           titleAction={<OrderSearchBar />}
         >
-          <ApiErrorDisplay 
+          <ApiErrorDisplay
             error={{
               status: "error",
               message: ordersResponse.message || "Failed to load orders",
-              statusCode: ordersResponse.statusCode || 500
+              statusCode: ordersResponse.statusCode || 500,
             }}
             title="Orders Loading Error"
             size="medium"
@@ -64,11 +64,11 @@ export default async function page({ searchParams }: PageProps) {
           descriptionKey="account.orders.description"
           titleAction={<OrderSearchBar />}
         >
-          <ApiErrorDisplay 
+          <ApiErrorDisplay
             error={{
               status: "error",
               message: "Invalid orders data received",
-              statusCode: 500
+              statusCode: 500,
             }}
             title="Orders Data Error"
             size="medium"
@@ -90,18 +90,21 @@ export default async function page({ searchParams }: PageProps) {
     );
   } catch (error) {
     console.error("Orders page: Unexpected error occurred:", error);
-    
+
     return (
       <AccountPage
         titleKey="account.orders.title"
         descriptionKey="account.orders.description"
         titleAction={<OrderSearchBar />}
       >
-        <ApiErrorDisplay 
+        <ApiErrorDisplay
           error={{
             status: "error",
-            message: error instanceof Error ? error.message : "An unexpected error occurred",
-            statusCode: 500
+            message:
+              error instanceof Error
+                ? error.message
+                : "An unexpected error occurred",
+            statusCode: 500,
           }}
           title="Orders Page Error"
           size="medium"

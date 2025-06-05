@@ -9,20 +9,20 @@
  * @returns The cookie value or null if not found
  */
 export function getCookie(name: string): string | null {
-  if (typeof document === 'undefined') {
+  if (typeof document === "undefined") {
     // Server-side environment
-    console.warn('getCookie called in server environment');
+    console.warn("getCookie called in server environment");
     return null;
   }
 
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  
+
   if (parts.length === 2) {
-    const cookieValue = parts.pop()?.split(';').shift();
+    const cookieValue = parts.pop()?.split(";").shift();
     return cookieValue || null;
   }
-  
+
   return null;
 }
 
@@ -33,19 +33,19 @@ export function getCookie(name: string): string | null {
  * @param options - Optional cookie settings
  */
 export function setCookie(
-  name: string, 
-  value: string, 
+  name: string,
+  value: string,
   options: {
     days?: number;
     path?: string;
     domain?: string;
     secure?: boolean;
-    sameSite?: 'Strict' | 'Lax' | 'None';
-  } = {}
+    sameSite?: "Strict" | "Lax" | "None";
+  } = {},
 ): void {
-  if (typeof document === 'undefined') {
+  if (typeof document === "undefined") {
     // Server-side environment
-    console.warn('setCookie called in server environment');
+    console.warn("setCookie called in server environment");
     return;
   }
 
@@ -53,7 +53,7 @@ export function setCookie(
 
   if (options.days) {
     const date = new Date();
-    date.setTime(date.getTime() + (options.days * 24 * 60 * 60 * 1000));
+    date.setTime(date.getTime() + options.days * 24 * 60 * 60 * 1000);
     cookieString += `; expires=${date.toUTCString()}`;
   }
 
@@ -83,18 +83,18 @@ export function setCookie(
  * @param domain - The domain of the cookie (should match the domain used when setting)
  */
 export function deleteCookie(
-  name: string, 
-  path: string = '/', 
-  domain?: string
+  name: string,
+  path: string = "/",
+  domain?: string,
 ): void {
-  if (typeof document === 'undefined') {
+  if (typeof document === "undefined") {
     // Server-side environment
-    console.warn('deleteCookie called in server environment');
+    console.warn("deleteCookie called in server environment");
     return;
   }
 
   let cookieString = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}`;
-  
+
   if (domain) {
     cookieString += `; domain=${domain}`;
   }
@@ -116,16 +116,16 @@ export function cookieExists(name: string): boolean {
  * @returns Object with cookie names as keys and values as values
  */
 export function getAllCookies(): Record<string, string> {
-  if (typeof document === 'undefined') {
+  if (typeof document === "undefined") {
     // Server-side environment
-    console.warn('getAllCookies called in server environment');
+    console.warn("getAllCookies called in server environment");
     return {};
   }
 
   const cookies: Record<string, string> = {};
-  
-  document.cookie.split(';').forEach(cookie => {
-    const [name, value] = cookie.trim().split('=');
+
+  document.cookie.split(";").forEach((cookie) => {
+    const [name, value] = cookie.trim().split("=");
     if (name && value) {
       cookies[name] = value;
     }

@@ -22,8 +22,8 @@ async function Profile() {
       >
         <ApiErrorDisplay
           error={{
-            status: 'error',
-            message: 'Authentication required. Please log in to continue.',
+            status: "error",
+            message: "Authentication required. Please log in to continue.",
             statusCode: 401,
           }}
           title="Authentication Required"
@@ -35,8 +35,8 @@ async function Profile() {
 
   try {
     const response = await getProfile(token);
-    
-    if (response.status === 'error') {
+
+    if (response.status === "error") {
       return (
         <AccountPage
           titleKey="account.profile.title"
@@ -61,8 +61,8 @@ async function Profile() {
         >
           <ApiErrorDisplay
             error={{
-              status: 'error',
-              message: 'User profile data is not available.',
+              status: "error",
+              message: "User profile data is not available.",
               statusCode: 404,
             }}
             title="User Not Found"
@@ -81,7 +81,7 @@ async function Profile() {
       </AccountPage>
     );
   } catch (error) {
-    console.error('Profile page error:', error);
+    console.error("Profile page error:", error);
     return (
       <AccountPage
         titleKey="account.profile.title"
@@ -89,8 +89,11 @@ async function Profile() {
       >
         <ApiErrorDisplay
           error={{
-            status: 'error',
-            message: error instanceof Error ? error.message : 'An unexpected error occurred while loading your profile.',
+            status: "error",
+            message:
+              error instanceof Error
+                ? error.message
+                : "An unexpected error occurred while loading your profile.",
             statusCode: 500,
           }}
           title="Profile Error"

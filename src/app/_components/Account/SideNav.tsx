@@ -1,18 +1,18 @@
-import { getProfile } from '../../_libs/apiServices';
-import { cookies } from 'next/headers';
-import ClientWrapper from './ClientWrapper';
-import ApiErrorDisplay from '../UI/ApiErrorDisplay';
+import { getProfile } from "../../_libs/apiServices";
+import { cookies } from "next/headers";
+import ClientWrapper from "./ClientWrapper";
+import ApiErrorDisplay from "../UI/ApiErrorDisplay";
 
 async function SideNavigation() {
   const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt');
+  const token = cookiesStore.get("jwt");
 
   if (!token) {
     return (
       <ApiErrorDisplay
         error={{
-          status: 'error',
-          message: 'Authentication required. Please log in to continue.',
+          status: "error",
+          message: "Authentication required. Please log in to continue.",
           statusCode: 401,
         }}
         title="Authentication Required"
@@ -24,8 +24,8 @@ async function SideNavigation() {
 
   try {
     const response = await getProfile(token);
-    
-    if (response.status === 'error') {
+
+    if (response.status === "error") {
       return (
         <ApiErrorDisplay
           error={response}
@@ -42,8 +42,8 @@ async function SideNavigation() {
       return (
         <ApiErrorDisplay
           error={{
-            status: 'error',
-            message: 'User profile data is not available.',
+            status: "error",
+            message: "User profile data is not available.",
             statusCode: 404,
           }}
           title="User Not Found"
@@ -55,12 +55,15 @@ async function SideNavigation() {
 
     return <ClientWrapper user={user} />;
   } catch (error) {
-    console.error('SideNavigation error:', error);
+    console.error("SideNavigation error:", error);
     return (
       <ApiErrorDisplay
         error={{
-          status: 'error',
-          message: error instanceof Error ? error.message : 'An unexpected error occurred while loading your profile.',
+          status: "error",
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unexpected error occurred while loading your profile.",
           statusCode: 500,
         }}
         title="Profile Error"

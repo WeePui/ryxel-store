@@ -67,7 +67,8 @@ export function SafeWishlistProductList({ items }: { items: Product[] }) {
             size="medium"
           />
           <p className="mt-2 text-sm text-gray-600">
-            Your wishlist could not be displayed. Please try refreshing the page.
+            Your wishlist could not be displayed. Please try refreshing the
+            page.
           </p>
           <div className="mt-4 text-center">
             <Button
@@ -136,13 +137,12 @@ export function SafeFormUpdatePassword() {
             size="medium"
           />
           <p className="mt-2 text-sm text-gray-600">
-            The password update form encountered an error and could not be loaded
+            The password update form encountered an error and could not be
+            loaded
           </p>
-          <div className="mt-4">            <Button
-              href="/account"
-              size="small"
-              variant="secondary"
-            >
+          <div className="mt-4">
+            {" "}
+            <Button href="/account" size="small" variant="secondary">
               Back to Account
             </Button>
           </div>
