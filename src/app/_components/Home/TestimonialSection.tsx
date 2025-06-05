@@ -199,7 +199,7 @@ export default function TestimonialSection() {
             </motion.div>
           );
         })}
-      </div>{" "}
+      </div>
       {/* Dot Pagination */}
       <motion.div
         className="mt-12 flex justify-center gap-2"

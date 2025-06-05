@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @plugin "@tailwindcss/typography";
+@import "~react-toastify/ReactToastify.min.css";
 
 html,
 body {

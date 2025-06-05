@@ -368,7 +368,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             }
             onChange={(e) => handleChangeSaleOff("percentage", e.target.value)}
             label="Giảm giá (%)"
-          />{" "}
+          />
           <Input
             type="date"
             name="saleOffStartDate"

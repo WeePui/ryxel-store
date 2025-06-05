@@ -42,7 +42,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
           transition={{ duration: 0.2 }}
         >
           <Image src={review.user.photo.url} alt={review.user.name} fill />
-        </motion.div>{" "}
+        </motion.div>
         <span className="text-sm font-semibold lg:text-center">
           {review.user.name}
         </span>
@@ -67,7 +67,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
               <FaStar />
             </motion.span>
           ))}
-        </div>{" "}
+        </div>
         <p className="divide-x divide-gray-200 text-xs text-gray-400">
           <span className="pr-2">
             {t("products.reviews.classification")}: {review.variant}
@@ -76,7 +76,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
             {new Date(review.updatedAt).toLocaleTimeString("vi-vn", {
               hour: "2-digit",
               minute: "2-digit",
-            })}{" "}
+            })}
             - {calcDatePast(review.updatedAt)}
           </span>
         </p>

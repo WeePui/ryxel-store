@@ -14,4 +14,6 @@ export const mappingSpecsName: Record<string, string> = {
   dpi: 'DPI',
   pollingRate: 'Tần số quét',
   battery: 'Pin',
+  surface: 'Bề mặt',
+  thickness: 'Độ dày',
 };

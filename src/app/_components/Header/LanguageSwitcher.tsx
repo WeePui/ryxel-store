@@ -34,7 +34,6 @@ export default function LanguageSwitcher() {
         aria-label={LABELS[language].toggle}
         title={LABELS[language].toggle}
       >
-        {" "}
         <Image
           src={`/flags/${LABELS[language].code}.svg`}
           alt={`${language === "vi" ? "Vietnamese" : "English"} flag`}

@@ -191,7 +191,6 @@ function CartItemsList({
       ) : (
         <ul className="flex flex-col divide-y divide-gray-200">
           <div className="mb-4">
-            {" "}
             {selectableItems.length === 0 && (
               <p className="mb-2 ml-2 flex items-center gap-2 text-xs text-gray-400">
                 <FaCircleInfo /> {t("cart.noSelectableItems")}
@@ -206,11 +205,11 @@ function CartItemsList({
                   checked={isAllSelected}
                   onChange={toggleSelectAll}
                   disabled={selectableItems.length === 0}
-                />{" "}
+                />
                 <label htmlFor="select-all" className="font-medium">
                   {t("cart.selectAll")}
                 </label>
-              </div>{" "}
+              </div>
               <NavLink
                 href="#"
                 onClick={() => setIsClearCartConfirmDialogue(true)}
@@ -218,7 +217,7 @@ function CartItemsList({
                 {t("cart.clearAll")}
               </NavLink>
             </div>
-          </div>{" "}
+          </div>
           {sortedItems.map((item) => (
             <li key={item.variant as string} className="flex py-8">
               <CartItem

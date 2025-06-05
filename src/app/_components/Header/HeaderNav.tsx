@@ -104,7 +104,7 @@ function HeaderNav({
                       {t("navigation.categories.gaming.accessory")}
                     </NavLink>
                   </div>
-                </div>{" "}
+                </div>
                 {/* Brands */}
                 <div>
                   <h3 className="mb-2 font-semibold text-primary-700">
@@ -125,7 +125,7 @@ function HeaderNav({
                     <NavLink href="/products?brand=Pulsar">Pulsar</NavLink>
                     <NavLink href="/products?brand=HyperX">HyperX</NavLink>
                   </div>
-                </div>{" "}
+                </div>
                 {/* References */}
                 <div>
                   <h3 className="mb-2 font-semibold text-primary-700">

@@ -59,7 +59,6 @@ export default function HotCategoriesSection() {
           variants={categoryVariants}
           whileHover={{ scale: 1.05 }}
         >
-          {" "}
           <FaMouse className="text-7xl" />
           <p className="text-center text-lg font-semibold">
             {language === "vi" ? "Chuột Gaming" : "Gaming Mice"}
@@ -120,7 +119,6 @@ export default function HotCategoriesSection() {
           variants={categoryVariants}
           whileHover={{ scale: 1.05 }}
         >
-          {" "}
           <FaGears className="text-7xl" />
           <p className="text-center text-lg font-semibold">
             {language === "vi" ? "Phụ kiện" : "Accessories"}

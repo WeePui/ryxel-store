@@ -99,6 +99,7 @@ function SpecsFilterItem({
     const specs = JSON.parse(params);
     return specs[filterName]?.includes(value) || false;
   };
+
   return (
     <div>
       <div

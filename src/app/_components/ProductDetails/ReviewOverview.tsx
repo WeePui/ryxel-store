@@ -80,7 +80,7 @@ export default function ReviewOverview({
               >
                 <FaRegStar />
               </motion.span>
-            ))}{" "}
+            ))}
           </motion.div>
           <motion.p
             className="text-gray-400"
@@ -109,15 +109,15 @@ export default function ReviewOverview({
                 onSelectRating={handleRatingSelect}
               />
             );
-          })}{" "}
+          })}
         <motion.div
-          className="mb-1 mt-3 flex justify-between self-center text-center transition-all duration-300 hover:border-b-[1px] hover:border-primary-default hover:opacity-70 dark:hover:border-white"
+          className="mb-1 mt-3 flex justify-between self-center text-center transition-all duration-300 hover:border-b-[1px] hover:border-primary-default hover:opacity-70"
           role="button"
           onClick={() => handleRatingSelect(0)}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
-          <span className="text-sm font-medium text-primary-default lg:text-xs dark:text-white">
+          <span className="text-sm font-medium text-primary-default lg:text-xs">
             ({t("products.reviews.allRatings")})
           </span>
         </motion.div>
@@ -157,14 +157,14 @@ function RatingProgressBar({
       transition={{ duration: 0.4, delay: 0.6 + (5 - rating) * 0.1 }}
     >
       <div className="mb-1 flex justify-between">
-        <span className="text-sm font-medium text-primary-default lg:text-xs dark:text-white">
+        <span className="text-sm font-medium text-primary-default lg:text-xs">
           {rating} {t("products.reviews.stars")}
         </span>
-        <span className="text-sm font-medium text-primary-default lg:text-xs dark:text-white">
+        <span className="text-sm font-medium text-primary-default lg:text-xs">
           {count}
         </span>
       </div>
-      <div className="h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+      <div className="h-2.5 w-full rounded-full bg-gray-200">
         <motion.div
           className="h-2.5 rounded-full bg-primary-default"
           style={{ width: `${percentage}%` }}

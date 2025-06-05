@@ -77,7 +77,7 @@ export default function Chatbox() {
               {msg.content}
             </span>
           </div>
-        ))}{" "}
+        ))}
         {loading && (
           <p className="loading-container text-sm italic selection:text-gray-500">
             {t("chatbot.loading")}

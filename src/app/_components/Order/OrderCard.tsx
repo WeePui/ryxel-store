@@ -19,13 +19,12 @@ export default function OrderCard({ order }: OrderCardProps) {
 
   return (
     <div className="flex flex-col gap-2 divide-y-2 divide-gray-100 rounded-lg border-2">
-      {" "}
       <div className="flex items-center px-5 pt-4">
         <div className={`flex items-center gap-2`}>
           <span className={`${orderStatus.textColor}`}>{orderStatus.icon}</span>
           <span className={`${orderStatus.textColor} `}>
             {t(`orders.status.${order.status}`)}
-          </span>{" "}
+          </span>
           <span className="text-sm text-gray-400">
             {new Date(order.updatedAt).toLocaleString(
               t("language") === "vi" ? "vi-VN" : "en-US",

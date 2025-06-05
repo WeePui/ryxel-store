@@ -3,7 +3,6 @@ import RevenueCard from "@/app/_components/Admin/Dashboard/RevenueCard";
 import SalesByCategories from "@/app/_components/Admin/Dashboard/SalesByCategories";
 import StatCard from "@/app/_components/Admin/Dashboard/StatCard";
 import TopCustomers from "@/app/_components/Admin/Dashboard/TopCustomers";
-import TopSellingProducts from "@/app/_components/Admin/Dashboard/TopSellingProducts";
 import { getDashboardStats, getRecentOrders } from "@/app/_libs/apiServices";
 import { formatMoneyCompact } from "@/app/_utils/formatMoney";
 import { cookies } from "next/headers";
@@ -64,9 +63,6 @@ export default async function Page() {
       </div>
       <div className="xl:col-span-4">
         <SalesByCategories cookies={token} />
-      </div>
-      <div className="col-span-2 xl:col-span-4">
-        <TopSellingProducts />
       </div>
       <div className="col-span-4">
         <OrderSummary data={recentOrders} />

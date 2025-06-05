@@ -42,7 +42,6 @@ export default function EditUserModal({
         </div>
 
         <form onSubmit={handleFormSubmit} className="space-y-4">
-          {" "}
           <div>
             <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
               <span className="font-medium">Xác thực email</span>
@@ -65,7 +64,7 @@ export default function EditUserModal({
                 ></span>
               </button>
             </div>
-          </div>{" "}
+          </div>
           <div>
             <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
               <span className="font-medium">Trạng thái hoạt động</span>

@@ -12,10 +12,15 @@ export const generatePriceRanges = (
   max: number
 ): Array<{ min: number; max?: number }> => {
   const ranges: Array<{ min: number; max?: number }> = [];
+
   priceRanges.forEach((range) => {
-    if (min <= Math.max(range.max ?? 0) && max >= range.min) {
+    if (
+      (range.max === undefined && max >= range.min) || // xử lý mốc không có max
+      (range.max !== undefined && min <= range.max && max >= range.min)
+    ) {
       ranges.push({ min: range.min, max: range.max });
     }
   });
+
   return ranges;
 };

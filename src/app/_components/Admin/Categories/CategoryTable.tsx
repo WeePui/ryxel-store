@@ -122,7 +122,7 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
         <Modal onClose={() => setOpenModal(false)}>
           <AddCategoryForm />
         </Modal>
-      )}{" "}
+      )}
       <Table
         data={data}
         columns={columns}

@@ -254,7 +254,7 @@ export default function OrderReviewItem({
                   ?.click()
               }
             >
-              <FaCamera className="transform text-xl text-gray-500 transition-transform hover:scale-110" />{" "}
+              <FaCamera className="transform text-xl text-gray-500 transition-transform hover:scale-110" />
               <p className="text-sm text-gray-400">
                 {images.length < 2 && !video
                   ? t("account.orderReview.addPhotoVideo")

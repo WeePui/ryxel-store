@@ -196,7 +196,7 @@ function ImageCarousel({ images, alt }: ImageCarouselProps) {
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               ></motion.span>
             )}
-            <span className="absolute bottom-0 left-0 h-1 w-full origin-bottom-left scale-y-0 bg-primary-500 transition-transform duration-500 group-hover:scale-y-100"></span>{" "}
+            <span className="absolute bottom-0 left-0 h-1 w-full origin-bottom-left scale-y-0 bg-primary-500 transition-transform duration-500 group-hover:scale-y-100"></span>
           </motion.div>
         ))}
       </motion.div>

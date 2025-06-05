@@ -91,7 +91,6 @@ export default function UserTable({ authToken }: UserTableProps) {
       render: (_, record) => (
         <div className="flex items-center gap-3">
           <div className="relative h-10 w-10 flex-shrink-0">
-            {" "}
             <Image
               src={record.photo?.url || "/dev-users/default.png"}
               alt={record.name}
@@ -181,7 +180,7 @@ export default function UserTable({ authToken }: UserTableProps) {
       title: "Thao tác",
       dataIndex: "_id",
       key: "actions",
-      render: (value, record) => (
+      render: (value) => (
         <div className="flex items-center justify-center gap-2">
           <NavLink
             href={`/admin/users/${value as string}`}
@@ -194,7 +193,6 @@ export default function UserTable({ authToken }: UserTableProps) {
             className="flex items-center gap-1 rounded px-2 py-1 text-sm text-green-600 hover:bg-green-50"
             onClick={() => {
               // TODO: Add edit functionality
-              console.log("Edit user:", record);
             }}
           >
             <FaEdit />

@@ -47,7 +47,6 @@ export default function FeaturesSection() {
 
   return (
     <section className="mx-auto flex max-w-7xl gap-24 px-4 py-20 lg:py-12 md:flex-col md:gap-10">
-      {" "}
       <motion.div
         className="flex flex-[3] flex-col justify-start gap-4 tracking-wider text-gray-700"
         initial="hidden"
@@ -73,7 +72,6 @@ export default function FeaturesSection() {
         whileInView="visible"
         viewport={{ once: true }}
       >
-        {" "}
         <motion.div
           className="flex flex-col"
           variants={itemVariants}

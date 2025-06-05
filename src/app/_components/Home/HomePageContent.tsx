@@ -117,7 +117,6 @@ export default function HomePageContent() {
       <section className="relative flex h-[calc(100dvh-4rem)] w-full items-center justify-center overflow-hidden bg-gray-800 xl:h-[60vh] sm:h-[70vh]">
         <HeroSlider slides={slides} />
       </section>
-
       {/* Apply framer-motion animations to each section */}
       <motion.div
         initial="hidden"
@@ -127,7 +126,6 @@ export default function HomePageContent() {
       >
         <HotCategoriesSection />
       </motion.div>
-
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -137,7 +135,6 @@ export default function HomePageContent() {
       >
         <NewReleasesSection />
       </motion.div>
-
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -146,7 +143,8 @@ export default function HomePageContent() {
         className="max-w-full"
       >
         <BestsellerSection />
-      </motion.div>      <motion.div
+      </motion.div>
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
@@ -154,7 +152,6 @@ export default function HomePageContent() {
       >
         <FeaturesSection />
       </motion.div>
-
       <motion.div
         initial="hidden"
         whileInView="visible"

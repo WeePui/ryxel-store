@@ -85,9 +85,6 @@ export default async function Page({ searchParams }: PageProps) {
     prediction: { predictions },
   } = productSummary;
 
-  console.log("totalProducts", totalProducts);
-  console.log("resultsPerPage", resultsPerPage);
-
   return (
     <div className="grid grid-cols-4 gap-6 p-6 xl:grid-cols-2 md:grid-cols-1">
       <div className="col-span-full">

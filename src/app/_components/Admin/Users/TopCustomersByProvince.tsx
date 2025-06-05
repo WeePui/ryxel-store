@@ -6,6 +6,7 @@ import TabSelector from "../../UI/TabSelector";
 import { useEffect, useState } from "react";
 import DonutChart from "../../UI/DonutChart";
 import Loader from "../../UI/Loader";
+import Button from "@components/UI/Button";
 
 // const data = [
 //   { name: "Hà Nội", value: 100 },
@@ -24,14 +25,15 @@ export default function TopCustomersByProvince({
   authToken,
 }: TopCustomersByProvinceProps) {
   const [range, setRange] = useState("month");
-  const [timeRange, setTimeRange] = useState<string>("year=2023&month=1");
-
+  const [timeRange, setTimeRange] = useState<string>("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
+  const fetchData = async () => {
+    setLoading(true);
+    setError(false);
+    try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/users/top-provinces?${timeRange}&range=${range}`,
         {
@@ -45,16 +47,21 @@ export default function TopCustomersByProvince({
       );
 
       if (!response.ok) {
-        setData([]);
-        setLoading(false);
-        return;
+        throw new Error("Failed to fetch data");
       }
 
       const { data } = await response.json();
       setData(data);
+    } catch (error) {
+      console.error("Error fetching top customers by province data:", error);
+      setError(true);
+      setData([]);
+    } finally {
       setLoading(false);
     }
+  };
 
+  useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [range, timeRange]);
@@ -75,8 +82,16 @@ export default function TopCustomersByProvince({
         </div>
       }
     >
+      {" "}
       {loading ? (
         <Loader />
+      ) : error ? (
+        <div className="text-center">
+          <div className="mb-4 font-medium text-red-500">
+            Không thể tải dữ liệu. Vui lòng thử lại.
+          </div>{" "}
+          <Button onClick={fetchData}>Thử lại</Button>
+        </div>
       ) : data.length === 0 ? (
         <div className="text-center font-medium text-grey-300">
           Không có dữ liệu

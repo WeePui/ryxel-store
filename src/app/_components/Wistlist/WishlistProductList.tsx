@@ -42,7 +42,6 @@ export default function WishlistProductList({
   return (
     <>
       <table className="w-full table-fixed border-collapse border border-gray-200 md:hidden">
-        {" "}
         <thead className="bg-gray-100">
           <tr className="p-4">
             <th className="w-1 pl-1 text-center"></th>

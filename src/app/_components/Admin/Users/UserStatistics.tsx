@@ -32,6 +32,7 @@ import {
   FaArrowUp,
   FaArrowDown,
 } from "react-icons/fa";
+import Button from "@components/UI/Button";
 
 interface StatItem {
   value: number;
@@ -56,39 +57,42 @@ export default function UserStatistics({ authToken }: UserStatisticsProps) {
   const [timeRange, setTimeRange] = useState<string>("year=2023&month=1");
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<UserStatsData | null>(null);
+  const [error, setError] = useState(false);
   const [chartView, setChartView] = useState<"bar" | "pie" | "line" | "radar">(
     "bar",
   );
+  const fetchData = async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/users/users-summary?${timeRange}&range=${range}`,
+        {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const { data } = await response.json();
+      setStats(data);
+    } catch (error) {
+      console.error("Error fetching user statistics:", error);
+      setError(true);
+      setStats(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/users/users-summary?${timeRange}&range=${range}`,
-          {
-            method: "GET",
-            cache: "no-store",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${authToken}`,
-            },
-          },
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const { data } = await response.json();
-        setStats(data);
-      } catch (error) {
-        console.error("Error fetching user statistics:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [range, timeRange]);
@@ -152,6 +156,13 @@ export default function UserStatistics({ authToken }: UserStatisticsProps) {
     >
       {loading ? (
         <Loader />
+      ) : error ? (
+        <div className="text-center">
+          <div className="mb-4 font-medium text-red-500">
+            Không thể tải dữ liệu. Vui lòng thử lại.
+          </div>
+          <Button onClick={fetchData}>Thử lại</Button>
+        </div>
       ) : !stats ? (
         <div className="text-center font-medium text-grey-300">
           Không có dữ liệu
@@ -193,7 +204,7 @@ export default function UserStatistics({ authToken }: UserStatisticsProps) {
             <div className="mb-4 flex items-center justify-between">
               <h3 className="text-lg font-semibold">
                 Biểu đồ phân bố người dùng
-              </h3>{" "}
+              </h3>
               <button
                 onClick={nextChartView}
                 className="rounded-md bg-gray-100 px-4 py-2 text-sm transition-colors hover:bg-gray-200"
@@ -209,7 +220,6 @@ export default function UserStatistics({ authToken }: UserStatisticsProps) {
             </div>
 
             <div className="h-72 w-full">
-              {" "}
               <ResponsiveContainer width="100%" height="100%">
                 {chartView === "bar" ? (
                   <BarChart data={chartData}>

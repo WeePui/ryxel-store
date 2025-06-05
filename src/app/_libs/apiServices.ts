@@ -29,7 +29,7 @@ export async function getProducts(filters: Filter = {}) {
       return {
         status: "error",
         message: "Failed to fetch products",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -40,7 +40,7 @@ export async function getProducts(filters: Filter = {}) {
     return {
       status: "error",
       message: "Network error occurred while fetching products",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -53,7 +53,7 @@ export async function getProductById(id: string) {
       return {
         status: "error",
         message: "Failed to fetch product",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -64,7 +64,7 @@ export async function getProductById(id: string) {
     return {
       status: "error",
       message: "Network error occurred while fetching product",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -77,7 +77,7 @@ export async function getProductBySlug(slug: string) {
       return {
         status: "error",
         message: "Failed to fetch product",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -88,7 +88,7 @@ export async function getProductBySlug(slug: string) {
     return {
       status: "error",
       message: "Network error occurred while fetching product",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -146,7 +146,7 @@ export async function logout() {
       return {
         status: "error",
         message: "Failed to log out",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -157,7 +157,7 @@ export async function logout() {
     return {
       status: "error",
       message: "Network error occurred during logout",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -177,7 +177,7 @@ export async function getProfile(token: { value: string }) {
       return {
         status: "error",
         message: errorData.message || "Failed to fetch user",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -188,7 +188,7 @@ export async function getProfile(token: { value: string }) {
     return {
       status: "error",
       message: "Network error while fetching user",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -224,7 +224,7 @@ export async function checkEmailAvailability(email: string) {
       return {
         status: "error",
         message: "Failed to check email availability",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -234,7 +234,7 @@ export async function checkEmailAvailability(email: string) {
     return {
       status: "error",
       message: "Network error occurred while checking email availability",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -354,7 +354,7 @@ export async function getAddresses(token: { value: string }) {
       return {
         status: "error",
         message: errorData.message || "Failed to fetch addresses",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -365,7 +365,7 @@ export async function getAddresses(token: { value: string }) {
     return {
       status: "error",
       message: "Network error while fetching addresses",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -391,7 +391,7 @@ export async function addAddress(
       return {
         status: "error",
         message: data.message || "Failed to add address",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -401,7 +401,7 @@ export async function addAddress(
     return {
       status: "error",
       message: "Network error while adding address",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -421,7 +421,7 @@ export async function deleteAddress(id: string, token: { value: string }) {
       return {
         status: "error",
         message: errorData.message || "Failed to delete address",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -431,14 +431,14 @@ export async function deleteAddress(id: string, token: { value: string }) {
     return {
       status: "error",
       message: "Network error while deleting address",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
 
 export async function updateAddress(
   id: string,
-  formData: { [key: string]: { code: string | number; name: string } | string },
+  formData: AddressFormInput,
   token: { value: string },
 ) {
   try {
@@ -458,7 +458,7 @@ export async function updateAddress(
       return {
         status: "error",
         message: data.message || "Failed to update address",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -468,7 +468,7 @@ export async function updateAddress(
     return {
       status: "error",
       message: "Network error while updating address",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -489,7 +489,7 @@ export async function setDefaultAddress(id: string, token: { value: string }) {
       return {
         status: "error",
         message: data.message || "Failed to set default address",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -499,7 +499,7 @@ export async function setDefaultAddress(id: string, token: { value: string }) {
     return {
       status: "error",
       message: "Network error while setting default address",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -519,7 +519,7 @@ export async function getCart(token: { value: string }) {
       return {
         status: "error",
         message: data.message || "Failed to fetch cart",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -529,7 +529,7 @@ export async function getCart(token: { value: string }) {
     return {
       status: "error",
       message: "Network error while fetching cart",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -560,7 +560,7 @@ export async function addOrUpdateCartItem(
       return {
         status: "error",
         message: data.message || "Failed to add item to cart",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -570,7 +570,7 @@ export async function addOrUpdateCartItem(
     return {
       status: "error",
       message: "Network error while updating cart",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -598,7 +598,7 @@ export async function removeCartItem(
       return {
         status: "error",
         message: data.message || "Failed to remove item from cart",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -608,7 +608,7 @@ export async function removeCartItem(
     return {
       status: "error",
       message: "Network error while removing cart item",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -635,7 +635,7 @@ export async function verifyDiscountCode(
       return {
         status: "error",
         message: data.message || "Failed to verify discount code",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -645,7 +645,7 @@ export async function verifyDiscountCode(
     return {
       status: "error",
       message: "Network error while verifying discount code",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -671,7 +671,7 @@ export async function reauthenticate(
       return {
         status: "error",
         message: data.message || "Failed to reauthenticate",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -681,7 +681,7 @@ export async function reauthenticate(
     return {
       status: "error",
       message: "Network error while reauthenticating",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -710,7 +710,7 @@ export async function createCheckoutSession(
       return {
         status: "error",
         message: errorData.message || "Failed to create checkout session",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -721,7 +721,7 @@ export async function createCheckoutSession(
     return {
       status: "error",
       message: "Network error while creating checkout session",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -749,7 +749,8 @@ export async function createOrder(
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
       if (
-        error.message === "You have an unpaid order. Please complete the payment"
+        error.message ===
+        "You have an unpaid order. Please complete the payment"
       ) {
         return {
           status: "error",
@@ -760,7 +761,7 @@ export async function createOrder(
       return {
         status: "error",
         message: error.message || "Failed to create order",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -771,7 +772,7 @@ export async function createOrder(
     return {
       status: "error",
       message: "Network error while creating order",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -797,7 +798,7 @@ export const checkUnpaidOrder = async (token: { value: string }) => {
       return {
         status: "error",
         message: error.message || "Failed to check unpaid order",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -808,7 +809,7 @@ export const checkUnpaidOrder = async (token: { value: string }) => {
     return {
       status: "error",
       message: "Network error while checking unpaid order",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -827,7 +828,7 @@ export async function getOrders(token: { value: string }, search: string) {
       return {
         status: "error",
         message: errorData.message || "Failed to fetch orders",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -838,7 +839,7 @@ export async function getOrders(token: { value: string }, search: string) {
     return {
       status: "error",
       message: "Network error while fetching orders",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -857,7 +858,7 @@ export async function getOrderById(id: string, token: { value: string }) {
       return {
         status: "error",
         message: errorData.message || "Failed to fetch order",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -868,7 +869,7 @@ export async function getOrderById(id: string, token: { value: string }) {
     return {
       status: "error",
       message: "Network error while fetching order",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -897,7 +898,7 @@ export const getShippingFee = async (
       return {
         status: "error",
         message: "Failed to fetch shipping fee",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -908,7 +909,7 @@ export const getShippingFee = async (
     return {
       status: "error",
       message: "Network error occurred while fetching shipping fee",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -931,7 +932,7 @@ export const cancelOrder = async (id: string, token: { value: string }) => {
       return {
         status: "error",
         message: errorData.message || "Failed to cancel order",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -942,7 +943,7 @@ export const cancelOrder = async (id: string, token: { value: string }) => {
     return {
       status: "error",
       message: "Network error while cancelling order",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -967,7 +968,7 @@ export const getOrderByOrderCode = async (
       return {
         status: "error",
         message: errorData.message || "Failed to fetch order",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -978,7 +979,7 @@ export const getOrderByOrderCode = async (
     return {
       status: "error",
       message: "Network error while fetching order",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1002,7 +1003,8 @@ export const createReviewsByOrder = async (
         formData.append(`reviews[${index}][images][${imgIndex}]`, file);
       });
 
-      if (review.video) formData.append(`reviews[${index}][video]`, review.video);
+      if (review.video)
+        formData.append(`reviews[${index}][video]`, review.video);
     });
 
     const response = await fetch(
@@ -1022,7 +1024,7 @@ export const createReviewsByOrder = async (
       return {
         status: "error",
         message: error.message || "Failed to create reviews",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1033,7 +1035,7 @@ export const createReviewsByOrder = async (
     return {
       status: "error",
       message: "Network error while creating reviews",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1047,7 +1049,10 @@ export const updateReviewsByOrder = async (
     const formData = new FormData();
 
     reviews.forEach((review) => {
-      formData.append(`reviews[${review._id}][rating]`, review.rating.toString());
+      formData.append(
+        `reviews[${review._id}][rating]`,
+        review.rating.toString(),
+      );
       formData.append(`reviews[${review._id}][review]`, review.review);
 
       // Gửi từng ảnh vào đúng index của sản phẩm
@@ -1076,7 +1081,7 @@ export const updateReviewsByOrder = async (
       return {
         status: "error",
         message: error.message || "Failed to update reviews",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1087,7 +1092,7 @@ export const updateReviewsByOrder = async (
     return {
       status: "error",
       message: "Network error while updating reviews",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1107,7 +1112,7 @@ export const getWishlist = async (token: { value: string }) => {
       return {
         status: "error",
         message: errorData.message || "Failed to fetch wishlist",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1118,7 +1123,7 @@ export const getWishlist = async (token: { value: string }) => {
     return {
       status: "error",
       message: "Network error while fetching wishlist",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1144,7 +1149,7 @@ export const addProductToWishlist = async (
       return {
         status: "error",
         message: errorData.message || "Failed to add product to wishlist",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1155,7 +1160,7 @@ export const addProductToWishlist = async (
     return {
       status: "error",
       message: "Network error while adding product to wishlist",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1170,7 +1175,7 @@ export const getWishlistByShareCode = async (shareCode: string) => {
       return {
         status: "error",
         message: "Failed to fetch wishlist",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1181,7 +1186,7 @@ export const getWishlistByShareCode = async (shareCode: string) => {
     return {
       status: "error",
       message: "Network error occurred while fetching wishlist",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1207,7 +1212,7 @@ export const removeProductFromWishlist = async (
       return {
         status: "error",
         message: errorData.message || "Failed to remove product from wishlist",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1218,7 +1223,7 @@ export const removeProductFromWishlist = async (
     return {
       status: "error",
       message: "Network error while removing product from wishlist",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1244,7 +1249,7 @@ export const addMultipleItemsToCart = async (
       return {
         status: "error",
         message: data.message || "Failed to add items to cart",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1254,7 +1259,7 @@ export const addMultipleItemsToCart = async (
     return {
       status: "error",
       message: "Network error while adding items to cart",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1269,7 +1274,7 @@ export async function getFilterData(filters: Filter) {
       return {
         status: "error",
         message: "Failed to fetch filter data",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1280,7 +1285,7 @@ export async function getFilterData(filters: Filter) {
     return {
       status: "error",
       message: "Network error occurred while fetching filter data",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -1295,7 +1300,7 @@ export async function getBestsellers() {
       return {
         status: "error",
         message: "Failed to fetch bestsellers",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1306,7 +1311,7 @@ export async function getBestsellers() {
     return {
       status: "error",
       message: "Network error occurred while fetching bestsellers",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -1327,7 +1332,7 @@ export async function clearCartItems(token: { value: string }) {
       return {
         status: "error",
         message: data.message || "Failed to clear cart items",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1337,7 +1342,7 @@ export async function clearCartItems(token: { value: string }) {
     return {
       status: "error",
       message: "Network error while clearing cart",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -1356,7 +1361,7 @@ export async function getDashboardStats(token: { value: string }) {
       return {
         status: "error",
         message: errorData.message || "Failed to fetch dashboard stats",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1367,7 +1372,7 @@ export async function getDashboardStats(token: { value: string }) {
     return {
       status: "error",
       message: "Network error while fetching dashboard stats",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -1386,7 +1391,7 @@ export async function getRecentOrders(token: { value: string }) {
       return {
         status: "error",
         message: errorData.message || "Failed to fetch recent orders",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1397,7 +1402,7 @@ export async function getRecentOrders(token: { value: string }) {
     return {
       status: "error",
       message: "Network error while fetching recent orders",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -1415,7 +1420,7 @@ export async function getCategories(token: { value: string }) {
       return {
         status: "error",
         message: errorData.message || "Failed to fetch categories",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1426,7 +1431,7 @@ export async function getCategories(token: { value: string }) {
     return {
       status: "error",
       message: "Network error while fetching categories",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -1447,7 +1452,7 @@ export async function getCategoryBySlug(
       return {
         status: "error",
         message: errorData.message || "Failed to fetch category",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1458,7 +1463,7 @@ export async function getCategoryBySlug(
     return {
       status: "error",
       message: "Network error while fetching category",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 }
@@ -1475,7 +1480,7 @@ export const getStockData = async (token: { value: string }) => {
       return {
         status: "error",
         message: "Failed to fetch stock data",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1486,7 +1491,7 @@ export const getStockData = async (token: { value: string }) => {
     return {
       status: "error",
       message: "Network error occurred while fetching stock data",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1503,7 +1508,7 @@ export const getProductsSummary = async (token: { value: string }) => {
       return {
         status: "error",
         message: "Failed to fetch products summary",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1514,7 +1519,7 @@ export const getProductsSummary = async (token: { value: string }) => {
     return {
       status: "error",
       message: "Network error occurred while fetching products summary",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1529,7 +1534,7 @@ export const getRecommendedProducts = async (productId: string) => {
       return {
         status: "error",
         message: "Failed to fetch recommended products",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1540,7 +1545,7 @@ export const getRecommendedProducts = async (productId: string) => {
     return {
       status: "error",
       message: "Network error occurred while fetching recommended products",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1555,7 +1560,7 @@ export const getSimilarProducts = async (productId: string) => {
       return {
         status: "error",
         message: "Failed to fetch similar products",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1566,7 +1571,7 @@ export const getSimilarProducts = async (productId: string) => {
     return {
       status: "error",
       message: "Network error occurred while fetching similar products",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1579,7 +1584,7 @@ export const getClientCategories = async () => {
       return {
         status: "error",
         message: "Failed to fetch categories",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1590,7 +1595,7 @@ export const getClientCategories = async () => {
     return {
       status: "error",
       message: "Network error occurred while fetching categories",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1610,7 +1615,7 @@ export const getCategorySummary = async (
       return {
         status: "error",
         message: "Failed to fetch categories summary",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1621,7 +1626,7 @@ export const getCategorySummary = async (
     return {
       status: "error",
       message: "Network error occurred while fetching categories summary",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1644,7 +1649,7 @@ export const addCategory = async (
       return {
         status: "error",
         message: "Failed to add category",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1655,7 +1660,7 @@ export const addCategory = async (
     return {
       status: "error",
       message: "Network error occurred while adding category",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1687,7 +1692,7 @@ export const updateCategory = async (
       return {
         status: "error",
         message: "Failed to update category",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1698,7 +1703,7 @@ export const updateCategory = async (
     return {
       status: "error",
       message: "Network error occurred while updating category",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1729,7 +1734,7 @@ export const createCategory = async (
       return {
         status: "error",
         message: "Failed to create category",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1740,7 +1745,7 @@ export const createCategory = async (
     return {
       status: "error",
       message: "Network error occurred while creating category",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1782,8 +1787,6 @@ export const addProduct = async (
       });
     });
 
-    console.log("hello");
-
     const response = await fetch(`${API_URL}/products`, {
       method: "POST",
       headers: {
@@ -1797,7 +1800,7 @@ export const addProduct = async (
       return {
         status: "error",
         message: "Failed to add product",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1808,7 +1811,7 @@ export const addProduct = async (
     return {
       status: "error",
       message: "Network error occurred while adding product",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1846,7 +1849,10 @@ export const updateProduct = async (
     product.variants.forEach((variant, variantIndex) => {
       variant.images.forEach((image, imageIndex) => {
         if (image instanceof File) {
-          formData.append(`variantImages[${variantIndex}][${imageIndex}]`, image);
+          formData.append(
+            `variantImages[${variantIndex}][${imageIndex}]`,
+            image,
+          );
         } else {
           formData.append(
             `variantImageUrls[${variantIndex}][${imageIndex}]`,
@@ -1869,7 +1875,7 @@ export const updateProduct = async (
       return {
         status: "error",
         message: "Failed to update product",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1880,7 +1886,7 @@ export const updateProduct = async (
     return {
       status: "error",
       message: "Network error occurred while updating product",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1890,19 +1896,22 @@ export const createShippingOrder = async (
   token: { value: string },
 ) => {
   try {
-    const response = await fetch(`${API_URL}/orders/${orderId}/shipping-order`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token.value}`,
+    const response = await fetch(
+      `${API_URL}/orders/${orderId}/shipping-order`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+        credentials: "include",
       },
-      credentials: "include",
-    });
+    );
 
     if (!response.ok) {
       return {
         status: "error",
         message: "Failed to create shipping order",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1913,7 +1922,7 @@ export const createShippingOrder = async (
     return {
       status: "error",
       message: "Network error occurred while creating shipping order",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1938,7 +1947,7 @@ export const updateOrderStatus = async (
       return {
         status: "error",
         message: "Failed to update order status",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1949,7 +1958,7 @@ export const updateOrderStatus = async (
     return {
       status: "error",
       message: "Network error occurred while updating order status",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -1971,7 +1980,7 @@ export const refundOrder = async (
       return {
         status: "error",
         message: "Refund not successful",
-        statusCode: response.status
+        statusCode: response.status,
       };
     }
 
@@ -1982,7 +1991,7 @@ export const refundOrder = async (
     return {
       status: "error",
       message: "Network error occurred while processing refund",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -2001,7 +2010,7 @@ export const downloadFile = async (url: string, token: { value: string }) => {
       return {
         status: "error",
         message: "Failed to download file",
-        statusCode: res.status
+        statusCode: res.status,
       };
     }
 
@@ -2010,14 +2019,14 @@ export const downloadFile = async (url: string, token: { value: string }) => {
     a.href = window.URL.createObjectURL(blob);
     a.download = url.includes("pdf") ? "order.pdf" : "order.xlsx";
     a.click();
-    
+
     return { status: "success" };
   } catch (error) {
     console.error("Network error in downloadFile:", error);
     return {
       status: "error",
       message: "Network error occurred while downloading file",
-      statusCode: 0
+      statusCode: 0,
     };
   }
 };
@@ -2055,7 +2064,7 @@ export const getAdminOrders = async (
         credentials: "include",
       },
     );
-    
+
     if (!response.ok) {
       console.error("Failed to fetch admin orders:", response.status);
       return {
@@ -2094,7 +2103,7 @@ export const getOrderSummaryStats = async (authToken: string) => {
         statusCode: response.status,
       };
     }
-    
+
     const { data } = await response.json();
     return data;
   } catch (error) {
@@ -2315,7 +2324,7 @@ export const deleteDiscount = async (id: string, authToken: string) => {
         statusCode: response.status,
       };
     }
-    
+
     return { status: "success", message: "Discount deleted successfully" };
   } catch (error) {
     console.error("Error deleting discount:", error);
@@ -2440,7 +2449,10 @@ export const getUserOrderHistory = async (
     const filterParams = new URLSearchParams();
     for (const key in filters) {
       if (filters[key as keyof typeof filters] !== undefined) {
-        filterParams.append(key, filters[key as keyof typeof filters] as string);
+        filterParams.append(
+          key,
+          filters[key as keyof typeof filters] as string,
+        );
       }
     }
 
@@ -2555,8 +2567,6 @@ export const getUserById = async (userId: string, authToken: string) => {
     };
   }
 };
-<<<<<<< Updated upstream
-=======
 
 // FCM Token Registration
 export const registerFcmToken = async (
@@ -2702,7 +2712,10 @@ export const unregisterNotificationToken = async (
     });
 
     if (!response.ok) {
-      console.error("Failed to unregister notification token:", response.status);
+      console.error(
+        "Failed to unregister notification token:",
+        response.status,
+      );
       return {
         status: "error",
         message: "Failed to unregister notification token",
@@ -2811,16 +2824,22 @@ export const markAllNotificationsAsRead = async (authToken: {
   value: string;
 }) => {
   try {
-    const response = await fetch(`${API_URL}/notifications/user/mark-all-read`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${authToken.value}`,
+    const response = await fetch(
+      `${API_URL}/notifications/user/mark-all-read`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${authToken.value}`,
+        },
+        credentials: "include",
       },
-      credentials: "include",
-    });
+    );
 
     if (!response.ok) {
-      console.error("Failed to mark all notifications as read:", response.status);
+      console.error(
+        "Failed to mark all notifications as read:",
+        response.status,
+      );
       return {
         status: "error",
         message: "Failed to mark all notifications as read",
@@ -3019,7 +3038,10 @@ export const sendPromotionalNotification = async (
     });
 
     if (!response.ok) {
-      console.error("Failed to send promotional notification:", response.status);
+      console.error(
+        "Failed to send promotional notification:",
+        response.status,
+      );
       return {
         status: "error",
         message: "Failed to send promotional notification",
@@ -3050,7 +3072,7 @@ export const sendNotificationToUser = async (
   try {
     // Determine if it's an email or userId
     const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userIdentifier);
-    
+
     const response = await fetch(`${API_URL}/notifications/send`, {
       method: "POST",
       headers: {
@@ -3099,8 +3121,10 @@ export const sendNotificationToMultipleUsers = async (
 ) => {
   try {
     // Check if any of the identifiers are emails
-    const hasEmails = userIdentifiers.some(id => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id));
-    
+    const hasEmails = userIdentifiers.some((id) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id),
+    );
+
     const response = await fetch(`${API_URL}/notifications/send-multiple`, {
       method: "POST",
       headers: {
@@ -3108,7 +3132,9 @@ export const sendNotificationToMultipleUsers = async (
         Authorization: `Bearer ${authToken.value}`,
       },
       body: JSON.stringify({
-        ...(hasEmails ? { emails: userIdentifiers } : { userIds: userIdentifiers }),
+        ...(hasEmails
+          ? { emails: userIdentifiers }
+          : { userIds: userIdentifiers }),
         title,
         body,
         data: notificationData,
@@ -3160,7 +3186,10 @@ export const sendNotificationToAllUsers = async (
     });
 
     if (!response.ok) {
-      console.error("Failed to send notification to all users:", response.status);
+      console.error(
+        "Failed to send notification to all users:",
+        response.status,
+      );
       return {
         status: "error",
         message: "Failed to send notification to all users",
@@ -3179,4 +3208,3 @@ export const sendNotificationToAllUsers = async (
     };
   }
 };
->>>>>>> Stashed changes

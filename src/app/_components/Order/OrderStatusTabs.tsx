@@ -27,8 +27,7 @@ export default function OrderStatusTabs({ onChangeTab }: OrderStatusTabsProps) {
 
   return (
     <div>
-      <ul className="flex w-full overflow-hidden overflow-x-auto whitespace-nowrap rounded-lg text-center text-sm font-medium shadow-sm scrollbar-hide dark:divide-gray-700 dark:text-gray-400">
-        {" "}
+      <ul className="flex w-full overflow-hidden overflow-x-auto whitespace-nowrap rounded-lg text-center text-sm font-medium shadow-sm scrollbar-hide">
         <TabItem
           href="#"
           current={activeTab === "all"}
@@ -102,7 +101,7 @@ function TabItem({ children, href, current, onClick }: TabItemProps) {
           current
             ? "bg-primary-default text-white"
             : "bg-white text-primary-500"
-        } flex w-full items-center justify-center border-s-0 border-gray-600 px-4 py-2 text-center transition-all duration-300 hover:rounded-t-lg hover:bg-gray-200 hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-tertiary-500 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white`}
+        } flex w-full items-center justify-center border-s-0 border-gray-600 px-4 py-2 text-center transition-all duration-300 hover:rounded-t-lg hover:bg-gray-200 hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-tertiary-500`}
       >
         {children}
       </Link>

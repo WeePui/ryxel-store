@@ -24,7 +24,7 @@ export default function ClientWrapper({ user }: ClientWrapperProps) {
             <Image src={user.photo.url} alt={user.name} fill />
           </div>
           <span className="text-lg font-bold text-grey-300">{user.name}</span>
-        </div>{" "}
+        </div>
         <Button
           className="hidden lg:block"
           onClick={() => setIsOpen(!isOpen)}
