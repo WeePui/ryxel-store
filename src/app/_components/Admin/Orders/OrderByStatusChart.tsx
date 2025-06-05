@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Card from '../../UI/Card';
-import AdminDateSelector from '../../UI/AdminDateSelector';
-import TabSelector from '../../UI/TabSelector';
-import DonutChart from '../../UI/DonutChart';
-import Loader from '../../UI/Loader';
+import { useEffect, useState } from "react";
+import Card from "../../UI/Card";
+import AdminDateSelector from "../../UI/AdminDateSelector";
+import TabSelector from "../../UI/TabSelector";
+import DonutChart from "../../UI/DonutChart";
+import Loader from "../../UI/Loader";
+import Button from "@components/UI/Button";
 
 // const data = [
 //   { name: 'Chờ xác nhận', value: 400 },
@@ -20,37 +21,44 @@ export default function OrderByStatusChart({
 }: {
   authToken: string;
 }) {
-  const [range, setRange] = useState('month');
-  const [timeRange, setTimeRange] = useState('');
+  const [range, setRange] = useState("month");
+  const [timeRange, setTimeRange] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
+  const fetchData = async () => {
+    setLoading(true);
+    setError(false);
+    try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/orders/order-by-status?${timeRange}&range=${range}`,
         {
-          method: 'GET',
-          cache: 'no-store',
+          method: "GET",
+          cache: "no-store",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
-        setData([]);
-        setLoading(false);
-        return;
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const { data } = await response.json();
-      setData(data);
+      setData(data || []);
+    } catch (error) {
+      console.error("Error fetching order by status data:", error);
+      setError(true);
+      setData([]);
+    } finally {
       setLoading(false);
     }
+  };
 
+  useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [range, timeRange]);
@@ -58,13 +66,13 @@ export default function OrderByStatusChart({
   return (
     <Card
       title="Đơn hàng theo trạng thái"
-      className="flex flex-col gap-6 flex-grow pb-10"
+      className="flex flex-grow flex-col gap-6 pb-10"
       titleAction={
         <div className="flex items-center gap-4">
           <AdminDateSelector range={range} onSelect={setTimeRange} />
           <TabSelector
-            tabLabels={['Theo tháng', 'Theo năm']}
-            tabValues={['month', 'year']}
+            tabLabels={["Theo tháng", "Theo năm"]}
+            tabValues={["month", "year"]}
             selectedTab={range}
             onTabSelect={setRange}
           />
@@ -73,6 +81,13 @@ export default function OrderByStatusChart({
     >
       {loading ? (
         <Loader />
+      ) : error ? (
+        <div className="flex h-full flex-col items-center justify-center space-y-4">
+          <p className="text-red-500">
+            Không thể tải dữ liệu. Vui lòng thử lại.
+          </p>
+          <Button onClick={fetchData}>Thử lại</Button>
+        </div>
       ) : data.length === 0 ? (
         <div className="text-center font-medium text-grey-300">
           Không có dữ liệu
