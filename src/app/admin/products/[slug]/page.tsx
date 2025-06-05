@@ -1,7 +1,7 @@
-import FormUpdateProduct from '@/app/_components/Admin/Products/FormUpdateProduct';
-import ApiErrorDisplay from '@/app/_components/UI/ApiErrorDisplay';
-import { getCategories, getProductBySlug } from '@/app/_libs/apiServices';
-import { cookies } from 'next/headers';
+import FormUpdateProduct from "@/app/_components/Admin/Products/FormUpdateProduct";
+import ApiErrorDisplay from "@/app/_components/UI/ApiErrorDisplay";
+import { getCategories, getProductBySlug } from "@/app/_libs/apiServices";
+import { cookies } from "next/headers";
 
 // const data = {
 //   product: {
@@ -81,17 +81,17 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const cookiesStore = await cookies();
-  const token = cookiesStore.get('jwt')?.value || '';
+  const token = cookiesStore.get("jwt")?.value || "";
 
   const { slug } = await params;
   const productData = await getProductBySlug(slug);
-  
+
   if (productData.status === "error") {
     return <ApiErrorDisplay error={productData} title="Product Error" />;
   }
 
   const categoriesData = await getCategories({ value: token });
-  
+
   if (categoriesData.status === "error") {
     return <ApiErrorDisplay error={categoriesData} title="Categories Error" />;
   }
@@ -100,7 +100,7 @@ export default async function Page({ params }: PageProps) {
   const { categories } = categoriesData.data;
 
   return (
-    <div className="grid grid-cols-4 md:grid-cols-1 gap-6 p-6">
+    <div className="grid grid-cols-4 gap-6 p-6 md:grid-cols-1">
       <div className="col-span-full">
         <FormUpdateProduct product={product} categories={categories} />
       </div>

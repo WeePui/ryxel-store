@@ -21,7 +21,7 @@ export function SafeUserTable({ authToken }: { authToken: string }) {
     <ErrorBoundary
       fallback={
         <div className="rounded-lg border border-red-200 bg-red-50 p-6">
-          <InlineError 
+          <InlineError
             message="Unable to load user management table"
             type="error"
             size="medium"
@@ -35,7 +35,7 @@ export function SafeUserTable({ authToken }: { authToken: string }) {
               <li>• Server temporarily unavailable</li>
               <li>• Data formatting problems</li>
             </ul>
-            <Button 
+            <Button
               onClick={() => window.location.reload()}
               variant="primary"
               size="small"
@@ -61,13 +61,14 @@ export function SafeUserStatistics({ authToken }: { authToken: string }) {
     <ErrorBoundary
       fallback={
         <div className="rounded-lg border border-orange-200 bg-orange-50 p-6">
-          <InlineError 
+          <InlineError
             message="Statistics temporarily unavailable"
             type="warning"
             size="medium"
           />
           <p className="mt-2 text-sm text-gray-600">
-            User statistics could not be calculated. The system is working to resolve this.
+            User statistics could not be calculated. The system is working to
+            resolve this.
           </p>
         </div>
       }
@@ -82,12 +83,16 @@ export function SafeUserStatistics({ authToken }: { authToken: string }) {
  * Error boundary wrapper for TopCustomersByProvince component
  * Handles geographic data visualization errors gracefully
  */
-export function SafeTopCustomersByProvince({ authToken }: { authToken: string }) {
+export function SafeTopCustomersByProvince({
+  authToken,
+}: {
+  authToken: string;
+}) {
   return (
     <ErrorBoundary
       fallback={
         <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
-          <InlineError 
+          <InlineError
             message="Geographic data unavailable"
             type="info"
             size="medium"
@@ -113,7 +118,7 @@ export function SafeTopCustomers({ cookies }: { cookies: string }) {
     <ErrorBoundary
       fallback={
         <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
-          <InlineError 
+          <InlineError
             message="Top customers data unavailable"
             type="info"
             size="medium"
@@ -139,7 +144,7 @@ export function SafeSalesByCategories({ cookies }: { cookies: string }) {
     <ErrorBoundary
       fallback={
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-6 text-center">
-          <InlineError 
+          <InlineError
             message="Sales analytics temporarily unavailable"
             type="info"
             size="medium"
@@ -165,7 +170,7 @@ export function SafeTopCityByOrder({ authToken }: { authToken: string }) {
     <ErrorBoundary
       fallback={
         <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-center">
-          <InlineError 
+          <InlineError
             message="Regional order data unavailable"
             type="info"
             size="medium"
@@ -188,22 +193,19 @@ export function SafeTopCityByOrder({ authToken }: { authToken: string }) {
  */
 export function withAdminErrorBoundary<T extends Record<string, unknown>>(
   Component: React.ComponentType<T>,
-  errorMessage: string = "Component could not be loaded"
+  errorMessage: string = "Component could not be loaded",
 ) {
   return function WrappedComponent(props: T) {
     return (
       <ErrorBoundary
         fallback={
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center">
-            <InlineError 
-              message={errorMessage}
-              type="warning"
-              size="medium"
-            />
+            <InlineError message={errorMessage} type="warning" size="medium" />
           </div>
         }
-        resetKeys={Object.values(props).filter((value): value is string | number => 
-          typeof value === 'string' || typeof value === 'number'
+        resetKeys={Object.values(props).filter(
+          (value): value is string | number =>
+            typeof value === "string" || typeof value === "number",
         )}
       >
         <Component {...props} />

@@ -112,53 +112,89 @@ export async function loginAction(
   inputData?: { email: string; password: string };
   errors?: FormError;
 } | void> {
-  const userInput = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
-
-  const validation = validateLoginForm(userInput);
-  if (!validation.success) {
-    return {
-      success: false,
-      inputData: userInput,
-      errors: validation.errors,
+  try {
+    const userInput = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
     };
-  }
 
-  const loginData = await login(userInput);
+    const validation = validateLoginForm(userInput);
+    if (!validation.success) {
+      return {
+        success: false,
+        inputData: userInput,
+        errors: validation.errors,
+      };
+    }
 
-  if (loginData.message)
+    const loginData = await login(userInput);
+
+    if (loginData.message)
+      return {
+        success: false,
+        inputData: userInput,
+        errors: {
+          email: loginData.message,
+        },
+      };
+
+    const {
+      data: { user },
+    } = loginData;
+
+    const cookiesStore = await cookies();
+    const jwtExpiresIn = process.env.JWT_COOKIES_EXPIRES_IN;
+
+    if (!jwtExpiresIn) {
+      console.error("JWT_COOKIES_EXPIRES_IN environment variable is not set");
+      return {
+        success: false,
+        inputData: userInput,
+        errors: {
+          email: "Configuration error. Please try again later.",
+        },
+      };
+    }
+
+    const expiresAt = new Date(
+      Date.now() + Number(jwtExpiresIn) * 24 * 60 * 60 * 1000,
+    );
+
+    cookiesStore.set("jwt", loginData.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: expiresAt,
+    });
+    cookiesStore.set("verified", user.emailVerified.toString(), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+    cookiesStore.delete("reauthenticated");    const redirectPath =
+      user.role !== "admin" ? "/products" : "/admin/dashboard";
+    console.log(
+      `Login successful for user ${user.email}, redirecting to ${redirectPath}`,
+    );
+
+    redirect(redirectPath);
+  } catch (error) {
+    // Check if the error is a redirect error (which is expected behavior)
+    if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+      // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+      throw error;
+    }
+    
+    console.error("Login action error:", error);
     return {
       success: false,
-      inputData: userInput,
+      inputData: {
+        email: formData.get("email") as string,
+        password: "",
+      },
       errors: {
-        email: loginData.message,
+        email: "An unexpected error occurred during login. Please try again.",
       },
     };
-
-  const {
-    data: { user },
-  } = loginData;
-
-  const cookiesStore = await cookies();
-  const expiresAt = new Date(
-    Date.now() +
-      Number(process.env.JWT_COOKIES_EXPIRES_IN!) * 24 * 60 * 60 * 1000,
-  );
-
-  cookiesStore.set("jwt", loginData.token, {
-    httpOnly: true,
-    secure: true,
-    expires: expiresAt,
-  });
-  cookiesStore.set("verified", user.emailVerified, {
-    httpOnly: true,
-    secure: true,
-  });
-  cookiesStore.delete("reauthenticated");
-
-  redirect(user.role !== "admin" ? "/products" : "/admin/dashboard");
+  }
 }
 
 export async function signupAction(
@@ -209,10 +245,21 @@ export async function signupAction(
     secure: true,
     expires: expiresAt,
   });
-
   await sendOTPAction({ counter: 0 });
 
-  redirect("/signup/verifyEmail");
+  try {
+    redirect("/signup/verifyEmail");
+  } catch (error) {
+    // Check if the error is a redirect error (which is expected behavior)
+    if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+      // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+      throw error;
+    }
+    
+    // For any other error, log it but still proceed with redirect
+    console.error("Unexpected error in signupAction:", error);
+    throw error;
+  }
 }
 
 export const sendOTPAction = async ({
@@ -260,7 +307,6 @@ export async function verifyOTPAction(_: unknown, formData: FormData) {
 
   const checkIsLogin = await checkLogin();
   if (!checkIsLogin.success) return checkIsLogin;
-
   const token = checkIsLogin.token!;
   const data = await verifyOTP(otp as string, token);
   if (data.status !== "success") {
@@ -278,7 +324,19 @@ export async function verifyOTPAction(_: unknown, formData: FormData) {
     };
   }
 
-  redirect("/account");
+  try {
+    redirect("/account");
+  } catch (error) {
+    // Check if the error is a redirect error (which is expected behavior)
+    if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+      // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+      throw error;
+    }
+    
+    // For any other error, log it but still proceed with redirect
+    console.error("Unexpected error in verifyOTPAction:", error);
+    throw error;
+  }
 }
 
 export async function logoutAction(
@@ -312,12 +370,23 @@ export async function logoutAction(
       },
     };
   }
-
   const cookiesStore = await cookies();
   cookiesStore.delete("jwt");
   cookiesStore.delete("reauthenticated");
 
-  redirect("/");
+  try {
+    redirect("/");
+  } catch (error) {
+    // Check if the error is a redirect error (which is expected behavior)
+    if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+      // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+      throw error;
+    }
+    
+    // For any other error, log it but still proceed with redirect
+    console.error("Unexpected error in logoutAction:", error);
+    throw error;
+  }
 }
 
 export async function forgotPasswordAction(
@@ -380,7 +449,6 @@ export async function resetPasswordAction(
       },
     };
   }
-
   // Reset password
   try {
     const data = await resetPassword(
@@ -397,6 +465,12 @@ export async function resetPasswordAction(
         errors: { message: data.message || "Failed to reset password." },
       };
   } catch (error) {
+    // Check if the error is a redirect error (which is expected behavior)
+    if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+      // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+      throw error;
+    }
+    
     return {
       success: false,
       errors: {
@@ -764,13 +838,25 @@ export async function reauthenticateAction(
     const expiresAt = new Date(
       Date.now() +
         Number(process.env.REAUTHENTICATED_COOKIES_EXPIRES_IN!) * 30 * 1000,
-    );
-    cookiesStore.set("reauthenticated", "true", {
+    );    cookiesStore.set("reauthenticated", "true", {
       httpOnly: true,
       secure: true,
       expires: expiresAt,
     });
-    redirect(decodedUrl);
+    
+    try {
+      redirect(decodedUrl);
+    } catch (error) {
+      // Check if the error is a redirect error (which is expected behavior)
+      if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+        // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+        throw error;
+      }
+      
+      // For any other error, log it but still proceed with redirect
+      console.error("Unexpected error in reauthenticateAction:", error);
+      throw error;
+    }
   } else {
     return {
       errors: {
@@ -846,14 +932,24 @@ export async function createCheckoutSessionAction(
     const { order } = response.data;
     checkoutOrder = order;
   } else {
-    const createOrderResponse = await createOrder(data, token);
-
-    if (createOrderResponse.status !== "success") {
+    const createOrderResponse = await createOrder(data, token);    if (createOrderResponse.status !== "success") {
       if (
         createOrderResponse.message ===
         "You have an unpaid order. Please complete the payment"
       ) {
-        redirect("/cart?error=unpaidOrder");
+        try {
+          redirect("/cart?error=unpaidOrder");
+        } catch (error) {
+          // Check if the error is a redirect error (which is expected behavior)
+          if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+            // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+            throw error;
+          }
+          
+          // For any other error, log it but still proceed with redirect
+          console.error("Unexpected error in createCheckoutSessionAction redirect:", error);
+          throw error;
+        }
       } else {
         return {
           errors: {
@@ -866,9 +962,20 @@ export async function createCheckoutSessionAction(
     const { order } = createOrderResponse.data;
     checkoutOrder = order;
   }
-
   if (checkoutOrder.paymentMethod === "cod") {
-    redirect(`/account/orders/${checkoutOrder.orderCode}`);
+    try {
+      redirect(`/account/orders/${checkoutOrder.orderCode}`);
+    } catch (error) {
+      // Check if the error is a redirect error (which is expected behavior)
+      if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+        // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+        throw error;
+      }
+      
+      // For any other error, log it but still proceed with redirect
+      console.error("Unexpected error in createCheckoutSessionAction COD redirect:", error);
+      throw error;
+    }
   }
 
   if (checkoutOrder.paymentMethod === "stripe") {
@@ -879,15 +986,26 @@ export async function createCheckoutSessionAction(
     );
 
     if (response.status === "success") {
-      redirect(response.session.url);
+      try {
+        redirect(response.session.url);
+      } catch (error) {
+        // Check if the error is a redirect error (which is expected behavior)
+        if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+          // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+          throw error;
+        }
+        
+        // For any other error, log it but still proceed with redirect
+        console.error("Unexpected error in createCheckoutSessionAction Stripe redirect:", error);
+        throw error;
+      }
     } else {
       return {
         errors: {
           message: response.message,
         },
       };
-    }
-  } else if (checkoutOrder.paymentMethod === "zalopay") {
+    }  } else if (checkoutOrder.paymentMethod === "zalopay") {
     const response = await createCheckoutSession(
       checkoutOrder,
       checkIsLogin.token!,
@@ -895,7 +1013,19 @@ export async function createCheckoutSessionAction(
     );
 
     if (response.status === "success") {
-      redirect(response.data.order_url);
+      try {
+        redirect(response.data.order_url);
+      } catch (error) {
+        // Check if the error is a redirect error (which is expected behavior)
+        if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+          // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+          throw error;
+        }
+        
+        // For any other error, log it but still proceed with redirect
+        console.error("Unexpected error in createCheckoutSessionAction ZaloPay redirect:", error);
+        throw error;
+      }
     }
   }
 
@@ -1258,10 +1388,21 @@ export const addCategoryAction = async (
       input: data,
     };
   }
-
   const { category } = response.data;
 
-  redirect(`/admin/categories/${category.slug}`);
+  try {
+    redirect(`/admin/categories/${category.slug}`);
+  } catch (error) {
+    // Check if the error is a redirect error (which is expected behavior)
+    if (error && typeof error === 'object' && 'digest' in error && typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+      // This is a redirect error - re-throw it to allow Next.js to handle the redirect
+      throw error;
+    }
+    
+    // For any other error, log it but still proceed with redirect
+    console.error("Unexpected error in addCategoryAction redirect:", error);
+    throw error;
+  }
 };
 
 export const addProductAction = async (product: ProductInput) => {

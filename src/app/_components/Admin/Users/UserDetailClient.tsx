@@ -91,9 +91,17 @@ export default function UserDetailClient({
     active: true,
     role: "user",
   });
-  
-  const { error: analyticsError, handleError: handleAnalyticsError, clearError: clearAnalyticsError } = useApiError();
-  const { error: orderHistoryError, handleError: handleOrderHistoryError, clearError: clearOrderHistoryError } = useApiError();
+
+  const {
+    error: analyticsError,
+    handleError: handleAnalyticsError,
+    clearError: clearAnalyticsError,
+  } = useApiError();
+  const {
+    error: orderHistoryError,
+    handleError: handleOrderHistoryError,
+    clearError: clearOrderHistoryError,
+  } = useApiError();
 
   useEffect(() => {
     fetchUserData();
@@ -110,12 +118,12 @@ export default function UserDetailClient({
       setLoading(true);
       clearAnalyticsError();
       const analyticsData = await getUserAnalytics(userId, authToken);
-      
+
       if (analyticsData.status === "error") {
         handleAnalyticsError(analyticsData);
         return;
       }
-      
+
       setAnalytics(analyticsData.data);
       // Set initial status values for editing
       if (analyticsData.data.user) {
@@ -124,7 +132,8 @@ export default function UserDetailClient({
           active: analyticsData.data.user.active,
           role: analyticsData.data.user.role,
         });
-      }    } catch (err) {
+      }
+    } catch (err) {
       console.error("Error fetching user analytics:", err);
       handleAnalyticsError({
         status: "error",
@@ -145,13 +154,14 @@ export default function UserDetailClient({
         status: orderFilter || undefined,
         sort: "-createdAt",
       });
-      
+
       if (orderData.status === "error") {
         handleOrderHistoryError(orderData);
         return;
       }
-      
-      setOrderHistory(orderData.data);    } catch (err) {
+
+      setOrderHistory(orderData.data);
+    } catch (err) {
       console.error("Error fetching order history:", err);
       handleOrderHistoryError({
         status: "error",
@@ -164,13 +174,17 @@ export default function UserDetailClient({
 
   const handleStatusUpdate = async () => {
     try {
-      const updateResult = await updateUserStatus(userId, statusUpdate, authToken);
-      
+      const updateResult = await updateUserStatus(
+        userId,
+        statusUpdate,
+        authToken,
+      );
+
       if (updateResult.status === "error") {
         alert(`Có lỗi xảy ra: ${updateResult.message}`);
         return;
       }
-      
+
       setEditingUser(false);
       fetchUserData(); // Refresh data
       alert("Cập nhật trạng thái người dùng thành công!");
@@ -179,7 +193,7 @@ export default function UserDetailClient({
       alert("Có lỗi xảy ra khi cập nhật trạng thái!");
     }
   };
-    // Handle main analytics error state
+  // Handle main analytics error state
   if (analyticsError) {
     return (
       <div className="space-y-6 p-6">
@@ -199,16 +213,12 @@ export default function UserDetailClient({
           </div>
         </div>
         <div className="space-y-4">
-          <ApiErrorDisplay 
-            error={analyticsError} 
+          <ApiErrorDisplay
+            error={analyticsError}
             title="Failed to Load User Data"
           />
           <div className="flex justify-center">
-            <Button 
-              onClick={fetchUserData}
-              variant="primary"
-              size="small"
-            >
+            <Button onClick={fetchUserData} variant="primary" size="small">
               Retry
             </Button>
           </div>
@@ -259,10 +269,8 @@ export default function UserDetailClient({
           </h1>
         </div>
       </div>
-
       {/* User Profile Card */}
       <UserProfileCard user={user} onEditClick={() => setEditingUser(true)} />
-
       {/* Statistics Cards */}
       <div className="grid grid-cols-4 gap-6 lg:grid-cols-2 md:grid-cols-1">
         <StatCard
@@ -298,7 +306,6 @@ export default function UserDetailClient({
           gradient="bg-gradient-to-r from-purple-500 to-purple-600"
         />
       </div>
-
       {/* Charts Section */}
       <div className="grid grid-cols-2 gap-6 lg:grid-cols-1">
         {monthlySpending.length > 0 && <SpendingChart data={monthlySpending} />}
@@ -307,25 +314,23 @@ export default function UserDetailClient({
           <OrderStatusChart data={orderStatusData} />
         )}
       </div>
-
       {/* Favorite Categories */}
       {favoriteCategories.length > 0 && (
         <FavoriteCategoriesChart data={favoriteCategories} colors={COLORS} />
-      )}      {/* Order History */}
+      )}{" "}
+      {/* Order History */}
       {orderHistoryError ? (
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900">Lịch sử đơn hàng</h2>
-          <ApiErrorDisplay 
-            error={orderHistoryError} 
+          <h2 className="text-xl font-semibold text-gray-900">
+            Lịch sử đơn hàng
+          </h2>
+          <ApiErrorDisplay
+            error={orderHistoryError}
             title="Failed to Load Order History"
             size="small"
           />
           <div className="flex justify-center">
-            <Button 
-              onClick={fetchOrderHistory}
-              variant="primary"
-              size="small"
-            >
+            <Button onClick={fetchOrderHistory} variant="primary" size="small">
               Retry
             </Button>
           </div>
@@ -345,7 +350,6 @@ export default function UserDetailClient({
           loading={orderHistoryLoading}
         />
       )}
-
       {/* Edit User Modal */}
       {editingUser && (
         <EditUserModal

@@ -30,7 +30,7 @@ export default async function page({ params }: OrderCodePageProps) {
 
   const { orderCode } = await params;
   const orderResponse = await getOrderByOrderCode(orderCode, token!);
-  
+
   if (orderResponse.status === "error") {
     return <ApiErrorDisplay error={orderResponse} title="Order Error" />;
   }

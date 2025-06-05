@@ -1,4 +1,5 @@
 import { FaExclamationTriangle } from "react-icons/fa";
+import Button from "../UI/Button";
 
 interface ApiErrorDisplayProps {
   error: {
@@ -11,6 +12,10 @@ interface ApiErrorDisplayProps {
   size?: "small" | "medium" | "large";
   showIcon?: boolean;
   showStatusCode?: boolean;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
 }
 
 /**
@@ -22,6 +27,7 @@ interface ApiErrorDisplayProps {
  * @param size - Size variant for the error display
  * @param showIcon - Whether to show the error icon
  * @param showStatusCode - Whether to display the HTTP status code
+ * @param action - Optional action button with label and onClick handler
  */
 export default function ApiErrorDisplay({
   error,
@@ -30,6 +36,7 @@ export default function ApiErrorDisplay({
   size = "medium",
   showIcon = true,
   showStatusCode = true,
+  action,
 }: ApiErrorDisplayProps) {
   const sizeClasses = {
     small: {
@@ -53,7 +60,6 @@ export default function ApiErrorDisplay({
   };
 
   const classes = sizeClasses[size];
-
   return (
     <div
       className={`flex ${classes.container} items-center justify-center ${className}`}
@@ -72,6 +78,13 @@ export default function ApiErrorDisplay({
           <p className="mt-1 text-sm text-gray-500">
             Status Code: {error.statusCode}
           </p>
+        )}
+        {action && (
+          <div className="mt-4">
+            <Button onClick={action.onClick} variant="secondary" size="small">
+              {action.label}
+            </Button>
+          </div>
         )}
       </div>
     </div>

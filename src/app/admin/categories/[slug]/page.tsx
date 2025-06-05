@@ -80,7 +80,9 @@ export default async function Page({ params, searchParams }: PageProps) {
     category: category.name,
   });
   if (filtersDataResponse.status === "error") {
-    return <ApiErrorDisplay error={filtersDataResponse} title="Filters Error" />;
+    return (
+      <ApiErrorDisplay error={filtersDataResponse} title="Filters Error" />
+    );
   }
 
   const {

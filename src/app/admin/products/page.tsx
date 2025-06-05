@@ -65,22 +65,47 @@ export default async function Page({ searchParams }: PageProps) {
 
   // Check for errors in any of the API responses
   if (productsResponse.status === "error") {
-    return <ApiErrorDisplay error={productsResponse} title="Failed to Load Products" />;
+    return (
+      <ApiErrorDisplay
+        error={productsResponse}
+        title="Failed to Load Products"
+      />
+    );
   }
-  
+
   if (filterResponse.status === "error") {
-    return <ApiErrorDisplay error={filterResponse} title="Failed to Load Filter Data" />;
+    return (
+      <ApiErrorDisplay
+        error={filterResponse}
+        title="Failed to Load Filter Data"
+      />
+    );
   }
-  
+
   if (stockResponse.status === "error") {
-    return <ApiErrorDisplay error={stockResponse} title="Failed to Load Stock Data" />;
+    return (
+      <ApiErrorDisplay
+        error={stockResponse}
+        title="Failed to Load Stock Data"
+      />
+    );
   }
-  
+
   if (productSummaryResponse.status === "error") {
-    return <ApiErrorDisplay error={productSummaryResponse} title="Failed to Load Product Summary" />;
+    return (
+      <ApiErrorDisplay
+        error={productSummaryResponse}
+        title="Failed to Load Product Summary"
+      />
+    );
   }
-    if (categoriesResponse.status === "error") {
-    return <ApiErrorDisplay error={categoriesResponse} title="Failed to Load Categories" />;
+  if (categoriesResponse.status === "error") {
+    return (
+      <ApiErrorDisplay
+        error={categoriesResponse}
+        title="Failed to Load Categories"
+      />
+    );
   }
 
   const { categories } = categoriesResponse.data;

@@ -28,12 +28,19 @@ export default async function Page({ searchParams }: PageProps) {
 
   // Check for errors in admin orders data
   if (adminOrdersData.status === "error") {
-    return <ApiErrorDisplay error={adminOrdersData} title="Orders Loading Error" />;
+    return (
+      <ApiErrorDisplay error={adminOrdersData} title="Orders Loading Error" />
+    );
   }
 
   // Check for errors in order summary data
   if (orderSummaryData.status === "error") {
-    return <ApiErrorDisplay error={orderSummaryData} title="Order Summary Loading Error" />;
+    return (
+      <ApiErrorDisplay
+        error={orderSummaryData}
+        title="Order Summary Loading Error"
+      />
+    );
   }
 
   const { orders, resultsPerPage, totalResults } = adminOrdersData;
@@ -55,7 +62,8 @@ export default async function Page({ searchParams }: PageProps) {
           totalShippedOrders={totalShippedOrders}
           totalDeliveredOrders={totalDeliveredOrders}
         />
-      </div>      <div className="col-span-1 xl:col-span-full">
+      </div>{" "}
+      <div className="col-span-1 xl:col-span-full">
         <SafeTopCityByOrder authToken={token} />
       </div>
       <div className="col-span-2 w-full overflow-x-auto xl:col-span-full">

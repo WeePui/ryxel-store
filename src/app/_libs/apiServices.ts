@@ -13,7 +13,7 @@ import {
   UpdateProfileInput,
 } from "../_types/validateInput";
 
-const API_URL = process.env.API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface Filter {
   [key: string]: string;
@@ -884,7 +884,7 @@ export const getShippingFee = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:8000/api/v1/orders/shippingFee?toWardCode=${address.ward.code}&toDistrictCode=${address.district.code}`,
+      `${API_URL}/orders/shippingFee?toWardCode=${address.ward.code}&toDistrictCode=${address.district.code}`,
       {
         method: "POST",
         headers: {
@@ -915,9 +915,8 @@ export const getShippingFee = async (
 };
 
 export const cancelOrder = async (id: string, token: { value: string }) => {
-  try {
-    const response = await fetch(
-      `http://localhost:8000/api/v1/orders/${id}/cancel`,
+  try {    const response = await fetch(
+      `${API_URL}/orders/${id}/cancel`,
       {
         method: "PATCH",
         headers: {
@@ -954,7 +953,7 @@ export const getOrderByOrderCode = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:8000/api/v1/orders/orderCode/${code}`,
+      `${API_URL}/orders/orderCode/${code}`,
       {
         headers: {
           Authorization: `Bearer ${token.value}`,
@@ -1099,7 +1098,7 @@ export const updateReviewsByOrder = async (
 
 export const getWishlist = async (token: { value: string }) => {
   try {
-    const response = await fetch(`http://localhost:8000/api/v1/wishlist`, {
+    const response = await fetch(`${API_URL}/wishlist`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token.value}`,
@@ -1134,7 +1133,7 @@ export const addProductToWishlist = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:8000/api/v1/wishlist/${productId}`,
+      `${API_URL}/wishlist/${productId}`,
       {
         method: "POST",
         headers: {
@@ -1168,7 +1167,7 @@ export const addProductToWishlist = async (
 export const getWishlistByShareCode = async (shareCode: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8000/api/v1/wishlist/${shareCode}`,
+      `${API_URL}/wishlist/${shareCode}`,
     );
 
     if (!response.ok) {
@@ -1194,10 +1193,9 @@ export const getWishlistByShareCode = async (shareCode: string) => {
 export const removeProductFromWishlist = async (
   productId: string,
   token: { value: string },
-) => {
-  try {
+) => {  try {
     const response = await fetch(
-      `http://localhost:8000/api/v1/wishlist/${productId}`,
+      `${API_URL}/wishlist/${productId}`,
       {
         method: "PATCH",
         headers: {
@@ -2389,15 +2387,6 @@ export const getAllUsers = async (
     };
   }
 };
-
-interface UserFilter {
-  search?: string;
-  role?: string;
-  emailVerified?: string;
-  page?: number;
-  limit?: number;
-  sort?: string;
-}
 
 // Get user analytics data
 export const getUserAnalytics = async (userId: string, authToken: string) => {

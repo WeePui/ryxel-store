@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
-import { 
-  SafeUserTable, 
-  SafeUserStatistics, 
-  SafeTopCustomersByProvince, 
-  SafeTopCustomers 
+import {
+  SafeUserTable,
+  SafeUserStatistics,
+  SafeTopCustomersByProvince,
+  SafeTopCustomers,
 } from "@/app/_components/UI/AdminErrorBoundaryWrappers";
 
 export default async function Page() {
