@@ -7,7 +7,7 @@ import Card from "../../UI/Card";
 import { Table, TableColumn } from "../../UI/Table";
 import UserFilter from "./UserFilter";
 import Image from "next/image";
-import { FaCheckCircle, FaTimesCircle, FaEdit, FaEye } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaEye } from "react-icons/fa";
 import NavLink from "../../UI/NavLink";
 
 interface UserTableProps {
@@ -189,15 +189,6 @@ export default function UserTable({ authToken }: UserTableProps) {
             <FaEye />
             <span className="sr-only">Xem chi tiết</span>
           </NavLink>
-          <button
-            className="flex items-center gap-1 rounded px-2 py-1 text-sm text-green-600 hover:bg-green-50"
-            onClick={() => {
-              // TODO: Add edit functionality
-            }}
-          >
-            <FaEdit />
-            <span className="sr-only">Chỉnh sửa</span>
-          </button>
         </div>
       ),
       csvRender: () => "Xem/Chỉnh sửa", // Simple text for actions column

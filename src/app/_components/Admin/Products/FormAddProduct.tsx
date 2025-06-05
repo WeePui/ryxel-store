@@ -10,6 +10,7 @@ import { addProductAction } from "@/app/_libs/actions";
 import { ProductInput } from "@/app/_types/validateInput";
 import { validateProductForm } from "@/app/_helpers/validator";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface FormAddProductProps {
   categories: Category[];
@@ -35,6 +36,7 @@ export default function FormAddProduct({ categories }: FormAddProductProps) {
     Record<string, string>
   >({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const categoryOptions = categories.map((category) => ({
     value: category._id,
@@ -82,7 +84,6 @@ export default function FormAddProduct({ categories }: FormAddProductProps) {
         ...productData,
         variants: processedVariants,
       };
-      console.log("Pre-processed product input:", JSON.stringify(productInput));
 
       // Validate using Zod
       const validation = validateProductForm(productInput);
@@ -112,6 +113,7 @@ export default function FormAddProduct({ categories }: FormAddProductProps) {
 
       if (result?.success) {
         toast.success("Thêm sản phẩm thành công!");
+        router.replace(`/admin/products/${result.product.slug}`);
         // Reset form or redirect
       } else {
         toast.error(

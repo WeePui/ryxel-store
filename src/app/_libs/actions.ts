@@ -1489,16 +1489,23 @@ export const addCategoryAction = async (
 
 export const addProductAction = async (product: ProductInput) => {
   const checkIsLogin = await checkLogin();
-  if (!checkIsLogin.success) return checkIsLogin;
+  if (!checkIsLogin.success) return { checkIsLogin, product: null };
   const token = checkIsLogin.token!;
   const response = await addProduct(product, token);
   if (response.status === "success") {
     revalidatePath("/admin/products");
+
+    const { data } = response;
+    const { product } = data;
+
     return {
       success: true,
+      product,
     };
   } else {
     return {
+      success: false,
+      product: null,
       errors: {
         message: response.message,
       },

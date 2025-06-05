@@ -6,10 +6,9 @@ import Footer from "@components/Footer/Footer";
 import ToastProvider from "@components/UI/ToastProvider";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
-import { checkToken } from "../_libs/apiServices";
-import { redirect } from "next/navigation";
 import LanguageClientProvider from "../_components/UI/LanguageClientProvider";
 import ClientMainScreen from "../_components/UI/ClientMainScreen";
+import AdminRedirect from "../_components/UI/AdminRedirect";
 import {
   NotificationProvider,
   NotificationPermissionBanner,
@@ -44,18 +43,6 @@ export default async function RootLayout({
 }) {
   const cookiesStore = await cookies();
   const token = cookiesStore.get("jwt");
-  if (token) {
-    try {
-      const { isAdmin } = await checkToken(token);
-
-      if (isAdmin) {
-        redirect("/admin/dashboard");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   return (
     <html lang="vi" className={`${manrope.variable} ${kanit.variable}`}>
       <body
@@ -63,6 +50,7 @@ export default async function RootLayout({
           "flex min-h-screen flex-col bg-secondary-100 text-primary-default antialiased"
         }
       >
+        <AdminRedirect token={token?.value} />
         <LanguageClientProvider>
           <NotificationProvider>
             <NotificationPermissionBanner />

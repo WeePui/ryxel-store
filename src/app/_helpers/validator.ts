@@ -533,54 +533,87 @@ export function validateProductForm(data: ProductInput) {
         return false;
       },
       { message: "Vui lòng chọn ảnh đại diện cho sản phẩm" },
-    );  // Variant schema validation
+    ); // Variant schema validation
   const variantSchema = z.object({
     name: z.string().min(1, { message: "Tên biến thể không được để trống" }),
     sku: z.string().min(1, { message: "SKU không được để trống" }),
-    price: z.number().nonnegative({ message: "Giá bán phải lớn hơn hoặc bằng 0" })
-      .or(z.string().transform(val => {
-        const num = Number(val);
-        return isNaN(num) ? 0 : num;
-      })),
-    cost: z.number().nonnegative({ message: "Giá gốc phải lớn hơn hoặc bằng 0" })
-      .or(z.string().transform(val => {
-        const num = Number(val);
-        return isNaN(num) ? 0 : num;
-      })),
-    stock: z.number().nonnegative({ message: "Số lượng tồn kho phải lớn hơn hoặc bằng 0" })
-      .or(z.string().transform(val => {
-        const num = Number(val);
-        return isNaN(num) ? 0 : num;
-      })),
-    weight: z.number().nonnegative({ message: "Trọng lượng phải lớn hơn hoặc bằng 0" })
-      .or(z.string().transform(val => {
-        const num = Number(val);
-        return isNaN(num) ? 0 : num;
-      })),
-    dimensions: z.object({
-        length: z.number().nonnegative({ message: "Chiều dài phải lớn hơn hoặc bằng 0" })
-          .or(z.string().transform(val => {
-            const num = Number(val);
-            return isNaN(num) ? 0 : num;
-          })),
-        width: z.number().nonnegative({ message: "Chiều rộng phải lớn hơn hoặc bằng 0" })
-          .or(z.string().transform(val => {
-            const num = Number(val);
-            return isNaN(num) ? 0 : num;
-          })),
-        height: z.number().nonnegative({ message: "Chiều cao phải lớn hơn hoặc bằng 0" })
-          .or(z.string().transform(val => {
-            const num = Number(val);
-            return isNaN(num) ? 0 : num;
-          }))
+    price: z
+      .number()
+      .nonnegative({ message: "Giá bán phải lớn hơn hoặc bằng 0" })
+      .or(
+        z.string().transform((val) => {
+          const num = Number(val);
+          return isNaN(num) ? 0 : num;
+        }),
+      ),
+    cost: z
+      .number()
+      .nonnegative({ message: "Giá gốc phải lớn hơn hoặc bằng 0" })
+      .or(
+        z.string().transform((val) => {
+          const num = Number(val);
+          return isNaN(num) ? 0 : num;
+        }),
+      ),
+    stock: z
+      .number()
+      .nonnegative({ message: "Số lượng tồn kho phải lớn hơn hoặc bằng 0" })
+      .or(
+        z.string().transform((val) => {
+          const num = Number(val);
+          return isNaN(num) ? 0 : num;
+        }),
+      ),
+    weight: z
+      .number()
+      .nonnegative({ message: "Trọng lượng phải lớn hơn hoặc bằng 0" })
+      .or(
+        z.string().transform((val) => {
+          const num = Number(val);
+          return isNaN(num) ? 0 : num;
+        }),
+      ),
+    dimensions: z
+      .object({
+        length: z
+          .number()
+          .nonnegative({ message: "Chiều dài phải lớn hơn hoặc bằng 0" })
+          .or(
+            z.string().transform((val) => {
+              const num = Number(val);
+              return isNaN(num) ? 0 : num;
+            }),
+          ),
+        width: z
+          .number()
+          .nonnegative({ message: "Chiều rộng phải lớn hơn hoặc bằng 0" })
+          .or(
+            z.string().transform((val) => {
+              const num = Number(val);
+              return isNaN(num) ? 0 : num;
+            }),
+          ),
+        height: z
+          .number()
+          .nonnegative({ message: "Chiều cao phải lớn hơn hoặc bằng 0" })
+          .or(
+            z.string().transform((val) => {
+              const num = Number(val);
+              return isNaN(num) ? 0 : num;
+            }),
+          ),
       })
       .optional()
       .default({ length: 0, width: 0, height: 0 }),
-    sold: z.number().nonnegative({ message: "Số lượng đã bán phải lớn hơn hoặc bằng 0" })
-      .or(z.string().transform(val => {
-        const num = Number(val);
-        return isNaN(num) ? 0 : num;
-      })),
+    sold: z
+      .number()
+      .nonnegative({ message: "Số lượng đã bán phải lớn hơn hoặc bằng 0" })
+      .or(
+        z.string().transform((val) => {
+          const num = Number(val);
+          return isNaN(num) ? 0 : num;
+        }),
+      ),
     images: z
       .array(z.union([z.string(), z.instanceof(File)]))
       .min(1, { message: "Biến thể phải có ít nhất 1 hình ảnh" }),
@@ -639,45 +672,72 @@ export function validateProductForm(data: ProductInput) {
   const variantsValidation = variantsSchema.safeParse(data.variants);
   if (!variantsValidation.success) {
     validation.success = false;
-    
+
     // Try to get more specific error information
     const errorFormat = variantsValidation.error.format();
-    
+
     if (errorFormat._errors?.length > 0) {
       validation.errors.variants = errorFormat._errors[0];
     } else {
       // Look for nested errors
       try {
-        let errorDetails = [];
-        
+        const errorDetails = [];
+
         // Check for variant-specific errors
         for (let i = 0; i < data.variants.length; i++) {
           if (errorFormat[i]) {
-            const variantErrors = errorFormat[i];
-            
-            // Extract field-specific errors
+            const variantErrors = errorFormat[i]; // Extract field-specific errors
             for (const [field, fieldError] of Object.entries(variantErrors)) {
-              if (field !== '_errors' && fieldError._errors?.length > 0) {
-                errorDetails.push(`Variant ${i+1}, ${field}: ${fieldError._errors[0]}`);
+              if (
+                field !== "_errors" &&
+                fieldError &&
+                typeof fieldError === "object" &&
+                "_errors" in fieldError &&
+                Array.isArray(fieldError._errors) &&
+                fieldError._errors.length > 0
+              ) {
+                errorDetails.push(
+                  `Variant ${i + 1}, ${field}: ${fieldError._errors[0]}`,
+                );
               }
-            }
-            
-            // Check for errors in dimensions
-            if (variantErrors.dimensions?._errors?.length > 0) {
-              errorDetails.push(`Variant ${i+1}, dimensions: ${variantErrors.dimensions._errors[0]}`);
-            }
-            
-            // Check for errors in dimensions fields
-            for (const dimField of ['length', 'width', 'height']) {
-              if (variantErrors.dimensions?.[dimField]?._errors?.length > 0) {
-                errorDetails.push(`Variant ${i+1}, dimensions.${dimField}: ${variantErrors.dimensions[dimField]._errors[0]}`);
+            } // Check for errors in dimensions
+            if (
+              variantErrors.dimensions &&
+              typeof variantErrors.dimensions === "object" &&
+              "_errors" in variantErrors.dimensions &&
+              Array.isArray(variantErrors.dimensions._errors) &&
+              variantErrors.dimensions._errors.length > 0
+            ) {
+              errorDetails.push(
+                `Variant ${i + 1}, dimensions: ${variantErrors.dimensions._errors[0]}`,
+              );
+            } // Check for errors in dimensions fields
+            if (
+              variantErrors.dimensions &&
+              typeof variantErrors.dimensions === "object"
+            ) {
+              for (const dimField of ["length", "width", "height"] as const) {
+                const dimError = (
+                  variantErrors.dimensions as Record<string, unknown>
+                )[dimField];
+                if (
+                  dimError &&
+                  typeof dimError === "object" &&
+                  "_errors" in dimError &&
+                  Array.isArray(dimError._errors) &&
+                  dimError._errors.length > 0
+                ) {
+                  errorDetails.push(
+                    `Variant ${i + 1}, dimensions.${dimField}: ${dimError._errors[0]}`,
+                  );
+                }
               }
             }
           }
         }
-        
+
         if (errorDetails.length > 0) {
-          validation.errors.variants = errorDetails.join('; ');
+          validation.errors.variants = errorDetails.join("; ");
         } else {
           validation.errors.variants = "Dữ liệu biến thể không hợp lệ";
         }

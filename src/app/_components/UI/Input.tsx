@@ -238,6 +238,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             />
           )}
           <div className="relative rounded-lg">
+            {" "}
             <select
               name={name}
               id={id}
@@ -254,9 +255,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               )}
               disabled={disabled}
               onChange={handleChange}
-              value={value as string | number | readonly string[] | undefined}
+              {...(value !== undefined
+                ? {
+                    value: value as
+                      | string
+                      | number
+                      | readonly string[]
+                      | undefined,
+                  }
+                : { defaultValue })}
               onBlur={onBlur as React.FocusEventHandler<HTMLSelectElement>}
-              defaultValue={defaultValue}
               required={required}
             >
               <option value="" disabled>
@@ -312,10 +320,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               )}
               placeholder=""
               disabled={disabled}
-              defaultValue={defaultValue}
               onChange={handleChange}
               maxLength={(maxLength as number) || 524288}
-              value={value as string | number | readonly string[] | undefined}
+              {...(value !== undefined
+                ? {
+                    value: value as
+                      | string
+                      | number
+                      | readonly string[]
+                      | undefined,
+                  }
+                : { defaultValue })}
               onBlur={
                 handleBlur as React.FocusEventHandler<HTMLTextAreaElement>
               }
@@ -408,9 +423,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             )}
             placeholder=""
             disabled={disabled}
-            defaultValue={defaultValue}
             onChange={handleChange}
-            value={value}
+            {...(value !== undefined ? { value } : { defaultValue })}
             onBlur={handleBlur}
             required={required}
             maxLength={type !== "number" ? maxLength || 524288 : undefined}
