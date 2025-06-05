@@ -5,6 +5,7 @@ import { Product } from '@/app/_types/product';
 import formatMoney from '@/app/_utils/formatMoney';
 import { cookies } from 'next/headers';
 import '@styles/print.css';
+import ApiErrorDisplay from '@/app/_components/UI/ApiErrorDisplay';
 
 interface PageProps {
   params: Promise<{
@@ -19,8 +20,13 @@ export default async function page({ params }: PageProps) {
     throw new Error('Chưa đăng nhập');
   }
   const { orderCode } = await params;
-  const { data: orderData } = await getOrderByOrderCode(orderCode, token!);
-  const { order } = orderData;
+  const orderData = await getOrderByOrderCode(orderCode, token!);
+
+  if (orderData.status === 'error') {
+    return <ApiErrorDisplay error={orderData} title="Order Print Error" />;
+  }
+
+  const { order } = orderData.data;
 
   const shippingAddress = order.shippingAddress as Address;
 

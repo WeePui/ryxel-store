@@ -3,6 +3,7 @@ import VoucherTable from '@/app/_components/Admin/Vouchers/VoucherTable';
 import { getDiscounts } from '@/app/_libs/apiServices';
 import { cookies } from 'next/headers';
 import React from 'react';
+import ApiErrorDisplay from '@/app/_components/UI/ApiErrorDisplay';
 
 export default async function Page() {
   const cookiesStore = await cookies();
@@ -12,7 +13,13 @@ export default async function Page() {
     throw new Error('Đăng nhập để tiếp tục');
   }
 
-  const { discounts } = await getDiscounts(token);
+  const discountsData = await getDiscounts(token);
+
+  if (discountsData.status === 'error') {
+    return <ApiErrorDisplay error={discountsData} title="Vouchers Error" />;
+  }
+
+  const { discounts } = discountsData;
 
   return (
     <div className="grid grid-cols-[20fr_80fr] xl:grid-cols-[25fr_75fr] lg:grid-cols-1 gap-x-6 col-span-full p-6 gap-6">

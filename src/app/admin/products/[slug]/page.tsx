@@ -1,4 +1,5 @@
 import FormUpdateProduct from '@/app/_components/Admin/Products/FormUpdateProduct';
+import ApiErrorDisplay from '@/app/_components/UI/ApiErrorDisplay';
 import { getCategories, getProductBySlug } from '@/app/_libs/apiServices';
 import { cookies } from 'next/headers';
 
@@ -83,8 +84,20 @@ export default async function Page({ params }: PageProps) {
   const token = cookiesStore.get('jwt')?.value || '';
 
   const { slug } = await params;
-  const { product } = await getProductBySlug(slug);
-  const { categories } = await getCategories({ value: token });
+  const productData = await getProductBySlug(slug);
+  
+  if (productData.status === "error") {
+    return <ApiErrorDisplay error={productData} title="Product Error" />;
+  }
+
+  const categoriesData = await getCategories({ value: token });
+  
+  if (categoriesData.status === "error") {
+    return <ApiErrorDisplay error={categoriesData} title="Categories Error" />;
+  }
+
+  const { product } = productData;
+  const { categories } = categoriesData.data;
 
   return (
     <div className="grid grid-cols-4 md:grid-cols-1 gap-6 p-6">

@@ -7,6 +7,7 @@ import OrderAction from "@/app/_components/Admin/Orders/OrderAction";
 import OrderDetailsLineItems from "@/app/_components/OrderDetails/OrderDetailsLineItems";
 import OrderDetailsSummary from "@/app/_components/OrderDetails/OrderDetailsSummary";
 import Card from "@/app/_components/UI/Card";
+import ApiErrorDisplay from "@/app/_components/UI/ApiErrorDisplay";
 import { getTintedColor } from "@/app/_helpers/getTintedColor";
 import { getOrderByOrderCode } from "@/app/_libs/apiServices";
 import { LineItem } from "@/app/_types/lineItem";
@@ -28,7 +29,13 @@ export default async function page({ params }: OrderCodePageProps) {
   }
 
   const { orderCode } = await params;
-  const { data: orderData } = await getOrderByOrderCode(orderCode, token!);
+  const orderResponse = await getOrderByOrderCode(orderCode, token!);
+  
+  if (orderResponse.status === "error") {
+    return <ApiErrorDisplay error={orderResponse} title="Order Error" />;
+  }
+
+  const { data: orderData } = orderResponse;
   const { order } = orderData;
 
   const orderStatus = mappingOrderStatus(order.status);

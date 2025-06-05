@@ -3,11 +3,12 @@ import OrderByStatusChart from "@/app/_components/Admin/Orders/OrderByStatusChar
 import OrderFilter from "@/app/_components/Admin/Orders/OrderFilter";
 import OrderStatCard from "@/app/_components/Admin/Orders/OrderStatCard";
 import OrderTable from "@/app/_components/Admin/Orders/OrderTable";
-import TopCityByOrder from "@/app/_components/Admin/Orders/TopCityByOrder";
 import FilterButton from "@/app/_components/Products/FilterButton";
 import SortSelector from "@/app/_components/Products/SortSelector";
 import { getAdminOrders, getOrderSummaryStats } from "@/app/_libs/apiServices";
 import { cookies } from "next/headers";
+import ApiErrorDisplay from "@/app/_components/UI/ApiErrorDisplay";
+import { SafeTopCityByOrder } from "@/app/_components/UI/AdminErrorBoundaryWrappers";
 
 interface PageProps {
   searchParams: Promise<{
@@ -24,6 +25,16 @@ export default async function Page({ searchParams }: PageProps) {
     getAdminOrders(token, filter),
     getOrderSummaryStats(token),
   ]);
+
+  // Check for errors in admin orders data
+  if (adminOrdersData.status === "error") {
+    return <ApiErrorDisplay error={adminOrdersData} title="Orders Loading Error" />;
+  }
+
+  // Check for errors in order summary data
+  if (orderSummaryData.status === "error") {
+    return <ApiErrorDisplay error={orderSummaryData} title="Order Summary Loading Error" />;
+  }
 
   const { orders, resultsPerPage, totalResults } = adminOrdersData;
   const {
@@ -44,9 +55,8 @@ export default async function Page({ searchParams }: PageProps) {
           totalShippedOrders={totalShippedOrders}
           totalDeliveredOrders={totalDeliveredOrders}
         />
-      </div>
-      <div className="col-span-1 xl:col-span-full">
-        <TopCityByOrder authToken={token} />
+      </div>      <div className="col-span-1 xl:col-span-full">
+        <SafeTopCityByOrder authToken={token} />
       </div>
       <div className="col-span-2 w-full overflow-x-auto xl:col-span-full">
         <RevenueCard cookies={token} />

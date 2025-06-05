@@ -18,6 +18,8 @@ import {
   FaStar,
   FaGift,
 } from "react-icons/fa";
+import { useApiError } from "@/app/_hooks/useApiError";
+import ApiErrorDisplay from "@/app/_components/UI/ApiErrorDisplay";
 
 // Import our new components
 import UserProfileCard from "./UserProfileCard";
@@ -89,6 +91,9 @@ export default function UserDetailClient({
     active: true,
     role: "user",
   });
+  
+  const { error: analyticsError, handleError: handleAnalyticsError, clearError: clearAnalyticsError } = useApiError();
+  const { error: orderHistoryError, handleError: handleOrderHistoryError, clearError: clearOrderHistoryError } = useApiError();
 
   useEffect(() => {
     fetchUserData();
@@ -103,17 +108,28 @@ export default function UserDetailClient({
   const fetchUserData = async () => {
     try {
       setLoading(true);
+      clearAnalyticsError();
       const analyticsData = await getUserAnalytics(userId, authToken);
-      setAnalytics(analyticsData.data); // Set initial status values for editing
+      
+      if (analyticsData.status === "error") {
+        handleAnalyticsError(analyticsData);
+        return;
+      }
+      
+      setAnalytics(analyticsData.data);
+      // Set initial status values for editing
       if (analyticsData.data.user) {
         setStatusUpdate({
           emailVerified: analyticsData.data.user.emailVerified,
           active: analyticsData.data.user.active,
           role: analyticsData.data.user.role,
         });
-      }
-    } catch (error) {
-      console.error("Error fetching user analytics:", error);
+      }    } catch (err) {
+      console.error("Error fetching user analytics:", err);
+      handleAnalyticsError({
+        status: "error",
+        message: "Network error occurred while fetching user data",
+      });
     } finally {
       setLoading(false);
     }
@@ -122,15 +138,25 @@ export default function UserDetailClient({
   const fetchOrderHistory = async () => {
     try {
       setOrderHistoryLoading(true);
+      clearOrderHistoryError();
       const orderData = await getUserOrderHistory(userId, authToken, {
         page: currentOrderPage,
         limit: 10,
         status: orderFilter || undefined,
         sort: "-createdAt",
       });
-      setOrderHistory(orderData.data);
-    } catch (error) {
-      console.error("Error fetching order history:", error);
+      
+      if (orderData.status === "error") {
+        handleOrderHistoryError(orderData);
+        return;
+      }
+      
+      setOrderHistory(orderData.data);    } catch (err) {
+      console.error("Error fetching order history:", err);
+      handleOrderHistoryError({
+        status: "error",
+        message: "Network error occurred while fetching order history",
+      });
     } finally {
       setOrderHistoryLoading(false);
     }
@@ -138,7 +164,13 @@ export default function UserDetailClient({
 
   const handleStatusUpdate = async () => {
     try {
-      await updateUserStatus(userId, statusUpdate, authToken);
+      const updateResult = await updateUserStatus(userId, statusUpdate, authToken);
+      
+      if (updateResult.status === "error") {
+        alert(`Có lỗi xảy ra: ${updateResult.message}`);
+        return;
+      }
+      
       setEditingUser(false);
       fetchUserData(); // Refresh data
       alert("Cập nhật trạng thái người dùng thành công!");
@@ -147,6 +179,43 @@ export default function UserDetailClient({
       alert("Có lỗi xảy ra khi cập nhật trạng thái!");
     }
   };
+    // Handle main analytics error state
+  if (analyticsError) {
+    return (
+      <div className="space-y-6 p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button
+              onClick={() => router.back()}
+              variant="ghost"
+              size="small"
+              icon={<FaArrowLeft />}
+            >
+              Quay lại
+            </Button>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Chi tiết người dùng
+            </h1>
+          </div>
+        </div>
+        <div className="space-y-4">
+          <ApiErrorDisplay 
+            error={analyticsError} 
+            title="Failed to Load User Data"
+          />
+          <div className="flex justify-center">
+            <Button 
+              onClick={fetchUserData}
+              variant="primary"
+              size="small"
+            >
+              Retry
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleStatusChange = (key: string, value: boolean | string) => {
     setStatusUpdate((prev) => ({
@@ -242,22 +311,40 @@ export default function UserDetailClient({
       {/* Favorite Categories */}
       {favoriteCategories.length > 0 && (
         <FavoriteCategoriesChart data={favoriteCategories} colors={COLORS} />
+      )}      {/* Order History */}
+      {orderHistoryError ? (
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-gray-900">Lịch sử đơn hàng</h2>
+          <ApiErrorDisplay 
+            error={orderHistoryError} 
+            title="Failed to Load Order History"
+            size="small"
+          />
+          <div className="flex justify-center">
+            <Button 
+              onClick={fetchOrderHistory}
+              variant="primary"
+              size="small"
+            >
+              Retry
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <OrderHistoryTable
+          orders={orderHistory?.orders || []}
+          totalResults={orderHistory?.totalResults || 0}
+          currentPage={currentOrderPage}
+          totalPages={orderHistory?.totalPages || 1}
+          onPageChange={setCurrentOrderPage}
+          onFilterChange={(value) => {
+            setOrderFilter(value);
+            setCurrentOrderPage(1);
+          }}
+          currentFilter={orderFilter}
+          loading={orderHistoryLoading}
+        />
       )}
-
-      {/* Order History */}
-      <OrderHistoryTable
-        orders={orderHistory?.orders || []}
-        totalResults={orderHistory?.totalResults || 0}
-        currentPage={currentOrderPage}
-        totalPages={orderHistory?.totalPages || 1}
-        onPageChange={setCurrentOrderPage}
-        onFilterChange={(value) => {
-          setOrderFilter(value);
-          setCurrentOrderPage(1);
-        }}
-        currentFilter={orderFilter}
-        loading={orderHistoryLoading}
-      />
 
       {/* Edit User Modal */}
       {editingUser && (
