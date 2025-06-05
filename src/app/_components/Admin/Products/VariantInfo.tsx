@@ -30,6 +30,8 @@ const formatDateForInput = (
 interface VariantInfoProps {
   variants: Variant[];
   onSave: () => void;
+  validationErrors?: Record<string, string>;
+  isSubmitting?: boolean;
 }
 
 interface VariantInfoHandle {
@@ -37,11 +39,48 @@ interface VariantInfoHandle {
 }
 
 const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
-  ({ variants, onSave }, ref) => {
-    const [variantList, setVariantList] = useState(variants);
-    useImperativeHandle(ref, () => ({
+  ({ variants, onSave, validationErrors = {}, isSubmitting = false }, ref) => {
+    const [variantList, setVariantList] = useState(variants);    useImperativeHandle(ref, () => ({
       getData() {
-        return variantList;
+        // Ensure all numeric fields are properly converted to numbers
+        return variantList.map(variant => {
+          // First create the normalized variant with all fields converted to proper types
+          const normalizedVariant = {
+            ...variant,
+            price: Number(variant.price) || 0,
+            cost: Number(variant.cost) || 0,
+            stock: Number(variant.stock) || 0,
+            weight: Number(variant.weight) || 0,
+            sold: Number(variant.sold) || 0,
+            dimensions: variant.dimensions ? {
+              length: Number(variant.dimensions.length) || 0,
+              width: Number(variant.dimensions.width) || 0,
+              height: Number(variant.dimensions.height) || 0
+            } : {
+              length: 0,
+              width: 0,
+              height: 0
+            },
+            saleOff: {
+              startDate: variant.saleOff?.startDate || '',
+              endDate: variant.saleOff?.endDate || '',
+              percentage: Number(variant.saleOff?.percentage) || 0
+            }
+          };
+          
+          // Log each variant for debugging
+          console.log('Normalized variant:', {
+            name: normalizedVariant.name,
+            price: normalizedVariant.price, 
+            priceType: typeof normalizedVariant.price,
+            cost: normalizedVariant.cost, 
+            costType: typeof normalizedVariant.cost,
+            dimensions: normalizedVariant.dimensions,
+            dimensionsType: typeof normalizedVariant.dimensions
+          });
+          
+          return normalizedVariant;
+        });
       },
     }));
 
@@ -132,10 +171,32 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           v._id === updatedVariant._id ? updatedVariant : v,
         ),
       );
-    };
-
-    const handleFieldChange = (field: keyof Variant, value: string) => {
+    };    const handleFieldChange = (field: keyof Variant, value: string) => {
       const updatedVariant = { ...currentVariant, [field]: value };
+      setCurrentVariant(updatedVariant);
+      setVariantList((prevList) =>
+        prevList.map((v) =>
+          v._id === updatedVariant._id ? updatedVariant : v,
+        ),
+      );
+    };
+      const handleDimensionChange = (dimension: 'length' | 'width' | 'height', value: string) => {
+      const dimensions = currentVariant.dimensions || { length: 0, width: 0, height: 0 };
+      
+      // Convert to number and handle NaN cases
+      const numValue = parseFloat(value);
+      const safeValue = isNaN(numValue) ? 0 : numValue;
+      
+      const updatedDimensions = { 
+        ...dimensions, 
+        [dimension]: safeValue
+      };
+      
+      const updatedVariant = {
+        ...currentVariant,
+        dimensions: updatedDimensions,
+      };
+      
       setCurrentVariant(updatedVariant);
       setVariantList((prevList) =>
         prevList.map((v) =>
@@ -261,9 +322,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
 
     const removeNewSpec = (index: number) => {
       setNewSpecs((prev) => prev.filter((_, i) => i !== index));
-    };
-
-    return (
+    };    return (
       <Card
         title="Thông tin phân loại"
         className="grid h-fit w-full grid-cols-4 gap-4 xl:grid-cols-3"
@@ -299,6 +358,12 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           </div>
         }
       >
+        {/* Display general variants validation errors */}
+        {validationErrors.variants && (
+          <div className="col-span-full rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-600">
+            {validationErrors.variants}
+          </div>
+        )}
         <Input
           type="text"
           name="name"
@@ -331,8 +396,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           value={currentVariant.cost + ""}
           label="Giá vốn"
           onChange={(e) => handleFieldChange("cost", e.target.value)}
-        />
-        <Input
+        />        <Input
           type="number"
           name="weight"
           id="weight"
@@ -340,6 +404,37 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
           label="Trọng lượng (gram)"
           onChange={(e) => handleFieldChange("weight", e.target.value)}
         />
+        <div className="col-span-full mt-2">
+          <p className="pl-2 mb-2 text-sm font-medium text-grey-300">
+            Kích thước (cm)
+          </p>
+          <div className="flex gap-4">
+            <Input
+              type="number"
+              name="length"
+              id="length"
+              value={currentVariant.dimensions?.length?.toString() || "0"}
+              label="Chiều dài"
+              onChange={(e) => handleDimensionChange("length", e.target.value)}
+            />
+            <Input
+              type="number"
+              name="width"
+              id="width"
+              value={currentVariant.dimensions?.width?.toString() || "0"}
+              label="Chiều rộng"
+              onChange={(e) => handleDimensionChange("width", e.target.value)}
+            />
+            <Input
+              type="number"
+              name="height"
+              id="height"
+              value={currentVariant.dimensions?.height?.toString() || "0"}
+              label="Chiều cao"
+              onChange={(e) => handleDimensionChange("height", e.target.value)}
+            />
+          </div>
+        </div>
         <Input
           type="number"
           name="stock"
@@ -571,18 +666,22 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               />
             </div>
           ))}
-        </div>
-
-        <div className="col-span-full flex items-center justify-end gap-4">
+        </div>        <div className="col-span-full flex items-center justify-end gap-4">
           <Button
             size="small"
             variant="secondary"
             onClick={handleReset}
             className="w-fit"
+            disabled={isSubmitting}
           >
             Đặt lại
-          </Button>
-          <Button size="small" onClick={handleSave} fullWidth={false}>
+          </Button>          <Button 
+            size="small" 
+            onClick={handleSave} 
+            fullWidth={false}
+            disabled={isSubmitting}
+            loading={isSubmitting}
+          >
             Lưu thay đổi
           </Button>
         </div>

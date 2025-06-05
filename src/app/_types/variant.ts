@@ -15,6 +15,11 @@ export interface Variant {
   sku: string;
   sold: number;
   cost: number;
+  dimensions?: {
+    length: number;
+    width: number;
+    height: number;
+  };
   saleOff: {
     startDate: string;
     endDate: string;

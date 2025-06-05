@@ -13,7 +13,7 @@ import {
   UpdateProfileInput,
 } from "../_types/validateInput";
 
-const API_URL = process.env.API_URL;
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1`;
 
 interface Filter {
   [key: string]: string;
@@ -94,18 +94,54 @@ export async function getProductBySlug(slug: string) {
 }
 
 export async function login(loginInput: { email: string; password: string }) {
-  const response = await fetch(`${API_URL}/users/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(loginInput),
-    credentials: "include",
-  });
+  try {
+    const response = await fetch(`${API_URL}/users/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginInput),
+      credentials: "include",
+    });
 
-  const data = await response.json();
+    // Check if response is HTML (error page) instead of JSON
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.error("Server returned non-JSON response:", {
+        status: response.status,
+        statusText: response.statusText,
+        contentType: contentType,
+        url: `${API_URL}/users/login`,
+      });
 
-  return data;
+      return {
+        status: "error",
+        message:
+          "Server is not responding correctly. Please check if the server is running.",
+        statusCode: response.status,
+      };
+    }
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        status: "error",
+        message: data.message || "Login failed",
+        statusCode: response.status,
+      };
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Network error in login:", error);
+    return {
+      status: "error",
+      message:
+        "Network error occurred during login. Please check your connection and try again.",
+      statusCode: 0,
+    };
+  }
 }
 
 export async function signup(input: SignupInput) {

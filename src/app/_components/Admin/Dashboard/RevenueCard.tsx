@@ -20,13 +20,21 @@ export default function RevenueCard({ cookies }: RevenueCardProps) {
   const [data, setData] = useState<Array<{ name: string; value: number }>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
+      const params = new URLSearchParams();
+      params.append('range', range);
+      if (timeRange) {
+        const timeParams = new URLSearchParams(timeRange);
+        timeParams.forEach((value, key) => {
+          params.append(key, value);
+        });
+      }
+      
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/dashboard/revenue?${timeRange}&range=${range}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/dashboard/revenue?${params.toString()}`,
         {
           method: "GET",
           cache: "no-store",

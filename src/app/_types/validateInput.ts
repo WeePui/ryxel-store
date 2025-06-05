@@ -1,5 +1,5 @@
-import { City, District, Ward } from './address';
-import { Variant } from './variant';
+import { City, District, Ward } from "./address";
+import { Variant } from "./variant";
 
 export interface LoginInput {
   email: string;
@@ -73,7 +73,6 @@ export interface ProductInput {
   category: string;
   description: string;
   imageCover: File | string | null;
-  cost: string;
   variants: Variant[];
 }
 

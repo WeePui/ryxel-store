@@ -1180,6 +1180,10 @@ const translations = {
         vi: "Đặt lại mật khẩu",
         en: "Reset Password",
       },
+      link: {
+        vi: "Quên mật khẩu?",
+        en: "Forgot your password?",
+      },
       subtitle: {
         vi: "Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu",
         en: "Enter your email to receive password reset instructions",
@@ -2286,7 +2290,6 @@ const translations = {
       en: "Mark all as read",
     },
     deleteAll: {
-     
       vi: "Xóa tất cả",
       en: "Delete all",
     },

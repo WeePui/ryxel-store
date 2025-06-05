@@ -1,13 +1,16 @@
-'use client';
+"use client";
 
-import Input from '../../UI/Input';
-import Image from 'next/image';
-import Button from '../../UI/Button';
-import Card from '../../UI/Card';
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import Input from "../../UI/Input";
+import Image from "next/image";
+import Button from "../../UI/Button";
+import Card from "../../UI/Card";
+import AssistiveText from "../../UI/AssistiveText";
+import { forwardRef, useImperativeHandle, useState } from "react";
+import { FaInfoCircle } from "react-icons/fa";
 
 interface ProductInfoProps {
   categories: { value: string; label: string }[];
+  validationErrors?: Record<string, string>;
 }
 
 interface ProductInfoHandle {
@@ -22,14 +25,13 @@ interface ProductInfoHandle {
 }
 
 const AddProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
-  ({ categories }, ref) => {
-    const [name, setName] = useState('');
-    const [slug, setSlug] = useState('');
-    const [brand, setBrand] = useState('');
-    const [category, setCategory] = useState('');
-    const [description, setDescription] = useState('');
-    const [imageCover, setImageCover] = useState<string | File>('');
-
+  ({ categories, validationErrors = {} }, ref) => {
+    const [name, setName] = useState("");
+    const [slug, setSlug] = useState("");
+    const [brand, setBrand] = useState("");
+    const [category, setCategory] = useState("");
+    const [description, setDescription] = useState("");
+    const [imageCover, setImageCover] = useState<string | File>("");
     useImperativeHandle(ref, () => ({
       getData() {
         return { name, slug, brand, category, description, imageCover };
@@ -46,50 +48,54 @@ const AddProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
     };
 
     return (
-      <Card title="Thông tin sản phẩm" className="w-full mb-6">
-        <div className="flex gap-4 mt-8 w-full min-w-0 lg:flex-col flex-[6]">
-          <div className="flex flex-col grid-cols-4 lg:grid-col-2 sm:grid-cols-1 gap-4 w-full">
+      <Card title="Thông tin sản phẩm" className="mb-6 w-full">
+        <div className="mt-8 flex w-full min-w-0 flex-[6] gap-4 lg:flex-col">
+          <div className="lg:grid-col-2 flex w-full grid-cols-4 flex-col gap-4 sm:grid-cols-1">
+            {" "}
             <Input
               type="text"
               id="name"
               name="name"
               label="Tên sản phẩm"
               className="col-span-2 sm:col-span-1"
+              value={name}
+              error={!!validationErrors.name}
+              errorMessage={validationErrors.name}
               onChange={(e) => {
                 const value = e.target.value.trim();
-                if (value) {
-                  setName(value);
-                }
+                setName(value);
               }}
-            />
+            />{" "}
             <Input
               type="text"
               id="slug"
               name="slug"
               label="Slug"
               className="col-span-2 sm:col-span-1"
+              value={slug}
+              error={!!validationErrors.slug}
+              errorMessage={validationErrors.slug}
               onChange={(e) => {
                 const value = e.target.value.trim();
-                if (value) {
-                  setSlug(value);
-                }
+                setSlug(value);
               }}
             />
-
-            <div className="flex sm:flex-col gap-4">
+            <div className="flex gap-4 sm:flex-col">
+              {" "}
               <Input
                 type="text"
                 id="brand"
                 name="brand"
                 label="Thương hiệu"
                 className="col-span-2 sm:col-span-1"
+                value={brand}
+                error={!!validationErrors.brand}
+                errorMessage={validationErrors.brand}
                 onChange={(e) => {
                   const value = e.target.value.trim();
-                  if (value) {
-                    setBrand(value);
-                  }
+                  setBrand(value);
                 }}
-              />
+              />{" "}
               <Input
                 type="select"
                 id="category"
@@ -97,13 +103,14 @@ const AddProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
                 label="Danh mục"
                 options={categories}
                 className="col-span-2 sm:col-span-1"
+                value={category}
+                error={!!validationErrors.category}
+                errorMessage={validationErrors.category}
                 onChange={(e) => {
                   const value = e.target.value.trim();
-                  if (value) {
-                    setCategory(value);
-                  }
+                  setCategory(value);
                 }}
-                defaultValue={categories[0].value}
+                defaultValue={categories[0]?.value}
               />
             </div>
             <Input
@@ -113,16 +120,26 @@ const AddProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
               name="description"
               label="Mô tả sản phẩm"
               className="col-span-full"
+              error={!!validationErrors.description}
+              errorMessage={validationErrors.description}
               onChange={(e) => setDescription(e.target.value)}
             />
-          </div>
+          </div>{" "}
           <div className="w-full flex-[4]">
-            <div className="relative aspect-video w-full h-72 mb-6">
+            {validationErrors.imageCover && (
+              <AssistiveText
+                text={validationErrors.imageCover}
+                icon={<FaInfoCircle />}
+                error={true}
+                className="mb-2"
+              />
+            )}
+            <div className="relative mb-6 aspect-video h-72 w-full">
               <Image
                 src={
                   imageCover
                     ? URL.createObjectURL(imageCover as File)
-                    : '/no-image-placeholder.jpg'
+                    : "/no-image-placeholder.jpg"
                 }
                 fill
                 className="rounded object-contain"
@@ -133,11 +150,11 @@ const AddProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
               <Button
                 className="h-fit w-fit"
                 size="small"
-                onClick={() => document.getElementById('imageCover')?.click()}
+                onClick={() => document.getElementById("imageCover")?.click()}
               >
                 Thay đổi ảnh
               </Button>
-              <p className="text-xs text-grey-200 mt-2">
+              <p className="mt-2 text-xs text-grey-200">
                 Định dạng: JPEG, JPG, PNG
               </p>
             </div>
@@ -153,9 +170,9 @@ const AddProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
         </div>
       </Card>
     );
-  }
+  },
 );
 
-AddProductInfo.displayName = 'ProductInfo';
+AddProductInfo.displayName = "ProductInfo";
 
 export default AddProductInfo;

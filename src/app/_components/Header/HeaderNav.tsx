@@ -159,9 +159,6 @@ function HeaderNav({
         <li onClick={onNavigate}>
           <NavLink href="/blogs">{t("header.blogs")}</NavLink>
         </li>
-        <li onClick={onNavigate}>
-          <NavLink href="/about-us">{t("header.aboutUs")}</NavLink>
-        </li>
       </ul>
     </nav>
   );

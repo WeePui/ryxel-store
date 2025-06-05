@@ -21,6 +21,8 @@ interface ProductInfoProps {
   product: Product;
   categories: { value: string; label: string }[];
   onSave: () => void;
+  validationErrors?: Record<string, string>;
+  isSubmitting?: boolean;
 }
 
 interface ProductInfoHandle {
@@ -35,20 +37,17 @@ interface ProductInfoHandle {
 }
 
 const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
-  ({ product, categories, onSave }, ref) => {
+  ({ product, categories, onSave, validationErrors = {}, isSubmitting = false }, ref) => {
     const router = useRouter();
     const [pending, startTransition] = useTransition();
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [name, setName] = useState(product.name);
     const [slug, setSlug] = useState(product.slug);
     const [brand, setBrand] = useState(product.brand);
-    const [category, setCategory] = useState(product.category._id);
-    const [description, setDescription] = useState(product?.description);
-    const [imageCover, setImageCover] = useState<string | File>(
-      product.imageCover,
-    );
-
-    useImperativeHandle(ref, () => ({
+    const [category, setCategory] = useState(product.category._id);  const [description, setDescription] = useState(product?.description);
+  const [imageCover, setImageCover] = useState<string | File>(
+    product.imageCover,
+    );    useImperativeHandle(ref, () => ({
       getData() {
         return { name, slug, brand, category, description, imageCover };
       },
@@ -101,14 +100,15 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
           </div>
         }
       >
-        <div className="grid grid-cols-4 gap-4 xl:grid-cols-3 lg:grid-cols-4 md:flex md:flex-col">
-          <Input
+        <div className="grid grid-cols-4 gap-4 xl:grid-cols-3 lg:grid-cols-4 md:flex md:flex-col">          <Input
             type="text"
             defaultValue={product.name}
             id="name"
             name="name"
             label="Tên sản phẩm"
             className="col-span-2 sm:col-span-1"
+            error={!!validationErrors.name}
+            errorMessage={validationErrors.name}
             onChange={(e) => {
               const value = e.target.value.trim();
               if (value) {
@@ -123,20 +123,23 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             name="slug"
             label="Slug"
             className="col-span-2 sm:col-span-1"
+            error={!!validationErrors.slug}
+            errorMessage={validationErrors.slug}
             onChange={(e) => {
               const value = e.target.value.trim();
               if (value) {
                 setSlug(value);
               }
             }}
-          />
-          <Input
+          />          <Input
             type="text"
             defaultValue={product.brand}
             id="brand"
             name="brand"
             label="Thương hiệu"
             className="col-span-1"
+            error={!!validationErrors.brand}
+            errorMessage={validationErrors.brand}
             onChange={(e) => {
               const value = e.target.value.trim();
               if (value) {
@@ -152,14 +155,15 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             label="Đã bán"
             className="col-span-1"
             disabled={true}
-          />
-          <Input
+          />          <Input
             type="select"
             id="category"
             name="category"
             label="Danh mục"
             options={categories}
             className="col-span-2"
+            error={!!validationErrors.category}
+            errorMessage={validationErrors.category}
             onChange={(e) => {
               const value = e.target.value.trim();
               if (value) {
@@ -167,14 +171,15 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
               }
             }}
             defaultValue={product.category._id}
-          />
-          <Input
+          />          <Input
             type="textarea"
             value={description}
             id="description"
             name="description"
             label="Mô tả sản phẩm"
             className="col-span-full"
+            error={!!validationErrors.description}
+            errorMessage={validationErrors.description}
             onChange={(e) => setDescription(e.target.value)}
           />
           <div className="relative col-span-3 aspect-video h-72 w-full">
@@ -191,8 +196,7 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
               alt={product?.name || "Product Image"}
             />
           </div>
-          <div className="flex flex-col items-center justify-center">
-            <Button
+          <div className="flex flex-col items-center justify-center">            <Button
               size="small"
               onClick={() => document.getElementById("imageCover")?.click()}
               fullWidth={false}
@@ -202,6 +206,11 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             <p className="mt-2 text-xs text-grey-200">
               Định dạng: JPEG, JPG, PNG
             </p>
+            {validationErrors.imageCover && (
+              <p className="mt-1 text-xs text-red-500">
+                {validationErrors.imageCover}
+              </p>
+            )}
           </div>
           <input
             className="hidden"
@@ -210,13 +219,12 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
             type="file"
             onChange={handleImageChange}
           />
-          <div className="col-span-full flex items-center justify-end gap-4 md:self-center sm:col-span-1 sm:flex-col">
-            <Button
+          <div className="col-span-full flex items-center justify-end gap-4 md:self-center sm:col-span-1 sm:flex-col">            <Button
               size="small"
               variant="danger"
               className="w-fit whitespace-nowrap sm:w-full"
               onClick={() => setConfirmDelete(true)}
-              loading={pending}
+              loading={pending || isSubmitting}
             >
               Xoá sản phẩm
             </Button>
@@ -225,15 +233,14 @@ const ProductInfo = forwardRef<ProductInfoHandle, ProductInfoProps>(
               variant="secondary"
               onClick={handleReset}
               className="w-fit whitespace-nowrap sm:w-full"
-              loading={pending}
+              loading={pending || isSubmitting}
             >
               Đặt lại
-            </Button>
-            <Button
+            </Button><Button
               size="small"
               onClick={onSave}
               className="w-fit whitespace-nowrap sm:w-full"
-              loading={pending}
+              loading={pending || isSubmitting}
             >
               Lưu thay đổi
             </Button>

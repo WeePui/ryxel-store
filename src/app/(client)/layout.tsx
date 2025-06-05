@@ -45,10 +45,14 @@ export default async function RootLayout({
   const cookiesStore = await cookies();
   const token = cookiesStore.get("jwt");
   if (token) {
-    const { isAdmin } = await checkToken(token);
+    try {
+      const { isAdmin } = await checkToken(token);
 
-    if (isAdmin) {
-      redirect("/admin/dashboard");
+      if (isAdmin) {
+        redirect("/admin/dashboard");
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -59,7 +63,6 @@ export default async function RootLayout({
           "flex min-h-screen flex-col bg-secondary-100 text-primary-default antialiased"
         }
       >
-        {" "}
         <LanguageClientProvider>
           <NotificationProvider>
             <NotificationPermissionBanner />
