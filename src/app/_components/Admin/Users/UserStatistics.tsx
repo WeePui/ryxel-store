@@ -60,19 +60,20 @@ export default function UserStatistics({ authToken }: UserStatisticsProps) {
   const [error, setError] = useState(false);
   const [chartView, setChartView] = useState<"bar" | "pie" | "line" | "radar">(
     "bar",
-  );  const fetchData = async () => {
+  );
+  const fetchData = async () => {
     setLoading(true);
     setError(false);
     try {
       const params = new URLSearchParams();
-      params.append('range', range);
+      params.append("range", range);
       if (timeRange) {
         const timeParams = new URLSearchParams(timeRange);
         timeParams.forEach((value, key) => {
           params.append(key, value);
         });
       }
-      
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/users/users-summary?${params.toString()}`,
         {
@@ -81,6 +82,7 @@ export default function UserStatistics({ authToken }: UserStatisticsProps) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
+            "ngrok-skip-browser-warning": "true",
           },
         },
       );

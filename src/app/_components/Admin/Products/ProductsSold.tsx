@@ -17,19 +17,20 @@ export default function ProductsSold({ cookies }: ProductsSoldProps) {
   const [timeRange, setTimeRange] = useState("");
   const [data, setData] = useState<Array<{ name: string; value: number }>>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);  const fetchData = async () => {
+  const [error, setError] = useState(false);
+  const fetchData = async () => {
     setLoading(true);
     setError(false);
     try {
       const params = new URLSearchParams();
-      params.append('range', range);
+      params.append("range", range);
       if (timeRange) {
         const timeParams = new URLSearchParams(timeRange);
         timeParams.forEach((value, key) => {
           params.append(key, value);
         });
       }
-      
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/products/sold?${params.toString()}`,
         {
@@ -38,6 +39,7 @@ export default function ProductsSold({ cookies }: ProductsSoldProps) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${cookies}`,
+            "ngrok-skip-browser-warning": "true",
           },
         },
       );

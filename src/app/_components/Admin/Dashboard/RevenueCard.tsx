@@ -25,14 +25,14 @@ export default function RevenueCard({ cookies }: RevenueCardProps) {
     setError(null);
     try {
       const params = new URLSearchParams();
-      params.append('range', range);
+      params.append("range", range);
       if (timeRange) {
         const timeParams = new URLSearchParams(timeRange);
         timeParams.forEach((value, key) => {
           params.append(key, value);
         });
       }
-      
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/dashboard/revenue?${params.toString()}`,
         {
@@ -41,6 +41,7 @@ export default function RevenueCard({ cookies }: RevenueCardProps) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${cookies}`,
+            "ngrok-skip-browser-warning": "true",
           },
         },
       );
