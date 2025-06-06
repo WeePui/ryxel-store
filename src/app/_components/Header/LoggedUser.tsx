@@ -62,11 +62,20 @@ function LoggedUser({ user }: LoggedUserProps) {
                 <li>
                   <NavLink href="/account/orders">{t("header.orders")}</NavLink>
                 </li>
+                <li>
+                  <NavLink href="/account/wishlist">
+                    {t("header.wishlist")}
+                  </NavLink>
+                </li>
               </>
             )}
-            <li>
-              <NavLink href="/admin/dashboard">Dashboard</NavLink>
-            </li>
+
+            {user.role === "admin" && (
+              <li>
+                <NavLink href="/admin/dashboard">Dashboard</NavLink>
+              </li>
+            )}
+
             <li>
               <SignoutButton>
                 <button

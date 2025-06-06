@@ -43,7 +43,6 @@ export default function TopCityByOrder({ authToken }: { authToken: string }) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
-            "ngrok-skip-browser-warning": "true",
           },
         },
       );

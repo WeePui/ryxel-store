@@ -47,7 +47,6 @@ export default function OrderByStatusChart({
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
-            "ngrok-skip-browser-warning": "true",
           },
         },
       );

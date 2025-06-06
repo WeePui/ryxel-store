@@ -95,7 +95,6 @@ export default function TopCustomers({ cookies }: { cookies: string }) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${cookies}`,
-            "ngrok-skip-browser-warning": "true",
           },
         },
       );

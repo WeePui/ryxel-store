@@ -50,7 +50,6 @@ export default function TopCustomersByProvince({
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
-            "ngrok-skip-browser-warning": "true",
           },
         },
       );

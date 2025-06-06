@@ -20,4 +20,5 @@ export interface Product {
   slug: string;
   reviews: Review[];
   totalStock: number;
+  isDeleted: boolean;
 }

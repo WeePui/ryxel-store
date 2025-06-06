@@ -39,7 +39,6 @@ export default function ProductsSold({ cookies }: ProductsSoldProps) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${cookies}`,
-            "ngrok-skip-browser-warning": "true",
           },
         },
       );

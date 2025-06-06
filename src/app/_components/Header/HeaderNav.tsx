@@ -84,23 +84,35 @@ function HeaderNav({
                   <h3 className="mb-2 font-semibold text-primary-700">
                     {t("header.shop")}
                   </h3>
-                  <div className="flex flex-col gap-2" onClick={onNavigate}>
-                    <NavLink href="/products?category=Chuột">
+                  <div className="flex flex-col gap-2">
+                    <NavLink
+                      href="/products?category=Chuột"
+                      onClick={onNavigate}
+                    >
                       {t("navigation.categories.gaming.mouse")}
                     </NavLink>
-                    <NavLink href="/products?category=Bàn+phím">
+                    <NavLink
+                      href="/products?category=Bàn+phím"
+                      onClick={onNavigate}
+                    >
                       {t("navigation.categories.gaming.keyboard")}
                     </NavLink>
-                    <NavLink href="/products?category=Tai+nghe">
+                    <NavLink
+                      href="/products?category=Tai+nghe"
+                      onClick={onNavigate}
+                    >
                       {t("navigation.categories.gaming.headphone")}
                     </NavLink>
-                    <NavLink href="/products?category=Bàn">
+                    <NavLink href="/products?category=Bàn" onClick={onNavigate}>
                       {t("navigation.categories.gaming.table")}
                     </NavLink>
-                    <NavLink href="/products?category=Ghế">
+                    <NavLink href="/products?category=Ghế" onClick={onNavigate}>
                       {t("navigation.categories.gaming.chair")}
                     </NavLink>
-                    <NavLink href="/products?category=Phụ+kiện">
+                    <NavLink
+                      href="/products?category=Phụ+kiện"
+                      onClick={onNavigate}
+                    >
                       {t("navigation.categories.gaming.accessory")}
                     </NavLink>
                   </div>
@@ -109,42 +121,80 @@ function HeaderNav({
                 <div>
                   <h3 className="mb-2 font-semibold text-primary-700">
                     {t("navigation.brands.title")}
-                  </h3>
+                  </h3>{" "}
                   <div className="flex flex-col gap-2">
-                    <NavLink href="/products?brand=Logitech">Logitech</NavLink>
-                    <NavLink href="/products?brand=Razer">Razer</NavLink>
-                    <NavLink href="/products?brand=Steelseries">
+                    <NavLink
+                      href="/products?brand=Logitech"
+                      onClick={onNavigate}
+                    >
+                      Logitech
+                    </NavLink>
+                    <NavLink href="/products?brand=Razer" onClick={onNavigate}>
+                      Razer
+                    </NavLink>
+                    <NavLink
+                      href="/products?brand=Steelseries"
+                      onClick={onNavigate}
+                    >
                       SteelSeries
                     </NavLink>
-                    <NavLink href="/products?brand=ASUS">ASUS</NavLink>
-                    <NavLink href="/products?brand=HyperWork">
+                    <NavLink href="/products?brand=ASUS" onClick={onNavigate}>
+                      ASUS
+                    </NavLink>
+                    <NavLink
+                      href="/products?brand=HyperWork"
+                      onClick={onNavigate}
+                    >
                       HyperWork
                     </NavLink>
-                    <NavLink href="/products?brand=AKKO">AKKO</NavLink>
-                    <NavLink href="/products?brand=Corsair">Corsair</NavLink>
-                    <NavLink href="/products?brand=Pulsar">Pulsar</NavLink>
-                    <NavLink href="/products?brand=HyperX">HyperX</NavLink>
+                    <NavLink href="/products?brand=AKKO" onClick={onNavigate}>
+                      AKKO
+                    </NavLink>
+                    <NavLink
+                      href="/products?brand=Corsair"
+                      onClick={onNavigate}
+                    >
+                      Corsair
+                    </NavLink>
+                    <NavLink href="/products?brand=Pulsar" onClick={onNavigate}>
+                      Pulsar
+                    </NavLink>
+                    <NavLink href="/products?brand=HyperX" onClick={onNavigate}>
+                      HyperX
+                    </NavLink>
                   </div>
                 </div>
                 {/* References */}
                 <div>
                   <h3 className="mb-2 font-semibold text-primary-700">
                     {t("navigation.reference.title")}
-                  </h3>
-                  <div className="flex flex-col gap-2" onClick={onNavigate}>
-                    <NavLink href="/products?sort=-sold">
+                  </h3>{" "}
+                  <div className="flex flex-col gap-2">
+                    <NavLink href="/products?sort=-sold" onClick={onNavigate}>
                       {t("navigation.reference.bestSellers")}
                     </NavLink>
-                    <NavLink href="/products?specs=%7B%22sound%22%3A%22Apple+Spacial+Sound%22%7D">
+                    <NavLink
+                      href="/products?specs=%7B%22sound%22%3A%22Apple+Spacial+Sound%22%7D"
+                      onClick={onNavigate}
+                    >
                       {t("navigation.reference.spatialAudio")}
                     </NavLink>
-                    <NavLink href="/products?specs=%7B%22material%22%3A%22Steel%2FFabric%22%7D">
+                    <NavLink
+                      href="/products?specs=%7B%22material%22%3A%22Steel%2FFabric%22%7D"
+                      onClick={onNavigate}
+                    >
                       {t("navigation.reference.durability")}
                     </NavLink>
-                    <NavLink href="/products?brand=Sennheiser">
+                    <NavLink
+                      href="/products?brand=Sennheiser"
+                      onClick={onNavigate}
+                    >
                       {t("navigation.reference.sennheiserPartner")}
                     </NavLink>
-                    <NavLink href="/products?specs=%7B%22connection%22%3A%22Wireless%22%7D">
+                    <NavLink
+                      href="/products?specs=%7B%22connection%22%3A%22Wireless%22%7D"
+                      onClick={onNavigate}
+                    >
                       {t("navigation.reference.wireless")}
                     </NavLink>
                   </div>

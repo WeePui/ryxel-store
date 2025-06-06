@@ -27,23 +27,26 @@ function ProductList({
   const router = useRouter();
   const totalPages = Math.ceil(totalResults / resultsPerPage);
 
-  const handleChangePage = useCallback((page: number) => {
-    if (updateTimeoutRef.current) {
-      clearTimeout(updateTimeoutRef.current);
-    }
-    
-    const timeout = setTimeout(() => {
-      startTransition(() => {
-        const params = new URLSearchParams(searchParams);
-        params.set("page", page.toString());
+  const handleChangePage = useCallback(
+    (page: number) => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
 
-        router.replace(`${pathname}?${params.toString()}`);
-        setCurrentPage(page);
-      });
-    }, 150); // Shorter debounce for pagination
+      const timeout = setTimeout(() => {
+        startTransition(() => {
+          const params = new URLSearchParams(searchParams);
+          params.set("page", page.toString());
 
-    updateTimeoutRef.current = timeout;
-  }, [searchParams, pathname, router]);
+          router.replace(`${pathname}?${params.toString()}`);
+          setCurrentPage(page);
+        });
+      }, 150); // Shorter debounce for pagination
+
+      updateTimeoutRef.current = timeout;
+    },
+    [searchParams, pathname, router],
+  );
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);

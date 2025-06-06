@@ -90,6 +90,10 @@ const translations = {
         en: "Search products, categories & more ...",
       },
     },
+    wishlist: {
+      vi: "Yêu thích",
+      en: "Wishlist",
+    },
   },
   aboutUs: {
     title: {

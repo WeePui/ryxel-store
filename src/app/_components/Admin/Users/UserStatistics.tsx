@@ -82,7 +82,6 @@ export default function UserStatistics({ authToken }: UserStatisticsProps) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
-            "ngrok-skip-browser-warning": "true",
           },
         },
       );

@@ -16,24 +16,27 @@ function SortSelector({ children }: OrderSortSelectorProps) {
   const t = useSafeTranslation();
   const [isPending, startTransition] = useTransition();
 
-  const handleSortChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    const sortValue = e.target.value;
-    
-    startTransition(() => {
-      const params = new URLSearchParams(searchParams);
-      params.set("sort", sortValue);
-      // Reset page when changing sort
-      params.delete("page");
-      router.replace(`${pathname}?${params.toString()}`);
-    });
-  }, [searchParams, pathname, router]);
+  const handleSortChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const sortValue = e.target.value;
+
+      startTransition(() => {
+        const params = new URLSearchParams(searchParams);
+        params.set("sort", sortValue);
+        // Reset page when changing sort
+        params.delete("page");
+        router.replace(`${pathname}?${params.toString()}`);
+      });
+    },
+    [searchParams, pathname, router],
+  );
   return (
     <div className="flex items-center justify-end gap-4 md:flex-col">
       <span className="font-thin md:hidden">{t("products.sortBy")} </span>
       <select
         onChange={handleSortChange}
         className={`rounded-lg border-2 border-grey-300 py-3 pl-3 pr-12 font-bold text-primary-default hover:bg-grey-50 hover:ring-[1px] hover:ring-grey-300 focus:bg-grey-50 focus:ring-[1px] focus:ring-grey-300 ${
-          isPending ? "opacity-50 cursor-wait" : ""
+          isPending ? "cursor-wait opacity-50" : ""
         }`}
         defaultValue={(currentSort && currentSort.toString()) || "createdAt"}
         disabled={isPending}

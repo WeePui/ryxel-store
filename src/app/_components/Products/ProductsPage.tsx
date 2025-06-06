@@ -29,7 +29,8 @@ export default async function ProductsPage({ searchParams }: Props) {
       value: string;
       count: number;
     }>;
-  } = {};  const filters = await searchParams;
+  } = {};
+  const filters = await searchParams;
 
   try {
     // Make parallel API calls to reduce load time and prevent double renders
@@ -114,13 +115,15 @@ export default async function ProductsPage({ searchParams }: Props) {
     );
   } catch (error) {
     console.error("Failed to fetch products:", error);
-    
+
     // Return error state
     return (
       <div className="mx-auto max-w-7xl flex-1 xl:max-w-full xl:px-6 lg:px-3 sm:px-0">
         <main className="mb-16">
           <div className="flex items-center justify-center py-20">
-            <p className="text-grey-400">Failed to load products. Please try again.</p>
+            <p className="text-grey-400">
+              Failed to load products. Please try again.
+            </p>
           </div>
         </main>
       </div>

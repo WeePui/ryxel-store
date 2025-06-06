@@ -71,7 +71,9 @@ export default function Pagination({
 
   const paginationRange = getPaginationRange();
   return (
-    <div className={`bg-white-50 flex items-center divide-x-2 rounded-lg font-semibold ${disabled ? "opacity-50 pointer-events-none" : ""}`}>
+    <div
+      className={`bg-white-50 flex items-center divide-x-2 rounded-lg font-semibold ${disabled ? "pointer-events-none opacity-50" : ""}`}
+    >
       <button
         className={`flex h-12 w-12 items-center justify-center px-4 py-2 ${
           currentPage === 1 ? "disabled" : ""

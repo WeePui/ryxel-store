@@ -41,7 +41,6 @@ export default function RevenueCard({ cookies }: RevenueCardProps) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${cookies}`,
-            "ngrok-skip-browser-warning": "true",
           },
         },
       );

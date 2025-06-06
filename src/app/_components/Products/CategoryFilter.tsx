@@ -5,7 +5,13 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { MdCategory } from "react-icons/md";
 import { categoryIcons } from "@/app/_utils/mappingCategory";
 import { categoryNamesMultilingual } from "@/app/_utils/mappingCategoryMultilingual";
-import { useContext, useCallback, useEffect, useTransition, useRef } from "react";
+import {
+  useContext,
+  useCallback,
+  useEffect,
+  useTransition,
+  useRef,
+} from "react";
 import { LanguageContext } from "@/app/_contexts/LanguageContext";
 import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 
@@ -35,34 +41,38 @@ function CategoryFilter({ categories }: CategoryFilterProps) {
   const router = useRouter();
   const pathname = usePathname();
   const t = useSafeTranslation();
-  const { language } = useSafeLanguage();  const [isPending, startTransition] = useTransition();
+  const { language } = useSafeLanguage();
+  const [isPending, startTransition] = useTransition();
   const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Debounced URL update function
-  const updateURL = useCallback((category: string) => {
-    if (updateTimeoutRef.current) {
-      clearTimeout(updateTimeoutRef.current);
-    }
-    
-    const timeout = setTimeout(() => {
-      startTransition(() => {
-        const params = new URLSearchParams(searchParams);
-        
-        if (category) {
-          params.set("category", category);
-        } else {
-          params.delete("category");
-        }
-        
-        // Reset page when category changes
-        params.delete("page");
-        
-        router.replace(`${pathname}?${params.toString()}`);
-      });
-    }, 300); // 300ms debounce
+  const updateURL = useCallback(
+    (category: string) => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
 
-    updateTimeoutRef.current = timeout;
-  }, [searchParams, pathname, router]);
+      const timeout = setTimeout(() => {
+        startTransition(() => {
+          const params = new URLSearchParams(searchParams);
+
+          if (category) {
+            params.set("category", category);
+          } else {
+            params.delete("category");
+          }
+
+          // Reset page when category changes
+          params.delete("page");
+
+          router.replace(`${pathname}?${params.toString()}`);
+        });
+      }, 300); // 300ms debounce
+
+      updateTimeoutRef.current = timeout;
+    },
+    [searchParams, pathname, router],
+  );
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
@@ -72,9 +82,12 @@ function CategoryFilter({ categories }: CategoryFilterProps) {
     };
   }, []);
 
-  const handleFilter = useCallback((category: string) => {
-    updateURL(category);
-  }, [updateURL]);
+  const handleFilter = useCallback(
+    (category: string) => {
+      updateURL(category);
+    },
+    [updateURL],
+  );
   return (
     <div className={`w-full overflow-hidden ${isPending ? "opacity-75" : ""}`}>
       <div className="flex h-20 w-full items-center overflow-x-auto rounded-lg bg-grey-100 lg:scrollbar-hide sm:rounded-none">

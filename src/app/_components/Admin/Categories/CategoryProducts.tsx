@@ -68,7 +68,7 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
       dataIndex: "totalStock",
       key: "stock",
       render: (value) => (
-        <div className="flex w-full items-center justify-center">
+        <div className="flex w-full items-center justify-center md:justify-start">
           <div
             className="w-fit rounded-full px-2 py-1 text-xs"
             style={{
