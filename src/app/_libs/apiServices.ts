@@ -19,11 +19,16 @@ interface Filter {
   [key: string]: string;
 }
 
-export async function getProducts(filters: Filter = {}) {
+export async function getProducts(filters: Filter = {}, authToken?: string) {
   try {
     const query = new URLSearchParams(filters).toString();
 
-    const response = await fetch(`${API_URL}/products?${query}`);
+    const response = await fetch(`${API_URL}/products?${query}`, {
+      headers: {
+        Authorization: authToken ? `Bearer ${authToken}` : "",
+      },
+      credentials: "include",
+    });
 
     if (!response.ok) {
       return {
@@ -1037,17 +1042,14 @@ export const createReviewsByOrder = async (
         formData.append(`reviews[${index}][video]`, review.video);
     });
 
-    const response = await fetch(
-      `http://localhost:8000/api/v1/reviews/order/${orderId}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-        body: formData,
-        credentials: "include",
+    const response = await fetch(`${API_URL}/reviews/order/${orderId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token.value}`,
       },
-    );
+      body: formData,
+      credentials: "include",
+    });
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
@@ -1094,17 +1096,14 @@ export const updateReviewsByOrder = async (
         formData.append(`reviews[${review._id}][video]`, review.video);
     });
 
-    const response = await fetch(
-      `http://localhost:8000/api/v1/reviews/order/${orderId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-        body: formData,
-        credentials: "include",
+    const response = await fetch(`${API_URL}/reviews/order/${orderId}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token.value}`,
       },
-    );
+      body: formData,
+      credentials: "include",
+    });
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));

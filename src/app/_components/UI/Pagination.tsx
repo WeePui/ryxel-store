@@ -5,12 +5,14 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  disabled?: boolean;
 }
 
 export default function Pagination({
   currentPage,
   totalPages,
   onPageChange,
+  disabled = false,
 }: PaginationProps) {
   const { t } = useLanguage();
   if (totalPages <= 1) return null; // No need to show pagination if there's only one page
@@ -68,15 +70,14 @@ export default function Pagination({
   };
 
   const paginationRange = getPaginationRange();
-
   return (
-    <div className="bg-white-50 flex items-center divide-x-2 rounded-lg font-semibold">
+    <div className={`bg-white-50 flex items-center divide-x-2 rounded-lg font-semibold ${disabled ? "opacity-50 pointer-events-none" : ""}`}>
       <button
         className={`flex h-12 w-12 items-center justify-center px-4 py-2 ${
           currentPage === 1 ? "disabled" : ""
         } rounded-l-md bg-primary-500 hover:bg-gray-400`}
         onClick={handlePreviousPage}
-        disabled={currentPage === 1}
+        disabled={currentPage === 1 || disabled}
         aria-label={t("pagination.previous")}
       >
         <FaChevronLeft className="h-4 w-4 text-white" />
@@ -91,6 +92,7 @@ export default function Pagination({
                 : "bg-gray-100 hover:bg-gray-200"
             }`}
             onClick={() => handlePageChange(page)}
+            disabled={disabled}
             aria-label={t("pagination.page").replace("{page}", page.toString())}
           >
             {page}
@@ -109,7 +111,7 @@ export default function Pagination({
           currentPage === totalPages ? "disabled" : ""
         } rounded-r-md bg-primary-default hover:bg-gray-400`}
         onClick={handleNextPage}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || disabled}
         aria-label={t("pagination.next")}
       >
         <FaChevronRight className="h-4 w-4 text-white" />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useTransition, useRef } from "react";
 import ProductCard from "@components/Products/ProductCard";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Product } from "@/app/_types/product";
@@ -20,10 +20,30 @@ function ProductList({
 }: ProductListProps) {
   const { t } = useLanguage();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isPending, startTransition] = useTransition();
+  const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
   const totalPages = Math.ceil(totalResults / resultsPerPage);
+
+  const handleChangePage = useCallback((page: number) => {
+    if (updateTimeoutRef.current) {
+      clearTimeout(updateTimeoutRef.current);
+    }
+    
+    const timeout = setTimeout(() => {
+      startTransition(() => {
+        const params = new URLSearchParams(searchParams);
+        params.set("page", page.toString());
+
+        router.replace(`${pathname}?${params.toString()}`);
+        setCurrentPage(page);
+      });
+    }, 150); // Shorter debounce for pagination
+
+    updateTimeoutRef.current = timeout;
+  }, [searchParams, pathname, router]);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -31,6 +51,15 @@ function ProductList({
 
     setCurrentPage(page);
   }, [searchParams, products]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
+    };
+  }, []);
 
   if (products.length === 0) {
     return (
@@ -40,16 +69,8 @@ function ProductList({
     );
   }
 
-  const handleChangePage = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", page + "");
-
-    router.replace(`${pathname}?${params.toString()}`);
-    setCurrentPage(page);
-  };
-
   return (
-    <div className="w-full">
+    <div className={`w-full ${isPending ? "opacity-75" : ""}`}>
       <div className="mb-12 grid auto-rows-min grid-cols-4 gap-x-8 gap-y-12 xl:grid-cols-3 lg:gap-x-3 lg:gap-y-8 md:grid-cols-2">
         {products.length > 0 &&
           products.map((product) => (
@@ -62,6 +83,7 @@ function ProductList({
             currentPage={currentPage}
             totalPages={Math.ceil(totalResults / resultsPerPage)}
             onPageChange={handleChangePage}
+            disabled={isPending}
           />
         </div>
       )}

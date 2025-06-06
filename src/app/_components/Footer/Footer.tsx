@@ -93,7 +93,7 @@ function FooterColumn({ title, children }: FooterColumnProps) {
   return (
     <div className="my-12 w-full lg:my-0 md:w-auto">
       <button
-        className="pointer-events-none flex w-full items-center justify-between lg:pointer-events-auto"
+        className="pointer-events-none flex w-full items-center justify-between gap-6 lg:pointer-events-auto"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-controls={`footer-col-${title}`}

@@ -8,6 +8,10 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useCallback,
+  useMemo,
+  useTransition,
+  useRef,
 } from "react";
 import {
   FaRegCircleXmark,
@@ -117,17 +121,18 @@ function SideFilter({
   isMobile = false,
 }: SideFilterProps) {
   const t = useSafeTranslation();
-  const brandOptions = brands.map((brand) => ({
+  const brandOptions = useMemo(() => brands.map((brand) => ({
     value: brand.value,
     label: brand.value,
     count: brand.count,
-  }));
-  const priceRangeOptions = priceRanges.map((range) => ({
+  })), [brands]);
+  
+  const priceRangeOptions = useMemo(() => priceRanges.map((range) => ({
     value: `${range.min}-${range.max}`,
     label: range.max
       ? `${formatMoney(range.min)} - ${formatMoney(range.max)}`
       : `${formatMoney(range.min)}+`,
-  }));
+  })), [priceRanges]);
 
   const [filters, setFilters] = useState<Filter>({
     brand: [],
@@ -139,11 +144,103 @@ function SideFilter({
       min: undefined,
       max: 5,
     },
-  });
-  const [isInitialized, setIsInitialized] = useState(false);
+  });  const [isInitialized, setIsInitialized] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useRouter();  
+  // Use ref instead of state to prevent re-render loops
+  const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Debounced URL update function
+  const updateURL = useCallback((newFilters: Filter) => {
+    if (updateTimeoutRef.current) {
+      clearTimeout(updateTimeoutRef.current);
+    }
+    
+    const timeout = setTimeout(() => {
+      startTransition(() => {
+        const params = new URLSearchParams(searchParams);
+        let shouldResetPage = false;
+
+        // Handle brand filter
+        if (newFilters.brand.length > 0) {
+          const currentBrand = searchParams.get("brand");
+          const newBrand = newFilters.brand.join(",");
+          if (currentBrand !== newBrand) {
+            params.set("brand", newBrand);
+            shouldResetPage = true;
+          }
+        } else {
+          if (searchParams.has("brand")) {
+            params.delete("brand");
+            shouldResetPage = true;
+          }
+        }
+
+        // Handle price filter
+        const currentMinPrice = searchParams.get("price[gte]");
+        const currentMaxPrice = searchParams.get("price[lte]");
+
+        if (newFilters.price.min) {
+          if (currentMinPrice !== newFilters.price.min.toString()) {
+            params.set("price[gte]", newFilters.price.min.toString());
+            shouldResetPage = true;
+          }
+        }
+        if (newFilters.price.max) {
+          if (currentMaxPrice !== newFilters.price.max.toString()) {
+            params.set("price[lte]", newFilters.price.max.toString());
+            shouldResetPage = true;
+          }
+        } else {
+          if (searchParams.has("price[lte]")) {
+            params.delete("price[lte]");
+            shouldResetPage = true;
+          }
+        }
+        if (newFilters.price.min === 0 && newFilters.price.max === undefined) {
+          if (searchParams.has("price[gte]") || searchParams.has("price[lte]")) {
+            params.delete("price[gte]");
+            params.delete("price[lte]");
+            shouldResetPage = true;
+          }
+        }
+
+        // Handle rating filter
+        const currentRating = searchParams.get("rating[gte]");
+        if (newFilters.rating.min) {
+          if (currentRating !== newFilters.rating.min.toString()) {
+            params.set("rating[gte]", newFilters.rating.min.toString());
+            shouldResetPage = true;
+          }
+        } else {
+          if (searchParams.has("rating[gte]")) {
+            params.delete("rating[gte]");
+            shouldResetPage = true;
+          }
+        }
+
+        // Only reset page if filters actually changed
+        if (shouldResetPage) {
+          params.delete("page");
+        }
+
+        router.replace(`${pathname}?${params.toString()}`);
+      });
+    }, 300); // 300ms debounce
+
+    updateTimeoutRef.current = timeout;
+  }, [searchParams, pathname, router]);
+  useEffect(() => {
+    // Cleanup timeout on unmount
+    return () => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const brand = searchParams.get("brand")?.split(",") || [];
     const price = {
@@ -162,78 +259,12 @@ function SideFilter({
     });
     setIsInitialized(true);
   }, [searchParams]);
-
   useEffect(() => {
     // Only update URL if filters have been initialized and this is a user interaction
     if (!isInitialized) return;
 
-    const params = new URLSearchParams(searchParams);
-    let shouldResetPage = false;
-
-    // Handle brand filter
-    if (filters.brand.length > 0) {
-      const currentBrand = searchParams.get("brand");
-      const newBrand = filters.brand.join(",");
-      if (currentBrand !== newBrand) {
-        params.set("brand", newBrand);
-        shouldResetPage = true;
-      }
-    } else {
-      if (searchParams.has("brand")) {
-        params.delete("brand");
-        shouldResetPage = true;
-      }
-    }
-
-    // Handle price filter
-    const currentMinPrice = searchParams.get("price[gte]");
-    const currentMaxPrice = searchParams.get("price[lte]");
-
-    if (filters.price.min) {
-      if (currentMinPrice !== filters.price.min.toString()) {
-        params.set("price[gte]", filters.price.min.toString());
-        shouldResetPage = true;
-      }
-    }
-    if (filters.price.max) {
-      if (currentMaxPrice !== filters.price.max.toString()) {
-        params.set("price[lte]", filters.price.max.toString());
-        shouldResetPage = true;
-      }
-    }
-    if (filters.price.min === 0 && filters.price.max === undefined) {
-      if (searchParams.has("price[gte]") || searchParams.has("price[lte]")) {
-        params.delete("price[gte]");
-        params.delete("price[lte]");
-        shouldResetPage = true;
-      }
-    }
-    if (filters.price.max === undefined && searchParams.has("price[lte]")) {
-      params.delete("price[lte]");
-      shouldResetPage = true;
-    }
-
-    // Handle rating filter
-    const currentRating = searchParams.get("rating[gte]");
-    if (filters.rating.min) {
-      if (currentRating !== filters.rating.min.toString()) {
-        params.set("rating[gte]", filters.rating.min.toString());
-        shouldResetPage = true;
-      }
-    } else {
-      if (searchParams.has("rating[gte]")) {
-        params.delete("rating[gte]");
-        shouldResetPage = true;
-      }
-    }
-
-    // Only reset page if filters actually changed
-    if (shouldResetPage) {
-      params.delete("page");
-    }
-
-    router.replace(`${pathname}?${params.toString()}`);
-  }, [filters, pathname, router, searchParams, isInitialized]);
+    updateURL(filters);
+  }, [filters, isInitialized, updateURL]);
 
   const onChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
@@ -304,13 +335,12 @@ function SideFilter({
 
     router.replace(`${pathname}?${params.toString()}`);
   }
-
   return (
     <SideFilterContext.Provider value={{ filters, setFilters, onChecked }}>
       <div
         className={`flex h-full flex-col gap-2 rounded-xl ${
           isMobile ? "bg-white" : "bg-grey-100"
-        } px-4 pb-6`}
+        } px-4 pb-6 ${isPending ? "opacity-75 pointer-events-none" : ""}`}
       >
         <div className="flex items-center justify-between px-4 pb-2 pt-6">
           <h3 className="text-xl font-bold text-primary-default">

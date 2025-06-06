@@ -82,7 +82,8 @@ async function Page() {
         <ApiErrorDisplay
           error={{
             status: "error",
-            message: "An unexpected error occurred while loading addresses. Please try again.",
+            message:
+              "An unexpected error occurred while loading addresses. Please try again.",
             statusCode: 500,
           }}
           title="Server Error"

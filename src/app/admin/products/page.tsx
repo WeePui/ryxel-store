@@ -56,7 +56,7 @@ export default async function Page({ searchParams }: PageProps) {
     productSummaryResponse,
     categoriesResponse,
   ] = await Promise.all([
-    getProducts(filter),
+    getProducts(filter, token),
     getFilterData(filter),
     getStockData({ value: token }),
     getProductsSummary({ value: token }),

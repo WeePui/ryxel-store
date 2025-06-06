@@ -65,6 +65,9 @@ function LoggedUser({ user }: LoggedUserProps) {
               </>
             )}
             <li>
+              <NavLink href="/admin/dashboard">Dashboard</NavLink>
+            </li>
+            <li>
               <SignoutButton>
                 <button
                   className="text-red-500 hover:text-red-300"

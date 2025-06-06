@@ -1,7 +1,8 @@
-import { getAllPosts } from '@helpers/getAllPosts';
-import NavLink from '../../_components/UI/NavLink';
-import { FaChevronRight } from 'react-icons/fa6';
-import BlogList from '../../_components/Blog/BlogList';
+import { getAllPosts } from "@helpers/getAllPosts";
+import BlogList from "../../_components/Blog/BlogList";
+import Breadcrumb from "@/app/_components/UI/Breadcrumb";
+
+const breadcrumbItems = [{ label: "Blogs", href: "/blogs" }];
 
 export default function page() {
   const blogs = getAllPosts();
@@ -10,13 +11,9 @@ export default function page() {
   });
 
   return (
-    <div>
-      <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-grey-400 max-w-7xl mx-auto xl:px-6">
-        <NavLink href="/">
-          <span className="text-grey-400">Trang chủ</span>
-        </NavLink>
-        <FaChevronRight className="text-xs" />
-        <span className="text-primary-500">Blog</span>
+    <div className="max-w-full">
+      <div className="mx-auto mt-4 flex max-w-7xl items-center gap-2 text-sm font-semibold text-grey-400 xl:px-6">
+        <Breadcrumb items={breadcrumbItems} />
       </div>
       <BlogList blogs={sortedBlogs} />
     </div>

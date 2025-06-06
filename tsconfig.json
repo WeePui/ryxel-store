@@ -41,7 +41,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/_components/Account/FormUpdateProfile.tsx",
-    "src/app/admin/dashboard"
+    "src/app/admin/dashboard",
+    "tailwind.config.ts"
   ],
   "exclude": ["node_modules"]
 }

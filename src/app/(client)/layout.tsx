@@ -43,6 +43,7 @@ export default async function RootLayout({
 }) {
   const cookiesStore = await cookies();
   const token = cookiesStore.get("jwt");
+
   return (
     <html lang="vi" className={`${manrope.variable} ${kanit.variable}`}>
       <body

@@ -9,10 +9,6 @@ interface Props {
 }
 
 async function Page({ searchParams }: Props) {
-  const searchParamsData = await searchParams;
-  const key = JSON.stringify(searchParamsData);
-  const cacheKey = `products-${key}`;
-
   return (
     <Suspense
       fallback={
@@ -20,7 +16,6 @@ async function Page({ searchParams }: Props) {
           <Loader />
         </div>
       }
-      key={cacheKey}
     >
       <ProductsPage searchParams={searchParams} />
     </Suspense>

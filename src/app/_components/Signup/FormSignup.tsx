@@ -40,7 +40,6 @@ function FormSignup() {
         {state?.errors?.message && (
           <p className="text-sm text-red-500">{state?.errors?.message}</p>
         )}
-
         <div className="w-full">
           <Input
             id="name"
@@ -73,7 +72,7 @@ function FormSignup() {
             <FaCircleInfo />
             {t("auth.signup.dobWarning")}
           </p>
-        </div>
+        </div>{" "}
         <Input
           id="gender"
           type="select"
@@ -86,11 +85,10 @@ function FormSignup() {
           ]}
           error={!!state?.errors?.gender}
           errorMessage={state?.errors?.gender}
+          defaultValue={state?.inputData?.gender}
           onChange={handleInputChange}
         />
-
         <hr className="my-1 w-full border-t border-grey-100" />
-
         <div className="w-full">
           <Input
             name="email"
@@ -108,7 +106,6 @@ function FormSignup() {
             {t("auth.signup.emailAccount")}
           </p>
         </div>
-
         <Input
           id="password"
           type="password"
@@ -119,7 +116,6 @@ function FormSignup() {
           errorMessage={state?.errors?.password}
           onChange={handleInputChange}
         />
-
         <Input
           id="passwordConfirm"
           type="password"
@@ -130,9 +126,7 @@ function FormSignup() {
           errorMessage={state?.errors?.passwordConfirm}
           onChange={handleInputChange}
         />
-
         <hr className="my-1 w-full border-t border-grey-100" />
-
         <div className="w-full">
           {state?.errors?.terms && (
             <p className="flex items-center gap-2 p-2 text-xs text-red-500">
@@ -152,9 +146,7 @@ function FormSignup() {
             </p>
           </div>
         </div>
-
         <hr className="my-1 w-full border-t border-grey-100" />
-
         <Button loading={isPending} role="submit">
           {t("auth.form.submit.signup")}
         </Button>

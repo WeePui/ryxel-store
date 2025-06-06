@@ -88,19 +88,19 @@ function HeaderNav({
                     <NavLink href="/products?category=Chuột">
                       {t("navigation.categories.gaming.mouse")}
                     </NavLink>
-                    <NavLink href="/products?category=Bàn phím">
+                    <NavLink href="/products?category=Bàn+phím">
                       {t("navigation.categories.gaming.keyboard")}
                     </NavLink>
                     <NavLink href="/products?category=Tai+nghe">
                       {t("navigation.categories.gaming.headphone")}
                     </NavLink>
-                    <NavLink href="/products?category=ban">
+                    <NavLink href="/products?category=Bàn">
                       {t("navigation.categories.gaming.table")}
                     </NavLink>
-                    <NavLink href="/products?category=ghe">
+                    <NavLink href="/products?category=Ghế">
                       {t("navigation.categories.gaming.chair")}
                     </NavLink>
-                    <NavLink href="/products?category=phu-kien">
+                    <NavLink href="/products?category=Phụ+kiện">
                       {t("navigation.categories.gaming.accessory")}
                     </NavLink>
                   </div>
@@ -111,8 +111,8 @@ function HeaderNav({
                     {t("navigation.brands.title")}
                   </h3>
                   <div className="flex flex-col gap-2">
-                    <NavLink href="/products?brand=logitech">Logitech</NavLink>
-                    <NavLink href="/products?brand=razer">Razer</NavLink>
+                    <NavLink href="/products?brand=Logitech">Logitech</NavLink>
+                    <NavLink href="/products?brand=Razer">Razer</NavLink>
                     <NavLink href="/products?brand=Steelseries">
                       SteelSeries
                     </NavLink>
