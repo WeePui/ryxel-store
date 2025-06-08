@@ -58,7 +58,7 @@ export default function FormUpdateReview({
     order.reviewCount < 2 &&
     new Date(order.createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000;
   return (
-    <form className="w-[600px] max-w-3xl md:max-w-full" onSubmit={handleSubmit}>
+    <form className="w-full max-w-4xl md:max-w-full" onSubmit={handleSubmit}>
       <h1 className="mb-6 font-title text-2xl">{t("orders.review.title")}</h1>
       <div className="flex flex-col gap-6">
         {reviewedLineItems.map((item) => (

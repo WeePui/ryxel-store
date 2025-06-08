@@ -50,7 +50,7 @@ export default function FormReviewOrder({
   };
 
   return (
-    <form className="w-[600px] max-w-3xl md:max-w-full" onSubmit={handleSubmit}>
+    <form className="w-full max-w-4xl md:max-w-full" onSubmit={handleSubmit}>
       <h1 className="mb-6 font-title text-2xl">{t("orders.review.title")}</h1>
       <div className="flex flex-col gap-6">
         {order.lineItems.map((item, index) => (

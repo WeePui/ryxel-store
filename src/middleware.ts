@@ -3,14 +3,6 @@ import { checkToken, checkUnpaidOrder } from "@libs/apiServices";
 import { sendOTPAction } from "./app/_libs/actions";
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname === "/account") {
-    return NextResponse.rewrite(new URL("/account/profile", request.url));
-  }
-
-  if (request.nextUrl.pathname === "/admin") {
-    return NextResponse.rewrite(new URL("/admin/dashboard", request.url));
-  }
-
   const token = request.cookies.get("jwt");
 
   if (!token) {
