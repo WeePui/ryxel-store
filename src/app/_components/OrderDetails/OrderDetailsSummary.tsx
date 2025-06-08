@@ -2,7 +2,7 @@
 
 import { Order } from "@/app/_types/order";
 import formatMoney from "@/app/_utils/formatMoney";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 
 interface OrderDetailsSummaryProps {
   order: Order;
@@ -11,7 +11,7 @@ interface OrderDetailsSummaryProps {
 export default function OrderDetailsSummary({
   order,
 }: OrderDetailsSummaryProps) {
-  const { t } = useLanguage();
+  const t = useSafeTranslation();
 
   return (
     <div>

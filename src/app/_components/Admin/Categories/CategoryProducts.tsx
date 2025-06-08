@@ -97,7 +97,7 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
       dataIndex: "slug",
       key: "actions",
       render: (value) => (
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center gap-2 sm:justify-start">
           <NavLink
             href={`/admin/products/${value as string}`}
             className="truncate"

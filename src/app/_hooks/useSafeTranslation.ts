@@ -44,10 +44,32 @@ const vietnameseFallback = {
   "blog.categoryMap.Esports": "Esports",
   "blog.categoryMap.Phần mềm": "Phần mềm",
   "blog.categoryMap.Công nghệ": "Công nghệ",
-
   // Confirm dialogue translations
   "confirmDialogue.cancel": "Hủy",
   "confirmDialogue.confirm": "Xác nhận",
+  // Timeline tracking translations
+  "timelineTracking.collapse": "Thu gọn",
+  "timelineTracking.showMore": "Hiển thị thêm",
+  language: "vi",
+  // Order details translations
+  "account.orderDetails.products": "Sản phẩm",
+  "account.orderDetails.totalItems": "Tổng cộng {count} sản phẩm",
+  // Order item translations
+  "account.orders.variant": "Phiên bản",
+  "account.orders.quantity": "Số lượng",
+  "account.orders.subtotal": "Tạm tính",
+
+  // Cart and order summary translations
+  "cart.orderSummary.subtotal": "Tạm tính",
+  "cart.orderSummary.discount": "Giảm giá",
+  "cart.orderSummary.shippingFee": "Phí vận chuyển",
+  "orders.card.total": "Tổng cộng",
+  "checkout.summary.paymentMethod": "Phương thức thanh toán",
+
+  // Payment method translations
+  "account.orderDetails.paymentMethods.cod": "Thanh toán khi nhận hàng",
+  "account.orderDetails.paymentMethods.stripe": "Thẻ tín dụng/ghi nợ",
+  "account.orderDetails.paymentMethods.zalopay": "ZaloPay",
 
   // Add more translations as needed for other components
 };

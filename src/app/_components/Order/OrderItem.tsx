@@ -6,14 +6,14 @@ import formatMoney from "@/app/_utils/formatMoney";
 import { LineItem } from "@/app/_types/lineItem";
 import { Variant } from "@/app/_types/variant";
 import { Product } from "@/app/_types/product";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 
 interface OrderItemProps {
   item: LineItem;
 }
 
 export default function OrderItem({ item }: OrderItemProps) {
-  const { t } = useLanguage();
+  const t = useSafeTranslation();
   const itemVariant = (item.product as Product).variants.find(
     (variant: Variant) => variant._id === item.variant,
   );

@@ -1,6 +1,8 @@
+"use client";
+
 import { LineItem } from "@/app/_types/lineItem";
 import OrderItem from "../Order/OrderItem";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 
 interface OrderDetailsLineItemsProps {
   lineItems: LineItem[];
@@ -11,7 +13,7 @@ export default function OrderDetailsLineItems({
   lineItems,
   showTitle = true,
 }: OrderDetailsLineItemsProps) {
-  const { t } = useLanguage();
+  const t = useSafeTranslation();
 
   return (
     <div>

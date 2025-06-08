@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useSafeTranslation } from "@/app/_hooks/useSafeTranslation";
 
 interface StatusEntry {
   _id: string;
@@ -16,7 +16,7 @@ interface TrackingTimelineProps {
 
 const TrackingTimeline: React.FC<TrackingTimelineProps> = ({ history }) => {
   const [expanded, setExpanded] = useState(false);
-  const { t } = useLanguage();
+  const t = useSafeTranslation();
   const visibleCount = 3;
 
   const visibleHistory = expanded ? history : history.slice(0, visibleCount);
