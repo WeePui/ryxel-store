@@ -11,13 +11,13 @@ const vietnameseFallback = {
   "header.logout": "Đăng xuất",
   "header.searchbar.searchPlaceholder":
     "Tìm kiếm sản phẩm, danh mục & khác ...",
-
   // Products filter translations
   "products.filter.title": "Bộ lọc",
   "products.filter.reset": "Đặt lại",
   "products.filter.brand": "Thương hiệu",
   "products.filter.price": "Giá",
   "products.filter.rating": "Đánh giá",
+  "products.filter.onSale": "Đang giảm giá",
   // Category filter translations
   "products.filter.category": "Danh mục",
   "products.filter.all": "Tất cả",

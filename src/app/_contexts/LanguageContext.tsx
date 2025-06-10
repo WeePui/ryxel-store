@@ -654,6 +654,10 @@ const translations = {
         vi: "Đánh giá",
         en: "Rating",
       },
+      onSale: {
+        vi: "Đang giảm giá",
+        en: "On Sale",
+      },
       apply: {
         vi: "Áp dụng",
         en: "Apply",

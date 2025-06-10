@@ -62,7 +62,7 @@ export default async function Page({ searchParams }: PageProps) {
           totalShippedOrders={totalShippedOrders}
           totalDeliveredOrders={totalDeliveredOrders}
         />
-      </div>{" "}
+      </div>
       <div className="col-span-1 xl:col-span-full">
         <SafeTopCityByOrder authToken={token} />
       </div>
@@ -76,8 +76,8 @@ export default async function Page({ searchParams }: PageProps) {
         <div className="hidden items-center gap-2 lg:flex">
           <div className="flex-[6]">
             <SortSelector>
-              <option value="createdAt">Ngày tạo</option>
-              <option value="updatedAt">Ngày cập nhật</option>
+              <option value="createdAt">Ngày tạo (gần nhất)</option>
+              <option value="updatedAt">Ngày cập nhật (gần nhất)</option>
               <option value="-total">Tổng giá trị (cao - thấp)</option>
               <option value="total">Tổng giá trị (thấp - cao)</option>
             </SortSelector>

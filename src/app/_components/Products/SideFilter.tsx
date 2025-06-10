@@ -55,6 +55,7 @@ interface Filter {
     min?: number;
     max?: number;
   };
+  onSale: boolean;
 }
 
 interface SideFilterContextType {
@@ -141,7 +142,6 @@ function SideFilter({
       })),
     [priceRanges],
   );
-
   const [filters, setFilters] = useState<Filter>({
     brand: [],
     price: {
@@ -152,6 +152,7 @@ function SideFilter({
       min: undefined,
       max: 5,
     },
+    onSale: false,
   });
   const [isInitialized, setIsInitialized] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -221,9 +222,7 @@ function SideFilter({
               params.delete("price[lte]");
               shouldResetPage = true;
             }
-          }
-
-          // Handle rating filter
+          } // Handle rating filter
           const currentRating = searchParams.get("rating[gte]");
           if (newFilters.rating.min) {
             if (currentRating !== newFilters.rating.min.toString()) {
@@ -233,6 +232,20 @@ function SideFilter({
           } else {
             if (searchParams.has("rating[gte]")) {
               params.delete("rating[gte]");
+              shouldResetPage = true;
+            }
+          }
+
+          // Handle onSale filter
+          const currentOnSale = searchParams.get("onSale");
+          if (newFilters.onSale) {
+            if (currentOnSale !== "true") {
+              params.set("onSale", "true");
+              shouldResetPage = true;
+            }
+          } else {
+            if (searchParams.has("onSale")) {
+              params.delete("onSale");
               shouldResetPage = true;
             }
           }
@@ -258,7 +271,6 @@ function SideFilter({
       }
     };
   }, []);
-
   useEffect(() => {
     const brand = searchParams.get("brand")?.split(",") || [];
     const price = {
@@ -269,11 +281,13 @@ function SideFilter({
       min: Number(searchParams.get("rating[gte]")) || undefined,
       max: 5,
     };
+    const onSale = searchParams.get("onSale") === "true";
 
     setFilters({
       brand,
       price,
       rating,
+      onSale,
     });
     setIsInitialized(true);
   }, [searchParams]);
@@ -283,7 +297,6 @@ function SideFilter({
 
     updateURL(filters);
   }, [filters, isInitialized, updateURL]);
-
   const onChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
 
@@ -306,17 +319,19 @@ function SideFilter({
       // Nếu click vào rating đang được chọn -> bỏ chọn
       currentFilters.rating.min =
         currentFilters.rating.min === newRating ? undefined : newRating;
+    } else if (name === "onSale") {
+      currentFilters.onSale = checked;
     }
 
     setFilters(currentFilters);
   };
-
   function onClear() {
     const params = new URLSearchParams(searchParams);
     params.delete("brand");
     params.delete("price[gte]");
     params.delete("price[lte]");
     params.delete("rating[gte]");
+    params.delete("onSale");
     params.delete("page");
     params.delete("specs");
     params.delete("sort");
@@ -380,12 +395,18 @@ function SideFilter({
             filterName="price"
             label={t("products.filter.price")}
             options={priceRangeOptions}
-          />
+          />{" "}
           <hr className="my-1 border-t border-grey-200" />
           <FilterItem
             filterName="rating"
             label={t("products.filter.rating")}
             options={ratingOptions}
+          />
+          <hr className="my-1 border-t border-grey-200" />
+          <FilterItem
+            filterName="onSale"
+            label={t("products.filter.onSale")}
+            options={[{ value: "true", label: t("products.filter.onSale") }]}
           />
           <SpecsFilter
             specifications={specifications}
@@ -411,6 +432,8 @@ function FilterItem({ filterName, options, label }: FilterItemProps) {
       );
     } else if (filterName === "rating") {
       return filters.rating.min === Number(value);
+    } else if (filterName === "onSale") {
+      return filters.onSale;
     }
     return false;
   };

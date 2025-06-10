@@ -106,7 +106,7 @@ export default async function ProductsPage({ searchParams }: Props) {
             </div>
             <ProductList
               products={products}
-              totalResults={displayResults}
+              totalResults={displayTotalProducts}
               resultsPerPage={resultsPerPage}
             />
           </div>
