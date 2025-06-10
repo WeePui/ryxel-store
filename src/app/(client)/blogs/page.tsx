@@ -2,7 +2,10 @@ import { getAllPosts } from "@helpers/getAllPosts";
 import BlogList from "../../_components/Blog/BlogList";
 import Breadcrumb from "@/app/_components/UI/Breadcrumb";
 
-const breadcrumbItems = [{ label: "Blogs", href: "/blogs" }];
+const breadcrumbItems = [
+  { translateKey: "products.home", href: "/" },
+  { label: "Blogs" },
+];
 
 export default function page() {
   const blogs = getAllPosts();

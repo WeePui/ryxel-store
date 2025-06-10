@@ -731,8 +731,22 @@ export async function createCheckoutSession(
   order: Order,
   token: { value: string },
   method: "Stripe" | "ZaloPay",
-) {
-  try {
+  discountCode?: string,
+) {  try {
+    const requestBody: {
+      orderCode: string;
+      lineItems: LineItem[];
+      code?: string;
+    } = {
+      orderCode: order.orderCode,
+      lineItems: order.lineItems,
+    };
+
+    // Include discount code if provided
+    if (discountCode && discountCode.trim() !== "") {
+      requestBody.code = discountCode;
+    }
+
     const response = await fetch(
       `${API_URL}/payments/create${method}CheckoutSession`,
       {
@@ -741,7 +755,7 @@ export async function createCheckoutSession(
           Authorization: `Bearer ${token.value}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(order),
+        body: JSON.stringify(requestBody),
         credentials: "include",
       },
     );

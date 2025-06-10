@@ -11,9 +11,9 @@ export interface Order {
   updatedAt: string;
   lineItems: LineItem[];
   shippingAddress: string | Address;
-  paymentMethod: string;
-  shippingFee: number;
+  paymentMethod: string;  shippingFee: number;
   discountAmount: number;
+  discount?: string;
   subtotal: number;
   reviewCount: number;
   orderCode: string;

@@ -14,19 +14,23 @@ interface CheckoutPageProps {
   addresses: Address[];
   lineItems: LineItem[];
   subtotal: number;
+  existingDiscountCode?: string;
+  existingDiscountAmount?: number;
 }
 
 export default function CheckoutPage({
   addresses,
   lineItems,
   subtotal,
+  existingDiscountCode,
+  existingDiscountAmount,
 }: CheckoutPageProps) {
   const { t } = useLanguage();
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     string | null
   >(null);
-  const [code, setCode] = useState<string | null>(null);
+  const [code, setCode] = useState<string | null>(existingDiscountCode || null);
 
   const handleCodeChange = (newCode: string) => {
     setCode(newCode);
@@ -39,8 +43,7 @@ export default function CheckoutPage({
       </h1>
       <SelectAddress addresses={addresses} onSelect={setSelectedAddress} />
       <CheckoutItems items={lineItems} />
-      <SelectPaymentMethod onSelect={setSelectedPaymentMethod} />
-      <div className="col-start-2 row-span-3 row-start-2 lg:col-span-full lg:row-start-5">
+      <SelectPaymentMethod onSelect={setSelectedPaymentMethod} />      <div className="col-start-2 row-span-3 row-start-2 lg:col-span-full lg:row-start-5">
         <CheckoutSummary
           subtotal={subtotal}
           code={code || ""}
@@ -58,6 +61,7 @@ export default function CheckoutPage({
             };
           })}
           onCodeChange={handleCodeChange}
+          existingDiscountAmount={existingDiscountAmount}
         />
       </div>
     </div>

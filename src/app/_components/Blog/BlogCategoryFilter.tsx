@@ -23,7 +23,7 @@ export default function BlogCategoryFilter({
   ];
 
   return (
-    <div className="max-w-screen my-4 flex w-full gap-4 overflow-auto overflow-x-auto whitespace-nowrap px-4 scrollbar-hide md:bg-grey-100 md:px-6 md:py-2">
+    <div className="max-w-screen my-4 flex w-full justify-center gap-4 overflow-auto overflow-x-auto whitespace-nowrap px-4 scrollbar-hide md:bg-grey-100 md:px-6 md:py-2 sm:justify-start">
       {categories.map((category) => (
         <CategoryButton
           key={category.value}

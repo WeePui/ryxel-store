@@ -25,6 +25,7 @@ interface CheckoutSummaryProps {
   paymentMethod: string | null;
   lineItems: CheckoutItem[];
   onCodeChange?: (code: string) => void;
+  existingDiscountAmount?: number;
 }
 
 function CheckoutSummary({
@@ -34,11 +35,17 @@ function CheckoutSummary({
   paymentMethod,
   lineItems,
   onCodeChange,
+  existingDiscountAmount,
 }: CheckoutSummaryProps) {
   const { t } = useLanguage();
   const [discountState, action, isPending] = useActionState(
     verifyDiscountCodeAction,
-    { success: false, discountAmount: 0, code: code && "", errors: {} },
+    { 
+      success: existingDiscountAmount ? true : false, 
+      discountAmount: existingDiscountAmount || 0, 
+      code: code || "", 
+      errors: {} 
+    },
   );
   const [isApplyVoucher, setIsApplyVoucher] = useState(false);
   const [loadingShippingFee, startTransition] = useTransition();

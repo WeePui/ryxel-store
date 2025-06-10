@@ -1034,12 +1034,12 @@ export async function createCheckoutSessionAction(
       throw error;
     }
   }
-
   if (checkoutOrder.paymentMethod === "stripe") {
     const response = await createCheckoutSession(
       checkoutOrder,
       checkIsLogin.token!,
       "Stripe",
+      data.code,
     );
 
     if (response.status === "success") {
@@ -1071,12 +1071,12 @@ export async function createCheckoutSessionAction(
           message: response.message,
         },
       };
-    }
-  } else if (checkoutOrder.paymentMethod === "zalopay") {
+    }  } else if (checkoutOrder.paymentMethod === "zalopay") {
     const response = await createCheckoutSession(
       checkoutOrder,
       checkIsLogin.token!,
       "ZaloPay",
+      data.code,
     );
 
     if (response.status === "success") {

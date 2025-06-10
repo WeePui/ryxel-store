@@ -67,8 +67,7 @@ async function Page({
           return acc + price * item.quantity;
         }, 0);
       }
-    }
-  } else {
+    }  } else {
     if (
       (buyAgain && buyAgain === "1") ||
       (processPayment && processPayment === "1")
@@ -77,6 +76,19 @@ async function Page({
       const { order } = orderData;
       items = order.lineItems;
       subtotal = order.subtotal;
+      
+      // Pass existing discount information for processPayment flow
+      if (processPayment === "1" && order.discount) {
+        return (
+          <CheckoutPage 
+            addresses={addresses} 
+            lineItems={items} 
+            subtotal={subtotal}
+            existingDiscountCode={order.discount}
+            existingDiscountAmount={order.discountAmount}
+          />
+        );
+      }
     }
   }
 
