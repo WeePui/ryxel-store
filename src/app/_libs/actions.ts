@@ -1071,7 +1071,8 @@ export async function createCheckoutSessionAction(
           message: response.message,
         },
       };
-    }  } else if (checkoutOrder.paymentMethod === "zalopay") {
+    }
+  } else if (checkoutOrder.paymentMethod === "zalopay") {
     const response = await createCheckoutSession(
       checkoutOrder,
       checkIsLogin.token!,

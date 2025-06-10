@@ -395,7 +395,7 @@ function SideFilter({
             filterName="price"
             label={t("products.filter.price")}
             options={priceRangeOptions}
-          />{" "}
+          />
           <hr className="my-1 border-t border-grey-200" />
           <FilterItem
             filterName="rating"
@@ -421,16 +421,15 @@ function SideFilter({
 function FilterItem({ filterName, options, label }: FilterItemProps) {
   const [openFilter, setOpenFilter] = useState(false);
   const context = useContext(SideFilterContext);
-  const { filters, onChecked } = context!;  const isChecked = (value: string | number) => {
+  const { filters, onChecked } = context!;
+  const isChecked = (value: string | number) => {
     if (filterName === "brand") {
       return filters.brand.includes(value as string);
     } else if (filterName === "price") {
       const [minStr, maxStr] = (value as string).split("-");
       const min = Number(minStr);
       const max = maxStr === "undefined" ? undefined : Number(maxStr);
-      return (
-        filters.price.min === min && filters.price.max === max
-      );
+      return filters.price.min === min && filters.price.max === max;
     } else if (filterName === "rating") {
       return filters.rating.min === Number(value);
     } else if (filterName === "onSale") {

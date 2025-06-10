@@ -1,6 +1,6 @@
-import { Address } from './address';
-import { LineItem } from './lineItem';
-import { User } from './user';
+import { Address } from "./address";
+import { LineItem } from "./lineItem";
+import { User } from "./user";
 
 export interface Order {
   _id: string;
@@ -11,7 +11,8 @@ export interface Order {
   updatedAt: string;
   lineItems: LineItem[];
   shippingAddress: string | Address;
-  paymentMethod: string;  shippingFee: number;
+  paymentMethod: string;
+  shippingFee: number;
   discountAmount: number;
   discount?: string;
   subtotal: number;

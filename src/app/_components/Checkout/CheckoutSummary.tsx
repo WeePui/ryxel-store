@@ -40,11 +40,11 @@ function CheckoutSummary({
   const { t } = useLanguage();
   const [discountState, action, isPending] = useActionState(
     verifyDiscountCodeAction,
-    { 
-      success: existingDiscountAmount ? true : false, 
-      discountAmount: existingDiscountAmount || 0, 
-      code: code || "", 
-      errors: {} 
+    {
+      success: existingDiscountAmount ? true : false,
+      discountAmount: existingDiscountAmount || 0,
+      code: code || "",
+      errors: {},
     },
   );
   const [isApplyVoucher, setIsApplyVoucher] = useState(false);

@@ -732,7 +732,8 @@ export async function createCheckoutSession(
   token: { value: string },
   method: "Stripe" | "ZaloPay",
   discountCode?: string,
-) {  try {
+) {
+  try {
     const requestBody: {
       orderCode: string;
       lineItems: LineItem[];

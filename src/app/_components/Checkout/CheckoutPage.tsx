@@ -43,7 +43,8 @@ export default function CheckoutPage({
       </h1>
       <SelectAddress addresses={addresses} onSelect={setSelectedAddress} />
       <CheckoutItems items={lineItems} />
-      <SelectPaymentMethod onSelect={setSelectedPaymentMethod} />      <div className="col-start-2 row-span-3 row-start-2 lg:col-span-full lg:row-start-5">
+      <SelectPaymentMethod onSelect={setSelectedPaymentMethod} />
+      <div className="col-start-2 row-span-3 row-start-2 lg:col-span-full lg:row-start-5">
         <CheckoutSummary
           subtotal={subtotal}
           code={code || ""}
