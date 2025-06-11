@@ -961,7 +961,6 @@ export async function createCheckoutSessionAction(
   }
 
   let checkoutOrder;
-
   if (data.processPayment === "1") {
     if (!data.orderCode) {
       return {
@@ -982,7 +981,11 @@ export async function createCheckoutSessionAction(
     }
 
     const { order } = response.data;
-    checkoutOrder = order;
+    // Allow payment method to be updated during process payment
+    checkoutOrder = {
+      ...order,
+      paymentMethod: data.paymentMethod // Use the selected payment method from UI
+    };
   } else {
     const createOrderResponse = await createOrder(data, token);
     if (createOrderResponse.status !== "success") {

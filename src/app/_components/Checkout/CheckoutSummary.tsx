@@ -51,17 +51,27 @@ function CheckoutSummary({
   const [loadingShippingFee, startTransition] = useTransition();
   const [shippingFee, setShippingFee] = useState<number>(0);
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState<string>("");
-
   useEffect(() => {
     if (address) {
       startTransition(async () => {
-        const { data } = await getShippingFee(address, lineItems);
-        const { shippingFee: fee, expectedDeliveryDate: deliveryDate } = data;
+        const response = await getShippingFee(address, lineItems);
 
-        startTransition(() => {
-          setShippingFee(fee);
-          setExpectedDeliveryDate(deliveryDate);
-        });
+        if (response.status === "success" && response.data) {
+          const { shippingFee: fee, expectedDeliveryDate: deliveryDate } =
+            response.data;
+
+          startTransition(() => {
+            setShippingFee(fee);
+            setExpectedDeliveryDate(deliveryDate);
+          });
+        } else {
+          console.error("Failed to fetch shipping fee:", response.message);
+          // Set default values on error
+          startTransition(() => {
+            setShippingFee(0);
+            setExpectedDeliveryDate("");
+          });
+        }
       });
     }
   }, [address, lineItems]);
