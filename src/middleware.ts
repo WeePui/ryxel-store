@@ -9,28 +9,22 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.nextUrl));
   }
 
-  // const tokenValidation = await checkToken(token);
+  // Validate token for all protected routes
+  const tokenValidation = await checkToken(token);
 
-  // if (!tokenValidation.valid || tokenValidation.expired) {
-  //   const response = NextResponse.redirect(new URL('/login', request.nextUrl));
-  //   response.cookies.delete('jwt');
-  //   response.cookies.delete('reauthToken');
-  //   return response;
-  // }
-
+  if (!tokenValidation.valid || tokenValidation.expired) {
+    const response = NextResponse.redirect(new URL("/login", request.nextUrl));
+    response.cookies.delete("jwt");
+    response.cookies.delete("reauthenticated");
+    response.cookies.delete("verified");
+    return response;
+  }
   if (request.nextUrl.pathname.startsWith("/admin")) {
-    const tokenValidation = await checkToken(token);
-
-    if (
-      !tokenValidation.valid ||
-      tokenValidation.expired ||
-      !tokenValidation.isAdmin
-    ) {
+    if (!tokenValidation.isAdmin) {
       return NextResponse.redirect(new URL("/not-found", request.nextUrl));
     }
   }
 
-  const reauthToken = request.cookies.get("reauthenticated");
   const highValueUrls = ["/checkout"];
   const verifiedNeededUrls = ["/checkout"];
 
@@ -83,12 +77,37 @@ export async function middleware(request: NextRequest) {
       response.cookies.delete("reauthenticated");
       return response;
     }
-  }
-
-  // Check if the user is accessing a high-value URL
+  } // Check if the user is accessing a high-value URL
   if (highValueUrls.includes(request.nextUrl.pathname)) {
     try {
+      const reauthToken = request.cookies.get("reauthenticated");
+      const fromCart = request.nextUrl.searchParams.get("fromCart");
+
+      console.log(
+        `Checkout access: fromCart=${fromCart}, hasReauthToken=${!!reauthToken}, tokenValid=${tokenValidation.valid}`,
+      );
+
+      // If user doesn't have reauthenticated cookie, check special cases
       if (!reauthToken || reauthToken.value !== "true") {
+        // Allow bypass if coming from cart with ?fromCart=1 and token is valid
+        if (fromCart === "1" && tokenValidation.valid) {
+          console.log(
+            "Allowing checkout access from cart, setting reauthenticated cookie",
+          );
+          // User is coming from cart and has valid token, allow through
+          // Set reauthenticated cookie to avoid future prompts in this session
+          const response = NextResponse.next();
+          response.cookies.set("reauthenticated", "true", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 30 * 60, // 30 minutes
+            sameSite: "lax",
+          });
+          return response;
+        }
+
+        console.log("Redirecting to reauthenticate");
+        // Otherwise, require reauthentication
         const reauthUrl = new URL("/reauthenticate", request.nextUrl);
         reauthUrl.searchParams.set(
           "redirect",
@@ -98,6 +117,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(reauthUrl);
       }
 
+      console.log("User has valid reauthenticated cookie, allowing access");
       return NextResponse.next();
     } catch (error) {
       console.error("Authentication error:", error);

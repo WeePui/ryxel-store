@@ -159,7 +159,6 @@ export async function loginAction(
     const expiresAt = new Date(
       Date.now() + Number(jwtExpiresIn) * 24 * 60 * 60 * 1000,
     );
-
     cookiesStore.set("jwt", loginData.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -169,7 +168,15 @@ export async function loginAction(
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     });
-    cookiesStore.delete("reauthenticated");
+
+    // Set reauthenticated cookie for fresh login (user just provided password)
+    const reauthExpiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
+    cookiesStore.set("reauthenticated", "true", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: reauthExpiresAt,
+    });
+
     const redirectPath =
       user.role !== "admin" ? "/products" : "/admin/dashboard";
     console.log(
@@ -241,7 +248,6 @@ export async function signupAction(
         message: signupData.message,
       },
     };
-
   const cookiesStore = await cookies();
   const expiresAt = new Date(
     Date.now() +
@@ -249,9 +255,18 @@ export async function signupAction(
   );
   cookiesStore.set("jwt", signupData.token, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     expires: expiresAt,
   });
+
+  // Set reauthenticated cookie for fresh signup (user just provided password)
+  const reauthExpiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
+  cookiesStore.set("reauthenticated", "true", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    expires: reauthExpiresAt,
+  });
+
   await sendOTPAction({ counter: 0 });
 
   try {
@@ -864,7 +879,6 @@ export async function reauthenticateAction(
 
   const cookiesStore = await cookies();
   const response = await reauthenticate(data.password as string, token);
-
   if (response.status === "success") {
     const expiresAt = new Date(
       Date.now() +
@@ -872,7 +886,7 @@ export async function reauthenticateAction(
     );
     cookiesStore.set("reauthenticated", "true", {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       expires: expiresAt,
     });
 
