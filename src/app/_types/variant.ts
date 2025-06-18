@@ -15,7 +15,7 @@ export interface Variant {
   sku: string;
   sold: number;
   cost: number;
-  dimensions?: {
+  dimension?: {
     length: number;
     width: number;
     height: number;

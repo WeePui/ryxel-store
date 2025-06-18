@@ -68,10 +68,10 @@ export default function FormAddProduct({ categories }: FormAddProductProps) {
         stock: Number(v.stock) || 0,
         weight: Number(v.weight) || 0,
         sold: Number(v.sold) || 0,
-        dimensions: {
-          length: Number(v.dimensions?.length) || 0,
-          width: Number(v.dimensions?.width) || 0,
-          height: Number(v.dimensions?.height) || 0,
+        dimension: {
+          length: Number(v.dimension?.length) || 0,
+          width: Number(v.dimension?.width) || 0,
+          height: Number(v.dimension?.height) || 0,
         },
         saleOff: {
           startDate: v.saleOff?.startDate || "",

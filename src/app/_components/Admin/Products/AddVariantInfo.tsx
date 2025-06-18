@@ -27,7 +27,7 @@ const emptyVariant = (): Variant => ({
   stock: 0,
   sold: 0,
   cost: 0,
-  dimensions: {
+  dimension: {
     length: 0,
     width: 0,
     height: 0,
@@ -45,77 +45,66 @@ const AddVariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
   ({ validationErrors = {} }, ref) => {
     const [variants, setVariants] = useState<Variant[]>([emptyVariant()]);
     const inputRefs = useRef<(HTMLInputElement | null)[][]>([]);
-  useImperativeHandle(ref, () => ({
-    getData() {
-      // Ensure all numeric fields are properly converted to numbers
-      return variants.map(variant => {
-        // First create the normalized variant with all fields converted to proper types
-        const normalizedVariant = {
-          ...variant,
-          price: Number(variant.price) || 0,
-          cost: Number(variant.cost) || 0,
-          stock: Number(variant.stock) || 0,
-          weight: Number(variant.weight) || 0,
-          sold: Number(variant.sold) || 0,
-          dimensions: variant.dimensions ? {
-            length: Number(variant.dimensions.length) || 0,
-            width: Number(variant.dimensions.width) || 0,
-            height: Number(variant.dimensions.height) || 0
-          } : {
-            length: 0,
-            width: 0,
-            height: 0
-          },
-          saleOff: {
-            startDate: variant.saleOff?.startDate || '',
-            endDate: variant.saleOff?.endDate || '',
-            percentage: Number(variant.saleOff?.percentage) || 0
-          }
-        };
-        
-        // Log each variant for debugging
-        console.log('Normalized variant:', {
-          name: normalizedVariant.name,
-          price: normalizedVariant.price, 
-          priceType: typeof normalizedVariant.price,
-          cost: normalizedVariant.cost, 
-          costType: typeof normalizedVariant.cost,
-          dimensions: normalizedVariant.dimensions,
-          dimensionsType: typeof normalizedVariant.dimensions
+    useImperativeHandle(ref, () => ({
+      getData() {
+        // Ensure all numeric fields are properly converted to numbers
+        return variants.map((variant) => {
+          // First create the normalized variant with all fields converted to proper types
+          const normalizedVariant = {
+            ...variant,
+            price: Number(variant.price) || 0,
+            cost: Number(variant.cost) || 0,
+            stock: Number(variant.stock) || 0,
+            weight: Number(variant.weight) || 0,
+            sold: Number(variant.sold) || 0,
+            dimension: variant.dimension
+              ? {
+                  length: Number(variant.dimension.length) || 0,
+                  width: Number(variant.dimension.width) || 0,
+                  height: Number(variant.dimension.height) || 0,
+                }
+              : {
+                  length: 0,
+                  width: 0,
+                  height: 0,
+                },
+            saleOff: {
+              startDate: variant.saleOff?.startDate || "",
+              endDate: variant.saleOff?.endDate || "",
+              percentage: Number(variant.saleOff?.percentage) || 0,
+            },
+          };
+          return normalizedVariant;
         });
-        
-        return normalizedVariant;
-      });
-    },
-  }));
+      },
+    }));
 
-  const handleFieldChange = (
-    index: number,
-    field: keyof Variant,
-    value: string,
-  ) => {
-    const updated = [...variants];
-    updated[index] = {
-      ...updated[index],
-      [field]:
-        field === "price" ||
-        field === "weight" ||
-        field === "stock" ||
-        field === "sold" ||
-        field === "cost"
-          ? Number(value)
-          : value,
+    const handleFieldChange = (
+      index: number,
+      field: keyof Variant,
+      value: string,
+    ) => {
+      const updated = [...variants];
+      updated[index] = {
+        ...updated[index],
+        [field]:
+          field === "price" ||
+          field === "weight" ||
+          field === "stock" ||
+          field === "sold" ||
+          field === "cost"
+            ? Number(value)
+            : value,
+      };
+      setVariants(updated);
     };
-    setVariants(updated);
-    };
-
     const handleDimensionChange = (
       index: number,
       dimension: "length" | "width" | "height",
       value: string,
     ) => {
       const updated = [...variants];
-      const currentDimensions = updated[index].dimensions || {
+      const currentDimensions = updated[index].dimension || {
         length: 0,
         width: 0,
         height: 0,
@@ -123,7 +112,7 @@ const AddVariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
 
       updated[index] = {
         ...updated[index],
-        dimensions: {
+        dimension: {
           ...currentDimensions,
           [dimension]: value ? Number(value) : 0,
         },
@@ -250,7 +239,7 @@ const AddVariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                 <Input
                   type="number"
                   label="Chiều dài"
-                  value={variant.dimensions?.length || 0}
+                  value={variant.dimension?.length || 0}
                   onChange={(e) =>
                     handleDimensionChange(index, "length", e.target.value)
                   }
@@ -260,7 +249,7 @@ const AddVariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                 <Input
                   type="number"
                   label="Chiều rộng"
-                  value={variant.dimensions?.width || 0}
+                  value={variant.dimension?.width || 0}
                   onChange={(e) =>
                     handleDimensionChange(index, "width", e.target.value)
                   }
@@ -270,7 +259,7 @@ const AddVariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
                 <Input
                   type="number"
                   label="Chiều cao"
-                  value={variant.dimensions?.height || 0}
+                  value={variant.dimension?.height || 0}
                   onChange={(e) =>
                     handleDimensionChange(index, "height", e.target.value)
                   }

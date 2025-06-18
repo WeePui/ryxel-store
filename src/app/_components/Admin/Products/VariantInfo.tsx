@@ -53,11 +53,17 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             stock: Number(variant.stock) || 0,
             weight: Number(variant.weight) || 0,
             sold: Number(variant.sold) || 0,
-            dimensions: variant.dimensions
+            dimension: variant.dimension
               ? {
-                  length: Number(variant.dimensions.length) || 0,
-                  width: Number(variant.dimensions.width) || 0,
-                  height: Number(variant.dimensions.height) || 0,
+                  length: variant.dimension.length
+                    ? Number(variant.dimension.length)
+                    : 0,
+                  width: variant.dimension.width
+                    ? Number(variant.dimension.width)
+                    : 0,
+                  height: variant.dimension.height
+                    ? Number(variant.dimension.height)
+                    : 0,
                 }
               : {
                   length: 0,
@@ -70,18 +76,6 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               percentage: Number(variant.saleOff?.percentage) || 0,
             },
           };
-
-          // Log each variant for debugging
-          console.log("Normalized variant:", {
-            name: normalizedVariant.name,
-            price: normalizedVariant.price,
-            priceType: typeof normalizedVariant.price,
-            cost: normalizedVariant.cost,
-            costType: typeof normalizedVariant.cost,
-            dimensions: normalizedVariant.dimensions,
-            dimensionsType: typeof normalizedVariant.dimensions,
-          });
-
           return normalizedVariant;
         });
       },
@@ -188,24 +182,29 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
       dimension: "length" | "width" | "height",
       value: string,
     ) => {
-      const dimensions = currentVariant.dimensions || {
+      const dimensions = currentVariant.dimension || {
         length: 0,
         width: 0,
         height: 0,
       };
 
-      // Convert to number and handle NaN cases
-      const numValue = parseFloat(value);
-      const safeValue = isNaN(numValue) ? 0 : numValue;
+      // Convert to number, but allow empty string to remain as undefined/null
+      // Only convert to 0 if the user explicitly enters 0
+      let numValue: number;
+      if (value === "" || value === null || value === undefined) {
+        numValue = 0; // or you could use null/undefined if your schema allows it
+      } else {
+        numValue = parseFloat(value);
+        numValue = isNaN(numValue) ? 0 : numValue;
+      }
 
       const updatedDimensions = {
         ...dimensions,
-        [dimension]: safeValue,
+        [dimension]: numValue,
       };
-
       const updatedVariant = {
         ...currentVariant,
-        dimensions: updatedDimensions,
+        dimension: updatedDimensions,
       };
 
       setCurrentVariant(updatedVariant);
@@ -442,7 +441,11 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               type="number"
               name="length"
               id="length"
-              value={currentVariant.dimensions?.length?.toString() || "0"}
+              value={
+                currentVariant.dimension?.length
+                  ? currentVariant.dimension.length.toString()
+                  : ""
+              }
               label="Chiều dài"
               onChange={(e) => handleDimensionChange("length", e.target.value)}
             />
@@ -450,7 +453,11 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               type="number"
               name="width"
               id="width"
-              value={currentVariant.dimensions?.width?.toString() || "0"}
+              value={
+                currentVariant.dimension?.width
+                  ? currentVariant.dimension.width.toString()
+                  : ""
+              }
               label="Chiều rộng"
               onChange={(e) => handleDimensionChange("width", e.target.value)}
             />
@@ -458,7 +465,11 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               type="number"
               name="height"
               id="height"
-              value={currentVariant.dimensions?.height?.toString() || "0"}
+              value={
+                currentVariant.dimension?.height
+                  ? currentVariant.dimension.height.toString()
+                  : ""
+              }
               label="Chiều cao"
               onChange={(e) => handleDimensionChange("height", e.target.value)}
             />
@@ -679,7 +690,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
               />
             </div>
           ))}
-        </div>{" "}
+        </div>
         <div className="col-span-full flex items-center justify-end gap-4">
           <Button
             size="small"
@@ -689,7 +700,7 @@ const VariantInfo = forwardRef<VariantInfoHandle, VariantInfoProps>(
             disabled={isSubmitting}
           >
             Đặt lại
-          </Button>{" "}
+          </Button>
           <Button
             size="small"
             onClick={handleSave}
