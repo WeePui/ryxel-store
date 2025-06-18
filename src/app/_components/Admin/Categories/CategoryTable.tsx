@@ -9,7 +9,7 @@ import Button from "../../UI/Button";
 import { useState, useTransition } from "react";
 import Modal from "../../UI/Modal";
 import AddCategoryForm from "./AddCategoryForm";
-import { FaTrash } from "react-icons/fa";
+// import { FaTrash } from "react-icons/fa";
 import { deleteCategoryAction } from "@/app/_libs/actions";
 import { toast } from "react-toastify";
 import TextConfirmDialogue from "../../UI/TextConfirmDialogue";
@@ -22,7 +22,7 @@ interface CategoryOverviewProps {
 
 export default function CategoryTable({ data }: CategoryOverviewProps) {
   const [openModal, setOpenModal] = useState(false);
-  const [pending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   const handleDeleteCategory = async (categoryId: string) => {
@@ -94,14 +94,14 @@ export default function CategoryTable({ data }: CategoryOverviewProps) {
           >
             Xem chi tiết
           </Link>
-          <Button
+          {/* <Button
             variant="danger"
             size="small"
             loading={pending}
             onClick={() => setConfirmDelete(record._id)}
             icon={<FaTrash />}
             iconOnly
-          />
+          /> */}
         </div>
       ),
       csvRender: () => "Xem chi tiết / Xóa",
