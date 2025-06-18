@@ -11,10 +11,12 @@ import {
   FaRegSmile,
 } from "react-icons/fa";
 import { useLanguage } from "@/app/_contexts/LanguageContext";
+import { useRouter } from "next/navigation";
 
 export default function AboutUs() {
   const { t } = useLanguage();
   const [, setIsVisible] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsVisible(true);
@@ -453,7 +455,7 @@ export default function AboutUs() {
             {t("aboutUs.funFacts.title")}
           </motion.h2>
           <motion.div
-            className="grid gap-8 lg:grid-cols-2 lg:grid-cols-3 md:grid-cols-1"
+            className="grid gap-8 lg:grid-cols-3 md:grid-cols-1"
             variants={staggerChildren}
             initial="hidden"
             whileInView="visible"
@@ -543,7 +545,10 @@ export default function AboutUs() {
               <p className="mb-6 max-w-2xl text-lg text-white">
                 {t("aboutUs.productShowcase.description")}
               </p>
-              <button className="rounded-lg bg-gradient-to-r from-primary-400 to-primary-600 px-6 py-3 font-bold text-white transition-all duration-300 hover:from-primary-500 hover:to-primary-700 hover:shadow-lg hover:shadow-primary-500/50">
+              <button
+                className="rounded-lg bg-gradient-to-r from-primary-400 to-primary-600 px-6 py-3 font-bold text-white transition-all duration-300 hover:from-primary-500 hover:to-primary-700 hover:shadow-lg hover:shadow-primary-500/50"
+                onClick={() => router.push("/products")}
+              >
                 {t("aboutUs.productShowcase.buttonText")}
               </button>
             </div>
@@ -568,10 +573,16 @@ export default function AboutUs() {
               {t("aboutUs.cta.description")}
             </p>
             <div className="flex flex-row justify-center gap-4 sm:flex-col">
-              <button className="rounded-lg bg-gradient-to-r from-primary-400 to-primary-600 px-8 py-3 font-bold text-white transition-all duration-300 hover:from-primary-500 hover:to-primary-700 hover:shadow-lg hover:shadow-primary-500/50">
+              <button
+                className="rounded-lg bg-gradient-to-r from-primary-400 to-primary-600 px-8 py-3 font-bold text-white transition-all duration-300 hover:from-primary-500 hover:to-primary-700 hover:shadow-lg hover:shadow-primary-500/50"
+                onClick={() => router.push("/products")}
+              >
                 {t("aboutUs.cta.primaryButton")}
               </button>
-              <button className="rounded-lg bg-gradient-to-r from-gray-700 to-gray-800 px-8 py-3 font-bold text-white transition-all duration-300 hover:from-gray-600 hover:to-gray-700 hover:shadow-lg">
+              <button
+                className="rounded-lg bg-gradient-to-r from-gray-700 to-gray-800 px-8 py-3 font-bold text-white transition-all duration-300 hover:from-gray-600 hover:to-gray-700 hover:shadow-lg"
+                onClick={() => router.push("/contact")}
+              >
                 {t("aboutUs.cta.secondaryButton")}
               </button>
             </div>
